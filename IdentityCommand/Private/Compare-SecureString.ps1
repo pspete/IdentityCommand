@@ -1,4 +1,24 @@
 function Compare-SecureString {
+    <#
+    .SYNOPSIS
+    Compares 2 SecureString variables
+
+    .DESCRIPTION
+    Compares 2 SecureString variables
+
+    .PARAMETER secureString1
+    A SecureString to evaluate against secureString2
+
+    .PARAMETER secureString2
+    A SecureString to evaluate against secureString1
+
+    .EXAMPLE
+    Compare-SecureString -secureString1 $Secure1 -secureString2 $Secure2
+
+    Checks $Secure1 against $Secure2 to confirm they match
+
+    #>
+
     [CmdLetBinding()]
     [OutputType('System.Boolean')]
     Param (

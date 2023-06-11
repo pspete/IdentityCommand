@@ -1,3 +1,4 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Close-IDSession {
     [CmdletBinding()]
     param( )
@@ -11,7 +12,7 @@ function Close-IDSession {
     PROCESS {
 
         #Send Logoff Request
-        Invoke-IDRestMethod -Uri $URI -Method POST -WebSession $Script:WebSession | Out-Null
+        Invoke-IDRestMethod -Uri $URI -Method POST | Out-Null
 
     }#process
 

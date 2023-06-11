@@ -1,4 +1,28 @@
 Function Start-Authentication {
+    <#
+    .SYNOPSIS
+    Starts a user authentication session
+
+    .DESCRIPTION
+    Start the user authentication session to authenticate against CyberArk Identity.
+
+    When the user wants to authenticate to CyberArk Identity providing their username.
+    If the user exists in CyberArk Identity cloud directory, the server returns an array of security challenges that the user must fulfill to complete the authentication process.
+
+    .PARAMETER LogonRequest
+    The LogonRequest created via New-IDSession
+
+    .PARAMETER Credential
+    Credential object containing username and password required to authenticate to CyberArk Identity.
+
+    .EXAMPLE
+    $LogonRequest | Start-Authentication -Credential $Credential
+
+    Start the authentication process using the specified LogonRequest & Credential object.
+
+    .NOTES
+    Pete Maan 2023
+    #>
 
     [CmdletBinding(SupportsShouldProcess)]
     param(

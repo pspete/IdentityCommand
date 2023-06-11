@@ -1,3 +1,4 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Get-IDCurrentUser {
     [CmdletBinding()]
     param( )

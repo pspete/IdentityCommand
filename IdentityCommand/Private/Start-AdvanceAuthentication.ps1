@@ -1,4 +1,32 @@
 Function Start-AdvanceAuthentication {
+    <#
+    .SYNOPSIS
+    Advance the state of an authentication session.
+
+    .DESCRIPTION
+    Advance the user authentication to authenticate the user against CyberArk Identity.
+
+    Once Start-Authentication is invoked and a user authentication session has been created successfully, Start-AdvanceAuthentication is invoked to further advance the user authentication process.
+    If the request to the API is successful, either another challenge mechanism maybe required to be answered, or a logon success will be reported.
+    As a response to advance authentication process, an authentication cookie (. ASPXAUTH) would be returned for the user and be saved in the websession object for the current session.
+
+    .PARAMETER LogonRequest
+    The LogonRequest created via New-IDSession
+
+    .PARAMETER Mechanism
+    The authentication mechanism determined by the user via Select-ChallengeMechanism
+
+    .PARAMETER Answer
+    The answer to satisfy the selected challenge mechanism.
+
+    .EXAMPLE
+    $LogonRequest | Start-AdvanceAuthentication -Mechanism $Mechanism -Answer $Answer
+
+    Advances the authentication using the specified LogonRequest, Authentication Mechanism & Mechanism Answer.
+
+    .NOTES
+    Pete Maan 2023
+    #>
 
     [CmdletBinding(SupportsShouldProcess)]
     param(

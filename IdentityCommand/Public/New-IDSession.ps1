@@ -1,3 +1,4 @@
+# .ExternalHelp IdentityCommand-help.xml
 Function New-IDSession {
 
     [CmdletBinding(SupportsShouldProcess)]

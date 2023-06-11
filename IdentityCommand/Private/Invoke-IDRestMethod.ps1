@@ -57,6 +57,9 @@
 	.PARAMETER SkipCertificateCheck
 	Skips certificate validation checks.
 
+	.PARAMETER Accept
+	An Accept string to be included in the request header
+
 	.EXAMPLE
 	Invoke-IDRestMethod -Uri $URI -Method DELETE -WebSession $Script:WebSession
 

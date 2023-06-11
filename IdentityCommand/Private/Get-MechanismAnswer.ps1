@@ -1,4 +1,30 @@
 function Get-MechanismAnswer {
+    <#
+    .SYNOPSIS
+    Allows a user to answer an MFA chalenge Mechanism
+
+    .DESCRIPTION
+    MFA Challenges include User Password, Security Questions, SMS, OATH, Email, OTP, Phone Call & QR Code.
+    Password is supplied automatically from provided credential object.
+    Users are able to provide input to answer OATH, SMS or Security Questions.
+    Out of Band factors (Phone Call, QR Code App Push & Email validation Link) are polled for until satisfied.
+    U2F and DUO are not currenlty supported via this code.
+
+    .PARAMETER Mechanism
+    The mechanism to answer
+
+    .PARAMETER Credential
+    Credential obejct containing username & password for Identity tenant authentication
+
+    .EXAMPLE
+    $Answer = Get-MechanismAnswer -Mechanism $Mechanism -Credential $Credential
+
+    Prompts the user to answer the challenge mechanism and saves the response to the $answer variable for use to advance the authentication.
+
+    .NOTES
+    Pete Maan 2023
+    #>
+
     [CmdletBinding()]
     param(
         [Parameter(
