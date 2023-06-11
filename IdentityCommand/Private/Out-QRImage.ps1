@@ -54,7 +54,16 @@ function Out-QRImage {
             try {
 
                 $htmlParams = @{
-                    Body = '<IMG SRC="' + $Image + '">'
+                    Title = 'IdentityCommand Authentication'
+                    Head  = '<style>
+body {background-color:#ffffff;background-repeat:no-repeat;background-position:top left;background-attachment:fixed;}
+h1 {text-align:center;font-family:Helvetica, sans-serif;color:#000000;background-color:#ffffff;}
+p {text-align:center;font-family:Helvetica, sans-serif;font-size:14px;font-style:normal;font-weight:normal;color:#000000;background-color:#ffffff;}
+</style>'
+                    Body  = '<h1>IdentityCommand QR Code Authentication</h1>
+    <p>To satisfy the authentication challenge for CyberArk Identity via the IdentityCommand module, scan the QR code with the CyberArk Identity App on your enrolled mobile device.</p>
+    <p><img src="' + $Image + '"></p>'
+
                 }
 
                 #Output base64 image to webpage
