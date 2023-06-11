@@ -22,6 +22,7 @@ To develop & publish PowerShell functions for available CyberArk Identity APIs.
 | New-IDSession              | Authenticate to CyberArk Identity, answering MFA challenges to start a new API session.     |
 | Close-IDSession            | Logoff CyberArk Identity API                                                                |
 | Get-IDCurrentUser          | Get details of authenticated user                                                           |
+| Clear-IDUserSession        | Signs out user from all active sessions                                                     |
 
 ## Installation
 
