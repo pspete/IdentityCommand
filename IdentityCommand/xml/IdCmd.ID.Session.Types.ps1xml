@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Types>
+	<Type>
+		<Name>IdCmd.ID.Session</Name>
+		<Members>
+            <ScriptMethod>
+				<Name>GetWebSession</Name>
+				<Script>
+                    Get-IDWebSession
+				</Script>
+			</ScriptMethod>
+			<ScriptMethod>
+				<Name>GetBearerToken</Name>
+				<Script>
+					Write-Output @{Authorization = "Bearer $($this.Token)"}
+				</Script>
+			</ScriptMethod>
+			<ScriptMethod>
+				<Name>TopsPASSessionObject</Name>
+				<Script>
+                    Param([string]$BaseURI)
+					$BearerToken = "Bearer $($this.Token)"
+                    $WebSession = $this.GetWebSession()
+                    If ($WebSession.Headers.ContainsKey('Authorization')){
+                        $WebSession.Headers['Authorization'] = $BearerToken
+                    }
+                    Else{
+                        $WebSession.Headers.Add('Authorization', $BearerToken)
+                    }
+                    $UriBuilder = New-Object System.UriBuilder
+                    if($BaseURI){
+                        $UriBuilder.Host = $BaseURI
+                    }
+                    Else{
+                        $UriBuilder.Host = ($this.PodFqdn).replace('.id.','.privilegecloud.')
+                    }
+                    $UriBuilder.Path = ('PasswordVault' -join '/')
+                    $UriBuilder.Scheme = 'https'
+                    $psPASSession = [PSCustomObject]@{
+                        User            = $this.User
+                        BaseURI         = $UriBuilder.ToString()
+                        ExternalVersion = [system.version]'0.0'
+                        WebSession      = $WebSession
+                    }
+                    $psPASSession.PSObject.TypeNames.Insert(0, 'psPAS.CyberArk.Vault.Session')
+                    Write-Output $psPASSession
+				</Script>
+			</ScriptMethod>
+		</Members>
+	</Type>
+</Types>

@@ -100,11 +100,6 @@ Function New-IDSession {
 
         switch ($IDSession.Summary) {
 
-            'LoginSuccess' {
-                $IDSession | Select-Object -ExcludeProperty Summary
-                break
-            }
-
             'NoncommitalSuccess' {
                 Write-Host $IDSession.ClientMessage
                 break
@@ -112,7 +107,12 @@ Function New-IDSession {
 
             default {
 
-                #No Output
+                if ($null -ne $IDSession) {
+
+                    $IDSession | Select-Object -Last 1 | Add-CustomType -Type IdCmd.ID.Session
+
+                }
+
                 break
 
             }

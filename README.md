@@ -1,3 +1,7 @@
+![Logo][Logo]
+
+[Logo]:/docs/media/images/IdentityCommand.png
+
 # IdentityCommand
 
 IdentityCommand [Work in Progress] is a PowerShell module that enables you to send and receive data from the API for the CyberArk Identity platform.
@@ -23,6 +27,7 @@ To develop & publish PowerShell functions for available CyberArk Identity APIs.
 | Close-IDSession            | Logoff CyberArk Identity API                                                                |
 | Get-IDCurrentUser          | Get details of authenticated user                                                           |
 | Clear-IDUserSession        | Signs out user from all active sessions                                                     |
+| Get-IDWebSession           | Get WebSession object from the module scope                                                 |
 
 ## Installation
 
@@ -53,3 +58,5 @@ $env:PSModulePath.split(';')
 Unblock & Extract the archive
 
 Copy the ```IdentityCommand``` folder to your "Powershell Modules" directory of choice.
+
+![Logo][Logo]

@@ -24,7 +24,7 @@ Only system administrator, users with user management rights, or the user itself
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Clear-IDUserSession -id "abc-1234-def-5678-ghi-90-jkl"
 ```
 

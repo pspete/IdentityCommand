@@ -12,7 +12,7 @@
     RootModule        = 'IdentityCommand.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.0.1'
+    ModuleVersion     = '0.0.2'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -60,10 +60,14 @@
     # ScriptsToProcess = @()
 
     # Type files (.ps1xml) to be loaded when importing this module
-    # TypesToProcess = @()
+    TypesToProcess    = @(
+        'xml\IdCmd.ID.Session.Types.ps1xml'
+    )
 
     # Format files (.ps1xml) to be loaded when importing this module
-    # FormatsToProcess = @()
+    FormatsToProcess  = @(
+        'xml\IdCmd.ID.Session.Format.ps1xml'
+    )
 
     # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
     # NestedModules = @()
@@ -73,7 +77,8 @@
         'New-IDSession',
         'Close-IDSession',
         'Get-IDCurrentUser',
-        'Clear-IDUserSession'
+        'Clear-IDUserSession',
+        'Get-IDWebSession'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.

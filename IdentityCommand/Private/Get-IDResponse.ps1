@@ -45,6 +45,29 @@ function Get-IDResponse {
 			#handle content type
 			switch ($ContentType) {
 
+				'text/html; charset=utf-8' {
+
+					If ($IDResponse -match '<HTML>') {
+
+						#Fail if HTML received from request to API
+
+						$PSCmdlet.ThrowTerminatingError(
+
+							[System.Management.Automation.ErrorRecord]::new(
+
+								'Unexpected HTML Response Received. Check the URL provided for your Identity Portal.',
+								$StatusCode,
+								[System.Management.Automation.ErrorCategory]::NotSpecified,
+								$APIResponse
+
+							)
+
+						)
+
+					}
+
+				}
+
 				'application/json; charset=utf-8' {
 
 					#application/json content expected

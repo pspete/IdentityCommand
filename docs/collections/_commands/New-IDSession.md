@@ -3,7 +3,6 @@ external help file: IdentityCommand-help.xml
 Module Name: IdentityCommand
 online version:
 schema: 2.0.0
-title: New-IDSession
 ---
 
 # New-IDSession
@@ -27,7 +26,7 @@ Currently supports all authentication mechanisms except U2F & DUO.
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> $Cred = Get-Credential
 PS C:\> New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credential $Cred
 ```
@@ -46,7 +45,7 @@ Aliases: cf
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -77,7 +76,7 @@ Aliases: wi
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

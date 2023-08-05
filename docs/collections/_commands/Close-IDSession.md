@@ -3,7 +3,6 @@ external help file: IdentityCommand-help.xml
 Module Name: IdentityCommand
 online version:
 schema: 2.0.0
-title: Close-IDSession
 ---
 
 # Close-IDSession
@@ -23,7 +22,7 @@ Logout the current user
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Close-IDSession
 ```
 
@@ -37,11 +36,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object
-
 ## NOTES
 
 ## RELATED LINKS

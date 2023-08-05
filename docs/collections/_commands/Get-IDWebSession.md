@@ -5,28 +5,28 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-IDCurrentUser
+# Get-IDWebSession
 
 ## SYNOPSIS
-Get details for the current user
+Get the IdentityCommand WebSession
 
 ## SYNTAX
 
 ```
-Get-IDCurrentUser [<CommonParameters>]
+Get-IDWebSession [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Returns details of the user authenticated to the current Identity session
+Exports the WebSession object from the IdentityCommand module scope for use in other requests outside of the module scope.
 
 ## EXAMPLES
 
 ### Example 1
-```
-PS C:\> Get-IDCurrentUser
+```powershell
+PS C:\> Get-IDWebSession
 ```
 
-Get details for the authenticated user
+Output the IdentityCommand WebSession object for the current authenticated session.
 
 ## PARAMETERS
 
@@ -35,10 +35,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### None
 ## OUTPUTS
 
-### System.Object
 ## NOTES
 
 ## RELATED LINKS
