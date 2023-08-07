@@ -25,6 +25,7 @@ function Get-MechanismAnswer {
     Pete Maan 2023
     #>
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Actual legitimate use of Write-Host')]
     [CmdletBinding()]
     param(
         [Parameter(

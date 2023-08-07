@@ -1,6 +1,7 @@
 # .ExternalHelp IdentityCommand-help.xml
 Function New-IDSession {
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification = 'Actual legitimate use of Write-Host')]
     [CmdletBinding(SupportsShouldProcess)]
     param(
         #tenant_url

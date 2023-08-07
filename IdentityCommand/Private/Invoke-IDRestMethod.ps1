@@ -109,9 +109,6 @@
 		[string]$CertificateThumbprint,
 
 		[Parameter(Mandatory = $false)]
-		[switch]$SkipCertificateCheck,
-
-		[Parameter(Mandatory = $false)]
 		[string]$ContentType,
 
 		[Parameter(Mandatory = $false)]
@@ -151,33 +148,13 @@
 
 		}
 
-		Switch ($PSBoundParameters.ContainsKey('SkipCertificateCheck')) {
+		#If Tls12 Security Protocol is available
+		if (([Net.SecurityProtocolType].GetEnumNames() -contains 'Tls12') -and
 
-			$true {
+			#And Tls12 is not already in use
+			(-not ([System.Net.ServicePointManager]::SecurityProtocol -match 'Tls12'))) {
 
-				#SkipCertificateCheck Declared
-				if ($SkipCertificateCheck) {
-
-					#Ongoing SSL Validation Bypass Required
-					$Script:SkipCertificateCheck = $true
-
-				}
-
-			}
-
-			$false {
-
-				#SkipCertificateCheck Not Declared
-				#SSL Validation Bypass Previously Requested
-				If ($Script:SkipCertificateCheck) {
-
-					#Add SkipCertificateCheck to PS Core command
-					#Parameter must be included for all pwsh invocations of Invoke-WebRequest
-					$PSBoundParameters.Add('SkipCertificateCheck', $true)
-
-				}
-
-			}
+			[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 		}
 

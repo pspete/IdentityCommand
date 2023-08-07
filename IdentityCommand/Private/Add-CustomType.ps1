@@ -37,8 +37,9 @@ function Add-CustomType {
 
     )
 
-    [Void]$Object.PSObject.TypeNames.Insert(0, $Type)
+    Process {
+        [Void]$Object.PSObject.TypeNames.Insert(0, $Type)
 
-    $Object
-
+        $Object
+    }
 }

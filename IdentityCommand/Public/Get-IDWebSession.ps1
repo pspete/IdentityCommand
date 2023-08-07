@@ -4,6 +4,6 @@ Function Get-IDWebSession {
     [CmdletBinding()]
     Param ()
 
-    $Script:Websession
+    Get-Variable -Name WebSession -Scope Script -ValueOnly
 
 }

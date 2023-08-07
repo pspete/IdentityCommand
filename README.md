@@ -4,7 +4,7 @@
 
 # IdentityCommand
 
-IdentityCommand [Work in Progress] is a PowerShell module that enables you to send and receive data from the API for the CyberArk Identity platform.
+IdentityCommand [Work in Progress] is a PowerShell module that enables you to send data to and receive data from the API for the CyberArk Identity platform.
 
 This module provides a set of easy-to-use commands that allow you to interact with a CyberArk Identity tenant from within the PowerShell environment.
 
