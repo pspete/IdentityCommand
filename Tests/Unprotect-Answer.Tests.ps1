@@ -34,42 +34,31 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
     InModuleScope $(Split-Path (Split-Path (Split-Path -Parent $PSCommandPath) -Parent) -Leaf ) {
 
-        BeforeEach {
-
-            Mock -CommandName Get-Variable -MockWith {}
-            Get-IDWebSession
-
-        }
-
         Context 'General' {
 
-            It 'gets expected variable' {
+            BeforeEach {
+                $SecureString = $(ConvertTo-SecureString 'SomeSecureString' -AsPlainText -Force)
+            }
+            It 'converts SecureString to cleartext' {
 
-                Assert-MockCalled Get-Variable -ParameterFilter {
-
-                    $Name -eq 'WebSession'
-
-                } -Times 1 -Exactly -Scope It
+                Unprotect-Answer $SecureString | Should -Be SomeSecureString
 
             }
 
-            It 'gets variable from expected scope' {
+            It 'converts hashtable SecureString value to cleartext' {
 
-                Assert-MockCalled Get-Variable -ParameterFilter {
-
-                    $Scope -eq 'Script'
-
-                } -Times 1 -Exactly -Scope It
+                $Hashtable = @{'Key' = $SecureString }
+                $Result = Unprotect-Answer $Hashtable
+                $Result['Key'] | Should -Be SomeSecureString
 
             }
 
-            It 'gets variable value' {
+            It 'converts multiple hashtable SecureString values to cleartext' {
 
-                Assert-MockCalled Get-Variable -ParameterFilter {
-
-                    $ValueOnly -eq $true
-
-                } -Times 1 -Exactly -Scope It
+                $Hashtable = @{'Key1' = $SecureString; 'Key2' = $SecureString }
+                $Result = Unprotect-Answer $Hashtable
+                $Result['Key1'] | Should -Be SomeSecureString
+                $Result['Key2'] | Should -Be SomeSecureString
 
             }
 

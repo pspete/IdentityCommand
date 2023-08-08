@@ -34,42 +34,21 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
     InModuleScope $(Split-Path (Split-Path (Split-Path -Parent $PSCommandPath) -Parent) -Leaf ) {
 
-        BeforeEach {
-
-            Mock -CommandName Get-Variable -MockWith {}
-            Get-IDWebSession
-
-        }
-
         Context 'General' {
 
-            It 'gets expected variable' {
+            BeforeEach {
+                $Secure1 = $(ConvertTo-SecureString 'SomeSecureString' -AsPlainText -Force)
+                $Secure2 = $(ConvertTo-SecureString 'SomeOtherSecureString' -AsPlainText -Force)
+            }
+            It 'returns true if secure strings are identical' {
 
-                Assert-MockCalled Get-Variable -ParameterFilter {
-
-                    $Name -eq 'WebSession'
-
-                } -Times 1 -Exactly -Scope It
+                Compare-SecureString -secureString1 $Secure1 -secureString2 $Secure1 | Should -Be $true
 
             }
 
-            It 'gets variable from expected scope' {
+            It 'returns false is secure strings do not match' {
 
-                Assert-MockCalled Get-Variable -ParameterFilter {
-
-                    $Scope -eq 'Script'
-
-                } -Times 1 -Exactly -Scope It
-
-            }
-
-            It 'gets variable value' {
-
-                Assert-MockCalled Get-Variable -ParameterFilter {
-
-                    $ValueOnly -eq $true
-
-                } -Times 1 -Exactly -Scope It
+                Compare-SecureString -secureString1 $Secure1 -secureString2 $Secure2 | Should -Be $false
 
             }
 

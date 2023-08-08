@@ -35,11 +35,14 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
     InModuleScope $(Split-Path (Split-Path (Split-Path -Parent $PSCommandPath) -Parent) -Leaf ) {
 
         BeforeEach {
+            $Script:TenantId = 'SomeTenant'
+            $Script:SessionId = 'SomeSession'
+            $Script:tenant_url = 'https://somedomain.id.cyberark.cloud'
             Mock Invoke-IDRestMethod -MockWith {
-                [pscustomobject]@{'property' = 'value' }
+
             }
 
-            $response = Get-IDCurrentUser
+            $response = Clear-AdvanceAuthentication
 
         }
 
@@ -55,7 +58,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq "https://somedomain.id.cyberark.cloud/CDirectoryService/GetUserAttributes"
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/Security/CleanupAuthentication'
 
                 } -Times 1 -Exactly -Scope It
 
@@ -67,9 +70,21 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
-            It 'sends request with no body' {
+            It 'sends body with expected TenantId' {
 
-                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter { $Body -eq $null } -Times 1 -Exactly -Scope It
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $RequestBody = $Body | ConvertFrom-Json
+                    $RequestBody.TenantId -eq 'SomeTenant'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'sends body with expected SessionId' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $RequestBody = $Body | ConvertFrom-Json
+                    $RequestBody.SessionId -eq 'SomeSession'
+                } -Times 1 -Exactly -Scope It
 
             }
 
@@ -77,9 +92,9 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         Context 'Output' {
 
-            It 'provides output' {
+            It 'provides no output' {
 
-                $response | Should -Not -BeNullOrEmpty
+                $response | Should -BeNullOrEmpty
 
             }
 

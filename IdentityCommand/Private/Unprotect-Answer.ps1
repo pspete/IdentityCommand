@@ -5,7 +5,7 @@ function Unprotect-Answer {
 
 	.DESCRIPTION
 	During the authetication process, any input from the user is protected as a securestring value.
-	To send these to the API in a format in which they can be read, they must be converted tfrom the secure string value.
+	To send these to the API in a format in which they can be read, they must be converted from the secure string value.
 	This command allows this conversion to happen.
 
 	.PARAMETER SecureString

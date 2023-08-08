@@ -20,7 +20,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
         }
 
         $Script:RequestBody = $null
-        $Script:BaseURI = 'https://somedomain.id.cyberark.cloud'
+        $Script:tenant_url = 'https://somedomain.id.cyberark.cloud'
         $Script:WebSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
 
     }
@@ -59,7 +59,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq "$($Script:BaseURI)/Security/Logout"
+                    $URI -eq "https://somedomain.id.cyberark.cloud/Security/Logout"
 
                 } -Times 1 -Exactly -Scope It
 

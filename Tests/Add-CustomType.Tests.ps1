@@ -34,42 +34,13 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
     InModuleScope $(Split-Path (Split-Path (Split-Path -Parent $PSCommandPath) -Parent) -Leaf ) {
 
-        BeforeEach {
-
-            Mock -CommandName Get-Variable -MockWith {}
-            Get-IDWebSession
-
-        }
-
         Context 'General' {
 
-            It 'gets expected variable' {
+            It 'outputs object with expected type' {
 
-                Assert-MockCalled Get-Variable -ParameterFilter {
-
-                    $Name -eq 'WebSession'
-
-                } -Times 1 -Exactly -Scope It
-
-            }
-
-            It 'gets variable from expected scope' {
-
-                Assert-MockCalled Get-Variable -ParameterFilter {
-
-                    $Scope -eq 'Script'
-
-                } -Times 1 -Exactly -Scope It
-
-            }
-
-            It 'gets variable value' {
-
-                Assert-MockCalled Get-Variable -ParameterFilter {
-
-                    $ValueOnly -eq $true
-
-                } -Times 1 -Exactly -Scope It
+                $Object = @{'Property' = 'Value' }
+                $Object | Add-CustomType -type 'Some.Custom.Type'
+                $Object | Get-Member | Select-Object -ExpandProperty typename -Unique | Should -Be Some.Custom.Type
 
             }
 

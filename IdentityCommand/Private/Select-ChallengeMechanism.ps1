@@ -47,7 +47,7 @@ function Select-ChallengeMechanism {
 
             }
 
-            $option = $host.ui.PromptForChoice('Challenge Mechanisms', 'Select Mechanism', $options, 0)
+            $option = (Get-Host).ui.PromptForChoice('Challenge Mechanisms', 'Select Mechanism', $options, 0)
 
 
         }

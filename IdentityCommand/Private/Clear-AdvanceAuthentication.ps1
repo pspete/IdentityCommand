@@ -19,7 +19,9 @@ Function Clear-AdvanceAuthentication {
     [CmdletBinding(SupportsShouldProcess)]
     param()
 
-    Begin {}
+    Begin {
+        $LogonRequest = @{}
+    }
 
     Process {
 
@@ -29,6 +31,7 @@ Function Clear-AdvanceAuthentication {
         }
 
         $LogonRequest['Uri'] = "$Script:tenant_url/Security/CleanupAuthentication"
+        $LogonRequest['Method'] = 'POST'
         $LogonRequest['Body'] = $Body | ConvertTo-Json
 
         if ($PSCmdlet.ShouldProcess($Script:SessionId, 'Clear Authentication Session')) {
