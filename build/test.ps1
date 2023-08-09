@@ -40,7 +40,7 @@ if ($env:APPVEYOR_REPO_COMMIT_AUTHOR -eq 'Pete Maan') {
 	.\codecov.exe -t ${env:CODECOV_TOKEN}
 
 	Remove-Item -Path $(Resolve-Path .\coverage.xml) -Force
-	Remove-Item -Path $(Resolve-Path .\codecov.sh) -Force
+	Remove-Item -Path $(Resolve-Path .\codecov.exe) -Force
 
 }
 #---------------------------------#
