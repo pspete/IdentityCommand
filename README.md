@@ -27,7 +27,7 @@ An example command to initiate authentication to a specified tenant is shown her
 
 ```powershell
 PS C:\> $Credential = Get-Credential
-PS C:\> New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credential $Credential
+PS C:\> New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -Credential $Credential
 ```
 
 This allows initial authentication to progress as well as selection and answer of any required MFA challenges.
@@ -120,7 +120,7 @@ Copy the ```IdentityCommand``` folder to your "Powershell Modules" directory of 
 
 ## Sponsorship
 
-Please support continued psPAS development; consider sponsoring <a href="https://github.com/sponsors/pspete"> @pspete on GitHub Sponsors</a>
+Please support continued development; consider sponsoring <a href="https://github.com/sponsors/pspete"> @pspete on GitHub Sponsors</a>
 
 ## Changelog
 
