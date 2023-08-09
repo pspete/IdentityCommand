@@ -21,9 +21,6 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
     }
 
-
-    AfterAll { }
-
     InModuleScope $(Split-Path (Split-Path (Split-Path -Parent $PSCommandPath) -Parent) -Leaf ) {
 
         BeforeEach {

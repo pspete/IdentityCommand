@@ -19,18 +19,6 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
 		}
 
-		$Script:RequestBody = $null
-		$Script:BaseURI = 'https://SomeURL/SomeApp'
-		$Script:ExternalVersion = '0.0'
-		$Script:WebSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
-
-	}
-
-
-	AfterAll {
-
-		$Script:RequestBody = $null
-
 	}
 
 	InModuleScope $(Split-Path (Split-Path (Split-Path -Parent $PSCommandPath) -Parent) -Leaf ) {

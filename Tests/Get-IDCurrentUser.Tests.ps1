@@ -19,17 +19,6 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
-        $Script:RequestBody = $null
-        $Script:tenant_url = 'https://somedomain.id.cyberark.cloud'
-        $Script:WebSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
-
-    }
-
-
-    AfterAll {
-
-        $Script:RequestBody = $null
-
     }
 
     InModuleScope $(Split-Path (Split-Path (Split-Path -Parent $PSCommandPath) -Parent) -Leaf ) {
@@ -55,7 +44,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq "https://somedomain.id.cyberark.cloud/CDirectoryService/GetUserAttributes"
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/CDirectoryService/GetUserAttributes'
 
                 } -Times 1 -Exactly -Scope It
 

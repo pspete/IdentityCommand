@@ -25,13 +25,6 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
     }
 
-
-    AfterAll {
-
-        $Script:RequestBody = $null
-
-    }
-
     InModuleScope $(Split-Path (Split-Path (Split-Path -Parent $PSCommandPath) -Parent) -Leaf ) {
 
         Context 'General' {

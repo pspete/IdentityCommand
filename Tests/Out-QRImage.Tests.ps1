@@ -23,8 +23,6 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
     InModuleScope $(Split-Path (Split-Path (Split-Path -Parent $PSCommandPath) -Parent) -Leaf ) {
 
-
-
         Context 'Standard Operation' {
             BeforeEach {
 
