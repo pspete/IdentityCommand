@@ -37,7 +37,7 @@ if ($env:APPVEYOR_REPO_COMMIT_AUTHOR -eq 'Pete Maan') {
 
 	$ProgressPreference = 'SilentlyContinue'
 	$null = Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -OutFile codecov.exe
-	.\codecov.exe -t ${env:CODECOV_TOKEN}
+	.\codecov.exe -t ${env:CODECOV_TOKEN} | Out-Null
 
 	Remove-Item -Path $(Resolve-Path .\coverage.xml) -Force
 	Remove-Item -Path $(Resolve-Path .\codecov.exe) -Force
