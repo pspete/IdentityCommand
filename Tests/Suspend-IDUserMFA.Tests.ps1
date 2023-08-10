@@ -50,7 +50,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             It 'sends request to expected endpoint when object with UUID is provided via pipe' {
 
-                [pscustomobject]@{'Uuid' = 5678 } | Suspend-IDUser.MFA
+                [pscustomobject]@{'Uuid' = 5678 } | Suspend-IDUserMFA
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
