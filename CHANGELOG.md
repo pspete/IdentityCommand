@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 2023-08-10
+## [Unreleased] - 2023-08-11
 
 Initial module development prior to main release
 
@@ -13,6 +13,7 @@ Initial module development prior to main release
 - `Get-IDWebSession` - Get WebSession object from the module scope
 - `Get-IDUser` - Fetch details of cloud directory users
 - `Suspend-IDUserMFA` - Exempt a user from MFA
+- `Test-IDUserCloudLock` - Checks if a user is cloud locked
 
 ### Changed
 

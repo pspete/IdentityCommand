@@ -560,4 +560,65 @@ PS C:\&gt; New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credent
     </command:examples>
     <command:relatedLinks />
   </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Test-IDUserCloudLock</command:name>
+      <command:verb>Test</command:verb>
+      <command:noun>IDUserCloudLock</command:noun>
+      <maml:description>
+        <maml:para>Check if a user is cloud locked</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Check if a user is cloud locked</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Test-IDUserCloudLock</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
+          <maml:name>ID</maml:name>
+          <maml:description>
+            <maml:para>The unique ID (Uuid) of the user to check cloud lock status</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
+        <maml:name>ID</maml:name>
+        <maml:description>
+          <maml:para>The unique ID (Uuid) of the user to check cloud lock status</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues />
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Test-IDUserCloudLock-id 1234</dev:code>
+        <dev:remarks>
+          <maml:para>Checks if user with ID 1234 is cloud locked</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
 </helpItems>
