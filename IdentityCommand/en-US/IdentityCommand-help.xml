@@ -16,7 +16,7 @@
       <command:syntaxItem>
         <maml:name>Clear-IDUserSession</maml:name>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
-          <maml:name>id</maml:name>
+          <maml:name>ID</maml:name>
           <maml:description>
             <maml:para>The unique ID (Uuid) of the user to sign out.</maml:para>
           </maml:description>
@@ -31,7 +31,7 @@
     </command:syntax>
     <command:parameters>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
-        <maml:name>id</maml:name>
+        <maml:name>ID</maml:name>
         <maml:description>
           <maml:para>The unique ID (Uuid) of the user to sign out.</maml:para>
         </maml:description>
@@ -185,21 +185,6 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-IDUser</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Uuid">
-          <maml:name>id</maml:name>
-          <maml:description>
-            <maml:para>The id of the user to get details of</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-      <command:syntaxItem>
-        <maml:name>Get-IDUser</maml:name>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>username</maml:name>
           <maml:description>
@@ -213,12 +198,27 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Get-IDUser</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Uuid">
+          <maml:name>ID</maml:name>
+          <maml:description>
+            <maml:para>The id of the user to get details of</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Uuid">
-        <maml:name>id</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <maml:name>username</maml:name>
         <maml:description>
-          <maml:para>The id of the user to get details of</maml:para>
+          <maml:para>The username of the user to get details of</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -227,10 +227,10 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
-        <maml:name>username</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Uuid">
+        <maml:name>ID</maml:name>
         <maml:description>
-          <maml:para>The username of the user to get details of</maml:para>
+          <maml:para>The id of the user to get details of</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -463,6 +463,98 @@
 PS C:\&gt; New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credential $Cred</dev:code>
         <dev:remarks>
           <maml:para>Initiates authentication to specified tenant, and allows selection and answer of any required MFA challenges.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Suspend-IDUserMFA</command:name>
+      <command:verb>Suspend</command:verb>
+      <command:noun>IDUserMFA</command:noun>
+      <maml:description>
+        <maml:para>Suspend MFA for a User</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Suspend MFA to exempt a user from MFA login for a specified amount of time.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Suspend-IDUserMFA</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
+          <maml:name>ID</maml:name>
+          <maml:description>
+            <maml:para>The unique ID (Uuid) of the user to exempt from MFA</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
+          <maml:name>timespan</maml:name>
+          <maml:description>
+            <maml:para>Amount of time to exempt the user from MFA (default=10 minutes)</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>0</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
+        <maml:name>ID</maml:name>
+        <maml:description>
+          <maml:para>The unique ID (Uuid) of the user to exempt from MFA</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
+        <maml:name>timespan</maml:name>
+        <maml:description>
+          <maml:para>Amount of time to exempt the user from MFA (default=10 minutes)</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>0</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues />
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Suspend-IDUserMFA -ID 1234</dev:code>
+        <dev:remarks>
+          <maml:para>Exempts user with id 2134 from MFA for 10 minutes (default timespan)</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Suspend-IDUserMFA -ID 1234 -timespan 2</dev:code>
+        <dev:remarks>
+          <maml:para>Exempts user with id 2134 from MFA for 2 minutes</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

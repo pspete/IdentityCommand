@@ -90,6 +90,7 @@ The commands currently available in the _IdentityCommand_ module are listed here
 | `Clear-IDUserSession`      | Signs out user from all active sessions                                                     |
 | `Get-IDWebSession`         | Get WebSession object from the module scope                                                 |
 | `Get-IDUser`               | Fetch details of cloud directory users                                                      |
+| `Suspend-IDUserMFA`        | Exempt a user from MFA                                                                      |
 
 ## Installation
 
