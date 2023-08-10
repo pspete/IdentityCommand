@@ -19,7 +19,7 @@ Get-IDUser [<CommonParameters>]
 
 ### GetUser
 ```
-Get-IDUser -id <String> [<CommonParameters>]
+Get-IDUser -ID <String> [<CommonParameters>]
 ```
 
 ### GetUserByName
@@ -30,47 +30,32 @@ Get-IDUser -username <String> [<CommonParameters>]
 ## DESCRIPTION
 By default, returns details of all existing users in the cloud directory.
 
-Specify `id` or `username` parameter to to fetch the details of a specific existing user in the cloud directory.
+Specify \`id\` or \`username\` parameter to to fetch the details of a specific existing user in the cloud directory.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDUser
 ```
 
 Return all users
 
 ### Example 2
-```powershell
+```
 PS C:\> Get-IDUser -id 1234-abcd-5678-efgh
 ```
 
 Return user with matching id
 
 ### Example 3
-```powershell
+```
 PS C:\> Get-IDUser -username someuser@somedomain.com
 ```
 
 Return user with matching username
 
 ## PARAMETERS
-
-### -id
-The id of the user to get details of
-
-```yaml
-Type: String
-Parameter Sets: GetUser
-Aliases: Uuid
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
 
 ### -username
 The username of the user to get details of
@@ -79,6 +64,21 @@ The username of the user to get details of
 Type: String
 Parameter Sets: GetUserByName
 Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -ID
+The id of the user to get details of
+
+```yaml
+Type: String
+Parameter Sets: GetUser
+Aliases: Uuid
 
 Required: True
 Position: Named

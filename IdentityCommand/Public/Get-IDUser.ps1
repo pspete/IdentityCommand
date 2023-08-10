@@ -10,7 +10,7 @@ Function Get-IDUser {
         )]
         [ValidateNotNullOrEmpty()]
         [Alias('Uuid')]
-        [String]$id,
+        [String]$ID,
 
         [parameter(
             Mandatory = $true,

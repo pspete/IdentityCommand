@@ -13,7 +13,7 @@ Sign Out a user from all CyberArk Identity sessions everywhere.
 ## SYNTAX
 
 ```
-Clear-IDUserSession [-id] <String> [<CommonParameters>]
+Clear-IDUserSession [-ID] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -32,7 +32,7 @@ Signs out user with Uuid of "abc-1234-def-5678-ghi-90-jkl"
 
 ## PARAMETERS
 
-### -id
+### -ID
 The unique ID (Uuid) of the user to sign out.
 
 ```yaml

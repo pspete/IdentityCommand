@@ -8,7 +8,7 @@ function Clear-IDUserSession {
         )]
         [ValidateNotNullOrEmpty()]
         [Alias('Uuid')]
-        [String]$id
+        [String]$ID
     )
 
     BEGIN { }#begin
