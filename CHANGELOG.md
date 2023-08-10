@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 2023-08-09
+## [Unreleased] - 2023-08-10
 
 Initial module development prior to main release
 
@@ -11,6 +11,7 @@ Initial module development prior to main release
 - `Get-IDCurrentUser` - Get details of authenticated user
 - `Clear-IDUserSession` - Signs out user from all active sessions
 - `Get-IDWebSession` - Get WebSession object from the module scope
+- `Get-IDUser` - Fetch details of cloud directory users
 
 ### Changed
 
