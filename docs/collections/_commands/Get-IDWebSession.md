@@ -22,7 +22,7 @@ Exports the WebSession object from the IdentityCommand module scope for use in o
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDWebSession
 ```
 
