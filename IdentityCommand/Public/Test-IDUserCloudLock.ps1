@@ -18,7 +18,11 @@ function Test-IDUserCloudLock {
         $URI = "$Script:tenant_url/UserMgmt/IsUserCloudLocked?$($PSBoundParameters | Get-Parameter | ConvertTo-QueryString)"
 
         #Send Logoff Request
-        Invoke-IDRestMethod -Uri $URI -Method POST
+        $result = Invoke-IDRestMethod -Uri $URI -Method POST
+
+        if ($null -ne $result) {
+            [bool]$result
+        }
 
     }#process
 
