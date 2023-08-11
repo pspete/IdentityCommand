@@ -22,7 +22,7 @@ Get configuration data from the Identity tenant
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDTenantConfiguration
 ```
 

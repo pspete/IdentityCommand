@@ -22,7 +22,7 @@ Disable cloud lock for a specified user
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Unlock-IDUserCloudLock -user 1234
 ```
 

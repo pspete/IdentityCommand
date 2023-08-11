@@ -22,7 +22,7 @@ Enable cloud lock for a specified user
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Lock-IDUserCloudLock -user 1234
 ```
 
