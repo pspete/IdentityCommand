@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-IDWebSession
+# Get-IDSession
 
 ## SYNOPSIS
 Get the IdentityCommand WebSession
@@ -13,7 +13,7 @@ Get the IdentityCommand WebSession
 ## SYNTAX
 
 ```
-Get-IDWebSession [<CommonParameters>]
+Get-IDSession [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -23,7 +23,7 @@ Exports the WebSession object from the IdentityCommand module scope for use in o
 
 ### Example 1
 ```
-PS C:\> Get-IDWebSession
+PS C:\> Get-IDSession
 ```
 
 Output the IdentityCommand WebSession object for the current authenticated session.

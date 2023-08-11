@@ -87,7 +87,7 @@ The commands currently available in the _IdentityCommand_ module are listed here
 | `New-IDSession`            | Authenticate to CyberArk Identity, answering MFA challenges to start a new API session.     |
 | `Close-IDSession`          | Logoff CyberArk Identity API                                                                |
 | `Clear-IDUserSession`      | Signs out user from all active sessions                                                     |
-| `Get-IDWebSession`         | Get WebSession object from the module scope                                                 |
+| `Get-IDSession`         | Get WebSession object from the module scope                                                 |
 | `Get-IDUser`               | Fetch details of cloud directory users                                                      |
 | `Suspend-IDUserMFA`        | Exempt a user from MFA                                                                      |
 | `Test-IDUserCloudLock`     | Checks if a user is cloud locked                                                            |

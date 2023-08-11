@@ -358,7 +358,7 @@
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Get-IDWebSession</command:name>
+      <command:name>Get-IDSession</command:name>
       <command:verb>Get</command:verb>
       <command:noun>IDWebSession</command:noun>
       <maml:description>
@@ -370,7 +370,7 @@
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Get-IDWebSession</maml:name>
+        <maml:name>Get-IDSession</maml:name>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters />
@@ -384,7 +384,7 @@
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-IDWebSession</dev:code>
+        <dev:code>PS C:\&gt; Get-IDSession</dev:code>
         <dev:remarks>
           <maml:para>Output the IdentityCommand WebSession object for the current authenticated session.</maml:para>
         </dev:remarks>

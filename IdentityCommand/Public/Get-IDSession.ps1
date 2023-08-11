@@ -1,5 +1,5 @@
 # .ExternalHelp IdentityCommand-help.xml
-Function Get-IDWebSession {
+Function Get-IDSession {
 
     [CmdletBinding()]
     Param ()

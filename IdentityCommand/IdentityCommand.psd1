@@ -77,7 +77,7 @@
         'New-IDSession',
         'Close-IDSession',
         'Clear-IDUserSession',
-        'Get-IDWebSession',
+        'Get-IDSession',
         'Get-IDUser',
         'Suspend-IDUserMFA',
         'Test-IDUserCloudLock',

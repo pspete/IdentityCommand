@@ -26,7 +26,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
         BeforeEach {
 
             Mock -CommandName Get-Variable -MockWith {}
-            Get-IDWebSession
+            Get-IDSession
 
         }
 

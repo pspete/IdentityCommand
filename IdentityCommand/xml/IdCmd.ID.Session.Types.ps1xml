@@ -6,7 +6,7 @@
             <ScriptMethod>
 				<Name>GetWebSession</Name>
 				<Script>
-                    Get-IDWebSession
+                    Get-IDSession
 				</Script>
 			</ScriptMethod>
 			<ScriptMethod>
