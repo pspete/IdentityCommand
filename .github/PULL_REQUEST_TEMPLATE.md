@@ -15,7 +15,7 @@ Please select all relevant options:
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that makes existing functionality work differently)
-- [ ] Documentation update (psPAS website or command help content)
+- [ ] Documentation update
 - [ ] Other (see description)
 
 # How Has This Been Tested?
