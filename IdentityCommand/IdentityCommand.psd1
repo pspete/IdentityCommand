@@ -76,7 +76,6 @@
     FunctionsToExport = @(
         'New-IDSession',
         'Close-IDSession',
-        'Get-IDCurrentUser',
         'Clear-IDUserSession',
         'Get-IDWebSession',
         'Get-IDUser',

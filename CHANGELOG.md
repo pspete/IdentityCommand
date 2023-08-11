@@ -8,7 +8,6 @@ Initial module development prior to main release
 ### Added
 - `New-IDSession` - Authenticate to CyberArk Identity, answering MFA challenges to start a new API session.
 - `Close-IDSession` - Logoff CyberArk Identity API
-- `Get-IDCurrentUser` - Get details of authenticated user
 - `Clear-IDUserSession` - Signs out user from all active sessions
 - `Get-IDWebSession` - Get WebSession object from the module scope
 - `Get-IDUser` - Fetch details of cloud directory users

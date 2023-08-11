@@ -18,7 +18,15 @@ Function Get-IDUser {
             ParameterSetName = 'GetUserByName'
         )]
         [ValidateNotNullOrEmpty()]
-        [String]$username
+        [String]$username,
+
+        [parameter(
+            Mandatory = $true,
+            ValueFromPipelinebyPropertyName = $true,
+            ParameterSetName = 'GetUserAttributes'
+        )]
+        [ValidateNotNullOrEmpty()]
+        [Switch]$CurrentUser
     )
 
     BEGIN {
@@ -30,9 +38,12 @@ Function Get-IDUser {
 
     PROCESS {
 
-        #Include a body only if parameters specified
-        If ($PSBoundParameters.Keys.Count -ge 1) {
-            $Request['Body'] = $PSBoundParameters | Get-Parameter | ConvertTo-Json
+        #Include a body only if ID or username parameters specified
+        switch ($PSBoundParameters.Keys) {
+            ({ $PSItem -match 'ID|username' }) {
+                $Request['Body'] = $PSBoundParameters | Get-Parameter | ConvertTo-Json
+                break
+            }
         }
 
         #Send Request

@@ -27,6 +27,11 @@ Get-IDUser -ID <String> [<CommonParameters>]
 Get-IDUser -username <String> [<CommonParameters>]
 ```
 
+### GetUserAttributes
+```
+Get-IDUser [-CurrentUser] [<CommonParameters>]
+```
+
 ## DESCRIPTION
 By default, returns details of all existing users in the cloud directory.
 
@@ -55,6 +60,13 @@ PS C:\> Get-IDUser -username someuser@somedomain.com
 
 Return user with matching username
 
+### Example 4
+```
+PS C:\> Get-IDUser -CurrentUser
+```
+
+Return details of current authenticated user
+
 ## PARAMETERS
 
 ### -username
@@ -79,6 +91,21 @@ The id of the user to get details of
 Type: String
 Parameter Sets: GetUser
 Aliases: Uuid
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -CurrentUser
+Specify to return details of authenticated user
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: GetUserAttributes
+Aliases:
 
 Required: True
 Position: Named
