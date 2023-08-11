@@ -42,7 +42,43 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/UserMgmt/SetCloudLock?lockuser=true&user=1234'
+                    ([system.uri]::new($URI) | Select-Object -ExpandProperty Host) -match '.*somedomain.id.cyberark.cloud.*'
+
+                } -Times 1 -Exactly -Scope It
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    ([system.uri]::new($URI) | Select-Object -ExpandProperty AbsolutePath) -match '/UserMgmt/SetCloudLock'
+
+                } -Times 1 -Exactly -Scope It
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    ([system.uri]::new($URI) | Select-Object -ExpandProperty query) -match '^?.*'
+
+                } -Times 1 -Exactly -Scope It
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    ([system.uri]::new($URI) | Select-Object -ExpandProperty query) -match '^?.*'
+
+                } -Times 1 -Exactly -Scope It
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    ([system.uri]::new($URI) | Select-Object -ExpandProperty query) -match 'lockuser=true'
+
+                } -Times 1 -Exactly -Scope It
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    ([system.uri]::new($URI) | Select-Object -ExpandProperty query) -match 'user=1234'
+
+                } -Times 1 -Exactly -Scope It
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    ([system.uri]::new($URI) | Select-Object -ExpandProperty query) -match '.*&.*'
 
                 } -Times 1 -Exactly -Scope It
 
@@ -50,11 +86,45 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             It 'sends request to expected endpoint when object with UUID is provided via pipe' {
 
-                [pscustomobject]@{'Uuid' = 5678 } | Lock-IDUserCloudLock
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    ([system.uri]::new($URI) | Select-Object -ExpandProperty Host) -match '.*somedomain.id.cyberark.cloud.*'
+
+                } -Times 1 -Exactly -Scope It
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/UserMgmt/SetCloudLock?lockuser=true&user=5678'
+                    ([system.uri]::new($URI) | Select-Object -ExpandProperty AbsolutePath) -match '/UserMgmt/SetCloudLock'
+
+                } -Times 1 -Exactly -Scope It
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    ([system.uri]::new($URI) | Select-Object -ExpandProperty query) -match '^?.*'
+
+                } -Times 1 -Exactly -Scope It
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    ([system.uri]::new($URI) | Select-Object -ExpandProperty query) -match '^?.*'
+
+                } -Times 1 -Exactly -Scope It
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    ([system.uri]::new($URI) | Select-Object -ExpandProperty query) -match 'lockuser=true'
+
+                } -Times 1 -Exactly -Scope It
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    ([system.uri]::new($URI) | Select-Object -ExpandProperty query) -match 'user=1234'
+
+                } -Times 1 -Exactly -Scope It
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    ([system.uri]::new($URI) | Select-Object -ExpandProperty query) -match '.*&.*'
 
                 } -Times 1 -Exactly -Scope It
 
