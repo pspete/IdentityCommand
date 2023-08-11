@@ -11,7 +11,7 @@ function Get-IDCurrentUser {
 
     PROCESS {
 
-        #Send Logoff Request
+        #Send Request
         Invoke-IDRestMethod -Uri $URI -Method POST
 
     }#process

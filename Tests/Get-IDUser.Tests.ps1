@@ -130,6 +130,18 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
+            It 'sends request to expected endpoint when object with UUID is provided via pipe' {
+
+                [pscustomobject]@{'Uuid' = 5678 } | Get-IDUser
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/CDirectoryService/GetUser'
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
             It 'uses expected method' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter { $Method -match 'POST' } -Times 1 -Exactly -Scope It
@@ -181,6 +193,18 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             }
 
             It 'sends request to expected endpoint' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/CDirectoryService/GetUserByName'
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'sends request to expected endpoint when object with username is provided via pipe' {
+
+                [pscustomobject]@{'username' = 'somename' } | Get-IDUser
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
