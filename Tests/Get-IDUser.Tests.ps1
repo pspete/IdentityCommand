@@ -305,6 +305,63 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'GetTechSupportUser' {
+
+            BeforeEach {
+                Mock Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{ 'property' = 'value' }
+                }
+                $response = Get-IDUser -TechSupportUser
+            }
+
+            It 'sends request' {
+
+                Assert-MockCalled Invoke-IDRestMethod -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'sends request to expected endpoint' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/CDirectoryService/GetTechSupportUser'
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'uses expected method' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter { $Method -match 'POST' } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'sends request with no body' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter { $Body -eq $null } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'provides output' {
+
+                $response | Should -Not -BeNullOrEmpty
+
+            }
+
+            It 'outputs expected number of results' {
+
+                $response.length | Should -Be 1
+
+            }
+
+            It 'outputs expected result' {
+
+                $response | Select-Object -ExpandProperty property | Should -Be 'value'
+
+            }
+
+        }
+
     }
 
 }

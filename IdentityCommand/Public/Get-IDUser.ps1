@@ -26,7 +26,15 @@ Function Get-IDUser {
             ParameterSetName = 'GetUserAttributes'
         )]
         [ValidateNotNullOrEmpty()]
-        [Switch]$CurrentUser
+        [Switch]$CurrentUser,
+
+        [parameter(
+            Mandatory = $true,
+            ValueFromPipelinebyPropertyName = $true,
+            ParameterSetName = 'GetTechSupportUser'
+        )]
+        [ValidateNotNullOrEmpty()]
+        [Switch]$TechSupportUser
     )
 
     BEGIN {

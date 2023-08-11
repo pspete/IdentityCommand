@@ -32,6 +32,11 @@ Get-IDUser -username <String> [<CommonParameters>]
 Get-IDUser [-CurrentUser] [<CommonParameters>]
 ```
 
+### GetTechSupportUser
+```
+Get-IDUser [-TechSupportUser] [<CommonParameters>]
+```
+
 ## DESCRIPTION
 By default, returns details of all existing users in the cloud directory.
 
@@ -63,6 +68,13 @@ Return user with matching username
 ### Example 4
 ```
 PS C:\> Get-IDUser -CurrentUser
+```
+
+Return details of current authenticated user
+
+### Example 5
+```
+PS C:\> Get-IDUser -TechSupportUser
 ```
 
 Return details of current authenticated user
@@ -105,6 +117,21 @@ Specify to return details of authenticated user
 ```yaml
 Type: SwitchParameter
 Parameter Sets: GetUserAttributes
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -TechSupportUser
+Specify to return details of the Tech Support User
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: GetTechSupportUser
 Aliases:
 
 Required: True
