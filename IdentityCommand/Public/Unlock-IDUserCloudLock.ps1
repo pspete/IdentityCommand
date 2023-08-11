@@ -1,5 +1,5 @@
 # .ExternalHelp IdentityCommand-help.xml
-function Test-IDUserCloudLock {
+function Unlock-IDUserCloudLock {
     [CmdletBinding()]
     param(
         [parameter(
@@ -11,13 +11,17 @@ function Test-IDUserCloudLock {
         [String]$user
     )
 
-    BEGIN { }#begin
+    BEGIN {
+        $Action = @{ 'lockuser' = $false }
+    }#begin
 
     PROCESS {
 
-        $URI = "$Script:tenant_url/UserMgmt/IsUserCloudLocked?$($PSBoundParameters | Get-Parameter | ConvertTo-QueryString)"
+        $BoundParameters = ($PSBoundParameters | Get-Parameter) + $Action
 
-        #Send Request
+        $URI = "$Script:tenant_url/UserMgmt/SetCloudLock?$($BoundParameters | ConvertTo-QueryString)"
+
+        #Send Unlock Request
         $result = Invoke-IDRestMethod -Uri $URI -Method POST
 
         if ($null -ne $result) {

@@ -5,45 +5,30 @@ online version:
 schema: 2.0.0
 ---
 
-# Test-IDUserCloudLock
+# Get-IDTenant
 
 ## SYNOPSIS
-Check if a user is cloud locked
+Get Identity tenant information
 
 ## SYNTAX
 
 ```
-Test-IDUserCloudLock [-user] <String> [<CommonParameters>]
+Get-IDTenant [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Check if a user is cloud locked
+Get information for the Identity tenant
 
 ## EXAMPLES
 
 ### Example 1
-```
-PS C:\> Test-IDUserCloudLock -user 1234
+```powershell
+PS C:\> Get-IDTenant
 ```
 
-Checks if user with ID 1234 is cloud locked
+Output Identity tenant information
 
 ## PARAMETERS
-
-### -user
-The unique ID (Uuid) of the user to check cloud lock status
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases: Uuid
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
 
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).

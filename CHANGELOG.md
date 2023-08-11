@@ -14,6 +14,10 @@ Initial module development prior to main release
 - `Get-IDUser` - Fetch details of cloud directory users
 - `Suspend-IDUserMFA` - Exempt a user from MFA
 - `Test-IDUserCloudLock` - Checks if a user is cloud locked
+- `Lock-IDUserCloudLock` - Enable user cloud lock
+- `Unlock-IDUserCloudLock` - Disable user cloud locked
+- `Get-IDTenant` - Get Tenant information
+- `Get-IDTenantConfiguration` - Get tenant configuration data
 
 ### Changed
 

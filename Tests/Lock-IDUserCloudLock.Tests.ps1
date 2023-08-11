@@ -28,7 +28,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             BeforeEach {
                 Mock Invoke-IDRestMethod -MockWith { [string]'TRUE' }
                 $Script:tenant_url = 'https://somedomain.id.cyberark.cloud'
-                $response = Test-IDUserCloudLock -user 1234
+                $response = Lock-IDUserCloudLock -user 1234
 
             }
 
@@ -42,7 +42,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/UserMgmt/IsUserCloudLocked?user=1234'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/UserMgmt/SetCloudLock?lockuser=true&user=1234'
 
                 } -Times 1 -Exactly -Scope It
 
@@ -50,11 +50,11 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             It 'sends request to expected endpoint when object with UUID is provided via pipe' {
 
-                [pscustomobject]@{'Uuid' = 5678 } | Test-IDUserCloudLock
+                [pscustomobject]@{'Uuid' = 5678 } | Lock-IDUserCloudLock
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/UserMgmt/IsUserCloudLocked?user=5678'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/UserMgmt/SetCloudLock?lockuser=true&user=5678'
 
                 } -Times 1 -Exactly -Scope It
 

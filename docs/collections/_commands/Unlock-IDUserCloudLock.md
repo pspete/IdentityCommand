@@ -5,33 +5,33 @@ online version:
 schema: 2.0.0
 ---
 
-# Test-IDUserCloudLock
+# Unlock-IDUserCloudLock
 
 ## SYNOPSIS
-Check if a user is cloud locked
+Cloud unlock a user
 
 ## SYNTAX
 
 ```
-Test-IDUserCloudLock [-user] <String> [<CommonParameters>]
+Unlock-IDUserCloudLock [-user] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Check if a user is cloud locked
+Disable cloud lock for a specified user
 
 ## EXAMPLES
 
 ### Example 1
-```
-PS C:\> Test-IDUserCloudLock -user 1234
+```powershell
+PS C:\> Unlock-IDUserCloudLock -user 1234
 ```
 
-Checks if user with ID 1234 is cloud locked
+Set cloud lock status to false for user with matching id
 
 ## PARAMETERS
 
 ### -user
-The unique ID (Uuid) of the user to check cloud lock status
+The unique ID (Uuid) of the user to cloud unlock
 
 ```yaml
 Type: String

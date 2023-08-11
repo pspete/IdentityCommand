@@ -23,14 +23,16 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
     InModuleScope $(Split-Path (Split-Path (Split-Path -Parent $PSCommandPath) -Parent) -Leaf ) {
 
-        Context 'Input' {
-
-            BeforeEach {
-                Mock Invoke-IDRestMethod -MockWith { [string]'TRUE' }
-                $Script:tenant_url = 'https://somedomain.id.cyberark.cloud'
-                $response = Test-IDUserCloudLock -user 1234
-
+        BeforeEach {
+            Mock Invoke-IDRestMethod -MockWith {
+                [pscustomobject]@{'property' = 'value' }
             }
+
+            $response = Get-IDTenant
+
+        }
+
+        Context 'Input' {
 
             It 'sends request' {
 
@@ -42,19 +44,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/UserMgmt/IsUserCloudLocked?user=1234'
-
-                } -Times 1 -Exactly -Scope It
-
-            }
-
-            It 'sends request to expected endpoint when object with UUID is provided via pipe' {
-
-                [pscustomobject]@{'Uuid' = 5678 } | Test-IDUserCloudLock
-
-                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/UserMgmt/IsUserCloudLocked?user=5678'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/SysInfo/About'
 
                 } -Times 1 -Exactly -Scope It
 
@@ -72,15 +62,13 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
-            It 'provides expected output' {
+        }
 
-                $response | Should -Be $True
+        Context 'Output' {
 
-            }
+            It 'provides output' {
 
-            It 'has output of expected type' {
-
-                $response | Should -BeOfType bool
+                $response | Should -Not -BeNullOrEmpty
 
             }
 

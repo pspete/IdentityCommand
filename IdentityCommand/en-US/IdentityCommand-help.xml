@@ -171,6 +171,78 @@
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
+      <command:name>Get-IDTenant</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>IDTenant</command:noun>
+      <maml:description>
+        <maml:para>Get Identity tenant information</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Get information for the Identity tenant</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-IDTenant</maml:name>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters />
+    <command:inputTypes />
+    <command:returnValues />
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Get-IDTenant</dev:code>
+        <dev:remarks>
+          <maml:para>Output Identity tenant information</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-IDTenantConfiguration</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>IDTenantConfiguration</command:noun>
+      <maml:description>
+        <maml:para>Get Identity tenant configuration</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Get configuration data from the Identity tenant</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-IDTenantConfiguration</maml:name>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters />
+    <command:inputTypes />
+    <command:returnValues />
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Get-IDTenantConfiguration</dev:code>
+        <dev:remarks>
+          <maml:para>Outputs tenant configuration data</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
       <command:name>Get-IDUser</command:name>
       <command:verb>Get</command:verb>
       <command:noun>IDUser</command:noun>
@@ -303,6 +375,67 @@
         <dev:code>PS C:\&gt; Get-IDWebSession</dev:code>
         <dev:remarks>
           <maml:para>Output the IdentityCommand WebSession object for the current authenticated session.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Lock-IDUserCloudLock</command:name>
+      <command:verb>Lock</command:verb>
+      <command:noun>IDUserCloudLock</command:noun>
+      <maml:description>
+        <maml:para>Cloud lock a user</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Enable cloud lock for a specified user</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Lock-IDUserCloudLock</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
+          <maml:name>user</maml:name>
+          <maml:description>
+            <maml:para>The unique ID (Uuid) of the user to cloud lock.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
+        <maml:name>user</maml:name>
+        <maml:description>
+          <maml:para>The unique ID (Uuid) of the user to cloud lock.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues />
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Lock-IDUserCloudLock -user 1234</dev:code>
+        <dev:remarks>
+          <maml:para>Set cloud lock status to true for user with matching id</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -576,7 +709,7 @@ PS C:\&gt; New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credent
       <command:syntaxItem>
         <maml:name>Test-IDUserCloudLock</maml:name>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
-          <maml:name>ID</maml:name>
+          <maml:name>user</maml:name>
           <maml:description>
             <maml:para>The unique ID (Uuid) of the user to check cloud lock status</maml:para>
           </maml:description>
@@ -591,7 +724,7 @@ PS C:\&gt; New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credent
     </command:syntax>
     <command:parameters>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
-        <maml:name>ID</maml:name>
+        <maml:name>user</maml:name>
         <maml:description>
           <maml:para>The unique ID (Uuid) of the user to check cloud lock status</maml:para>
         </maml:description>
@@ -613,9 +746,70 @@ PS C:\&gt; New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credent
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Test-IDUserCloudLock-id 1234</dev:code>
+        <dev:code>PS C:\&gt; Test-IDUserCloudLock -user 1234</dev:code>
         <dev:remarks>
           <maml:para>Checks if user with ID 1234 is cloud locked</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Unlock-IDUserCloudLock</command:name>
+      <command:verb>Unlock</command:verb>
+      <command:noun>IDUserCloudLock</command:noun>
+      <maml:description>
+        <maml:para>Cloud unlock a user</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Disable cloud lock for a specified user</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Unlock-IDUserCloudLock</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
+          <maml:name>user</maml:name>
+          <maml:description>
+            <maml:para>The unique ID (Uuid) of the user to cloud unlock</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
+        <maml:name>user</maml:name>
+        <maml:description>
+          <maml:para>The unique ID (Uuid) of the user to cloud unlock</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues />
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Unlock-IDUserCloudLock -user 1234</dev:code>
+        <dev:remarks>
+          <maml:para>Set cloud lock status to false for user with matching id</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
