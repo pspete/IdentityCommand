@@ -82,19 +82,20 @@ PS C:\> Invoke-RestMethod -WebSession $websession `
 
 The commands currently available in the _IdentityCommand_ module are listed here:
 
-| Function                   | Description                                                                                 |
-|----------------------------|---------------------------------------------------------------------------------------------|
-| `New-IDSession`            | Authenticate to CyberArk Identity, answering MFA challenges to start a new API session.     |
-| `Close-IDSession`          | Logoff CyberArk Identity API                                                                |
-| `Clear-IDUserSession`      | Signs out user from all active sessions                                                     |
-| `Get-IDSession`         | Get WebSession object from the module scope                                                 |
-| `Get-IDUser`               | Fetch details of cloud directory users                                                      |
-| `Suspend-IDUserMFA`        | Exempt a user from MFA                                                                      |
-| `Test-IDUserCloudLock`     | Checks if a user is cloud locked                                                            |
-| `Lock-IDUser`     | Enable user cloud lock                                                                      |
-| `Unlock-IDUser`   | Disable user cloud lock                                                                     |
+| Function                    | Description                                                                                 |
+|-----------------------------|---------------------------------------------------------------------------------------------|
+| `New-IDSession`             | Authenticate to CyberArk Identity, answering MFA challenges to start a new API session.     |
+| `Close-IDSession`           | Logoff CyberArk Identity API                                                                |
+| `Clear-IDUserSession`       | Signs out user from all active sessions                                                     |
+| `Get-IDSession`             | Get WebSession object from the module scope                                                 |
+| `Get-IDUser`                | Fetch details of cloud directory users                                                      |
+| `Suspend-IDUserMFA`         | Exempt a user from MFA                                                                      |
+| `Test-IDUserCloudLock`      | Checks if a user is cloud locked                                                            |
+| `Lock-IDUser`               | Enable user cloud lock                                                                      |
+| `Unlock-IDUser`             | Disable user cloud lock                                                                     |
 | `Get-IDTenant`              | Get tenant information                                                                      |
 | `Get-IDTenantConfiguration` | Get tenant configuration data                                                               |
+| `Get-IDConnector`           | Get connector health                                                                        |
 
 ## Installation
 

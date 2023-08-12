@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 2023-08-11
+## [Unreleased] - 2023-08-12
 
 Initial module development prior to main release
 
@@ -17,6 +17,7 @@ Initial module development prior to main release
 - `Unlock-IDUser` - Disable user cloud locked
 - `Get-IDTenant` - Get Tenant information
 - `Get-IDTenantConfiguration` - Get tenant configuration data
+- `Get-IDConnector` - Get connector health
 
 ### Changed
 

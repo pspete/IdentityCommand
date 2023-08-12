@@ -117,6 +117,74 @@
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
+      <command:name>Get-IDConnector</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>IDConnector</command:noun>
+      <maml:description>
+        <maml:para>Get Connector Status</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Retrieve health status of all connectors, or specific connector</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-IDConnector</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="ID">
+          <maml:name>proxyUuid</maml:name>
+          <maml:description>
+            <maml:para>The ID of the cloud connector to check</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="ID">
+        <maml:name>proxyUuid</maml:name>
+        <maml:description>
+          <maml:para>The ID of the cloud connector to check</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes />
+    <command:returnValues />
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Get-IDConnector</dev:code>
+        <dev:remarks>
+          <maml:para>Get status of all connectors</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Get-IDConnector -proxyUuid 1234</dev:code>
+        <dev:remarks>
+          <maml:para>Get status of specific connectors</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
       <command:name>Get-IDSession</command:name>
       <command:verb>Get</command:verb>
       <command:noun>IDSession</command:noun>
@@ -396,7 +464,7 @@
     <command:details>
       <command:name>Lock-IDUser</command:name>
       <command:verb>Lock</command:verb>
-      <command:noun>IDUserCloudLock</command:noun>
+      <command:noun>IDUser</command:noun>
       <maml:description>
         <maml:para>Cloud lock a user</maml:para>
       </maml:description>
@@ -770,7 +838,7 @@ PS C:\&gt; New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credent
     <command:details>
       <command:name>Unlock-IDUser</command:name>
       <command:verb>Unlock</command:verb>
-      <command:noun>IDUserCloudLock</command:noun>
+      <command:noun>IDUser</command:noun>
       <maml:description>
         <maml:para>Cloud unlock a user</maml:para>
       </maml:description>
