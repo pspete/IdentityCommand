@@ -1,5 +1,5 @@
 # .ExternalHelp IdentityCommand-help.xml
-function Unlock-IDUserCloudLock {
+function Unlock-IDUser {
     [CmdletBinding()]
     param(
         [parameter(

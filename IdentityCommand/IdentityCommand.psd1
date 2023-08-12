@@ -81,8 +81,8 @@
         'Get-IDUser',
         'Suspend-IDUserMFA',
         'Test-IDUserCloudLock',
-        'Lock-IDUserCloudLock',
-        'Unlock-IDUserCloudLock',
+        'Lock-IDUser',
+        'Unlock-IDUser',
         'Get-IDTenant',
         'Get-IDTenantConfiguration'
     )

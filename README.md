@@ -91,8 +91,8 @@ The commands currently available in the _IdentityCommand_ module are listed here
 | `Get-IDUser`               | Fetch details of cloud directory users                                                      |
 | `Suspend-IDUserMFA`        | Exempt a user from MFA                                                                      |
 | `Test-IDUserCloudLock`     | Checks if a user is cloud locked                                                            |
-| `Lock-IDUserCloudLock`     | Enable user cloud lock                                                                      |
-| `Unlock-IDUserCloudLock`   | Disable user cloud lock                                                                     |
+| `Lock-IDUser`     | Enable user cloud lock                                                                      |
+| `Unlock-IDUser`   | Disable user cloud lock                                                                     |
 | `Get-IDTenant`              | Get tenant information                                                                      |
 | `Get-IDTenantConfiguration` | Get tenant configuration data                                                               |
 

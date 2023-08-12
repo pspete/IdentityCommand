@@ -394,7 +394,7 @@
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Lock-IDUserCloudLock</command:name>
+      <command:name>Lock-IDUser</command:name>
       <command:verb>Lock</command:verb>
       <command:noun>IDUserCloudLock</command:noun>
       <maml:description>
@@ -406,7 +406,7 @@
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Lock-IDUserCloudLock</maml:name>
+        <maml:name>Lock-IDUser</maml:name>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
           <maml:name>user</maml:name>
           <maml:description>
@@ -445,7 +445,7 @@
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Lock-IDUserCloudLock -user 1234</dev:code>
+        <dev:code>PS C:\&gt; Lock-IDUser -user 1234</dev:code>
         <dev:remarks>
           <maml:para>Set cloud lock status to true for user with matching id</maml:para>
         </dev:remarks>
@@ -768,7 +768,7 @@ PS C:\&gt; New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credent
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Unlock-IDUserCloudLock</command:name>
+      <command:name>Unlock-IDUser</command:name>
       <command:verb>Unlock</command:verb>
       <command:noun>IDUserCloudLock</command:noun>
       <maml:description>
@@ -780,7 +780,7 @@ PS C:\&gt; New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credent
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Unlock-IDUserCloudLock</maml:name>
+        <maml:name>Unlock-IDUser</maml:name>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
           <maml:name>user</maml:name>
           <maml:description>
@@ -819,7 +819,7 @@ PS C:\&gt; New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credent
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Unlock-IDUserCloudLock -user 1234</dev:code>
+        <dev:code>PS C:\&gt; Unlock-IDUser -user 1234</dev:code>
         <dev:remarks>
           <maml:para>Set cloud lock status to false for user with matching id</maml:para>
         </dev:remarks>

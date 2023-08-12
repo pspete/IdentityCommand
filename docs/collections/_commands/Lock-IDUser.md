@@ -5,33 +5,33 @@ online version:
 schema: 2.0.0
 ---
 
-# Unlock-IDUserCloudLock
+# Lock-IDUser
 
 ## SYNOPSIS
-Cloud unlock a user
+Cloud lock a user
 
 ## SYNTAX
 
 ```
-Unlock-IDUserCloudLock [-user] <String> [<CommonParameters>]
+Lock-IDUser [-user] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Disable cloud lock for a specified user
+Enable cloud lock for a specified user
 
 ## EXAMPLES
 
 ### Example 1
 ```
-PS C:\> Unlock-IDUserCloudLock -user 1234
+PS C:\> Lock-IDUser -user 1234
 ```
 
-Set cloud lock status to false for user with matching id
+Set cloud lock status to true for user with matching id
 
 ## PARAMETERS
 
 ### -user
-The unique ID (Uuid) of the user to cloud unlock
+The unique ID (Uuid) of the user to cloud lock.
 
 ```yaml
 Type: String

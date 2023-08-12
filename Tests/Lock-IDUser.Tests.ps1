@@ -28,7 +28,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             BeforeEach {
                 Mock Invoke-IDRestMethod -MockWith { [string]'TRUE' }
                 $Script:tenant_url = 'https://somedomain.id.cyberark.cloud'
-                $response = Lock-IDUserCloudLock -user 1234
+                $response = Lock-IDUser -user 1234
 
             }
 
