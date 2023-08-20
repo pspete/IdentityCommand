@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 2023-08-20
+## [0.1] - 2023-08-21
 
 Initial module development prior to main release
 
