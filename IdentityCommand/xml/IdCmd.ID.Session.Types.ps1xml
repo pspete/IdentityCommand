@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Types>
+	<Type>
+		<Name>IdCmd.ID.Session</Name>
+		<Members>
+            <ScriptMethod>
+				<Name>GetWebSession</Name>
+				<Script>
+                    Get-IDSession
+				</Script>
+			</ScriptMethod>
+			<ScriptMethod>
+				<Name>GetToken</Name>
+				<Script>
+					Write-Output @{Authorization = "Bearer $($this.Token)"}
+				</Script>
+			</ScriptMethod>
+		</Members>
+	</Type>
+	<Type>
+		<Name>IdCmd.ID.PlatformToken</Name>
+		<Members>
+            <ScriptMethod>
+				<Name>GetWebSession</Name>
+				<Script>
+                    Get-IDSession
+				</Script>
+			</ScriptMethod>
+			<ScriptMethod>
+				<Name>GetToken</Name>
+				<Script>
+					Write-Output @{Authorization = "$($this.token_type) $($this.access_token)"}
+				</Script>
+			</ScriptMethod>
+		</Members>
+	</Type>
+</Types>

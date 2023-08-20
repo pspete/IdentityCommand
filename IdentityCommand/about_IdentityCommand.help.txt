@@ -1,0 +1,66 @@
+TOPIC
+    about_IdentityCommand
+
+SHORT DESCRIPTION
+    CyberArk Identity API PowerShell Module
+
+LONG DESCRIPTION
+    IdentityCommand is a PowerShell module that provides a set of easy-to-use commands,
+    allowing you to interact with the API for a CyberArk Identity tenant from within the PowerShell environment.
+
+    IdentityCommand enables a user to issue commands to be executed against CyberArk Identity from either a PowerShell console or script.
+
+EXAMPLES
+
+    An example command to initiate authentication to a specified tenant is shown here:
+
+    PS C:\> $Credential = Get-Credential
+    PS C:\> New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credential $Credential
+
+    This allows initial authentication to progress as well as selection and answer of any required MFA challenges.
+
+    Once successfully authenticated, all IdentityCommand module commands which require an authenticated session can be used from within the same PowerShell session.
+
+    #### GetBearerToken Method
+
+    You may have a scenario where you want to use APIs for which we have not yet developed, built or published module commands.
+
+    The GetBearerToken method of the object returned on successful authentication can be invoked to obtain a bearer token to be used for further requests.
+
+    PS C:\> $Session = New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credential $Credential
+    PS C:\> $Session.GetBearerToken()
+
+    Name                           Value
+    ----                           -----
+    Authorization                  Bearer eyPhbSciPiJEUzT1NEIsInR5cCI6IkpXYZ...
+
+    GetWebSession Method
+
+    The GetWebSession method can be used in a similar way to GetBearerToken, but the websession object for the authenticated session is returned instead of a Bearer token.
+
+    PS C:\> $Session = New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credential $Credential
+    PS C:\> $session.GetWebSession()
+
+    Headers               : {[accept, */*], [X-IDAP-NATIVE-CLIENT, True]}
+    Cookies               : System.Net.CookieContainer
+    UseDefaultCredentials : False
+    Credentials           :
+    Certificates          :
+    UserAgent             : Mozilla/5.0 (Windows NT; Windows NT 10.0; en-GB) WindowsPowerShell/5.1.22621.1778
+    Proxy                 :
+    MaximumRedirection    : -1
+
+    The Websession can be used for any further requests you require.
+
+    PS C:\> $Websession = $session.GetWebSession()
+    PS C:\> Invoke-RestMethod -WebSession $websession `
+    -Method Post `
+    -Uri https://somedomain.id.cyberark.cloud `
+    -Body @{SomeProperty = 'SomeValue'} | ConvertTo-Json
+
+KEYWORDS
+    CyberArk
+
+SEE ALSO
+    https://www.pspete.dev/
+    https://github.com/pspete/IdentityCommand
