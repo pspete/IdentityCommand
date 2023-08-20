@@ -126,23 +126,92 @@ The commands currently available in the _IdentityCommand_ module are listed here
 
 ### Install Options
 
-This repository contains a folder named ```IdentityCommand```.
+Users can install IdentityCommand from GitHub or the PowerShell Gallery.
 
-The folder needs to be copied to one of your PowerShell Module Directories.
+Choose any of the following ways to download the module and install it:
 
-#### Manual Install
+#### Option 1: Install from PowerShell Gallery
 
-Find your PowerShell Module Paths with the following command:
+This is the easiest and most popular way to install the module:
+
+1. Open a PowerShell prompt
+
+2. Run the following command:
 
 ```powershell
-$env:PSModulePath.split(';')
+Install-Module -Name IdentityCommand -Scope CurrentUser
 ```
 
-[Download the ```dev``` branch](https://github.com/pspete/IdentityCommand/archive/dev.zip)
+#### Option 2: Manual Install
 
-Unblock & Extract the archive
+The module files can be manually copied to one of your PowerShell module directories.
 
-Copy the ```IdentityCommand``` folder to your "Powershell Modules" directory of choice.
+Use the following command to get the paths to your local PowerShell module folders:
+
+```powershell
+
+$env:PSModulePath.split(';')
+
+```
+
+The module files must be placed in one of the listed directories, in a folder called `IdentityCommand`.
+
+More: [about_PSModulePath](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath)
+
+The module files are available to download using a variety of methods:
+
+##### PowerShell Gallery
+
+- Download from the module from the [PowerShell Gallery](https://www.powershellgallery.com/packages/IdentityCommand/):
+  - Run the PowerShell command `Save-Module -Name IdentityCommand -Path C:\temp`
+  - Copy the `C:\temp\IdentityCommand` folder to your "Powershell Modules" directory of choice.
+
+##### IdentityCommand Release
+
+- [Download the latest GitHub release](https://github.com/pspete/IdentityCommand/releases/latest)
+  - Unblock & Extract the archive
+  - Rename the extracted `IdentityCommand-v#.#.#` folder to `IdentityCommand`
+  - Copy the `IdentityCommand` folder to your "Powershell Modules" directory of choice.
+
+##### IdentityCommand Branch
+
+- [Download the `main` branch](https://github.com/pspete/IdentityCommand/archive/refs/heads/main.zip)
+  - Unblock & Extract the archive
+  - Copy the `IdentityCommand` (`\<Archive Root>\IdentityCommand-master\IdentityCommand`) folder to your "Powershell Modules" directory of choice.
+
+#### Verification
+
+Validate Install:
+
+```powershell
+
+Get-Module -ListAvailable IdentityCommand
+
+```
+
+Import the module:
+
+```powershell
+
+Import-Module IdentityCommand
+
+```
+
+List Module Commands:
+
+```powershell
+
+Get-Command -Module IdentityCommand
+
+```
+
+Get detailed information on specific commands:
+
+```powershell
+
+Get-Help New-IDSession -Full
+
+```
 
 ## Sponsorship
 
