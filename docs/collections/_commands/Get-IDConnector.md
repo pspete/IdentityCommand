@@ -22,14 +22,14 @@ Retrieve health status of all connectors, or specific connector
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDConnector
 ```
 
 Get status of all connectors
 
 ### Example 2
-```powershell
+```
 PS C:\> Get-IDConnector -proxyUuid 1234
 ```
 
