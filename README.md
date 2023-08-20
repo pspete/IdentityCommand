@@ -34,16 +34,34 @@ This allows initial authentication to progress as well as selection and answer o
 
 Once successfully authenticated, all _IdentityCommand_ module commands which require an authenticated session can be used from within the same PowerShell session.
 
+### Service User Authentication
 
-#### GetBearerToken Method
+Service User credentials can be used to request an authentication token for the Identity Platform:
+
+```powershell
+PS C:\> $Credential = Get-Credential
+PS C:\> New-IDPlatformToken -tenant_url https://sometenant.id.cyberark.cloud -Credential $Credential
+```
+
+This allows initial authentication using a separate dedicated Service user for API activities.
+
+Consult the vendor documentation for guidance on setting up a dedicated API Service user for non-interactive API use.
+
+Once successfully authenticated, all _IdentityCommand_ module commands which require an authenticated session can be used from within the same PowerShell session.
+
+### Methods
+
+IdentityCommand authentication functions contain methods which can be used to obtain authenticated session data & authentication tokens:
+
+#### GetToken Method
 
 You may have a scenario where you want to use APIs for which we have not yet developed, built or published module commands.
 
-The GetBearerToken method of the object returned on successful authentication can be invoked to obtain a bearer token to be used for further requests.
+The GetToken method of the object returned on successful authentication can be invoked to obtain a bearer token to be used for further requests.
 
 ```powershell
-PS C:\> $Session = New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credential $Credential
-PS C:\> $Session.GetBearerToken()
+PS C:\> $Session = New-IDPlatformToken -tenant_url https://some.tenant.cyberark.cloud -Credential $Credential
+PS C:\> $Session.GetToken()
 
 Name                           Value
 ----                           -----
@@ -52,7 +70,7 @@ Authorization                  Bearer eyPhbSciPiJEUzT1NEIsInR5cCI6IkpXYZ...
 
 #### GetWebSession Method
 
-The GetWebSession method can be used in a similar way to GetBearerToken, but the websession object for the authenticated session is returned instead of a Bearer token.
+The GetWebSession method can be used in a similar way to GetToken, except this method returns the websession object for the authenticated session instead of a Bearer token.
 
 ```powershell
 PS C:\> $Session = New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credential $Credential

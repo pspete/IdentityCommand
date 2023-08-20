@@ -237,10 +237,10 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
-            It 'outputs object with GetBearerToken method' {
+            It 'outputs object with GetToken method' {
 
                 New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds |
-                    Get-Member -MemberType ScriptMethod | Select-Object -ExpandProperty Name | Should -Contain GetBearerToken
+                    Get-Member -MemberType ScriptMethod | Select-Object -ExpandProperty Name | Should -Contain GetToken
 
             }
 

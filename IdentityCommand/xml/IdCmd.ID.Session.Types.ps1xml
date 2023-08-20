@@ -10,7 +10,7 @@
 				</Script>
 			</ScriptMethod>
 			<ScriptMethod>
-				<Name>GetBearerToken</Name>
+				<Name>GetToken</Name>
 				<Script>
 					Write-Output @{Authorization = "Bearer $($this.Token)"}
 				</Script>
