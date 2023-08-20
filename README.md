@@ -96,6 +96,7 @@ The commands currently available in the _IdentityCommand_ module are listed here
 | `Get-IDTenant`              | Get tenant information                                                                      |
 | `Get-IDTenantConfiguration` | Get tenant configuration data                                                               |
 | `Get-IDConnector`           | Get connector health                                                                        |
+| `New-IDPlatformToken`       | Request OIDC token based on grant type                                                      |
 
 ## Installation
 

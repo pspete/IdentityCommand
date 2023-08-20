@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [Unreleased] - 2023-08-12
+## [Unreleased] - 2023-08-20
 
 Initial module development prior to main release
 
@@ -18,8 +18,10 @@ Initial module development prior to main release
 - `Get-IDTenant` - Get Tenant information
 - `Get-IDTenantConfiguration` - Get tenant configuration data
 - `Get-IDConnector` - Get connector health
+- `New-IDPlatformToken` - Request OIDC token based on grant type
 
 ### Changed
+- N/A
 
 ### Fixed
-
+- N/A

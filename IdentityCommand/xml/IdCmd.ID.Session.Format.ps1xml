@@ -97,5 +97,56 @@
 				</ListEntries>
 			</ListControl>
 		</View>
+		<View>
+			<Name>IdCmd.ID.PlatformToken</Name>
+			<ViewSelectedBy>
+				<TypeName>IdCmd.ID.PlatformToken</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader />
+					<TableColumnHeader />
+					<TableColumnHeader />
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>token_type</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>expires_in</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>access_token</PropertyName>
+							</TableColumnItem>
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+		<View>
+			<Name>IdCmd.ID.PlatformToken</Name>
+			<ViewSelectedBy>
+				<TypeName>IdCmd.ID.PlatformToken</TypeName>
+			</ViewSelectedBy>
+			<ListControl>
+				<ListEntries>
+					<ListEntry>
+						<ListItems>
+							<ListItem>
+								<PropertyName>token_type</PropertyName>
+							</ListItem>
+							<ListItem>
+								<PropertyName>expires_in</PropertyName>
+							</ListItem>
+							<ListItem>
+								<PropertyName>access_token</PropertyName>
+							</ListItem>
+						</ListItems>
+					</ListEntry>
+				</ListEntries>
+			</ListControl>
+		</View>
 	</ViewDefinitions>
 </Configuration>

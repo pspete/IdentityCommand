@@ -54,8 +54,8 @@
 	See Invoke-WebRequest
 	The thumbprint of the certificate to use for client certificate authentication.
 
-	.PARAMETER SkipCertificateCheck
-	Skips certificate validation checks.
+	.PARAMETER ContentType
+	Specifies the content type of the web request.
 
 	.PARAMETER Accept
 	An Accept string to be included in the request header

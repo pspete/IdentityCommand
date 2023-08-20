@@ -73,28 +73,41 @@ function Get-IDResponse {
 					#application/json content expected
 					#Create Return Object from Returned JSON
 					$IDResponse = ConvertFrom-Json -InputObject $APIResponse.Content
+					Set-Variable -Name idresponse -Value $IDResponse -Scope global
 
-					if ($IDResponse.success -eq $true) {
+					switch ($IDResponse) {
 
-						$IDResponse = $IDResponse.Result
+						({ $PSItem.success -eq $false }) {
 
-					} else {
+							#if success property is false, throw error
+							$ErrorMessage = $IDResponse.Message
+							$ErrorID = $IDResponse.ErrorID
 
-						$ErrorMessage = $IDResponse.Message
-						$ErrorID = $IDResponse.ErrorID
+							$PSCmdlet.ThrowTerminatingError(
 
-						$PSCmdlet.ThrowTerminatingError(
+								[System.Management.Automation.ErrorRecord]::new(
 
-							[System.Management.Automation.ErrorRecord]::new(
+									$ErrorMessage,
+									$ErrorID,
+									[System.Management.Automation.ErrorCategory]::NotSpecified,
+									$IDResponse
 
-								$ErrorMessage,
-								$ErrorID,
-								[System.Management.Automation.ErrorCategory]::NotSpecified,
-								$IDResponse
+								)
 
 							)
 
-						)
+							break
+
+						}
+
+						({ $PSItem.success -eq $true }) {
+
+							#when success property is returned, return result
+							$IDResponse = $IDResponse.Result
+							break
+
+						}
+
 					}
 
 				}
