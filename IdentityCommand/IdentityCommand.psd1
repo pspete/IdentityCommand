@@ -33,7 +33,7 @@
     Description       = 'Enables user interaction with the API for the CyberArk Identity platform'
 
     # Minimum version of the PowerShell engine required by this module
-    # PowerShellVersion = ''
+    PowerShellVersion = '5.1'
 
     # Name of the PowerShell host required by this module
     # PowerShellHostName = ''
@@ -113,19 +113,19 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            # Tags = @()
+            Tags         = @('CyberArk', 'CyberArk-API', 'CyberArk-Identity', 'REST', 'API')
 
             # A URL to the license for this module.
-            # LicenseUri = ''
+            LicenseUri   = 'https://github.com/pspete/IdentityCommand/blob/main/LICENSE.md'
 
             # A URL to the main website for this project.
-            # ProjectUri = ''
+            ProjectUri   = 'https://github.com/pspete/IdentityCommand/'
 
             # A URL to an icon representing this module.
-            # IconUri = ''
+            IconUri      = 'https://github.com/pspete/IdentityCommand/blob/main/docs/media/images/IdentityCommand-Logo.png'
 
             # ReleaseNotes of this module
-            # ReleaseNotes = ''
+            ReleaseNotes = 'https://github.com/pspete/IdentityCommand/blob/main/CHANGELOG.md'
 
             # Prerelease string of this module
             # Prerelease = ''
