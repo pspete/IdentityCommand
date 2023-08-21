@@ -122,7 +122,7 @@
             ProjectUri   = 'https://github.com/pspete/IdentityCommand/'
 
             # A URL to an icon representing this module.
-            IconUri      = 'https://github.com/pspete/IdentityCommand/blob/main/docs/media/images/IdentityCommand-Logo.png'
+            IconUri      = 'https://raw.githubusercontent.com/pspete/IdentityCommand/main/docs/media/images/IdentityCommand-Logo.png'
 
             # ReleaseNotes of this module
             ReleaseNotes = 'https://github.com/pspete/IdentityCommand/blob/main/CHANGELOG.md'
