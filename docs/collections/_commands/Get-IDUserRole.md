@@ -8,6 +8,7 @@ schema: 2.0.0
 # Get-IDUserRole
 
 ## SYNOPSIS
+List roles user is a member of.
 
 ## SYNTAX
 
@@ -17,21 +18,22 @@ Get-IDUserRole [-ID] <String> [[-Limit] <Int32>] [[-PageNumber] <Int32>] [[-Page
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Get a list of roles for a user.
+Returns user roles and administrative rights associated with the roles.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
-PS C:\> {{ Add example code here }}
+```
+PS C:\> Get-IDUserRole -ID SomeID
 ```
 
-{{ Add example description here }}
+Return a list of roles for a matching user.
 
 ## PARAMETERS
 
 ### -ID
-{{ Fill ID Description }}
+The ID of the user
 
 ```yaml
 Type: String
@@ -46,7 +48,7 @@ Accept wildcard characters: False
 ```
 
 ### -Limit
-{{ Fill Limit Description }}
+The maximum number of results to return for the specified page.
 
 ```yaml
 Type: Int32
@@ -61,7 +63,7 @@ Accept wildcard characters: False
 ```
 
 ### -PageNumber
-{{ Fill PageNumber Description }}
+The number of pages of results to return.
 
 ```yaml
 Type: Int32
@@ -76,7 +78,7 @@ Accept wildcard characters: False
 ```
 
 ### -PageSize
-{{ Fill PageSize Description }}
+The number of entities to return per page.
 
 ```yaml
 Type: Int32
@@ -91,7 +93,9 @@ Accept wildcard characters: False
 ```
 
 ### -Caching
-{{ Fill Caching Description }}
+Can be set to the following values: -1: returns live data but writes to the cache for query results.
+\<-1: don't read from or write to the cache for query results.
+0: use the cache for both read/write with 'caching in minutes' as TTL of the results.
 
 ```yaml
 Type: Int32
@@ -106,7 +110,7 @@ Accept wildcard characters: False
 ```
 
 ### -SortBy
-{{ Fill SortBy Description }}
+Comma-separated list of column names to sort by.
 
 ```yaml
 Type: String
