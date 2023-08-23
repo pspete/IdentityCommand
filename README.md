@@ -118,6 +118,8 @@ The commands currently available in the _IdentityCommand_ module are listed here
 | `Get-IDUserRole`            | Get a list of roles for a user.                                                             |
 | `Get-IDAnalyticsDataset`    | Get all datasets accessible by a user                                                       |
 | `Get-IDTenantCname`         | Get Tenant Cnames                                                                           |
+| `Get-IDDownloadUrl`         | Get download Urls                                                                           |
+
 
 ## Installation
 
