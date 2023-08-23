@@ -24,6 +24,9 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
     InModuleScope $(Split-Path (Split-Path (Split-Path -Parent $PSCommandPath) -Parent) -Leaf ) {
 
         BeforeEach {
+
+            $Script:tenant_url = 'https://somedomain.id.cyberark.cloud'
+
             Mock Invoke-IDRestMethod -MockWith {
                 [pscustomobject]@{'property' = 'value' }
             }
