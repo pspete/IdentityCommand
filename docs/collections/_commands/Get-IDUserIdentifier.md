@@ -5,28 +5,28 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-IDDownloadUrl
+# Get-IDUserIdentifier
 
 ## SYNOPSIS
-Get download URLs
+Get user identifiers
 
 ## SYNTAX
 
 ```
-Get-IDDownloadUrl [<CommonParameters>]
+Get-IDUserIdentifier [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Get download URLs
+Get the configuration of the user attributes
 
 ## EXAMPLES
 
 ### Example 1
 ```
-PS C:\> Get-IDDownloadUrl
+PS C:\> Get-IDUserIdentifier
 ```
 
-Get download Urls
+Get user identifiers
 
 ## PARAMETERS
 
