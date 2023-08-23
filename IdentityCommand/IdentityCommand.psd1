@@ -88,7 +88,8 @@
         'Get-IDConnector',
         'New-IDPlatformToken',
         'Get-IDUserRole',
-        'Get-IDAnalyticsDataset'
+        'Get-IDAnalyticsDataset',
+        'Get-IDTenantCname'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
