@@ -1,6 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [unreleased] - 2023-08-30
+
+### Added
+- N/A
+
+### Changed
+- N/A
+
+### Fixed
+- N/A
+
 ## [0.1 - Update 1] - 2023-08-30
 
 Additional Functions
