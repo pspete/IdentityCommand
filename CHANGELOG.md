@@ -1,6 +1,35 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [unreleased] - 2023-08-30
+
+### Added
+- N/A
+
+### Changed
+- N/A
+
+### Fixed
+- N/A
+
+## [0.1 - Update 1] - 2023-08-30
+
+Additional Functions
+
+### Added
+- `Get-IDUserRole` - Get a list of roles for a user
+- `Get-IDAnalyticsDataset` - Get all datasets accessible by a user
+- `Get-IDTenantCname` - Get Tenant Cnames
+- `Get-IDDownloadUrl` - Get download Urls
+- `Get-IDUserIdentifier` - Get the configuration of the user attributes
+- `Invoke-IDSqlcmd` - Query the database tables
+
+### Changed
+- N/A
+
+### Fixed
+- N/A
+
 ## [0.1] - 2023-08-21
 
 Initial module development prior to main release

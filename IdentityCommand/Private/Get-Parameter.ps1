@@ -19,6 +19,10 @@
 	object. Specifying additional parameter names/keys here means that the default value assigned
 	to the BaseParameters parameter will remain unchanged.
 
+	.PARAMETER ParametersToKeep
+	Accepts an array of any additional parameter keys which should be selected from the passed input
+	object.
+
 	.EXAMPLE
 	$PSBoundParameters | Get-Parameter
 

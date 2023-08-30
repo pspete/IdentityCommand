@@ -86,7 +86,13 @@
         'Get-IDTenant',
         'Get-IDTenantConfiguration',
         'Get-IDConnector',
-        'New-IDPlatformToken'
+        'New-IDPlatformToken',
+        'Get-IDUserRole',
+        'Get-IDAnalyticsDataset',
+        'Get-IDTenantCname',
+        'Get-IDDownloadUrl',
+        'Get-IDUserIdentifier',
+        'Invoke-IDSqlcmd'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
@@ -122,7 +128,7 @@
             ProjectUri   = 'https://github.com/pspete/IdentityCommand/'
 
             # A URL to an icon representing this module.
-            IconUri      = 'https://github.com/pspete/IdentityCommand/blob/main/docs/media/images/IdentityCommand-Logo.png'
+            IconUri      = 'https://raw.githubusercontent.com/pspete/IdentityCommand/main/docs/media/images/IdentityCommand-Logo.png'
 
             # ReleaseNotes of this module
             ReleaseNotes = 'https://github.com/pspete/IdentityCommand/blob/main/CHANGELOG.md'

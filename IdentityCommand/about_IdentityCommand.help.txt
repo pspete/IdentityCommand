@@ -21,14 +21,14 @@ EXAMPLES
 
     Once successfully authenticated, all IdentityCommand module commands which require an authenticated session can be used from within the same PowerShell session.
 
-    #### GetBearerToken Method
+    #### GetToken Method
 
     You may have a scenario where you want to use APIs for which we have not yet developed, built or published module commands.
 
-    The GetBearerToken method of the object returned on successful authentication can be invoked to obtain a bearer token to be used for further requests.
+    The GetToken method of the object returned on successful authentication can be invoked to obtain a bearer token to be used for further requests.
 
     PS C:\> $Session = New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credential $Credential
-    PS C:\> $Session.GetBearerToken()
+    PS C:\> $Session.GetToken()
 
     Name                           Value
     ----                           -----
@@ -36,7 +36,7 @@ EXAMPLES
 
     GetWebSession Method
 
-    The GetWebSession method can be used in a similar way to GetBearerToken, but the websession object for the authenticated session is returned instead of a Bearer token.
+    The GetWebSession method can be used in a similar way to GetToken, but the websession object for the authenticated session is returned instead of a Bearer token.
 
     PS C:\> $Session = New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credential $Credential
     PS C:\> $session.GetWebSession()
