@@ -48,7 +48,7 @@ if (-not ($ENV:APPVEYOR_PULL_REQUEST_NUMBER)) {
 
 		Write-Host 'Deploy Process: GitHub Release' -ForegroundColor Yellow
 
-		If ($env:APPVEYOR_BUILD_VERSION -ge '1.0.0') {
+		If ($env:APPVEYOR_BUILD_VERSION -ge '0.1.0') {
 
 			<# Create New Release     #>
 
@@ -102,7 +102,7 @@ if (-not ($ENV:APPVEYOR_PULL_REQUEST_NUMBER)) {
 
 		<# Not Master Branch   #>
 		Write-Host "$ENV:APPVEYOR_REPO_BRANCH Branch; No Release" -ForegroundColor Cyan
-		exit;
+		exit
 
 	}
 

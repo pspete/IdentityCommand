@@ -12,8 +12,14 @@ Authenticates a user to a CyberArk Identity tenant.
 
 ## SYNTAX
 
+### Credential
 ```
 New-IDSession [-tenant_url] <String> [-Credential] <PSCredential> [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### SAML
+```
+New-IDSession [-tenant_url] <String> -SAMLResponse <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -21,17 +27,27 @@ Use this command to authenticate to CyberArk Identity.
 
 Allows a user to provide authentication details, and satisfy any required MFA challenges.
 
-Currently supports all authentication mechanisms except U2F & DUO.
+Currently supports all Identity MFA authentication mechanisms except U2F & DUO.
+
+Supports federated authentication when providing a SamlAssertion from a configured external IDP.
 
 ## EXAMPLES
 
 ### Example 1
 ```
 PS C:\> $Cred = Get-Credential
-PS C:\> New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credential $Cred
+PS C:\> New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -Credential $Cred
 ```
 
 Initiates authentication to specified tenant, and allows selection and answer of any required MFA challenges.
+
+### Example 2
+```
+PS C:\> $SAMLResponse = New-SAMLInteractive -LoginIDP "https://1234.idp.com/app/cyberarkidentity/i5d7/sso/saml"
+PS C:\> New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -SAMLResponse $SAMLResponse
+```
+
+Authenticates to CyberArk Identity using SAML assertion from external IDP (obtained using PS-SAML-Interactive)
 
 ## PARAMETERS
 
@@ -55,7 +71,7 @@ Credential object containing username and password required to authenticate to C
 
 ```yaml
 Type: PSCredential
-Parameter Sets: (All)
+Parameter Sets: Credential
 Aliases:
 
 Required: True
@@ -91,6 +107,21 @@ Aliases:
 
 Required: True
 Position: 0
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -SAMLResponse
+A SAML assertion obtained from an external IDP for the account with which to authenticate.
+
+```yaml
+Type: String
+Parameter Sets: SAML
+Aliases:
+
+Required: True
+Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
