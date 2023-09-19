@@ -15,10 +15,20 @@ Function New-IDSession {
         #User Creds
         [Parameter(
             Mandatory = $true,
-            ValueFromPipelinebyPropertyName = $true
+            ValueFromPipelinebyPropertyName = $true,
+            ParameterSetName = 'Credential'
         )]
         [ValidateNotNullOrEmpty()]
-        [PSCredential]$Credential
+        [PSCredential]$Credential,
+
+        #SAML Assertion
+        [Parameter(
+            Mandatory = $true,
+            ValueFromPipeline = $false,
+            ValueFromPipelinebyPropertyName = $true,
+            ParameterSetName = 'SAML'
+        )]
+        [String]$SAMLResponse
 
     )
 
@@ -45,58 +55,84 @@ Function New-IDSession {
 
         $LogonRequest['Headers'] = @{'accept' = '*/*' }
 
-        #*Start Authentication
-        $IDSession = $LogonRequest | Start-Authentication -Credential $Credential
+        switch ($PSCmdlet.ParameterSetName) {
 
-        #Set request properties for Advance.
+            'Credential' {
+                #*Start Authentication
+                $IDSession = $LogonRequest | Start-Authentication -Credential $Credential
+                break
+            }
+            'SAML' {
+                #*Send SAML Assertion
+                $IDSession = $LogonRequest | Start-SamlAuthentication -SAMLResponse $SAMLResponse
+                break
+            }
+        }
+
+        #Set request properties for Next authentication stage.
         $LogonRequest.Remove('SessionVariable')
         $LogonRequest['Headers'].Add('X-IDAP-NATIVE-CLIENT', $true)
 
         #Set Module Scope variables
         Set-Variable -Name TenantId -Value $IDSession.TenantId -Scope Script
         Set-Variable -Name SessionId -Value $IDSession.SessionId -Scope Script
+        #? does SessionId need to be available in script scope?
 
-        #The MFA Bit - keep a reference to $IDSession for the MFA Package
-        $ThisSession = $IDSession
-        for ($Challenge = 0; $Challenge -lt $(($ThisSession.Challenges).Count); $Challenge++) {
+        switch ($PSCmdlet.ParameterSetName) {
 
-            #Iterate through presented challenges
-            if ($($IDSession.Summary) -eq 'NewPackage') {
+            'Credential' {
 
-                #Initialise loop and $ThisSession if NewPackage Challenges are presented
-                $Challenge = 0
+                #The MFA Bit - keep a reference to $IDSession for the MFA Package
                 $ThisSession = $IDSession
-                if ($null -ne $ThisSession.EventDescription) { Write-Warning -Message $ThisSession.EventDescription }
+                for ($Challenge = 0; $Challenge -lt $(($ThisSession.Challenges).Count); $Challenge++) {
 
+                    #Iterate through presented challenges
+                    if ($($IDSession.Summary) -eq 'NewPackage') {
+
+                        #Initialise loop and $ThisSession if NewPackage Challenges are presented
+                        $Challenge = 0
+                        $ThisSession = $IDSession
+                        if ($null -ne $ThisSession.EventDescription) { Write-Warning -Message $ThisSession.EventDescription }
+
+                    }
+
+                    #Get Current Challenge Mechanisms
+                    $Mechanisms = $ThisSession.Challenges[$Challenge] | Select-Object -ExpandProperty Mechanisms
+
+                    #select challenge mechanism
+                    $Mechanism = Select-ChallengeMechanism -Mechanisms $Mechanisms
+
+                    try {
+
+                        #answer challenge mechanism
+                        $Answer = Get-MechanismAnswer -Mechanism $Mechanism -Credential $Credential
+
+                        #*Advance Authentication
+                        $IDSession = $LogonRequest | Start-AdvanceAuthentication -Mechanism $Mechanism -Answer $Answer
+
+                    } catch {
+
+                        throw $PSItem
+
+                    }
+
+                    if ($($IDSession.Summary) -eq 'NewPackage') {
+
+                        #New Package Recieved, decrement counter so we go round the loop again to evaluate.
+                        $Challenge--
+
+                    }
+
+                }
+
+                break
             }
 
-            #Get Current Challenge Mechanisms
-            $Mechanisms = $ThisSession.Challenges[$Challenge] | Select-Object -ExpandProperty Mechanisms
-
-            #select challenge mechanism
-            $Mechanism = Select-ChallengeMechanism -Mechanisms $Mechanisms
-
-            try {
-
-                #answer challenge mechanism
-                $Answer = Get-MechanismAnswer -Mechanism $Mechanism -Credential $Credential
-
-                #*Advance Authentication
-                $IDSession = $LogonRequest | Start-AdvanceAuthentication -Mechanism $Mechanism -Answer $Answer
-
-            } catch {
-
-                throw $PSItem
-
+            'SAML' {
+                #*Get Saml ID Token
+                $IDSession = $LogonRequest | Complete-SamlAuthentication
+                break
             }
-
-            if ($($IDSession.Summary) -eq 'NewPackage') {
-
-                #New Package Recieved, decrement counter so we go round the loop again to evaluate.
-                $Challenge--
-
-            }
-
         }
 
         switch ($IDSession.Summary) {

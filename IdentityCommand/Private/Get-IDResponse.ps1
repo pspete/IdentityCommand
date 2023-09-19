@@ -49,20 +49,30 @@ function Get-IDResponse {
 
 					If ($IDResponse -match '<HTML>') {
 
-						#Fail if HTML received from request to API
+						If ($Script:ExpectHtml) {
+							#HTML output expected, null the html result
+							$IDResponse = $null
 
-						$PSCmdlet.ThrowTerminatingError(
+						}
 
-							[System.Management.Automation.ErrorRecord]::new(
+						Else {
 
-								'Unexpected HTML Response Received. Check the URL provided for your Identity Portal.',
-								$StatusCode,
-								[System.Management.Automation.ErrorCategory]::NotSpecified,
-								$APIResponse
+							#Fail if HTML received from request to API
+
+							$PSCmdlet.ThrowTerminatingError(
+
+								[System.Management.Automation.ErrorRecord]::new(
+
+									'Unexpected HTML Response Received. Check the URL provided for your Identity Portal.',
+									$StatusCode,
+									[System.Management.Automation.ErrorCategory]::NotSpecified,
+									$APIResponse
+
+								)
 
 							)
 
-						)
+						}
 
 					}
 
