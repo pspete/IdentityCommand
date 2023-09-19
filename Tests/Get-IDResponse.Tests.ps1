@@ -75,6 +75,12 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 				{ Get-IDResponse -APIResponse $HTMLResponse } | Should -Throw
 			}
 
+			It 'has no output if HTML expetted' {
+				$Script:ExpectHtml = $true
+				Get-IDResponse -APIResponse $HTMLResponse | Should -BeNullOrEmpty
+				$Script:ExpectHtml = $false
+			}
+
 		}
 
 	}

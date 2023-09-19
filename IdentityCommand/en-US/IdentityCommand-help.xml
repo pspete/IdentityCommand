@@ -1234,7 +1234,8 @@
     <maml:description>
       <maml:para>Use this command to authenticate to CyberArk Identity.</maml:para>
       <maml:para>Allows a user to provide authentication details, and satisfy any required MFA challenges.</maml:para>
-      <maml:para>Currently supports all authentication mechanisms except U2F &amp; DUO.</maml:para>
+      <maml:para>Currently supports all Identity MFA authentication mechanisms except U2F &amp; DUO.</maml:para>
+      <maml:para>Supports federated authentication when providing a SamlAssertion from a configured external IDP.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1284,6 +1285,55 @@
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>New-IDSession</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
+          <maml:name>tenant_url</maml:name>
+          <maml:description>
+            <maml:para>The URL of the CyberArk Identity tenant to authenticate to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+          <maml:name>Confirm</maml:name>
+          <maml:description>
+            <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+          <maml:name>WhatIf</maml:name>
+          <maml:description>
+            <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>SAMLResponse</maml:name>
+          <maml:description>
+            <maml:para>A SAML assertion obtained from an external IDP for the account with which to authenticate.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
     </command:syntax>
@@ -1336,6 +1386,18 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <maml:name>SAMLResponse</maml:name>
+        <maml:description>
+          <maml:para>A SAML assertion obtained from an external IDP for the account with which to authenticate.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -1374,9 +1436,17 @@
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
         <dev:code>PS C:\&gt; $Cred = Get-Credential
-PS C:\&gt; New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credential $Cred</dev:code>
+PS C:\&gt; New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -Credential $Cred</dev:code>
         <dev:remarks>
           <maml:para>Initiates authentication to specified tenant, and allows selection and answer of any required MFA challenges.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; $SAMLResponse = New-SAMLInteractive -LoginIDP "https://1234.idp.com/app/cyberarkidentity/i5d7/sso/saml"
+PS C:\&gt; New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -SAMLResponse $SAMLResponse</dev:code>
+        <dev:remarks>
+          <maml:para>Authenticates to CyberArk Identity using SAML assertion from external IDP (obtained using PS-SAML-Interactive)</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
