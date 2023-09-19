@@ -7,6 +7,17 @@ All notable changes to this project will be documented in this file.
 - N/A
 
 ### Changed
+- N/A
+
+### Fixed
+- N/A
+
+## [0.1 - Update 2] - 2023-09-19
+
+### Added
+- N/A
+
+### Changed
 - `New-IDSession` - Adds federated authentication support, with ability to provide a SamlResponse from an external IDP
 
 ### Fixed
