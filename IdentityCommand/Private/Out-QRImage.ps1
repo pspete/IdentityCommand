@@ -39,7 +39,7 @@ function Out-QRImage {
         If (-not ($Path)) {
 
             #Default to TEMP if path not provided
-            $Path = [Environment]::GetEnvironmentVariable('Temp')
+            $Path = [System.IO.Path]::GetTempPath()
 
         }
 
