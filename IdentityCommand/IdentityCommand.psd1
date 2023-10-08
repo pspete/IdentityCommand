@@ -12,7 +12,7 @@
     RootModule        = 'IdentityCommand.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.1.39'
+    ModuleVersion     = '0.1.40'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -60,9 +60,7 @@
     # ScriptsToProcess = @()
 
     # Type files (.ps1xml) to be loaded when importing this module
-    TypesToProcess    = @(
-        'xml\IdCmd.ID.Session.Types.ps1xml'
-    )
+    # TypesToProcess    = @( )
 
     # Format files (.ps1xml) to be loaded when importing this module
     FormatsToProcess  = @(

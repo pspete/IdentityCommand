@@ -146,7 +146,24 @@ Function New-IDSession {
 
                 if ($null -ne $IDSession) {
 
-                    $IDSession | Select-Object -Last 1 | Add-CustomType -Type IdCmd.ID.Session
+                    $result = $IDSession | Select-Object -Last 1 | Add-CustomType -Type IdCmd.ID.Session
+
+                    #Add GetWebSession ScriptMethod
+                    $result | Add-Member -MemberType ScriptMethod -Name GetWebSession -Value {
+
+                        Get-IDSession
+
+                    } -Force
+
+                    #Add GetToken ScriptMethod to output Bearer Token
+                    $result | Add-Member -MemberType ScriptMethod -Name GetToken -Value {
+
+                        Write-Output @{Authorization = "Bearer $($this.Token)" }
+
+                    } -Force
+
+                    #Return the result
+                    $result
 
                 }
 

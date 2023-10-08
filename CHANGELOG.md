@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [unreleased] - 2023-09-19
+## [unreleased] - 2023-10-08
 
 ### Added
 - N/A
@@ -11,6 +11,17 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - N/A
+
+## [0.1 - Update 3] - 2023-10-08
+
+### Added
+- N/A
+
+### Changed
+- `New-IDSession` - Moves ScriptMethod declaration into code body from `\xml\IdCmd.ID.Session.Types.ps1xml`.
+
+### Fixed
+- Replaces `[Environment]::GetEnvironmentVariable('Temp')` with `[System.IO.Path]::GetTempPath()` to correctly determine %TEMP% directory location on Windows as well as OSX.
 
 ## [0.1 - Update 2] - 2023-09-19
 

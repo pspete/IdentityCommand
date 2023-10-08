@@ -138,7 +138,7 @@ Function Start-AdvanceAuthentication {
     End {
 
         #Maybe there is a QR Image to clear up
-        Remove-Item $(Join-Path $([Environment]::GetEnvironmentVariable('Temp')) "$Script:SessionId.html") -ErrorAction SilentlyContinue
+        Remove-Item $(Join-Path $([System.IO.Path]::GetTempPath()) "$Script:SessionId.html") -ErrorAction SilentlyContinue
 
     }
 
