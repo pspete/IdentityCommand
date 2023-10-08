@@ -58,7 +58,25 @@ Function New-IDPlatformToken {
 
             if ($null -ne $IDSession) {
 
-                $IDSession | Add-CustomType -Type IdCmd.ID.PlatformToken
+                $result = $IDSession | Add-CustomType -Type IdCmd.ID.PlatformToken
+
+                #Add GetWebSession ScriptMethod
+                $result | Add-Member -MemberType ScriptMethod -Name GetWebSession -Value {
+
+                    Get-IDSession
+
+                } -Force
+
+                #Add GetToken ScriptMethod to output Bearer Token
+                $result | Add-Member -MemberType ScriptMethod -Name GetToken -Value {
+
+                    Write-Output @{Authorization = "$($this.token_type) $($this.access_token)" }
+
+                } -Force
+
+                #Return the result
+                $result
+
 
             }
         }

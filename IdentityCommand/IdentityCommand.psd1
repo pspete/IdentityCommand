@@ -60,9 +60,7 @@
     # ScriptsToProcess = @()
 
     # Type files (.ps1xml) to be loaded when importing this module
-    TypesToProcess    = @(
-        'xml\IdCmd.ID.Session.Types.ps1xml'
-    )
+    # TypesToProcess    = @( )
 
     # Format files (.ps1xml) to be loaded when importing this module
     FormatsToProcess  = @(
