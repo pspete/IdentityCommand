@@ -15,7 +15,7 @@ EXAMPLES
     An example command to initiate authentication to a specified tenant is shown here:
 
     PS C:\> $Credential = Get-Credential
-    PS C:\> New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credential $Credential
+    PS C:\> New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -Credential $Credential
 
     This allows initial authentication to progress as well as selection and answer of any required MFA challenges.
 
@@ -27,7 +27,7 @@ EXAMPLES
 
     The GetToken method of the object returned on successful authentication can be invoked to obtain a bearer token to be used for further requests.
 
-    PS C:\> $Session = New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credential $Credential
+    PS C:\> $Session = New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -Credential $Credential
     PS C:\> $Session.GetToken()
 
     Name                           Value
@@ -38,7 +38,7 @@ EXAMPLES
 
     The GetWebSession method can be used in a similar way to GetToken, but the websession object for the authenticated session is returned instead of a Bearer token.
 
-    PS C:\> $Session = New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credential $Credential
+    PS C:\> $Session = New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -Credential $Credential
     PS C:\> $session.GetWebSession()
 
     Headers               : {[accept, */*], [X-IDAP-NATIVE-CLIENT, True]}

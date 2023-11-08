@@ -60,7 +60,7 @@ You may have a scenario where you want to use APIs for which we have not yet dev
 The GetToken method of the object returned on successful authentication can be invoked to obtain a bearer token to be used for further requests.
 
 ```powershell
-PS C:\> $Session = New-IDPlatformToken -tenant_url https://some.tenant.cyberark.cloud -Credential $Credential
+PS C:\> $Session = New-IDPlatformToken -tenant_url https://sometenant.id.cyberark.cloud -Credential $Credential
 PS C:\> $Session.GetToken()
 
 Name                           Value
@@ -73,7 +73,7 @@ Authorization                  Bearer eyPhbSciPiJEUzT1NEIsInR5cCI6IkpXYZ...
 The GetWebSession method can be used in a similar way to GetToken, except this method returns the websession object for the authenticated session instead of a Bearer token.
 
 ```powershell
-PS C:\> $Session = New-IDSession -tenant_url https://some.tenant.cyberark.cloud -Credential $Credential
+PS C:\> $Session = New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -Credential $Credential
 PS C:\> $session.GetWebSession()
 
 Headers               : {[accept, */*], [X-IDAP-NATIVE-CLIENT, True]}
