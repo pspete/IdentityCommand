@@ -27,8 +27,20 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             BeforeEach {
                 Mock Invoke-IDRestMethod -MockWith {  }
-                $Script:tenant_url = 'https://somedomain.id.cyberark.cloud'
-                $response = Suspend-IDUserMFA -id 1234
+                $ISPSSSession = [ordered]@{
+                    tenant_url         = 'https://somedomain.id.cyberark.cloud'
+                    User               = $null
+                    TenantId           = $null
+                    SessionId          = $null
+                    WebSession         = $null
+                    StartTime          = $null
+                    ElapsedTime        = $null
+                    LastCommand        = $null
+                    LastCommandTime    = $null
+                    LastCommandResults = $null
+                }
+                New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
+                $response = Suspend-IDUserMFA -ID 1234
 
             }
 

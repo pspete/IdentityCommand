@@ -27,6 +27,20 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
 			BeforeEach {
 
+				$ISPSSSession = [ordered]@{
+					tenant_url         = $null
+					User               = $null
+					TenantId           = $null
+					SessionId          = $null
+					WebSession         = $null
+					StartTime          = $null
+					ElapsedTime        = $null
+					LastCommand        = $null
+					LastCommandTime    = $null
+					LastCommandResults = $null
+				}
+				New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
+
 				$Response = New-MockObject -Type Microsoft.PowerShell.Commands.WebResponseObject
 				$Response | Add-Member -MemberType NoteProperty -Name StatusCode -Value 200 -Force
 				$Response | Add-Member -MemberType NoteProperty -Name Headers -Value @{ 'Content-Type' = 'application/json; charset=utf-8' } -Force
@@ -117,12 +131,12 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
 			It 'sets WebSession variable in the module scope' {
 				Invoke-IDRestMethod @SessionVariable
-				$Script:WebSession | Should -Not -BeNullOrEmpty
+				$Script:ISPSSSession.WebSession | Should -Not -BeNullOrEmpty
 			}
 
 			It 'returns WebSession sessionvariable value' {
 				Invoke-IDRestMethod @SessionVariable
-				$Script:WebSession.Headers['Test'] | Should -Be 'OK'
+				$Script:ISPSSSession.WebSession.Headers['Test'] | Should -Be 'OK'
 			}
 
 			It 'sends output to Get-IDResponse' {
@@ -148,6 +162,19 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
 			BeforeEach {
 
+				$ISPSSSession = [ordered]@{
+					tenant_url         = $null
+					User               = $null
+					TenantId           = $null
+					SessionId          = $null
+					WebSession         = $null
+					StartTime          = $null
+					ElapsedTime        = $null
+					LastCommand        = $null
+					LastCommandTime    = $null
+					LastCommandResults = $null
+				}
+				New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
 				If ($IsCoreCLR) {
 					$errorDetails = $([pscustomobject]@{'ErrorCode' = 'URA999'; 'ErrorMessage' = 'Some Error Message' } | ConvertTo-Json)
 					$statusCode = 400

@@ -36,9 +36,9 @@ Function Complete-SamlAuthentication {
         #Setup request. This command will return html, so supress output/html error detection
         $Script:ExpectHtml = $true
         $LogonRequest['Method'] = 'GET'
-        $LogonRequest['Uri'] = "$Script:tenant_url/login"
+        $LogonRequest['Uri'] = "$($ISPSSSession.tenant_url)/login"
 
-        if ($PSCmdlet.ShouldProcess($Script:tenant_url, 'Send Assertion')) {
+        if ($PSCmdlet.ShouldProcess($ISPSSSession.tenant_url, 'Send Assertion')) {
 
             try {
 

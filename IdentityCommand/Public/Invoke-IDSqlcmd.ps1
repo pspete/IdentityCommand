@@ -55,7 +55,7 @@ function Invoke-IDSqlcmd {
 
     PROCESS {
 
-        $URI = "$Script:tenant_url/Redrock/query"
+        $URI = "$($ISPSSSession.tenant_url)/Redrock/query"
 
         #Create request body with Script & args properties
         $Cmd = $PSBoundParameters | Get-Parameter -ParametersToKeep Script

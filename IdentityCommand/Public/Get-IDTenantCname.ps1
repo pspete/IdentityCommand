@@ -5,7 +5,7 @@ function Get-IDTenantCname {
 
     BEGIN {
 
-        $URI = "$Script:tenant_url/TenantCnames/UiGet"
+        $URI = "$($ISPSSSession.tenant_url)/TenantCnames/UiGet"
 
     }#begin
 

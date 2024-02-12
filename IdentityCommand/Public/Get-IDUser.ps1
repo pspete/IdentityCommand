@@ -40,7 +40,7 @@ Function Get-IDUser {
     BEGIN {
         #ParameterSet name matches URL portion for different requests
         $Request = @{}
-        $Request['URI'] = "$Script:tenant_url/CDirectoryService/$($PSCmdlet.ParameterSetName)"
+        $Request['URI'] = "$($ISPSSSession.tenant_url)/CDirectoryService/$($PSCmdlet.ParameterSetName)"
         $Request['Method'] = 'POST'
     }#begin
 

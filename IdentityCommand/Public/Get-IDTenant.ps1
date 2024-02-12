@@ -5,7 +5,7 @@ function Get-IDTenant {
 
     BEGIN {
 
-        $URI = "$Script:tenant_url/SysInfo/About"
+        $URI = "$($ISPSSSession.tenant_url)/SysInfo/About"
 
     }#begin
 

@@ -44,7 +44,7 @@ function Out-QRImage {
         }
 
         #Get filename from Content-Disposition Header element.
-        $FileName = "$Script:SessionId.html"
+        $FileName = "$($ISPSSSession.SessionId).html"
 
         #Define output path
         $OutputPath = Join-Path $Path $FileName

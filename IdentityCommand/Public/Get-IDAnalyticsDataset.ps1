@@ -5,7 +5,7 @@ function Get-IDAnalyticsDataset {
 
     BEGIN {
 
-        $URI = "$Script:tenant_url/analytics/services/v1.0/dataset"
+        $URI = "$($ISPSSSession.tenant_url)/analytics/services/v1.0/dataset"
 
     }#begin
 

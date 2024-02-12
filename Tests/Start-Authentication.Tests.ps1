@@ -25,8 +25,19 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         BeforeEach {
             $Script:Version = '1.0'
-            $Script:tenant_url = 'https://somedomain.id.cyberark.cloud'
-            $Script:WebSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+            $ISPSSSession = [ordered]@{
+                tenant_url         = 'https://somedomain.id.cyberark.cloud'
+                User               = $null
+                TenantId           = $null
+                SessionId          = $null
+                WebSession         = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+                StartTime          = $null
+                ElapsedTime        = $null
+                LastCommand        = $null
+                LastCommandTime    = $null
+                LastCommandResults = $null
+            }
+            New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
             $LogonRequest = @{ }
             $LogonRequest['Method'] = 'POST'
             $LogonRequest['SessionVariable'] = 'IDSession'
@@ -94,7 +105,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                     [pscustomobject]@{'PodFqdn' = 'otherdomain.id.cyberark.cloud' }
                 }
                 $LogonRequest | Start-Authentication -Credential $Creds
-                $Script:tenant_url | Should -Be 'https://otherdomain.id.cyberark.cloud'
+                $Script:ISPSSSession.tenant_url | Should -Be 'https://otherdomain.id.cyberark.cloud'
             }
 
             It 'sends two requests if redirect URL returned' {

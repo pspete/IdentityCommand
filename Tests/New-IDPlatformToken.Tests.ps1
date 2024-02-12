@@ -25,6 +25,19 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         BeforeEach {
 
+            $ISPSSSession = [ordered]@{
+                tenant_url         = $null
+                User               = $null
+                TenantId           = $null
+                SessionId          = $null
+                WebSession         = $null
+                StartTime          = $null
+                ElapsedTime        = $null
+                LastCommand        = $null
+                LastCommandTime    = $null
+                LastCommandResults = $null
+            }
+            New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
             Mock Invoke-IDRestMethod -MockWith {
                 [pscustomobject]@{
                     token_type   = 'SomeTokenType'
@@ -41,7 +54,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             It 'sets expected tenant_url with no trailing slash as script scope variable' {
                 New-IDPlatformToken -tenant_url https://sometenant.id.cyberark.cloud/ -Credential $Cred
-                $Script:tenant_url | Should -Be 'https://sometenant.id.cyberark.cloud'
+                $Script:ISPSSSession.tenant_url | Should -Be 'https://sometenant.id.cyberark.cloud'
             }
 
             It 'sends request' {

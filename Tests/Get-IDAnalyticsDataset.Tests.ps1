@@ -28,6 +28,19 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 [pscustomobject]@{'property' = 'value' }
             }
 
+            $ISPSSSession = [ordered]@{
+                tenant_url         = 'https://somedomain.id.cyberark.cloud'
+                User               = $null
+                TenantId           = 'SomeTenant'
+                SessionId          = 'SomeSession'
+                WebSession         = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+                StartTime          = $null
+                ElapsedTime        = $null
+                LastCommand        = $null
+                LastCommandTime    = $null
+                LastCommandResults = $null
+            }
+            New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
             $response = Get-IDAnalyticsDataset
 
         }

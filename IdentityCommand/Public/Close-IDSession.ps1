@@ -5,7 +5,7 @@ function Close-IDSession {
 
     BEGIN {
 
-        $URI = "$Script:tenant_url/Security/Logout"
+        $URI = "$($ISPSSSession.tenant_url)/Security/Logout"
 
     }#begin
 
@@ -19,9 +19,12 @@ function Close-IDSession {
     END {
 
         #Remove Module scope variables on logoff
-        Remove-Variable -Name tenant_url -Scope Script -ErrorAction SilentlyContinue
-        Remove-Variable -Name TenantId -Scope Script -ErrorAction SilentlyContinue
-        Remove-Variable -Name WebSession -Scope Script -ErrorAction SilentlyContinue
+        $ISPSSSession.tenant_url = $null
+        $ISPSSSession.TenantId = $null
+        $ISPSSSession.WebSession = $null
+        $ISPSSSession.User = $null
+        $ISPSSSession.StartTime = $null
+        $ISPSSSession.SessionId = $null
 
     }#end
 
