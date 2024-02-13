@@ -95,6 +95,30 @@ PS C:\> Invoke-RestMethod -WebSession $websession `
 -Uri https://somedomain.id.cyberark.cloud `
 -Body @{SomeProperty = 'SomeValue'} | ConvertTo-Json
 ```
+### Module Scope Variables & Command  Invocation Data
+
+The `Get-IDSession` command can be used to return data from the module scope:
+
+```powershell
+PS C:\> Get-IDSession
+
+Name                           Value
+----                           -----
+tenant_url                     https://abc1234.id.cyberark.cloud
+User                           some.user@somedomain.com
+TenantId                       ABC1234
+SessionId                      1337CbGbPunk3Sm1ff5ess510nD3tai75
+WebSession                     Microsoft.PowerShell.Commands.WebRequestSession
+StartTime                      12/02/2024 22:58:13
+ElapsedTime                    00:25:30
+LastCommand                    System.Management.Automation.InvocationInfo
+LastCommandTime                12/02/2024 23:23:07
+LastCommandResults             {"success":true,"Result":{"SomeResult"}}
+```
+
+Executing this command exports variables like the URL, Username & WebSession object for the authenticated session from IdentityCommand into your local scope, either for use in other requests outside of the module scope, or for informational purposes.
+
+Return data also includes details such as session start time, elapsed time, last command time, as well as data for the last invoked command and the results of the previous command.
 
 ## List Of Commands
 
@@ -105,7 +129,7 @@ The commands currently available in the _IdentityCommand_ module are listed here
 | `New-IDSession`             | Authenticate to CyberArk Identity, answering MFA challenges to start a new API session.     |
 | `Close-IDSession`           | Logoff CyberArk Identity API                                                                |
 | `Clear-IDUserSession`       | Signs out user from all active sessions                                                     |
-| `Get-IDSession`             | Get WebSession object from the module scope                                                 |
+| `Get-IDSession`             | Get variables like the WebSession object from the module scope, as well as previously invoked command and API return data.                                                  |
 | `Get-IDUser`                | Fetch details of cloud directory users                                                      |
 | `Suspend-IDUserMFA`         | Exempt a user from MFA                                                                      |
 | `Test-IDUserCloudLock`      | Checks if a user is cloud locked                                                            |
