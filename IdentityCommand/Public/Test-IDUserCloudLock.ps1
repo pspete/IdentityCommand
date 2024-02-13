@@ -15,7 +15,7 @@ function Test-IDUserCloudLock {
 
     PROCESS {
 
-        $URI = "$Script:tenant_url/UserMgmt/IsUserCloudLocked?$($PSBoundParameters | Get-Parameter | ConvertTo-QueryString)"
+        $URI = "$($ISPSSSession.tenant_url)/UserMgmt/IsUserCloudLocked?$($PSBoundParameters | Get-Parameter | ConvertTo-QueryString)"
 
         #Send Request
         $result = Invoke-IDRestMethod -Uri $URI -Method POST

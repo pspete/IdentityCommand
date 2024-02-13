@@ -24,9 +24,18 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
     InModuleScope $(Split-Path (Split-Path (Split-Path -Parent $PSCommandPath) -Parent) -Leaf ) {
 
         BeforeEach {
-            $Script:TenantId = 'SomeTenant'
-            $Script:SessionId = 'SomeSession'
-            $Script:tenant_url = 'https://somedomain.id.cyberark.cloud'
+            $ISPSSSession = [ordered]@{
+                tenant_url         = 'https://somedomain.id.cyberark.cloud'
+                User               = $null
+                TenantId           = 'SomeTenant'
+                SessionId          = 'SomeSession'
+                WebSession         = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+                StartTime          = $null
+                ElapsedTime        = $null
+                LastCommand        = $null
+                LastCommandTime    = $null
+                LastCommandResults = $null
+            }
             Mock Invoke-IDRestMethod -MockWith {
 
             }

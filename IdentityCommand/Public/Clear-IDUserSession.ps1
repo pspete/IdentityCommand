@@ -15,7 +15,7 @@ function Clear-IDUserSession {
 
     PROCESS {
 
-        $URI = "$Script:tenant_url/UserMgmt/SignOutEverywhere?$($PSBoundParameters | Get-Parameter | ConvertTo-QueryString)"
+        $URI = "$($ISPSSSession.tenant_url)/UserMgmt/SignOutEverywhere?$($PSBoundParameters | Get-Parameter | ConvertTo-QueryString)"
 
         #Send Logoff Request
         Invoke-IDRestMethod -Uri $URI -Method POST

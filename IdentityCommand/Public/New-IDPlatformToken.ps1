@@ -21,7 +21,7 @@ Function New-IDPlatformToken {
 
     Begin {
         #Remove WebSession which may exist in module scope
-        Remove-Variable -Name WebSession -Scope Script -ErrorAction SilentlyContinue
+        $ISPSSSession.WebSession = $null
 
         $LogonRequest = @{ }
         $LogonRequest['Method'] = 'POST'
@@ -35,9 +35,9 @@ Function New-IDPlatformToken {
         $tenant_url = $tenant_url -replace '/$', ''
 
         #Set Module Scope variables
-        Set-Variable -Name tenant_url -Value $tenant_url -Scope Script
+        $ISPSSSession.tenant_url = $tenant_url
 
-        $LogonRequest['Uri'] = "$Script:tenant_url/OAuth2/PlatformToken"
+        $LogonRequest['Uri'] = "$($ISPSSSession.tenant_url)/OAuth2/PlatformToken"
         $LogonRequest['Headers'] = @{'accept' = '*/*' }
         $LogonRequest['ContentType'] = 'application/x-www-form-urlencoded'
         $LogonRequest['Body'] = @{
@@ -51,7 +51,7 @@ Function New-IDPlatformToken {
 
         }
 
-        if ($PSCmdlet.ShouldProcess($Script:tenant_url, 'Request Platform Token')) {
+        if ($PSCmdlet.ShouldProcess($($ISPSSSession.tenant_url), 'Request Platform Token')) {
 
             #*Get OIDC token based on grant type
             $IDSession = Invoke-IDRestMethod @LogonRequest
@@ -63,7 +63,7 @@ Function New-IDPlatformToken {
                 #Add GetWebSession ScriptMethod
                 $result | Add-Member -MemberType ScriptMethod -Name GetWebSession -Value {
 
-                    Get-IDSession
+                    Get-IDSession | Select-Object -ExpandProperty WebSession
 
                 } -Force
 

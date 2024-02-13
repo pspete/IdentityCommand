@@ -57,15 +57,15 @@ Function Start-AdvanceAuthentication {
 
     Process {
 
-        $LogonRequest['Uri'] = "$Script:tenant_url/Security/AdvanceAuthentication"
+        $LogonRequest['Uri'] = "$($ISPSSSession.tenant_url)/Security/AdvanceAuthentication"
 
         $Body = @{
-            TenantId    = $Script:TenantId
-            SessionId   = $Script:SessionId
+            TenantId    = $ISPSSSession.TenantId
+            SessionId   = $ISPSSSession.SessionId
             MechanismId = $($Mechanism.MechanismId)
         }
 
-        if ($PSCmdlet.ShouldProcess($Script:tenant_url, 'Advance Authentication')) {
+        if ($PSCmdlet.ShouldProcess($($ISPSSSession.tenant_url), 'Advance Authentication')) {
 
             try {
 
@@ -138,7 +138,7 @@ Function Start-AdvanceAuthentication {
     End {
 
         #Maybe there is a QR Image to clear up
-        Remove-Item $(Join-Path $([System.IO.Path]::GetTempPath()) "$Script:SessionId.html") -ErrorAction SilentlyContinue
+        Remove-Item $(Join-Path $([System.IO.Path]::GetTempPath()) "$($ISPSSSession.SessionId).html") -ErrorAction SilentlyContinue
 
     }
 

@@ -1,13 +1,57 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [unreleased] - 2023-10-08
+## [unreleased] - ####-##-##
 
 ### Added
 - N/A
 
 ### Changed
 - N/A
+
+### Fixed
+- N/A
+
+## [0.2] - 2024-02-13
+
+Updates the `Get-IDSession` command, which can be used to return data from the module scope:
+
+```powershell
+PS C:\> Get-IDSession
+
+Name                           Value
+----                           -----
+tenant_url                     https://abc1234.id.cyberark.cloud
+User                           some.user@somedomain.com
+TenantId                       ABC1234
+SessionId                      1337CbGbPunk3Sm1ff5ess510nD3tai75
+WebSession                     Microsoft.PowerShell.Commands.WebRequestSession
+StartTime                      12/02/2024 22:58:13
+ElapsedTime                    00:25:30
+LastCommand                    System.Management.Automation.InvocationInfo
+LastCommandTime                12/02/2024 23:23:07
+LastCommandResults             {"success":true,"Result":{"SomeResult"}}
+```
+
+Executing this command exports variables like the URL, Username & WebSession object for the authenticated session from IdentityCommand into your local scope, either for use in other requests outside of the module scope, or for informational purposes.
+
+Return data also includes details such as session start time, elapsed time, last command time, as well as data for the last invoked command and the results of the previous command useful for debugging & development purposes.
+
+### Added
+- Private Function `Get-ParentFunction`
+  - Helper function to get command invocation data from different scopes
+- Private Function `Get-SessionClone`
+  - Helper function to create unreferenced copy of IdentityCommand session hashtable object
+
+### Changed
+- `Get-IDSession`
+  - Returns the module scoped `$ISPSSSession` variable (which includes the WebSession object), instead of just the WebSession object.
+- `New-IDSession`
+  - Sets values in the script scope `$ISPSSSession` object instead of individual script scope variables.
+- `Close-IDSession`
+  - Sets null values in the script scope `$ISPSSSession` object instead of removing individual script scope variables.
+- All other functions
+  - Updated entire codebase to reference `$ISPSSSession` object instead of individual script scope variables.
 
 ### Fixed
 - N/A

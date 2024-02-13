@@ -5,7 +5,7 @@ function Get-IDUserIdentifier {
 
     BEGIN {
 
-        $URI = "$Script:tenant_url/UserIdentifiers/Get"
+        $URI = "$($ISPSSSession.tenant_url)/UserIdentifiers/Get"
 
     }#begin
 

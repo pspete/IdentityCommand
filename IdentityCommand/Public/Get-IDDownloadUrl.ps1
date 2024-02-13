@@ -5,7 +5,7 @@ function Get-IDDownloadUrl {
 
     BEGIN {
 
-        $URI = "$Script:tenant_url/Core/GetDownloadUrls"
+        $URI = "$($ISPSSSession.tenant_url)/Core/GetDownloadUrls"
 
     }#begin
 

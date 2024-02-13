@@ -48,7 +48,7 @@ Function Start-SamlAuthentication {
         #Setup request. This command will return html, so supress output/html error detection
         $Script:ExpectHtml = $true
         $LogonRequest['ContentType'] = 'application/x-www-form-urlencoded'
-        $LogonRequest['Uri'] = "$Script:tenant_url/my"
+        $LogonRequest['Uri'] = "$($ISPSSSession.tenant_url)/my"
 
         $LogonRequest['Body'] = @{
 
@@ -56,7 +56,7 @@ Function Start-SamlAuthentication {
 
         }
 
-        if ($PSCmdlet.ShouldProcess($Script:tenant_url, 'Send SAML Assertion')) {
+        if ($PSCmdlet.ShouldProcess($($ISPSSSession.tenant_url), 'Send SAML Assertion')) {
 
             try {
 

@@ -26,15 +26,15 @@ Function Clear-AdvanceAuthentication {
     Process {
 
         $Body = @{
-            TenantId  = $Script:TenantId
-            SessionId = $Script:SessionId
+            TenantId  = $ISPSSSession.TenantId
+            SessionId = $ISPSSSession.SessionId
         }
 
-        $LogonRequest['Uri'] = "$Script:tenant_url/Security/CleanupAuthentication"
+        $LogonRequest['Uri'] = "$($ISPSSSession.tenant_url)/Security/CleanupAuthentication"
         $LogonRequest['Method'] = 'POST'
         $LogonRequest['Body'] = $Body | ConvertTo-Json
 
-        if ($PSCmdlet.ShouldProcess($Script:SessionId, 'Clear Authentication Session')) {
+        if ($PSCmdlet.ShouldProcess($($ISPSSSession.SessionId), 'Clear Authentication Session')) {
 
             Invoke-IDRestMethod @LogonRequest | Out-Null
 

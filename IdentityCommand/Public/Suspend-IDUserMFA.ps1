@@ -22,7 +22,7 @@ function Suspend-IDUserMFA {
 
     PROCESS {
 
-        $URI = "$Script:tenant_url/CDirectoryService/ExemptUserFromMfa?$($PSBoundParameters | Get-Parameter | ConvertTo-QueryString)"
+        $URI = "$($ISPSSSession.tenant_url)/CDirectoryService/ExemptUserFromMfa?$($PSBoundParameters | Get-Parameter | ConvertTo-QueryString)"
 
         #Send Request
         Invoke-IDRestMethod -Uri $URI -Method POST

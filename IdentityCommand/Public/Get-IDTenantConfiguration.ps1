@@ -5,7 +5,7 @@ function Get-IDTenantConfiguration {
 
     BEGIN {
 
-        $URI = "$Script:tenant_url/TenantConfig/GetCustomerConfig"
+        $URI = "$($ISPSSSession.tenant_url)/TenantConfig/GetCustomerConfig"
 
     }#begin
 

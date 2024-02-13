@@ -45,7 +45,7 @@ Function Start-Authentication {
 
     process {
 
-        $LogonRequest['Uri'] = "$Script:tenant_url/Security/StartAuthentication"
+        $LogonRequest['Uri'] = "$($ISPSSSession.tenant_url)/Security/StartAuthentication"
 
         $LogonRequest['Body'] = @{
 
@@ -54,7 +54,7 @@ Function Start-Authentication {
 
         } | ConvertTo-Json
 
-        if ($PSCmdlet.ShouldProcess($Script:tenant_url, 'Start Authentication')) {
+        if ($PSCmdlet.ShouldProcess($($ISPSSSession.tenant_url), 'Start Authentication')) {
 
             try {
 
@@ -65,11 +65,11 @@ Function Start-Authentication {
 
                     #Redirect URL has been returned
                     #update module scope variables
-                    Clear-Variable -Name tenant_url -Scope Script
-                    Remove-Variable -Name WebSession -Scope Script
-                    Set-Variable -Name tenant_url -Value "https://$($IDSession.PodFqdn)" -Scope Script
+                    $ISPSSSession.tenant_url = $null
+                    $ISPSSSession.WebSession = $null
+                    $ISPSSSession.tenant_url = "https://$($IDSession.PodFqdn)"
 
-                    $LogonRequest['Uri'] = "$Script:tenant_url/Security/StartAuthentication"
+                    $LogonRequest['Uri'] = "$($ISPSSSession.tenant_url)/Security/StartAuthentication"
 
                     #Perform Start Authentication with new URL
                     $IDSession = Invoke-IDRestMethod @LogonRequest

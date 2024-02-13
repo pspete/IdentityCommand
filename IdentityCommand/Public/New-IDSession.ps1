@@ -35,7 +35,7 @@ Function New-IDSession {
     Begin {
 
         #Remove WebSession which may exist in module scope
-        Remove-Variable -Name WebSession -Scope Script -ErrorAction SilentlyContinue
+        $ISPSSSession.WebSession = $null
 
         $LogonRequest = @{ }
         $LogonRequest['Method'] = 'POST'
@@ -50,7 +50,7 @@ Function New-IDSession {
         $tenant_url = $tenant_url -replace '/$', ''
 
         #Set Module Scope variables
-        Set-Variable -Name tenant_url -Value $tenant_url -Scope Script
+        $ISPSSSession.tenant_url = $tenant_url
         Set-Variable -Name Version -Value '1.0' -Scope Script
 
         $LogonRequest['Headers'] = @{'accept' = '*/*' }
@@ -74,8 +74,8 @@ Function New-IDSession {
         $LogonRequest['Headers'].Add('X-IDAP-NATIVE-CLIENT', $true)
 
         #Set Module Scope variables
-        Set-Variable -Name TenantId -Value $IDSession.TenantId -Scope Script
-        Set-Variable -Name SessionId -Value $IDSession.SessionId -Scope Script
+        $ISPSSSession.TenantId = $IDSession.TenantId
+        $ISPSSSession.SessionId = $IDSession.SessionId
         #? does SessionId need to be available in script scope?
 
         switch ($PSCmdlet.ParameterSetName) {
@@ -151,7 +151,7 @@ Function New-IDSession {
                     #Add GetWebSession ScriptMethod
                     $result | Add-Member -MemberType ScriptMethod -Name GetWebSession -Value {
 
-                        Get-IDSession
+                        (Get-IDSession).WebSession
 
                     } -Force
 
@@ -161,6 +161,10 @@ Function New-IDSession {
                         Write-Output @{Authorization = "Bearer $($this.Token)" }
 
                     } -Force
+
+                    #Record authenticated User name & Session Start Time
+                    $ISPSSSession.User = $result.User
+                    $ISPSSSession.StartTime = Get-Date
 
                     #Return the result
                     $result

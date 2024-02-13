@@ -19,7 +19,7 @@ function Lock-IDUser {
 
         $BoundParameters = ($PSBoundParameters | Get-Parameter) + $Action
 
-        $URI = "$Script:tenant_url/UserMgmt/SetCloudLock?$($BoundParameters | ConvertTo-QueryString)"
+        $URI = "$($ISPSSSession.tenant_url)/UserMgmt/SetCloudLock?$($BoundParameters | ConvertTo-QueryString)"
 
         #Send Unlock Request
         $result = Invoke-IDRestMethod -Uri $URI -Method POST

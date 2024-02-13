@@ -24,7 +24,20 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
     InModuleScope $(Split-Path (Split-Path (Split-Path -Parent $PSCommandPath) -Parent) -Leaf ) {
 
         BeforeEach {
-            $Script:tenant_url = 'https://somedomain.id.cyberark.cloud'
+
+            $ISPSSSession = [ordered]@{
+                tenant_url         = 'https://somedomain.id.cyberark.cloud'
+                User               = $null
+                TenantId           = 'SomeTenant'
+                SessionId          = 'SomeSession'
+                WebSession         = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+                StartTime          = $null
+                ElapsedTime        = $null
+                LastCommand        = $null
+                LastCommandTime    = $null
+                LastCommandResults = $null
+            }
+            New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
         }
 
         Context 'GetUsers' {
@@ -110,7 +123,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 Mock Invoke-IDRestMethod -MockWith {
                     [pscustomobject]@{ 'property' = 'value' }
                 }
-                $response = Get-IDUser -id someid
+                $response = Get-IDUser -ID someid
             }
 
 
@@ -254,7 +267,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 Mock Invoke-IDRestMethod -MockWith {
                     [pscustomobject]@{ 'property' = 'value' }
                 }
-                $response = Get-IDUser -currentuser
+                $response = Get-IDUser -CurrentUser
             }
 
             It 'sends request' {

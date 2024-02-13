@@ -24,7 +24,19 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
     InModuleScope $(Split-Path (Split-Path (Split-Path -Parent $PSCommandPath) -Parent) -Leaf ) {
 
         BeforeEach {
-
+            $ISPSSSession = [ordered]@{
+                tenant_url         = $null
+                User               = $null
+                TenantId           = $null
+                SessionId          = $null
+                WebSession         = $null
+                StartTime          = $null
+                ElapsedTime        = $null
+                LastCommand        = $null
+                LastCommandTime    = $null
+                LastCommandResults = $null
+            }
+            New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
             Mock Start-Authentication -MockWith {
                 [pscustomobject]@{
                     TenantId         = 'SomeID'
@@ -69,7 +81,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             It 'sets expected tenant_url with no trailing slash as script scope variable' {
                 New-IDSession -tenant_url https://somedomain.id.cyberark.cloud/ -Credential $Creds
-                $Script:tenant_url | Should -Be 'https://somedomain.id.cyberark.cloud'
+                $Script:ISPSSSession.tenant_url | Should -Be 'https://somedomain.id.cyberark.cloud'
 
             }
 
@@ -115,13 +127,13 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             It 'sets expected tenantId with no trailing slash as script scope variable' {
                 New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
-                $Script:tenantId | Should -Be 'SomeID'
+                $Script:ISPSSSession.tenantId | Should -Be 'SomeID'
 
             }
 
             It 'sets expected sessionId as script scope variable' {
                 New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
-                $Script:sessionId | Should -Be 'SomeSession'
+                $Script:ISPSSSession.sessionId | Should -Be 'SomeSession'
 
             }
 

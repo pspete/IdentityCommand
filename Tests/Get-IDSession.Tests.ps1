@@ -25,40 +25,41 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         BeforeEach {
 
-            Mock -CommandName Get-Variable -MockWith {}
-            Get-IDSession
+
+            $ISPSSSession = [ordered]@{
+                tenant_url         = 'https://somedomain.id.cyberark.cloud'
+                User               = 'SomeUser'
+                TenantId           = 'SomeTenant'
+                SessionId          = 'SomeSession'
+                WebSession         = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+                StartTime          = (Get-Date).AddMinutes(-5)
+                ElapsedTime        = $null
+                LastCommand        = $null
+                LastCommandTime    = (Get-Date).AddMinutes(-1)
+                LastCommandResults = @{'TestKey' = 'TestValue' }
+            }
+            New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
+            $response = Get-IDSession
 
         }
 
         Context 'General' {
 
-            It 'gets expected variable' {
+            It 'provides output' {
 
-                Assert-MockCalled Get-Variable -ParameterFilter {
-
-                    $Name -eq 'WebSession'
-
-                } -Times 1 -Exactly -Scope It
+                $response | Should -Not -BeNullOrEmpty
 
             }
 
-            It 'gets variable from expected scope' {
+            It 'has output with expected number of properties' {
 
-                Assert-MockCalled Get-Variable -ParameterFilter {
-
-                    $Scope -eq 'Script'
-
-                } -Times 1 -Exactly -Scope It
+                $response.Keys.Count | Should -Be 10
 
             }
 
-            It 'gets variable value' {
+            It 'outputs object with expected typename' {
 
-                Assert-MockCalled Get-Variable -ParameterFilter {
-
-                    $ValueOnly -eq $true
-
-                } -Times 1 -Exactly -Scope It
+                $response | Get-Member | Select-Object -ExpandProperty typename -Unique | Should -Be IdCmd.Session
 
             }
 

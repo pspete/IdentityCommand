@@ -9,7 +9,7 @@
 	queried and acted on.
 	All requests are sent with ContentType=application/json.
 	If the sessionVariable parameter is passed, the function will return the WebSession
-	object to the $Script:WebSession variable.
+	object to the $ISPSSSession.WebSession variable.
 
 	.PARAMETER Method
 	The method for the REST Method.
@@ -27,7 +27,7 @@
 	.PARAMETER SessionVariable
 	If passed, will be sent to invoke-webrequest which in turn will create a websession
 	variable using the string value as the name. This variable will only exist in the current scope
-	so will be set as the value of $Script:WebSession to be available in a modules scope.
+	so will be set as the value of $ISPSSSession.WebSession to be available in a modules scope.
 	Cannot be specified with WebSession
 
 	.PARAMETER WebSession
@@ -61,7 +61,7 @@
 	An Accept string to be included in the request header
 
 	.EXAMPLE
-	Invoke-IDRestMethod -Uri $URI -Method DELETE -WebSession $Script:WebSession
+	Invoke-IDRestMethod -Uri $URI -Method DELETE -WebSession $ISPSSSession.WebSession
 
 	Send request to web service
 	#>
@@ -121,12 +121,12 @@
 		$ProgressPreference = 'SilentlyContinue'
 		$PSBoundParameters.Add('UseBasicParsing', $true)
 
-		if ($null -ne $Script:WebSession) {
+		if ($null -ne $ISPSSSession.WebSession) {
 
 			#use the WebSession if it exists in the module scope, and alternate session is not specified.
 			if ( -not ($PSBoundParameters.ContainsKey('WebSession'))) {
 
-				$PSBoundParameters.Add('WebSession', $Script:WebSession)
+				$PSBoundParameters.Add('WebSession', $ISPSSSession.WebSession)
 
 			}
 
@@ -229,11 +229,16 @@
 
 		} finally {
 
+			#Add Command Data to $ISPSSSession module scope variable
+			$ISPSSSession.LastCommand = Get-ParentFunction | Select-Object -ExpandProperty CommandData
+			$ISPSSSession.LastCommandResults = $APIResponse
+			$ISPSSSession.LastCommandTime = Get-Date
+
 			#If Session Variable passed as argument
 			If ($PSCmdlet.ParameterSetName -eq 'SessionVariable') {
 
 				#Make the WebSession available in the module scope
-				Set-Variable -Name WebSession -Value $(Get-Variable $(Get-Variable sessionVariable).Value).Value -Scope Script
+				$ISPSSSession.WebSession = $(Get-Variable $(Get-Variable sessionVariable).Value).Value
 
 			}
 

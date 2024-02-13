@@ -15,7 +15,7 @@ function Get-IDConnector {
 
     PROCESS {
 
-        $URI = "$Script:tenant_url/Core/CheckProxyHealth"
+        $URI = "$($ISPSSSession.tenant_url)/Core/CheckProxyHealth"
 
         $queryString = $PSBoundParameters | Get-Parameter | ConvertTo-QueryString
 

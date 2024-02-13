@@ -54,7 +54,7 @@ function Get-IDUserRole {
         $URLParameters = $PSBoundParameters | Get-Parameter -ParametersToKeep ID
         $BoundParameters = $PSBoundParameters | Get-Parameter -ParametersToRemove ID
 
-        $URI = "$Script:tenant_url/UserMgmt/GetUsersRolesAndAdministrativeRights?$($URLParameters | ConvertTo-QueryString)"
+        $URI = "$($ISPSSSession.tenant_url)/UserMgmt/GetUsersRolesAndAdministrativeRights?$($URLParameters | ConvertTo-QueryString)"
 
         $Body = @{'Args' = $BoundParameters } | ConvertTo-Json
 

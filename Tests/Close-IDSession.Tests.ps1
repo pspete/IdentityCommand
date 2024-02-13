@@ -32,6 +32,19 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
+            $ISPSSSession = [ordered]@{
+                tenant_url         = 'https://somedomain.id.cyberark.cloud'
+                User               = 'SomeUser'
+                TenantId           = 'SomeTenant'
+                SessionId          = 'SomeSession'
+                WebSession         = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+                StartTime          = (Get-Date).AddMinutes(-5)
+                ElapsedTime        = $null
+                LastCommand        = $null
+                LastCommandTime    = $null
+                LastCommandResults = $null
+            }
+            New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
             $response = Close-IDSession
 
         }
@@ -67,18 +80,12 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             }
 
             It 'removes the expected module scope variables' {
-                Assert-MockCalled -CommandName Remove-Variable -Times 3 -Exactly -Scope It -ParameterFilter {
-                    $Name -eq 'tenant_url'
-                    $Scope -eq 'Script'
-                }
-                Assert-MockCalled -CommandName Remove-Variable -Times 3 -Exactly -Scope It -ParameterFilter {
-                    $Name -eq 'WebSession'
-                    $Scope -eq 'Script'
-                }
-                Assert-MockCalled -CommandName Remove-Variable -Times 3 -Exactly -Scope It -ParameterFilter {
-                    $Name -eq 'TenantId'
-                    $Scope -eq 'Script'
-                }
+                $Script:ISPSSSession.tenant_url | Should -BeNullOrEmpty
+                $Script:ISPSSSession.TenantId | Should -BeNullOrEmpty
+                $Script:ISPSSSession.WebSession | Should -BeNullOrEmpty
+                $Script:ISPSSSession.User | Should -BeNullOrEmpty
+                $Script:ISPSSSession.StartTime | Should -BeNullOrEmpty
+                $Script:ISPSSSession.SessionId | Should -BeNullOrEmpty
             }
 
         }
