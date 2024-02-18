@@ -35,6 +35,8 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 LastCommand        = $null
                 LastCommandTime    = $null
                 LastCommandResults = $null
+                LastError          = $null
+                LastErrorTime      = $null
             }
             New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
             Mock Start-Authentication -MockWith {
@@ -214,6 +216,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             BeforeEach {
                 Mock Start-AdvanceAuthentication -MockWith {
+                    $ISPSSSession.WebSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
                     [pscustomobject]@{
                         Summary = 'LoginSuccess'
                     }

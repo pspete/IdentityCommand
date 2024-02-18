@@ -162,9 +162,10 @@ Function New-IDSession {
 
                     } -Force
 
-                    #Record authenticated User name & Session Start Time
+                    #Record authenticated User name, Session Start Time & add Authorization header
                     $ISPSSSession.User = $result.User
                     $ISPSSSession.StartTime = Get-Date
+                    $ISPSSSession.WebSession.Headers.Add('Authorization', "Bearer $($result.Token)")
 
                     #Return the result
                     $result

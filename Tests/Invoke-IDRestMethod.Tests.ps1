@@ -173,10 +173,12 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 					LastCommand        = $null
 					LastCommandTime    = $null
 					LastCommandResults = $null
+					LastError          = $null
+					LastErrorTime      = $null
 				}
 				New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
 				If ($IsCoreCLR) {
-					$errorDetails = $([pscustomobject]@{'ErrorCode' = 'URA999'; 'ErrorMessage' = 'Some Error Message' } | ConvertTo-Json)
+					$errorDetails = $([pscustomobject]@{'ErrorCode' = 'URA999'; 'Message' = 'Some Error Message' } | ConvertTo-Json)
 					$statusCode = 400
 					$response = New-Object System.Net.Http.HttpResponseMessage $statusCode
 					$exception = New-Object Microsoft.PowerShell.Commands.HttpResponseException "$statusCode ($($response.ReasonPhrase))", $response
@@ -229,8 +231,8 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
 			It 'reports inner error messages' {
 				If ($IsCoreCLR) {
-					$Details = [pscustomobject]@{'ErrorCode' = 'URA666'; 'ErrorMessage' = 'Some Inner Error' }
-					$errorDetails = $([pscustomobject]@{'ErrorCode' = 'URA999'; 'ErrorMessage' = 'Some Error Message' ; 'Details' = $Details } | ConvertTo-Json)
+					$Details = [pscustomobject]@{'ErrorCode' = 'URA666'; 'Message' = 'Some Inner Error' }
+					$errorDetails = $([pscustomobject]@{'ErrorCode' = 'URA999'; 'Message' = 'Some Error Message' ; 'Details' = $Details } | ConvertTo-Json)
 					$errorRecord = New-Object Management.Automation.ErrorRecord $exception, $errorID, $errorCategory, $targetObject
 					$errorRecord.ErrorDetails = $errorDetails
 					Mock Invoke-WebRequest { Throw $errorRecord }

@@ -199,18 +199,40 @@
 
 			If ($null -ne $($PSItem)) {
 
+				$ISPSSSession.LastError = $PSItem
+				$ISPSSSession.LastErrorTime = Get-Date
+
+				$ErrorID = $PSItem | Select-Object -ExpandProperty FullyQualifiedErrorId
+
 				try {
 
-					$ErrorMessage = $PSItem.Exception | Select-Object -ExpandProperty Message
-					$ErrorID = $PSItem | Select-Object -ExpandProperty FullyQualifiedErrorId
+					$ErrorDetails = $PSItem.ErrorDetails | ConvertFrom-Json -ErrorAction Stop
+					$validJson = $true
 
 				} catch {
-					#catch all
 
+					$validJson = $false
 					$ErrorMessage = $null
-					$ErrorID = $null
 
 				} finally {
+
+					if ($validJson) {
+
+						$ErrorMessage = $ErrorDetails | Select-Object -ExpandProperty Message
+						If ($null -ne $ErrorDetails.Description) {
+							$ErrorDescription = $ErrorDetails | Select-Object -ExpandProperty Description
+							$ErrorMessage = "$ErrorMessage. $ErrorDescription"
+						}
+						If ($null -ne $ErrorDetails.code) {
+							$ErrorID, $ErrorDetails.code -join ','
+						}
+
+					} else {
+
+						ErrorMessage = $PSItem.ErrorDetails
+
+					}
+
 					#throw the error
 					$PSCmdlet.ThrowTerminatingError(
 

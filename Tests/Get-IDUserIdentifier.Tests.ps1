@@ -36,6 +36,8 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 LastCommand        = $null
                 LastCommandTime    = $null
                 LastCommandResults = $null
+                LastError          = $null
+                LastErrorTime      = $null
             }
             New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
 

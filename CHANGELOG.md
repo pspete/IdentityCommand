@@ -12,6 +12,27 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - N/A
 
+## [0.2 - Update 1] - 2024-02-18
+
+### Added
+- N/A
+
+### Changed
+- `New-IDSession`
+  - Adds `Authorization` header with Bearer token to WebSession object.
+- `New-IDPlatformToken`
+  - Adds `Authorization` header with Bearer token to WebSession object.
+  - Updates values in script scope object in-line with the previous module update.
+- Internal Functions & Error Handling
+  - Adds additional logic to handle error messages from Identity and other ISPSS services.
+  - Adds `LastError` details to script scope variable object returned with `Get-IDSession`.
+  - Makes contentType matching less stringent to accommodate data returned from other ISPSS services.
+
+### Fixed
+- `New-IDPlatformToken`
+  - Updated `GetWebSession` method to utilise `Get-IDSession` in order to return the WebSession object from the module's script scope.
+
+
 ## [0.2] - 2024-02-13
 
 Updates the `Get-IDSession` command, which can be used to return data from the module scope:
