@@ -229,7 +229,7 @@
 
 					} else {
 
-						ErrorMessage = $PSItem.ErrorDetails
+						$ErrorMessage = $PSItem.ErrorDetails
 
 					}
 
