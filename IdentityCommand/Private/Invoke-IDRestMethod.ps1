@@ -237,9 +237,6 @@
 							{ $null -ne $ErrorDetails.code } {
 								$ErrorID, $ErrorDetails.code -join ','
 							}
-							default {
-								$ErrorMessage = $ErrorDetails
-							}
 
 						}
 
