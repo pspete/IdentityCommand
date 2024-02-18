@@ -63,7 +63,7 @@ Function New-IDPlatformToken {
                 #Add GetWebSession ScriptMethod
                 $result | Add-Member -MemberType ScriptMethod -Name GetWebSession -Value {
 
-                    Get-IDSession | Select-Object -ExpandProperty WebSession
+                        (Get-IDSession).WebSession
 
                 } -Force
 
@@ -73,6 +73,11 @@ Function New-IDPlatformToken {
                     Write-Output @{Authorization = "$($this.token_type) $($this.access_token)" }
 
                 } -Force
+
+                #Record authenticated User name, Session Start Time & add Authorization header
+                $ISPSSSession.User = $Credential.Username
+                $ISPSSSession.StartTime = Get-Date
+                $ISPSSSession.WebSession.Headers.Add('Authorization', "$($result.token_type) $($result.access_token)")
 
                 #Return the result
                 $result

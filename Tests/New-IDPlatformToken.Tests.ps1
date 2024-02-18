@@ -23,34 +23,36 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
     InModuleScope $(Split-Path (Split-Path (Split-Path -Parent $PSCommandPath) -Parent) -Leaf ) {
 
-        BeforeEach {
-
-            $ISPSSSession = [ordered]@{
-                tenant_url         = $null
-                User               = $null
-                TenantId           = $null
-                SessionId          = $null
-                WebSession         = $null
-                StartTime          = $null
-                ElapsedTime        = $null
-                LastCommand        = $null
-                LastCommandTime    = $null
-                LastCommandResults = $null
-            }
-            New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
-            Mock Invoke-IDRestMethod -MockWith {
-                [pscustomobject]@{
-                    token_type   = 'SomeTokenType'
-                    expires_in   = 'SomeValue'
-                    access_token = 'SomeAccessToken'
-                }
-            }
-
-            $Cred = New-Object System.Management.Automation.PSCredential ('SomeUser', $(ConvertTo-SecureString 'SomePassword' -AsPlainText -Force))
-
-        }
-
         Context 'General' {
+
+            BeforeEach {
+                $ISPSSSession = [ordered]@{
+                    tenant_url         = $null
+                    User               = $null
+                    TenantId           = $null
+                    SessionId          = $null
+                    WebSession         = $null
+                    StartTime          = $null
+                    ElapsedTime        = $null
+                    LastCommand        = $null
+                    LastCommandTime    = $null
+                    LastCommandResults = $null
+                    LastError          = $null
+                    LastErrorTime      = $null
+                }
+                New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
+                Mock Invoke-IDRestMethod -MockWith {
+                    $ISPSSSession.WebSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+                    [pscustomobject]@{
+                        token_type   = 'SomeTokenType'
+                        expires_in   = 'SomeValue'
+                        access_token = 'SomeAccessToken'
+                    }
+                }
+
+                $Cred = New-Object System.Management.Automation.PSCredential ('SomeUser', $(ConvertTo-SecureString 'SomePassword' -AsPlainText -Force))
+
+            }
 
             It 'sets expected tenant_url with no trailing slash as script scope variable' {
                 New-IDPlatformToken -tenant_url https://sometenant.id.cyberark.cloud/ -Credential $Cred

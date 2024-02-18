@@ -54,6 +54,8 @@ $ISPSSSession = [ordered]@{
     LastCommand        = $null
     LastCommandTime    = $null
     LastCommandResults = $null
+    LastError          = $null
+    LastErrorTime      = $null
 } | Add-CustomType -Type IdCmd.Session
 
 New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force

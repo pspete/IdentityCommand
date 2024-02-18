@@ -60,6 +60,8 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                     LastCommand        = (Get-Variable MyInvocation).Value
                     LastCommandTime    = (Get-Date).AddMinutes(-1)
                     LastCommandResults = @{'TestProperty' = 'TestValue' }
+                    LastError          = $null
+                    LastErrorTime      = $null
                 }
 
                 New-Variable -Name object -Value $psPASSession -Scope Script -Force
@@ -73,7 +75,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             }
             It 'produces expected output properties' {
 
-                $script:Clone.keys | Should -HaveCount 9
+                $script:Clone.keys | Should -HaveCount 11
 
             }
 

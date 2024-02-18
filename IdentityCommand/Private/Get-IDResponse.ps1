@@ -45,7 +45,7 @@ function Get-IDResponse {
 			#handle content type
 			switch ($ContentType) {
 
-				'text/html; charset=utf-8' {
+				{ $PSItem -match 'text/html' } {
 
 					If ($IDResponse -match '<HTML>') {
 
@@ -78,12 +78,11 @@ function Get-IDResponse {
 
 				}
 
-				'application/json; charset=utf-8' {
+				{ $PSItem -match 'application/json' } {
 
 					#application/json content expected
 					#Create Return Object from Returned JSON
 					$IDResponse = ConvertFrom-Json -InputObject $APIResponse.Content
-					Set-Variable -Name idresponse -Value $IDResponse -Scope global
 
 					switch ($IDResponse) {
 
