@@ -12,6 +12,19 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - N/A
 
+## [0.2 - Update 2] - 2024-02-19
+
+### Added
+- N/A
+
+### Changed
+- N/A
+
+### Fixed
+- `Invoke-IDRestMethod`
+  - Fixes a variable declaration which prevented certain error conditions from being reported.
+  - Updated to report more errors recieved in various formats from Identity and also DPA.
+
 ## [0.2 - Update 1] - 2024-02-18
 
 ### Added

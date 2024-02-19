@@ -218,18 +218,31 @@
 
 					if ($validJson) {
 
-						$ErrorMessage = $ErrorDetails | Select-Object -ExpandProperty Message
-						If ($null -ne $ErrorDetails.Description) {
-							$ErrorDescription = $ErrorDetails | Select-Object -ExpandProperty Description
-							$ErrorMessage = "$ErrorMessage. $ErrorDescription"
-						}
-						If ($null -ne $ErrorDetails.code) {
-							$ErrorID, $ErrorDetails.code -join ','
+						switch ($ErrorDetails) {
+
+							{ $null -ne $PSItem.error } {
+								$ErrorMessage = $ErrorDetails | Select-Object -ExpandProperty error
+							}
+							{ $null -ne $ErrorDetails.error_description } {
+								$ErrorDescription = $ErrorDetails | Select-Object -ExpandProperty error_description
+								$ErrorMessage = "$ErrorMessage. $ErrorDescription"
+							}
+							{ $null -ne $PSItem.Message } {
+								$ErrorMessage = $ErrorDetails | Select-Object -ExpandProperty Message
+							}
+							{ $null -ne $ErrorDetails.Description } {
+								$ErrorDescription = $ErrorDetails | Select-Object -ExpandProperty Description
+								$ErrorMessage = "$ErrorMessage. $ErrorDescription"
+							}
+							{ $null -ne $ErrorDetails.code } {
+								$ErrorID, $ErrorDetails.code -join ','
+							}
+
 						}
 
 					} else {
 
-						ErrorMessage = $PSItem.ErrorDetails
+						$ErrorMessage = $PSItem.ErrorDetails
 
 					}
 
