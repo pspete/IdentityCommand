@@ -58,7 +58,7 @@ Formats input as: "Key=Value&Key=Value"
 				} Else {
 
 					#Return Key=Value string, escaped.
-					$Value = "$PSItem=$($Parameters[$PSItem] | Get-EscapedString)"
+					$Value = "$PSItem=$($Parameters[$PSItem] -join ','| Get-EscapedString)"
 
 				}
 
