@@ -12,6 +12,20 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - N/A
 
+## [0.2 - Update 3] - 2024-03-03
+
+### Added
+- `Find-SharedServicesURL`
+  - New helper function that can be used to find URLs for ISPSS services under a tenant
+
+### Changed
+- `ConvertTo-QueryString`
+  - Updates helper function to implement functionality required in `Get-DPAStrongAccount` function of the `IdentityCommand.DPA` module.
+  - If multiple values are accepted and provided for a value, return all values joined, delimited by a comma.
+
+### Fixed
+- N/A
+
 ## [0.2 - Update 2] - 2024-02-19
 
 ### Added
