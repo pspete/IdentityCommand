@@ -85,7 +85,8 @@ Function New-IDSession {
 
             'Credential' {
 
-                if ($IDSession.IdpRedirectUrl) {
+                #IdpRedirectShortUrl is only included in the response if the OobIdPAuth header is set to true
+                if ($IDSession.IdpRedirectShortUrl) {
                     Write-Host @"
 You are being redirected to your browser in order to authenticate to your external identity provider.
 If your browser does not open, click on the below URL to navigate to your identity provider.
@@ -93,7 +94,7 @@ If your browser does not open, click on the below URL to navigate to your identi
 $($IDSession.IdpRedirectShortUrl)
 "@
                     #Launches the user's default browser and navigates it to the external identity provider
-                    Start-Process $IDSession.IdpRedirectUrl
+                    Start-Process $IDSession.IdpRedirectShortUrl
 
                     $OobAuthStatusRequest = @{ }
                     $OobAuthStatusRequest['Method'] = 'POST'
