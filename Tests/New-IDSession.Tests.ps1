@@ -127,6 +127,16 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
+            It 'sends Start-Authentication request with OobIdpAuth header' {
+                New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                Assert-MockCalled -CommandName Start-Authentication -Times 1 -Exactly -Scope It -ParameterFilter {
+
+                    $LogonRequest['Headers']['OobIdpAuth'] -eq $true
+
+                }
+
+            }
+
             It 'sets expected tenantId with no trailing slash as script scope variable' {
                 New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
                 $Script:ISPSSSession.tenantId | Should -Be 'SomeID'

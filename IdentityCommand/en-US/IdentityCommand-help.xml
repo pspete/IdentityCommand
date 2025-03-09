@@ -1249,7 +1249,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       <maml:para>Use this command to authenticate to CyberArk Identity.</maml:para>
       <maml:para>Allows a user to provide authentication details, and satisfy any required MFA challenges.</maml:para>
       <maml:para>Currently supports all Identity MFA authentication mechanisms except U2F &amp; DUO.</maml:para>
-      <maml:para>Supports federated authentication when providing a SamlAssertion from a configured external IDP.</maml:para>
+      <maml:para>When you specify a username associated with a SAML or OIDC-based federation, then you will be redirected to the external identity provider to authenticate. Alternatively, you can provide a SamlAssertion from a configured external IDP.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>

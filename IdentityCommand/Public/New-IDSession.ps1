@@ -55,6 +55,9 @@ Function New-IDSession {
 
         $LogonRequest['Headers'] = @{'accept' = '*/*' }
 
+        #Must be passed in order to get the parameters needed for OOB IdP auth
+        $LogonRequest['Headers'].Add('OobIdPAuth', $true)
+
         switch ($PSCmdlet.ParameterSetName) {
 
             'Credential' {
@@ -81,6 +84,36 @@ Function New-IDSession {
         switch ($PSCmdlet.ParameterSetName) {
 
             'Credential' {
+
+                #IdpRedirectShortUrl is only included in the response if the OobIdPAuth header is set to true
+                if ($IDSession.IdpRedirectShortUrl) {
+                    Write-Host @"
+You are being redirected to your browser in order to authenticate to your external identity provider.
+If your browser does not open, click on the below URL to navigate to your identity provider.
+
+$($IDSession.IdpRedirectShortUrl)
+"@
+                    #Launches the user's default browser and navigates it to the external identity provider
+                    Start-Process $IDSession.IdpRedirectShortUrl
+
+                    $OobAuthStatusRequest = @{ }
+                    $OobAuthStatusRequest['Method'] = 'POST'
+                    #Undocumented endpoint for checking the IdpLoginSessionId's status. Sniffed out from the ark-sdk-python project
+                    $OobAuthStatusRequest['Uri'] = "$tenant_url/Security/OobAuthStatus"
+                    #We need the cookies the server provides in the same response it provides the IdpAuth information
+                    $OobAuthStatusRequest['WebSession'] = $ISPSSSession.WebSession
+                    $OobAuthStatusRequest['Body'] = @{SessionId = $IDSession.IdpLoginSessionId} | ConvertTo-Json
+
+                    $IDSession = Invoke-IDRestMethod @OobAuthStatusRequest
+
+                    while ($IDSession.State -ne 'Success') {
+                        Start-Sleep 2
+
+                        $IDSession = Invoke-IDRestMethod @OobAuthStatusRequest
+                    }
+
+                    break
+                }
 
                 #The MFA Bit - keep a reference to $IDSession for the MFA Package
                 $ThisSession = $IDSession
