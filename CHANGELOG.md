@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - `New-IDSession: Adds support for Out-of-band IDP Authentication`
   - Federated identity users from an external IDP can now authenticate.
-      - Thanks & Credit to ([Tim Schindler](https://github.com/aaearon)) for this!
+      - Thanks & Credit to Tim Schindler ([aaearon](https://github.com/aaearon)) for this!
 
 ### Changed
 - N/A
