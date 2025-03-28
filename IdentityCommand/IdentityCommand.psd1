@@ -90,7 +90,21 @@
         'Get-IDTenantCname',
         'Get-IDDownloadUrl',
         'Get-IDUserIdentifier',
-        'Invoke-IDSqlcmd'
+        'Invoke-IDSqlcmd',
+        'Get-IDPermission',
+        'Get-IDRole',
+        'New-IDRole',
+        'Set-IDRole',
+        'Add-IDRoleMember',
+        'Remove-IDRoleMember',
+        'Add-IDRolePermission',
+        'Remove-IDRolePermission',
+        'Remove-IDRole',
+        'Get-IDRolePermission',
+        'Get-IDRoleMember',
+        'Set-IDDynamicRoleScript',
+        'Test-IDDynamicRoleScript',
+        'Get-IDRoleApplication'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
