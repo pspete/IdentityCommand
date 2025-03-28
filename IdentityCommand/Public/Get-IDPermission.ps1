@@ -4,34 +4,42 @@
 	param
 	(
        
-        [Parameter(Mandatory = $true)]
-		$tenantID
-
     )
 
-    $Query = @{
-	    "Script"="@/lib/get_superrights.js(excludeRight:'')"
-	    "Args" = @{ "PageNumber"=1
-                "PageSize"="10000"
-                "Limit"="10000"
-                "SortBy"=""
-                "direction"="False"
-                "Caching"="-1"}
-    }
+    BEGIN {
+        # Query to get all available permissions
+        $Query = @{
+            "Script"="@/lib/get_superrights.js(excludeRight:'')"
+            "Args" = @{ "PageNumber"=1
+                    "PageSize"="10000"
+                    "Limit"="10000"
+                    "SortBy"=""
+                    "direction"="False"
+                    "Caching"="-1"}
+        }
 
+    } #begin
 
-    $RestCall = @{
+    PROCESS {
 
-        "URI"         = "https://$tenantID.id.cyberark.cloud/redrock/query/"
-        "Headers"     = $ISPSSSession:WebSession
-        "Method"      = "Post"
-        "Body"        = ($Query | ConvertTo-Json)
-        "ContentType" = "application/json"
+        #Constructed parameters for the rest call
+        $RestCall = @{
 
-    }
+            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/redrock/query/"
+            "Headers"     = $($ISPSSSession.WebSession.Headers)
+            "Method"      = "Post"
+            "Body"        = ($Query | ConvertTo-Json)
+            "ContentType" = "application/json"
 
-    $result = Invoke-RestMethod @RestCall
+        }
 
-    return $result.Result.Results.Row
+        # invoking the rest call
+        $result = Invoke-IDRestMethod @RestCall
+
+        return $result.Results.Row
+
+    } #process
+
+    END {}#end
 
 }
