@@ -8,19 +8,37 @@
         ParameterSetName = 'Redrock')]
 		$Query = @{"Script" = "Select * from Role ORDER BY Name COLLATE NOCASE"},
 
-        [Parameter(Mandatory = $true, ParameterSetName = 'API')]
-		$UUID,
+        [Parameter(Mandatory = $true, 
+        ParameterSetName = 'API')]
+		[Alias('Uuid')]
+        $Name,
 
-        [Parameter(Mandatory = $false, ParameterSetName = 'API')]
-        [switch]$API
-	)
+        [Parameter(Mandatory = $true, 
+        ParameterSetName = 'AllRolesAndRights')]
+        $Path
 
-    BEGIN {} #begin
+    )
+
+    BEGIN {
+
+        if ($Name) {
+
+            $API = $true
+
+        }
+
+        if ($Path) {
+
+            $AllRolesAndRights = $true
+
+        }
+
+    } #begin
 
     PROCESS {
         
         # validates if the API switch is enabled or not
-        if (!$API) {
+        if (!$API -and !$AllRolesAndRights) {
 
             #Constructed parameters for the rest call
             $RestCall = @{
@@ -41,24 +59,42 @@
         }
 
         # validates if the API switch is enabled or not
-        if ($API) {
+        if ($API -eq $true) {
 
             #Constructed parameters for the rest call
             $RestCall = @{
 
-                "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/GetRole?Name=$UUID"
+                "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/GetRole?Name=$Name"
                 "Headers"     = $($ISPSSSession.WebSession.Headers)
                 "Method"      = "Post"
                 "ContentType" = "application/json"
 
             }
-            
+
             # invoking the rest call
             $result = Invoke-IDRestMethod @RestCall
 
-            return $result.Result
+            return $result
 
         } 
+
+        if ($AllRolesAndRights -eq $true) {
+
+            Write-Host -ForegroundColor Green "Trying AllRoles call"
+            $RestCall = @{
+
+                "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Core/GetDirectoryRolesAndRights?path=$Path"
+                "Headers"     = $($ISPSSSession.WebSession.Headers)
+                "Method"      = "Post"
+                "ContentType" = "application/json"
+
+            }
+
+            $result = Invoke-IDRestMethod @RestCall
+
+            return $result
+
+        }
 
     } #process
 

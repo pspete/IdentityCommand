@@ -17,12 +17,12 @@ function Test-IDDynamicRoleScript {
     PROCESS {
 
         #Constructed body for the rest call
-        $body = [ordered]@{
+        $body = "{
 
-            "User"   = $User
-            "Script" = $Script
-
-        }
+        'User': '$($User)',
+        'Script': '$($Script)'
+    
+        }"
 
         #Constructed parameters for the rest call
         $RestCall = @{
@@ -30,18 +30,15 @@ function Test-IDDynamicRoleScript {
         "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/TestDynamicRoleScript"
         "Headers"     = $($ISPSSSession.WebSession.Headers)
         "Method"      = "Post"
-        "Body"        = ($body | ConvertTo-Json -Depth 6)
+        "Body"        = $body
         "ContentType" = "application/json"
 
         }
 
         # invoking the rest call
-        $result = Invoke-RestMethod @RestCall
+        $result = Invoke-IDRestMethod @RestCall
 
-        # Returns a false results as powershell adds escaping characters
-        # to the script string, making it not a proper javascript script
-        Write-Warning "This will return a false result due to how Powershell adds escaping characters"
-        return $result.Result
+        return $result
 
     } #process
 

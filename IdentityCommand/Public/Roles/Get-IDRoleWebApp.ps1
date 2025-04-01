@@ -1,4 +1,4 @@
-function Set-IDDynamicRoleScript {
+function Get-IDRoleWebApp {
 
     [CmdletBinding()]
 	param
@@ -6,10 +6,7 @@ function Set-IDDynamicRoleScript {
        
         [Parameter(Mandatory = $true)]
         [Alias('Uuid')]
-        $Name,
-
-        [Parameter(Mandatory = $true)]
-        [string]$Script
+        $Name
 
     )
 
@@ -17,18 +14,10 @@ function Set-IDDynamicRoleScript {
 
     PROCESS {
 
-       #Constructed body for the rest call
-       $body = "{
-
-       'User': '$($User)',
-       'Script': '$($Script)'
-   
-       }"
-
         #Constructed parameters for the rest call
         $RestCall = @{
 
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/SetDynamicRoleScript"
+        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/SaasManage/GetRoleApps?role=$Name"
         "Headers"     = $($ISPSSSession.WebSession.Headers)
         "Method"      = "Post"
         "Body"        = $body
@@ -37,9 +26,9 @@ function Set-IDDynamicRoleScript {
         }
 
         # invoking the rest call
-        $result = Invoke-RestMethod @RestCall
+        $result = Invoke-IDRestMethod @RestCall
 
-        return $result
+        return $result.results.row
 
     } #process
 
