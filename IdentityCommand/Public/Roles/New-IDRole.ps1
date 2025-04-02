@@ -5,7 +5,6 @@
 	(
        
         [Parameter(Mandatory = $true)]
-        [Alias('Uuid')]
         $Name,
 
         [Parameter(Mandatory = $false)]

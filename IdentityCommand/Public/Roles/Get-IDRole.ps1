@@ -9,7 +9,8 @@
 		$Query = @{"Script" = "Select * from Role ORDER BY Name COLLATE NOCASE"},
 
         [Parameter(Mandatory = $true, 
-        ParameterSetName = 'API')]
+        ParameterSetName = 'API',
+        ValueFromPipelinebyPropertyName = $true)]
 		[Alias('Uuid')]
         $Name,
 

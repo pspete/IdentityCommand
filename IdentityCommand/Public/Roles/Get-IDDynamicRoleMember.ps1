@@ -4,7 +4,8 @@ function Get-IDDynamicRoleMember {
 	param
 	(
        
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true,
+        ValueFromPipelinebyPropertyName = $true)]
         [Alias('Uuid')]
         $Name,
 

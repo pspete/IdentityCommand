@@ -4,7 +4,9 @@
 	param
 	(
 
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false,
+        ValueFromPipelinebyPropertyName = $true)]
+        [Alias('Uuid')]
         [array]$Roles = @()
 
     )
