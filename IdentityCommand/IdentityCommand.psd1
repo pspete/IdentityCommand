@@ -112,7 +112,16 @@
         'Remove-IDAuthenticationProfile',
         'Get-IDAuthenticationAssuranceLevel',
         'New-IDAuthenticationProfile',
-        'Set-IDAuthenticationProfile'
+        'Set-IDAuthenticationProfile',
+        'Get-IDAuthenticationPolicyModifier',
+        'Get-IDAuthenticationPolicyLink',
+        'Get-IDAuthenticationPolicyBlock',
+        'Get-IDAuthenticationPolicyMetadata',
+        'Get-IDAuthenticationPolicyCloudMobileGP',
+        'Remove-IDAuthenticationPolicyBlock',
+        'Get-IDUserOathOTPClientName',
+        'Get-IDUserPasswordComplexityRequirements',
+        'New-IDAuthenticationPolicy'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.

@@ -12,11 +12,7 @@
         ParameterSetName = 'API',
         ValueFromPipelinebyPropertyName = $true)]
 		[Alias('Uuid')]
-        $Name,
-
-        [Parameter(Mandatory = $true, 
-        ParameterSetName = 'AllRolesAndRights')]
-        $Path
+        $Name
 
     )
 
@@ -27,19 +23,12 @@
             $API = $true
 
         }
-
-        if ($Path) {
-
-            $AllRolesAndRights = $true
-
-        }
-
     } #begin
 
     PROCESS {
         
         # validates if the API switch is enabled or not
-        if (!$API -and !$AllRolesAndRights) {
+        if (!$API) {
 
             #Constructed parameters for the rest call
             $RestCall = @{
@@ -77,26 +66,7 @@
 
             return $result
 
-        } 
-
-        if ($AllRolesAndRights -eq $true) {
-
-            Write-Host -ForegroundColor Green "Trying AllRoles call"
-            $RestCall = @{
-
-                "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Core/GetDirectoryRolesAndRights?path=$Path"
-                "Headers"     = $($ISPSSSession.WebSession.Headers)
-                "Method"      = "Post"
-                "ContentType" = "application/json"
-
-            }
-
-            $result = Invoke-IDRestMethod @RestCall
-
-            return $result
-
         }
-
     } #process
 
     END {} #end

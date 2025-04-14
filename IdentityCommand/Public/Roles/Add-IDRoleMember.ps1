@@ -4,7 +4,8 @@ function Add-IDRoleMember {
 	param
 	(
        
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true,
+        ValueFromPipelinebyPropertyName = $true)]
         [Alias('Uuid')]
         $Name,
 
