@@ -15,6 +15,12 @@ function Remove-IDAuthenticationPolicyBlock {
 
     PROCESS {
 
+        if ($Name -notlike "/Policy/*") {
+
+            Write-Warning "The name parameter must be in the syntax the '/Policy/<PolicyName>'"
+            break
+        }
+
         $Body = @{
 
             "path" = $Name
