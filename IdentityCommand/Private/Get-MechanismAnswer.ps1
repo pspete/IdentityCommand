@@ -50,7 +50,7 @@ function Get-MechanismAnswer {
 
         switch ($Mechanism.Name) {
 
-            'UP' {
+            { $PSItem -match 'UP|SMS' } {
 
                 #User Password already provided via Credential
                 $Answer = $Credential.Password
@@ -94,7 +94,7 @@ function Get-MechanismAnswer {
 
             }
 
-            { $PSItem -match 'SMS|OATH' } {
+            { $PSItem -match 'OATH' } {
 
                 #Prompt for TOTP/SMS code input
                 $Answer = Read-Host -Prompt $($Mechanism.PromptMechChosen) -AsSecureString
