@@ -222,6 +222,132 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'OOB IdP Authentication' {
+
+            BeforeEach {
+
+                Mock Start-Process -MockWith {}
+
+                #Downstream switch expects a WebSession on successful auth
+                Mock Invoke-IDRestMethod -MockWith {
+                    $ISPSSSession.WebSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+                    [pscustomobject]@{
+                        Summary = 'LoginSuccess'
+                        Token   = 'SomeToken'
+                        State   = 'Success'
+                    }
+                }
+
+            }
+
+            Context 'PIN required' {
+
+                BeforeEach {
+
+                    Mock Start-Authentication -MockWith {
+                        [pscustomobject]@{
+                            TenantId              = 'SomeID'
+                            SessionId             = 'SomeSession'
+                            IdpRedirectShortUrl   = 'https://short.example/x'
+                            IdpLoginSessionId     = 'IDP-123'
+                            IdpOobAuthPinRequired = $true
+                        }
+                    }
+
+                    Mock Read-Host -MockWith {
+                        ConvertTo-SecureString 'TEST-PIN' -AsPlainText -Force
+                    }
+
+                }
+
+                It 'launches the browser to the IdpRedirectShortUrl' {
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Start-Process -Times 1 -Exactly -Scope It -ParameterFilter {
+                        $args[0] -eq 'https://short.example/x' -or $FilePath -eq 'https://short.example/x'
+                    }
+                }
+
+                It 'prompts for the PIN as a secure string' {
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Read-Host -Times 1 -Exactly -Scope It -ParameterFilter {
+                        $AsSecureString -eq $true
+                    }
+                }
+
+                It 'sends the PIN to AdvanceAuthentication with the OOBAUTHPIN mechanism' {
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Invoke-IDRestMethod -Times 1 -Exactly -Scope It -ParameterFilter {
+                        $Uri -eq 'https://somedomain.id.cyberark.cloud/Security/AdvanceAuthentication' -and
+                        $Method -eq 'POST' -and
+                        ($Body | ConvertFrom-Json).MechanismId -eq 'OOBAUTHPIN' -and
+                        ($Body | ConvertFrom-Json).Action -eq 'Answer' -and
+                        ($Body | ConvertFrom-Json).Answer -eq 'TEST-PIN'
+                    }
+                }
+
+                It 'sends the IdpLoginSessionId as the SessionId in the PIN request' {
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Invoke-IDRestMethod -Times 1 -Exactly -Scope It -ParameterFilter {
+                        $Uri -match 'AdvanceAuthentication$' -and
+                        ($Body | ConvertFrom-Json).SessionId -eq 'IDP-123'
+                    }
+                }
+
+                It 'does not call OobAuthStatus when a PIN is required' {
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Invoke-IDRestMethod -Times 0 -Exactly -Scope It -ParameterFilter {
+                        $Uri -match 'OobAuthStatus$'
+                    }
+                }
+
+                It 'does not invoke Start-AdvanceAuthentication (MFA challenge loop is bypassed)' {
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Start-AdvanceAuthentication -Times 0 -Exactly -Scope It
+                }
+
+            }
+
+            Context 'Polling (no PIN required)' {
+
+                BeforeEach {
+
+                    Mock Start-Authentication -MockWith {
+                        [pscustomobject]@{
+                            TenantId            = 'SomeID'
+                            SessionId           = 'SomeSession'
+                            IdpRedirectShortUrl = 'https://short.example/x'
+                            IdpLoginSessionId   = 'IDP-123'
+                        }
+                    }
+
+                }
+
+                It 'polls OobAuthStatus with the IdpLoginSessionId' {
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Invoke-IDRestMethod -Times 1 -Exactly -Scope It -ParameterFilter {
+                        $Uri -eq 'https://somedomain.id.cyberark.cloud/Security/OobAuthStatus' -and
+                        $Method -eq 'POST' -and
+                        ($Body | ConvertFrom-Json).SessionId -eq 'IDP-123'
+                    }
+                }
+
+                It 'does not call AdvanceAuthentication when no PIN is required' {
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Invoke-IDRestMethod -Times 0 -Exactly -Scope It -ParameterFilter {
+                        $Uri -match 'AdvanceAuthentication$'
+                    }
+                }
+
+                It 'does not prompt the user for a PIN' {
+                    Mock Read-Host -MockWith { throw 'Read-Host should not be called in the polling path' }
+                    { New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds } |
+                        Should -Not -Throw
+                }
+
+            }
+
+        }
+
         Context 'Output' {
 
             BeforeEach {
