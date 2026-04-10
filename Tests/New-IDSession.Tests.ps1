@@ -307,6 +307,60 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
+            Context 'PIN required - error handling' {
+
+                BeforeEach {
+
+                    Mock Start-Authentication -MockWith {
+                        [pscustomobject]@{
+                            TenantId              = 'SomeID'
+                            SessionId             = 'SomeSession'
+                            IdpRedirectShortUrl   = 'https://short.example/x'
+                            IdpLoginSessionId     = 'IDP-123'
+                            IdpOobAuthPinRequired = $true
+                        }
+                    }
+
+                    Mock Read-Host -MockWith {
+                        ConvertTo-SecureString 'TEST-PIN' -AsPlainText -Force
+                    }
+
+                    Mock Clear-AdvanceAuthentication -MockWith {}
+
+                }
+
+                It 'invokes Clear-AdvanceAuthentication and re-throws on API error' {
+                    Mock Invoke-IDRestMethod -MockWith { throw 'Wrong PIN' }
+                    { New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds } |
+                        Should -Throw -ExpectedMessage 'Wrong PIN'
+                    Assert-MockCalled -CommandName Clear-AdvanceAuthentication -Times 1 -Exactly -Scope It
+                }
+
+                It 'invokes Clear-AdvanceAuthentication and throws on non-LoginSuccess response' {
+                    Mock Invoke-IDRestMethod -MockWith {
+                        [pscustomobject]@{
+                            Summary = 'SomeOtherSummary'
+                            Token   = 'SomeToken'
+                        }
+                    }
+                    { New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds } |
+                        Should -Throw
+                    Assert-MockCalled -CommandName Clear-AdvanceAuthentication -Times 1 -Exactly -Scope It
+                }
+
+                It 'invokes Clear-AdvanceAuthentication and throws when Token is missing' {
+                    Mock Invoke-IDRestMethod -MockWith {
+                        [pscustomobject]@{
+                            Summary = 'LoginSuccess'
+                        }
+                    }
+                    { New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds } |
+                        Should -Throw
+                    Assert-MockCalled -CommandName Clear-AdvanceAuthentication -Times 1 -Exactly -Scope It
+                }
+
+            }
+
             Context 'Polling (no PIN required)' {
 
                 BeforeEach {
