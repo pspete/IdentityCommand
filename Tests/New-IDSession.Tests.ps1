@@ -305,6 +305,24 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                     Assert-MockCalled -CommandName Start-AdvanceAuthentication -Times 0 -Exactly -Scope It
                 }
 
+                It 'builds the PIN request URI from ISPSSSession.tenant_url after a PodFqdn redirect' {
+                    Mock Start-Authentication -MockWith {
+                        #Simulate the PodFqdn redirect performed by Start-Authentication
+                        $ISPSSSession.tenant_url = 'https://pod.id.cyberark.cloud'
+                        [pscustomobject]@{
+                            TenantId              = 'SomeID'
+                            SessionId             = 'SomeSession'
+                            IdpRedirectShortUrl   = 'https://short.example/x'
+                            IdpLoginSessionId     = 'IDP-123'
+                            IdpOobAuthPinRequired = $true
+                        }
+                    }
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Invoke-IDRestMethod -Times 1 -Exactly -Scope It -ParameterFilter {
+                        $Uri -eq 'https://pod.id.cyberark.cloud/Security/AdvanceAuthentication'
+                    }
+                }
+
             }
 
             Context 'PIN required - error handling' {
@@ -396,6 +414,23 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                     Mock Read-Host -MockWith { throw 'Read-Host should not be called in the polling path' }
                     { New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds } |
                         Should -Not -Throw
+                }
+
+                It 'builds the polling request URI from ISPSSSession.tenant_url after a PodFqdn redirect' {
+                    Mock Start-Authentication -MockWith {
+                        #Simulate the PodFqdn redirect performed by Start-Authentication
+                        $ISPSSSession.tenant_url = 'https://pod.id.cyberark.cloud'
+                        [pscustomobject]@{
+                            TenantId            = 'SomeID'
+                            SessionId           = 'SomeSession'
+                            IdpRedirectShortUrl = 'https://short.example/x'
+                            IdpLoginSessionId   = 'IDP-123'
+                        }
+                    }
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Invoke-IDRestMethod -Times 1 -Exactly -Scope It -ParameterFilter {
+                        $Uri -eq 'https://pod.id.cyberark.cloud/Security/OobAuthStatus'
+                    }
                 }
 
             }
