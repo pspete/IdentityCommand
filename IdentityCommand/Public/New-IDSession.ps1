@@ -96,20 +96,44 @@ $($IDSession.IdpRedirectShortUrl)
                     #Launches the user's default browser and navigates it to the external identity provider
                     Start-Process $IDSession.IdpRedirectShortUrl
 
-                    $OobAuthStatusRequest = @{ }
-                    $OobAuthStatusRequest['Method'] = 'POST'
-                    #Undocumented endpoint for checking the IdpLoginSessionId's status. Sniffed out from the ark-sdk-python project
-                    $OobAuthStatusRequest['Uri'] = "$tenant_url/Security/OobAuthStatus"
-                    #We need the cookies the server provides in the same response it provides the IdpAuth information
-                    $OobAuthStatusRequest['WebSession'] = $ISPSSSession.WebSession
-                    $OobAuthStatusRequest['Body'] = @{SessionId = $IDSession.IdpLoginSessionId} | ConvertTo-Json
+                    if ($IDSession.IdpOobAuthPinRequired) {
 
-                    $IDSession = Invoke-IDRestMethod @OobAuthStatusRequest
+                        #PIN-confirmation variant of OOB IdP auth.
+                        #A PIN code is displayed in the browser after IdP login and must be entered here to complete authentication.
+                        #Reference: ark-sdk-python __perform_pin_code_idp_authentication
+                        $Pin = Read-Host -Prompt 'Enter the PIN code displayed after you logged in to your identity provider' -AsSecureString
 
-                    while ($IDSession.State -ne 'Success') {
-                        Start-Sleep 2
+                        $OobPinAuthRequest = @{ }
+                        $OobPinAuthRequest['Method'] = 'POST'
+                        $OobPinAuthRequest['Uri'] = "$tenant_url/Security/AdvanceAuthentication"
+                        $OobPinAuthRequest['WebSession'] = $ISPSSSession.WebSession
+                        $OobPinAuthRequest['Body'] = @{
+                            SessionId   = $IDSession.IdpLoginSessionId
+                            MechanismId = 'OOBAUTHPIN'
+                            Action      = 'Answer'
+                            Answer      = Unprotect-Answer $Pin
+                        } | ConvertTo-Json
+
+                        $IDSession = Invoke-IDRestMethod @OobPinAuthRequest
+
+                    } else {
+
+                        $OobAuthStatusRequest = @{ }
+                        $OobAuthStatusRequest['Method'] = 'POST'
+                        #Undocumented endpoint for checking the IdpLoginSessionId's status. Sniffed out from the ark-sdk-python project
+                        $OobAuthStatusRequest['Uri'] = "$tenant_url/Security/OobAuthStatus"
+                        #We need the cookies the server provides in the same response it provides the IdpAuth information
+                        $OobAuthStatusRequest['WebSession'] = $ISPSSSession.WebSession
+                        $OobAuthStatusRequest['Body'] = @{SessionId = $IDSession.IdpLoginSessionId} | ConvertTo-Json
 
                         $IDSession = Invoke-IDRestMethod @OobAuthStatusRequest
+
+                        while ($IDSession.State -ne 'Success') {
+                            Start-Sleep 2
+
+                            $IDSession = Invoke-IDRestMethod @OobAuthStatusRequest
+                        }
+
                     }
 
                     break
