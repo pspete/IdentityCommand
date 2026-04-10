@@ -98,9 +98,8 @@ $($IDSession.IdpRedirectShortUrl)
 
                     if ($IDSession.IdpOobAuthPinRequired) {
 
-                        #PIN-confirmation variant of OOB IdP auth.
-                        #A PIN code is displayed in the browser after IdP login and must be entered here to complete authentication.
-                        #Reference: ark-sdk-python __perform_pin_code_idp_authentication
+                        #A PIN code is displayed in the browser after IdP login and must be entered here
+                        #to complete authentication via AdvanceAuthentication.
                         $Pin = Read-Host -Prompt 'Enter the PIN code displayed after you logged in to your identity provider' -AsSecureString
 
                         $OobPinAuthRequest = @{ }
@@ -114,7 +113,24 @@ $($IDSession.IdpRedirectShortUrl)
                             Answer      = Unprotect-Answer $Pin
                         } | ConvertTo-Json
 
-                        $IDSession = Invoke-IDRestMethod @OobPinAuthRequest
+                        try {
+
+                            $IDSession = Invoke-IDRestMethod @OobPinAuthRequest
+
+                            if ($IDSession.Summary -ne 'LoginSuccess' -or -not $IDSession.Token) {
+
+                                throw 'Failed to complete OOB IdP authentication with PIN code'
+
+                            }
+
+                        } catch {
+
+                            #Cleanup Authentication on any error at the PIN submission stage
+                            Clear-AdvanceAuthentication
+
+                            throw $PSItem
+
+                        }
 
                     } else {
 
