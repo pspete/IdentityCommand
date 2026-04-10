@@ -104,7 +104,8 @@ $($IDSession.IdpRedirectShortUrl)
 
                         $OobPinAuthRequest = @{ }
                         $OobPinAuthRequest['Method'] = 'POST'
-                        $OobPinAuthRequest['Uri'] = "$tenant_url/Security/AdvanceAuthentication"
+                        #Use the session tenant_url so that any PodFqdn redirect from Start-Authentication is honoured
+                        $OobPinAuthRequest['Uri'] = "$($ISPSSSession.tenant_url)/Security/AdvanceAuthentication"
                         $OobPinAuthRequest['WebSession'] = $ISPSSSession.WebSession
                         $OobPinAuthRequest['Body'] = @{
                             SessionId   = $IDSession.IdpLoginSessionId
@@ -137,7 +138,8 @@ $($IDSession.IdpRedirectShortUrl)
                         $OobAuthStatusRequest = @{ }
                         $OobAuthStatusRequest['Method'] = 'POST'
                         #Undocumented endpoint for checking the IdpLoginSessionId's status. Sniffed out from the ark-sdk-python project
-                        $OobAuthStatusRequest['Uri'] = "$tenant_url/Security/OobAuthStatus"
+                        #Use the session tenant_url so that any PodFqdn redirect from Start-Authentication is honoured
+                        $OobAuthStatusRequest['Uri'] = "$($ISPSSSession.tenant_url)/Security/OobAuthStatus"
                         #We need the cookies the server provides in the same response it provides the IdpAuth information
                         $OobAuthStatusRequest['WebSession'] = $ISPSSSession.WebSession
                         $OobAuthStatusRequest['Body'] = @{SessionId = $IDSession.IdpLoginSessionId} | ConvertTo-Json
