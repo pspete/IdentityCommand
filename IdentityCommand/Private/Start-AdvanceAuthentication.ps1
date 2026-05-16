@@ -94,6 +94,10 @@ Function Start-AdvanceAuthentication {
                         break
                     }
 
+                    { $PSItem.Name -match 'SMS' } {
+                        $Answer = Read-Host -Prompt $($Mechanism.PromptMechChosen) -AsSecureString
+                    }
+
                     { $($PSItem.Name) -match 'SQ|UP|OATH|SMS|RESET' } {
 
                         #Provide Answer Directly
