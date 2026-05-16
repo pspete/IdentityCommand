@@ -9,6 +9,10 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - N/A
 
+### Fixed
+- `New-IDSession`: Adds support for OOB IdP Authentication flows that require a PIN code.
+  - Tenants configured to display a PIN in the browser after external IdP login are now prompted for the PIN and completed via `AdvanceAuthentication`. Previously these tenants would hang in the `OobAuthStatus` polling loop with no way to enter the PIN.
+
 ## [0.3] - 2025-03-09
 
 ### Added

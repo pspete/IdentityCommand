@@ -31,6 +31,8 @@ Currently supports all Identity MFA authentication mechanisms except U2F & DUO.
 
 Supports federated authentication when providing a SamlAssertion from a configured external IDP.
 
+If your tenant is configured to require a PIN code after external identity provider authentication, you will be prompted to enter the PIN code displayed in the browser to complete the sign-in.
+
 ## EXAMPLES
 
 ### Example 1
