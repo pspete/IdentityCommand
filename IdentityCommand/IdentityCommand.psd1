@@ -83,11 +83,19 @@
         'Unlock-IDUser',
         'Get-IDTenant',
         'Get-IDTenantConfiguration',
+        'New-IDTenantCname',
+        'Remove-IDTenantCname',
         'Get-IDConnector',
         'New-IDPlatformToken',
         'Get-IDUserRole',
         'Get-IDAnalyticsDataset',
         'Get-IDTenantCname',
+        'Get-IDTenantURL',
+        'Set-IDTenantPreferredCname',
+        'Get-IDTenantSuffix',
+        'New-IDTenantSuffix',
+        'Remove-IDTenantSuffix',
+        'Get-IDTenantCdsSuffix',
         'Get-IDDownloadUrl',
         'Get-IDUserIdentifier',
         'Invoke-IDSqlcmd',
@@ -121,7 +129,8 @@
         'Remove-IDAuthenticationPolicyBlock',
         'Get-IDUserOathOTPClientName',
         'Get-IDUserPasswordComplexityRequirements',
-        'New-IDAuthenticationPolicy'
+        'New-IDAuthenticationPolicy',
+        'Set-IDAuthenticationPolicy'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
