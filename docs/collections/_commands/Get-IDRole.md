@@ -23,26 +23,28 @@ Get-IDRole -Name <Object> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-By default, returns all roles in the tenant by running a Redrock query against the Role table. Specify -Query to run a custom Redrock query instead. Specify -Name to fetch a single role by name (or ID) via the role management API instead of Redrock.
+By default, returns all roles in the tenant by running a Redrock query against the Role table.
+Specify -Query to run a custom Redrock query instead.
+Specify -Name to fetch a single role by name (or ID) via the role management API instead of Redrock.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDRole
 ```
 
 Return all roles, ordered by name
 
 ### Example 2
-```powershell
+```
 PS C:\> Get-IDRole -Name 'Role Admins'
 ```
 
 Return the role with the matching name
 
 ### Example 3
-```powershell
+```
 PS C:\> Get-IDRole -Query @{"Script" = "Select * from Role WHERE Name='Role Admins'"}
 ```
 
@@ -51,7 +53,8 @@ Return roles matching a custom Redrock query
 ## PARAMETERS
 
 ### -Name
-The name (or ID) of a specific role to fetch. When specified, the role is fetched via the role management API instead of the default Redrock query.
+The name (or ID) of a specific role to fetch.
+When specified, the role is fetched via the role management API instead of the default Redrock query.
 
 ```yaml
 Type: Object
@@ -66,7 +69,8 @@ Accept wildcard characters: False
 ```
 
 ### -Query
-A Redrock query hashtable (with a `Script` key containing the SQL-like query text) to execute against the `/redrock/query/` endpoint. Defaults to a query that selects all roles ordered by name.
+A Redrock query hashtable (with a \`Script\` key containing the SQL-like query text) to execute against the \`/redrock/query/\` endpoint.
+Defaults to a query that selects all roles ordered by name.
 
 ```yaml
 Type: Object
@@ -86,7 +90,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.Object
-
 ## OUTPUTS
 
 ### System.Object

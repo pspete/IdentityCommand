@@ -23,7 +23,7 @@ This is used internally by \`Set-IDAuthenticationPolicy\` to look up the \`Versi
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDAuthenticationPolicyBlock -Name 'Default Policy'
 ```
 
@@ -32,7 +32,9 @@ Return the policy block matching the specified name.
 ## PARAMETERS
 
 ### -Name
-The name of the authentication policy block to retrieve. Also aliased as PolicySet. Accepts pipeline input by property name.
+The name of the authentication policy block to retrieve.
+Also aliased as PolicySet.
+Accepts pipeline input by property name.
 
 ```yaml
 Type: Object
@@ -52,7 +54,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.Object
-
 ## OUTPUTS
 
 ### System.Object

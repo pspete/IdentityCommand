@@ -16,13 +16,13 @@ Update an existing authentication profile
 ```
 Set-IDAuthenticationProfile -Uuid <Object> [-FirstFactorChallenges <Object>] [-SecondFactorChallenges <Object>]
  [-AdditionalData <Object>] [-SingleChallengeMechanisms <Object>] [-DurationInMinutes <Int32>] [-Name <Object>]
- [<CommonParameters>]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ### Prefilled
 ```
 Set-IDAuthenticationProfile -Uuid <Object> [-AdditionalData <Object>] [-SingleChallengeMechanisms <Object>]
- [-DurationInMinutes <Int32>] [-Name <Object>] [-Challenges <Object>] [<CommonParameters>]
+ [-DurationInMinutes <Int32>] [-Name <Object>] [-Challenges <Object>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -33,14 +33,14 @@ If Security Question (SQ) is included as a challenge and -AdditionalData is not 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Set-IDAuthenticationProfile -Uuid 1234-abcd-5678-efgh -FirstFactorChallenges UP -SecondFactorChallenges OATH
 ```
 
 Update the challenge combination of the matching authentication profile to a password followed by an OATH OTP.
 
 ### Example 2
-```powershell
+```
 PS C:\> Get-IDAuthenticationProfile -Name 1234-abcd-5678-efgh | Set-IDAuthenticationProfile -DurationInMinutes 60
 ```
 
@@ -49,7 +49,9 @@ Update the duration of the matching authentication profile, reusing its existing
 ## PARAMETERS
 
 ### -AdditionalData
-A hashtable of additional settings required by the chosen challenges. For example, when Security Question (SQ) is one of the challenges, supply \`@{ NumberOfQuestions = <n> }\` to specify how many questions to ask. Defaults to an empty hashtable.
+A hashtable of additional settings required by the chosen challenges.
+For example, when Security Question (SQ) is one of the challenges, supply \`@{ NumberOfQuestions = \<n\> }\` to specify how many questions to ask.
+Defaults to an empty hashtable.
 
 ```yaml
 Type: Object
@@ -79,7 +81,8 @@ Accept wildcard characters: False
 ```
 
 ### -DurationInMinutes
-The number of minutes a successful authentication against this profile remains valid before the challenges must be satisfied again. Defaults to 30.
+The number of minutes a successful authentication against this profile remains valid before the challenges must be satisfied again.
+Defaults to 30.
 
 ```yaml
 Type: Int32
@@ -125,7 +128,8 @@ Accept wildcard characters: False
 ```
 
 ### -SecondFactorChallenges
-One or more challenge mechanisms to use as the second authentication factor. Optional; omit to require only a first factor.
+One or more challenge mechanisms to use as the second authentication factor.
+Optional; omit to require only a first factor.
 
 ```yaml
 Type: Object
@@ -171,15 +175,44 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ### System.Object
-
 ### System.Int32
-
 ## OUTPUTS
 
 ### System.Object

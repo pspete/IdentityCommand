@@ -13,16 +13,17 @@ Set the membership script for a dynamic role
 ## SYNTAX
 
 ```
-Set-IDDynamicRoleScript [-Name] <Object> [-Script] <String> [<CommonParameters>]
+Set-IDDynamicRoleScript [-Name] <Object> [-Script] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Sets (or replaces) the script used to compute membership for a script-based (dynamic) role. Use `Test-IDDynamicRoleScript` to validate a script against a user before applying it here.
+Sets (or replaces) the script used to compute membership for a script-based (dynamic) role.
+Use \`Test-IDDynamicRoleScript\` to validate a script against a user before applying it here.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Set-IDDynamicRoleScript -Name 'Dynamic Role' -Script 'function isRoleMember(user) { return user.Email.endsWith("@somedomain.com"); }'
 ```
 
@@ -60,13 +61,43 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ### System.Object
-
 ## OUTPUTS
 
 ### System.Object

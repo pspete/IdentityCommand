@@ -22,7 +22,7 @@ Retrieve the tenant's current device configuration policy source and settings, i
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDAuthenticationPolicyCloudMobileGP
 ```
 
@@ -36,7 +36,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

@@ -30,14 +30,14 @@ Build the combination from individual challenge mechanisms with -FirstFactorChal
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDAuthenticationAssuranceLevel -FirstFactorChallenges UP -SecondFactorChallenges OTP
 ```
 
 Return the assurance level for a password (UP) first factor combined with an OTP second factor.
 
 ### Example 2
-```powershell
+```
 PS C:\> Get-IDAuthenticationProfile -Name 1234-abcd-5678-efgh | Get-IDAuthenticationAssuranceLevel
 ```
 
@@ -77,7 +77,8 @@ Accept wildcard characters: False
 ```
 
 ### -SecondFactorChallenges
-One or more challenge mechanisms to use as the second authentication factor. Optional; omit to score the first factor challenge(s) alone.
+One or more challenge mechanisms to use as the second authentication factor.
+Optional; omit to score the first factor challenge(s) alone.
 
 ```yaml
 Type: Object
@@ -98,7 +99,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.Object
-
 ## OUTPUTS
 
 ### System.Object

@@ -14,23 +14,25 @@ Update role membership
 
 ```
 Set-IDRole [-Name] <Object> [[-AddUsers] <Array>] [[-RemoveUsers] <Array>] [[-AddRoles] <Array>]
- [[-RemoveRoles] <Array>] [[-AddGroups] <Array>] [[-RemoveGroups] <Array>] [<CommonParameters>]
+ [[-RemoveRoles] <Array>] [[-AddGroups] <Array>] [[-RemoveGroups] <Array>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Adds and/or removes users, roles, and groups from an existing role's membership in a single call. Use the `Add*` parameters to add members and the `Remove*` parameters to remove members; any parameter left unspecified is treated as empty.
+Adds and/or removes users, roles, and groups from an existing role's membership in a single call.
+Use the \`Add \` parameters to add members and the \`Remove \` parameters to remove members; any parameter left unspecified is treated as empty.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Set-IDRole -Name 'Role Admins' -AddUsers someuser@somedomain.com -RemoveUsers otheruser@somedomain.com
 ```
 
 Add one user to the role's membership and remove another
 
 ### Example 2
-```powershell
+```
 PS C:\> Set-IDRole -Name 'Role Admins' -AddRoles 'Helpdesk' -AddGroups 'Contractors'
 ```
 
@@ -143,13 +145,43 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ### System.Object
-
 ## OUTPUTS
 
 ### System.Object

@@ -23,7 +23,7 @@ Retrieve the tenant's current list of authentication policy links ("plinks") - t
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDAuthenticationPolicyLink
 ```
 
@@ -37,7 +37,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

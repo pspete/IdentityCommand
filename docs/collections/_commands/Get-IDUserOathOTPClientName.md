@@ -22,7 +22,7 @@ Retrieve the client/issuer name that CyberArk Identity presents to an OATH OTP a
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDUserOathOTPClientName
 ```
 
@@ -36,7 +36,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

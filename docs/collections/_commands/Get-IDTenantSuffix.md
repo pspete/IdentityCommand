@@ -17,12 +17,13 @@ Get-IDTenantSuffix [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Returns all directory suffixes (aliases) configured for the tenant, covering both Cloud Directory (CDS) and AD/Federated Directory Services (AD&FDS) users. A suffix is the domain portion of a username used to identify which tenant a user belongs to.
+Returns all directory suffixes (aliases) configured for the tenant, covering both Cloud Directory (CDS) and AD/Federated Directory Services (AD&FDS) users.
+A suffix is the domain portion of a username used to identify which tenant a user belongs to.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDTenantSuffix
 ```
 
@@ -38,7 +39,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### System.Object
-
 ## NOTES
 
 ## RELATED LINKS

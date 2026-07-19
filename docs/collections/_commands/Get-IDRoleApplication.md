@@ -22,7 +22,7 @@ Returns the applications that are assigned to the specified role.
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDRoleApplication -Name 'Role Admins'
 ```
 
@@ -51,7 +51,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.Object
-
 ## OUTPUTS
 
 ### System.Object

@@ -22,7 +22,7 @@ Retrieve the list of authentication policy modifiers (condition types, such as n
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDAuthenticationPolicyModifier
 ```
 
@@ -36,7 +36,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

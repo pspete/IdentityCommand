@@ -22,7 +22,7 @@ Returns the users, roles, and groups that are members of the specified role.
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDRoleMember -Name 'Role Admins'
 ```
 
@@ -51,7 +51,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.Object
-
 ## OUTPUTS
 
 ### System.Object

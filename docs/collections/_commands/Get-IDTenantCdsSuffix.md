@@ -17,12 +17,13 @@ Get-IDTenantCdsSuffix [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Returns the Cloud Directory Service (CDS) suffixes configured for the tenant. A CDS suffix is the domain portion of a Cloud Directory username used to identify which tenant a user belongs to.
+Returns the Cloud Directory Service (CDS) suffixes configured for the tenant.
+A CDS suffix is the domain portion of a Cloud Directory username used to identify which tenant a user belongs to.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDTenantCdsSuffix
 ```
 
@@ -38,7 +39,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### System.Object
-
 ## NOTES
 
 ## RELATED LINKS

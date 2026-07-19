@@ -17,12 +17,13 @@ Add-IDRolePermission [-Name] <Object> [-Path] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Grants a role an administrative permission (super right), identified by its permission path. The path must match one of the values returned by `Get-IDPermission`; if it does not, a warning is written and the command stops without making the call.
+Grants a role an administrative permission (super right), identified by its permission path.
+The path must match one of the values returned by \`Get-IDPermission\`; if it does not, a warning is written and the command stops without making the call.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Add-IDRolePermission -Name 'Role Admins' -Path '/Core/ManageUsers'
 ```
 
@@ -46,7 +47,8 @@ Accept wildcard characters: False
 ```
 
 ### -Path
-The path of the administrative permission (super right) to assign to the role. Must be one of the paths returned by `Get-IDPermission`.
+The path of the administrative permission (super right) to assign to the role.
+Must be one of the paths returned by \`Get-IDPermission\`.
 
 ```yaml
 Type: String
@@ -66,7 +68,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.Object
-
 ## OUTPUTS
 
 ### System.Object

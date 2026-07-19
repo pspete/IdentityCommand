@@ -22,7 +22,7 @@ Returns the tenant's URL configuration, including its default id.cyberark.cloud 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDTenantURL
 ```
 
@@ -38,7 +38,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### System.Object
-
 ## NOTES
 
 ## RELATED LINKS

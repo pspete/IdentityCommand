@@ -14,16 +14,17 @@ Create a new tenant suffix
 
 ```
 New-IDTenantSuffix [-alias] <Object> [[-cdsAlias] <Object>] [-domain] <Object> [[-directory] <Object>]
- [[-oldname] <Object>] [<CommonParameters>]
+ [[-oldname] <Object>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Creates a new directory suffix (alias) for the tenant and maps it to a domain, for either Cloud Directory (CDS) or AD/Federated Directory Services (AD&FDS) users. Suffixes let a user's login name be qualified with the tenant's own alias rather than the underlying directory's native domain.
+Creates a new directory suffix (alias) for the tenant and maps it to a domain, for either Cloud Directory (CDS) or AD/Federated Directory Services (AD&FDS) users.
+Suffixes let a user's login name be qualified with the tenant's own alias rather than the underlying directory's native domain.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> New-IDTenantSuffix -alias corp.example.com -domain example.local -directory AD&FDS
 ```
 
@@ -107,6 +108,37 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -115,7 +147,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ### System.Object
-
 ## NOTES
 
 ## RELATED LINKS

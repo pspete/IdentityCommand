@@ -18,12 +18,13 @@ Get-IDDynamicRoleMember [-Name] <Object> [-Format] <Object> [-MemberSet] <Object
 ```
 
 ## DESCRIPTION
-Generates and returns an export of the members of a dynamic (script-based) role, whose membership is computed at query time rather than being a fixed principal list. Use -MemberSet to scope the export to all matched members or only active ones, and -Format to choose the export format.
+Generates and returns an export of the members of a dynamic (script-based) role, whose membership is computed at query time rather than being a fixed principal list.
+Use -MemberSet to scope the export to all matched members or only active ones, and -Format to choose the export format.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDDynamicRoleMember -Name 'Dynamic Role' -Format CsvAsAttachmentFile -MemberSet Active
 ```
 
@@ -48,7 +49,7 @@ Accept wildcard characters: False
 ```
 
 ### -MemberSet
-Whether to export all members matched by the dynamic role's script (`All`) or only currently active members (`Active`).
+Whether to export all members matched by the dynamic role's script (\`All\`) or only currently active members (\`Active\`).
 
 ```yaml
 Type: Object
@@ -79,7 +80,8 @@ Accept wildcard characters: False
 ```
 
 ### -ReportPath
-The path of the report definition script used to generate the export. Defaults to the built-in `/lib/dynamic_role_scripts/export_users/export_dynamic_role_members.report` report; override only if a custom report script is used.
+The path of the report definition script used to generate the export.
+Defaults to the built-in \`/lib/dynamic_role_scripts/export_users/export_dynamic_role_members.report\` report; override only if a custom report script is used.
 
 ```yaml
 Type: Object
@@ -100,7 +102,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.Object
-
 ## OUTPUTS
 
 ### System.Object

@@ -17,12 +17,13 @@ Get-IDPermission [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Returns the full list of permissions (rights) available in the tenant, such as those assignable to a role with Add-IDRolePermission. Internally this runs a Redrock query against the platform's get_superrights script and returns every row.
+Returns the full list of permissions (rights) available in the tenant, such as those assignable to a role with Add-IDRolePermission.
+Internally this runs a Redrock query against the platform's get_superrights script and returns every row.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDPermission
 ```
 
@@ -36,7 +37,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

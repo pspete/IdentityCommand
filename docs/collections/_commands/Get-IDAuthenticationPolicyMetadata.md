@@ -22,7 +22,7 @@ Retrieve metadata describing the settings, options, and fields available when bu
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDAuthenticationPolicyMetadata
 ```
 
@@ -36,7 +36,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

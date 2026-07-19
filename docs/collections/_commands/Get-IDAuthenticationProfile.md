@@ -23,14 +23,14 @@ Specify -Name (or its alias -Uuid) to fetch the full details of a specific authe
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDAuthenticationProfile
 ```
 
 Return all authentication profiles.
 
 ### Example 2
-```powershell
+```
 PS C:\> Get-IDAuthenticationProfile -Name 1234-abcd-5678-efgh
 ```
 
@@ -39,7 +39,9 @@ Return the full details of the authentication profile with the matching ID.
 ## PARAMETERS
 
 ### -Name
-The unique ID (Uuid) of the authentication profile to get details of. Omit to return all authentication profiles. Also aliased as Uuid.
+The unique ID (Uuid) of the authentication profile to get details of.
+Omit to return all authentication profiles.
+Also aliased as Uuid.
 
 ```yaml
 Type: Object
@@ -59,7 +61,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.Object
-
 ## OUTPUTS
 
 ### System.Object

@@ -18,19 +18,20 @@ Add-IDRoleMember [-Name] <Object> [[-Users] <Array>] [[-Roles] <Array>] [[-Group
 ```
 
 ## DESCRIPTION
-Adds the specified users, roles, and/or groups as members of an existing role. Supply one or more of -Users, -Roles, or -Groups with the identifiers of the principals to add; any parameter left unspecified is treated as empty.
+Adds the specified users, roles, and/or groups as members of an existing role.
+Supply one or more of -Users, -Roles, or -Groups with the identifiers of the principals to add; any parameter left unspecified is treated as empty.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Add-IDRoleMember -Name 'Role Admins' -Users someuser@somedomain.com
 ```
 
 Add a user as a member of the role
 
 ### Example 2
-```powershell
+```
 PS C:\> Add-IDRoleMember -Name 'Role Admins' -Roles 'Helpdesk','App Owners' -Groups 'Contractors'
 ```
 
@@ -104,7 +105,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.Object
-
 ## OUTPUTS
 
 ### System.Object

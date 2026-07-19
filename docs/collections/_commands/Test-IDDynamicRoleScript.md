@@ -17,12 +17,12 @@ Test-IDDynamicRoleScript [-User] <Object> [-Script] <String> [<CommonParameters>
 ```
 
 ## DESCRIPTION
-Evaluates a dynamic role membership script against a specified user without saving it, so the script's logic can be validated before it's applied with `Set-IDDynamicRoleScript`.
+Evaluates a dynamic role membership script against a specified user without saving it, so the script's logic can be validated before it's applied with \`Set-IDDynamicRoleScript\`.
 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Test-IDDynamicRoleScript -User someuser@somedomain.com -Script 'function isRoleMember(user) { return user.Email.endsWith("@somedomain.com"); }'
 ```
 
@@ -66,7 +66,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object

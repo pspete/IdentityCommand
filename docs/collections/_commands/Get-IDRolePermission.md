@@ -22,7 +22,7 @@ Returns the administrative permissions (super rights) currently assigned to the 
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> Get-IDRolePermission -Name 'Role Admins'
 ```
 
@@ -51,7 +51,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## INPUTS
 
 ### System.Object
-
 ## OUTPUTS
 
 ### System.Object

@@ -13,8 +13,8 @@ Create a new authentication policy
 ## SYNTAX
 
 ```
-New-IDAuthenticationPolicy [-PolicyName] <Object> [[-Description] <Object>] [[-LinkType] <Object>]
- [<CommonParameters>]
+New-IDAuthenticationPolicy [-PolicyName] <Object> [[-Description] <Object>] [[-LinkType] <Object>] [-WhatIf]
+ [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -24,14 +24,14 @@ The new policy is added to the tenant's existing set of policy links (plinks) an
 ## EXAMPLES
 
 ### Example 1
-```powershell
+```
 PS C:\> New-IDAuthenticationPolicy -PolicyName 'Default Policy'
 ```
 
 Create a new global authentication policy named "Default Policy".
 
 ### Example 2
-```powershell
+```
 PS C:\> New-IDAuthenticationPolicy -PolicyName 'Sales Role Policy' -Description 'MFA policy for the Sales role' -LinkType Role
 ```
 
@@ -40,7 +40,8 @@ Create a new authentication policy intended to be linked to a role, with a descr
 ## PARAMETERS
 
 ### -Description
-A free-text description of the authentication policy. Defaults to an empty string.
+A free-text description of the authentication policy.
+Defaults to an empty string.
 
 ```yaml
 Type: Object
@@ -55,7 +56,8 @@ Accept wildcard characters: False
 ```
 
 ### -LinkType
-The scope the policy link applies to: Global (applies tenant-wide), Role (applies when linked to a specific role), or Collection (applies when linked to an application/resource collection). Defaults to Global.
+The scope the policy link applies to: Global (applies tenant-wide), Role (applies when linked to a specific role), or Collection (applies when linked to an application/resource collection).
+Defaults to Global.
 
 ```yaml
 Type: Object
@@ -71,7 +73,8 @@ Accept wildcard characters: False
 ```
 
 ### -PolicyName
-The name of the new authentication policy. This becomes the policy's path, \`/Policy/<PolicyName>\`.
+The name of the new authentication policy.
+This becomes the policy's path, \`/Policy/\<PolicyName\>\`.
 
 ```yaml
 Type: Object
@@ -85,13 +88,43 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Confirm
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+Shows what would happen if the cmdlet runs.
+The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 ## INPUTS
 
 ### None
-
 ## OUTPUTS
 
 ### System.Object
