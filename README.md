@@ -1,25 +1,25 @@
 ![Logo][Logo]
 
-[Logo]:/docs/media/images/IdentityCommand.png
+[Logo]: /docs/media/images/IdentityCommand.png
 
 # IdentityCommand
 
-IdentityCommand [Work in Progress] is a PowerShell module that provides a set of easy-to-use commands, allowing you to interact with the API for a CyberArk Identity tenant from within the PowerShell environment.
+IdentityCommand [Work in Progress] is a PowerShell module that provides a set of easy-to-use commands, allowing you to interact with the API for an Idira (CyberArk) Identity tenant from within the PowerShell environment.
 
 - **Prior to a Version 1.0.0 release**:
   - Expect changes
   - Things may break
   - Issues / PRs are encouraged & appreciated
 
-----------
+---
 
 ## Project Objective
 
-- To develop & publish consistently coded PowerShell functions for available CyberArk Identity APIs.
+- To develop & publish consistently coded PowerShell functions for available Idira (CyberArk) Identity APIs.
 
 ## Use Cases
 
-The current main use cases of the project are focused on authentication to the CyberArk Identity platform.
+The current main use cases of the project are focused on authentication to the Idira (CyberArk) Identity platform.
 
 ### Identity User Authentication
 
@@ -92,10 +92,11 @@ The Websession can be used for any further requests you require.
 PS C:\> $Websession = $session.GetWebSession()
 PS C:\> Invoke-RestMethod -WebSession $websession `
 -Method Post `
--Uri https://somedomain.id.cyberark.cloud `
+-Uri https://somedomain .id.cyberark.cloud `
 -Body @{SomeProperty = 'SomeValue'} | ConvertTo-Json
 ```
-### Module Scope Variables & Command  Invocation Data
+
+### Module Scope Variables & Command Invocation Data
 
 The `Get-IDSession` command can be used to return data from the module scope:
 
@@ -124,35 +125,96 @@ Return data also includes details such as session start time, elapsed time, last
 
 The commands currently available in the _IdentityCommand_ module are listed here:
 
-| Function                    | Description                                                                                 |
-|-----------------------------|---------------------------------------------------------------------------------------------|
-| `New-IDSession`             | Authenticate to CyberArk Identity, answering MFA challenges to start a new API session.     |
-| `Close-IDSession`           | Logoff CyberArk Identity API                                                                |
-| `Clear-IDUserSession`       | Signs out user from all active sessions                                                     |
-| `Get-IDSession`             | Get variables like the WebSession object from the module scope, as well as previously invoked command and API return data.                                                  |
-| `Get-IDUser`                | Fetch details of cloud directory users                                                      |
-| `Suspend-IDUserMFA`         | Exempt a user from MFA                                                                      |
-| `Test-IDUserCloudLock`      | Checks if a user is cloud locked                                                            |
-| `Lock-IDUser`               | Enable user cloud lock                                                                      |
-| `Unlock-IDUser`             | Disable user cloud lock                                                                     |
-| `Get-IDTenant`              | Get tenant information                                                                      |
-| `Get-IDTenantConfiguration` | Get tenant configuration data                                                               |
-| `Get-IDConnector`           | Get connector health                                                                        |
-| `New-IDPlatformToken`       | Request OIDC token based on grant type                                                      |
-| `Get-IDUserRole`            | Get a list of roles for a user                                                             |
-| `Get-IDAnalyticsDataset`    | Get all datasets accessible by a user                                                       |
-| `Get-IDTenantCname`         | Get Tenant Cnames                                                                           |
-| `Get-IDDownloadUrl`         | Get download Urls                                                                           |
-| `Get-IDUserIdentifier`      | Get the configuration of the user attributes                                                |
-| `Invoke-IDSqlcmd`           | Query the database tables                                                                   |
+### Session
+
+| Function              | Description                                                                                                                |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `New-IDSession`        | Authenticates a user to a CyberArk Identity tenant.                                                                       |
+| `New-IDPlatformToken`  | Request authentication token using OAuth                                                                                  |
+| `Close-IDSession`      | Logout the current user                                                                                                   |
+| `Clear-IDUserSession`  | Sign Out a user from all CyberArk Identity sessions everywhere.                                                           |
+| `Get-IDSession`        | Get the IdentityCommand WebSession                                                                                        |
+
+### Users
+
+| Function                                    | Description                                                    |
+| -------------------------------------------- | --------------------------------------------------------------- |
+| `Get-IDUser`                                 | Fetch details of cloud directory users                        |
+| `Get-IDUserRole`                             | List roles user is a member of.                                |
+| `Get-IDUserIdentifier`                       | Get user identifiers                                           |
+| `Get-IDUserOathOTPClientName`                | Get the tenant's OATH OTP client name                          |
+| `Get-IDUserPasswordComplexityRequirements`   | Get the tenant's password complexity requirements              |
+| `Suspend-IDUserMFA`                          | Suspend MFA for a User                                         |
+| `Test-IDUserCloudLock`                       | Check if a user is cloud locked                                |
+| `Lock-IDUser`                                 | Cloud lock a user                                              |
+| `Unlock-IDUser`                              | Cloud unlock a user                                            |
+
+### Tenant
+
+| Function                        | Description                                          |
+| -------------------------------- | ----------------------------------------------------- |
+| `Get-IDTenant`                   | Get Identity tenant information                     |
+| `Get-IDTenantConfiguration`      | Get Identity tenant configuration                   |
+| `Get-IDTenantURL`                | Get tenant URL                                       |
+| `Get-IDTenantCname`              | Get Tenant Cnames                                    |
+| `New-IDTenantCname`              | Register a new tenant cname                          |
+| `Remove-IDTenantCname`           | Remove a tenant cname                                |
+| `Set-IDTenantPreferredCname`     | Set the preferred tenant cname                       |
+| `Get-IDTenantSuffix`             | Get tenant suffixes                                  |
+| `New-IDTenantSuffix`             | Create a new tenant suffix                           |
+| `Remove-IDTenantSuffix`          | Remove tenant suffixes                               |
+| `Get-IDTenantCdsSuffix`          | Get tenant Cloud Directory Service suffixes          |
+| `Get-IDConnector`                | Get Connector Status                                 |
+| `Get-IDDownloadUrl`              | Get download URLs                                    |
+| `Get-IDAnalyticsDataset`         | Get all datasets accessible to user                  |
+| `Invoke-IDSqlcmd`                | Query the database tables                            |
+| `Get-IDPermission`               | Get all available permissions                        |
+
+### Roles
+
+| Function                     | Description                                       |
+| ------------------------------ | --------------------------------------------------- |
+| `Get-IDRole`                  | Get details of one or more roles                   |
+| `New-IDRole`                  | Create a new role                                  |
+| `Set-IDRole`                  | Update role membership                             |
+| `Remove-IDRole`               | Delete one or more roles                           |
+| `Get-IDRoleMember`            | Get members of a role                              |
+| `Add-IDRoleMember`            | Add users, roles, or groups to a role              |
+| `Remove-IDRoleMember`         | Remove users, roles, or groups from a role         |
+| `Get-IDRolePermission`        | Get administrative permissions assigned to a role  |
+| `Add-IDRolePermission`        | Assign an administrative permission to a role      |
+| `Remove-IDRolePermission`     | Remove an administrative permission from a role    |
+| `Get-IDRoleApplication`       | Get applications assigned to a role                |
+| `Get-IDRoleWebApp`            | Get web applications assigned to a role            |
+| `Get-IDDynamicRoleMember`     | Export the members of a dynamic role               |
+| `Set-IDDynamicRoleScript`     | Set the membership script for a dynamic role       |
+| `Test-IDDynamicRoleScript`    | Test a dynamic role membership script              |
+
+### Authentication Profiles & Policies
+
+| Function                                     | Description                                                          |
+| ---------------------------------------------- | ----------------------------------------------------------------------- |
+| `Get-IDAuthenticationProfile`                 | Get authentication profiles                                          |
+| `New-IDAuthenticationProfile`                 | Create a new authentication profile                                  |
+| `Set-IDAuthenticationProfile`                 | Update an existing authentication profile                             |
+| `Remove-IDAuthenticationProfile`              | Delete an authentication profile                                      |
+| `Get-IDAuthenticationAssuranceLevel`          | Get the MFA assurance level for a combination of authentication challenges |
+| `Get-IDAuthenticationPolicyModifier`          | Get available authentication policy modifiers                        |
+| `Get-IDAuthenticationPolicyLink`              | Get the current authentication policy links (plinks)                 |
+| `Get-IDAuthenticationPolicyBlock`             | Get an authentication policy block by name                           |
+| `Remove-IDAuthenticationPolicyBlock`          | Delete an authentication policy block                                 |
+| `Get-IDAuthenticationPolicyMetadata`          | Get authentication policy metadata                                   |
+| `Get-IDAuthenticationPolicyCloudMobileGP`     | Get the tenant's cloud/mobile/group policy device management configuration |
+| `New-IDAuthenticationPolicy`                  | Create a new authentication policy                                    |
+| `Set-IDAuthenticationPolicy`                  | Update an existing authentication policy                              |
 
 ## Installation
 
 ### Prerequisites
 
 - Requires Powershell Core (recommended), or Windows PowerShell (version 5.1)
-- A CyberArk Identity tenant
-- An Account to Access CyberArk Identity
+- an Idira (CyberArk) Identity tenant
+- An Account to Access Idira (CyberArk) Identity
 
 ### Install Options
 
@@ -267,7 +329,7 @@ See the [CONTRIBUTING.md](CONTRIBUTING.md) for a few more details.
 
 ## Support
 
-_IdentityCommand_ is neither developed nor supported by CyberArk; any official support channels offered by the vendor are not appropriate for seeking help with the _IdentityCommand_ module.
+_IdentityCommand_ is neither developed nor supported by Palo Alto / CyberArk; any official support channels offered by the vendor are not appropriate for seeking help with the _IdentityCommand_ module.
 
 Help and support should be sought by [opening an issue][new-issue].
 
