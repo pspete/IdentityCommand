@@ -89,14 +89,14 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
-        Context 'Prefilled' {
+        Context 'NotFilled with SecondFactorChallenges' {
 
             BeforeEach {
                 Mock Invoke-IDRestMethod -MockWith {
                     [pscustomobject]@{'property' = 'value' }
                 }
 
-                $response = Get-IDAuthenticationAssuranceLevel -Challenges 'CustomChallenges'
+                $response = Get-IDAuthenticationAssuranceLevel -FirstFactorChallenges 'OTP' -SecondFactorChallenges 'SMS'
             }
 
             It 'sends request' {
@@ -105,20 +105,11 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
-            It 'sends request to expected endpoint' {
-
-                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-
-                    $URI -eq 'https://SomeTenant.id.cyberark.cloud/AuthProfile/GetProfileMFAScoring'
-
-                } -Times 1 -Exactly -Scope It
-
-            }
-
             It 'sends request with expected body' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty Challenges) -eq 'CustomChallenges'
+                    $Challenges = $Body | ConvertFrom-Json | Select-Object -ExpandProperty Challenges
+                    $Challenges -contains 'OTP' -and $Challenges -contains 'SMS'
                 } -Times 1 -Exactly -Scope It
 
             }

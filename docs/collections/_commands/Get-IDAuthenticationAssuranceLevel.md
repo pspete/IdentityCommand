@@ -12,15 +12,9 @@ Get the MFA assurance level for a combination of authentication challenges
 
 ## SYNTAX
 
-### NotFilled
 ```
 Get-IDAuthenticationAssuranceLevel -FirstFactorChallenges <Object> [-SecondFactorChallenges <Object>]
  [<CommonParameters>]
-```
-
-### Prefilled
-```
-Get-IDAuthenticationAssuranceLevel -Challenges <Object> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -45,27 +39,12 @@ Return the assurance level for the challenge combination configured on the match
 
 ## PARAMETERS
 
-### -Challenges
-A pre-built two-element array of challenge mechanisms (first factor, second factor) to score, such as the \`Challenges\` property returned by \`Get-IDAuthenticationProfile\`.
-
-```yaml
-Type: Object
-Parameter Sets: Prefilled
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -FirstFactorChallenges
 One or more challenge mechanisms to use as the first authentication factor, for example UP (password), OTP, OATH, SMS, EMAIL, QR, U2F, U2FONDEVICE, PASSKEY, SQ (security question) or RADIUS.
 
 ```yaml
 Type: Object
-Parameter Sets: NotFilled
+Parameter Sets: (All)
 Aliases:
 Accepted values: OTP, PF, OATH, SMS, EMAIL, QR, U2F, U2FONDEVICE, PASSKEY, UP, SQ, RADIUS
 
@@ -82,7 +61,7 @@ Optional; omit to score the first factor challenge(s) alone.
 
 ```yaml
 Type: Object
-Parameter Sets: NotFilled
+Parameter Sets: (All)
 Aliases:
 Accepted values: OTP, PF, OATH, SMS, EMAIL, QR, U2F, U2FONDEVICE, PASSKEY, UP, SQ, RADIUS
 
