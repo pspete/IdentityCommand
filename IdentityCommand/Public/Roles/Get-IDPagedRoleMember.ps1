@@ -3,19 +3,19 @@
 function Get-IDPagedRoleMember {
 
     [CmdletBinding()]
-	param
-	(
-       
+    param
+    (
+
         [Parameter(Mandatory = $true)]
         [Alias('Uuid')]
         $Name,
 
         [Parameter(Mandatory = $false)]
-        $FilterValue = "",
+        $FilterValue = '',
 
         [Parameter(Mandatory = $false)]
         [array]$FilterBy = @(),
-        
+
         [Parameter(Mandatory = $false)]
         $PageNumber = 1,
 
@@ -26,35 +26,35 @@ function Get-IDPagedRoleMember {
         $PageSize = 100,
 
         [Parameter(Mandatory = $false)]
-        $SortBy = "Name"
-        
+        $SortBy = 'Name'
+
     )
 
-    BEGIN {} #begin
+    begin {} #begin
 
-    PROCESS {
+    process {
 
         #Constructed body for the rest call
         $body = [ordered]@{
 
-            "Name"        = $Name
-            #"SortBy"      = $SortBy
-            #"PageNumber"  = $PageNumber
-            #"Ascending"   = $Ascending
-            #"FilterBy"    = $FilterBy
-            #"PageSize"    = $PageSize
-            #"FilterValue" = $FilterValue
+            'Name'        = $Name
+            'SortBy'      = $SortBy
+            'PageNumber'  = $PageNumber
+            'Ascending'   = $Ascending
+            'FilterBy'    = $FilterBy
+            'PageSize'    = $PageSize
+            'FilterValue' = $FilterValue
 
         }
 
         #Constructed parameters for the rest call
         $RestCall = @{
 
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/GetPagedRoleMembers"
-        "Headers"     = $($ISPSSSession.WebSession.Headers)
-        "Method"      = "Post"
-        "Body"        = ($body | ConvertTo-Json -Depth 6)
-        "ContentType" = "application/json"
+            'URI'         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/GetPagedRoleMembers"
+            'Headers'     = $($ISPSSSession.WebSession.Headers)
+            'Method'      = 'Post'
+            'Body'        = ($body | ConvertTo-Json -Depth 6)
+            'ContentType' = 'application/json'
 
         }
 
@@ -65,5 +65,5 @@ function Get-IDPagedRoleMember {
 
     } #process
 
-    END {} #end
+    end {} #end
 }
