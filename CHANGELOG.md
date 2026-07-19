@@ -6,7 +6,21 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- All credit to ([Alexander Sageng](https://github.com/Slasky86)) for this hefty contribution!!
+- N/A
+
+### Changed
+
+- N/A
+
+### Fixed
+
+- N/A
+
+## [0.4] - 2026-07-19
+
+### Added
+
+- All credit to [Alexander Sageng](https://github.com/Slasky86) for this hefty contribution!!
   - `Get-IDPermission`
   - `Get-IDRole`
   - `New-IDRole`
@@ -59,7 +73,7 @@ All notable changes to this project will be documented in this file.
   - Tenants configured to display a PIN in the browser after external IdP login are now prompted for the PIN and completed via `AdvanceAuthentication`. Previously these tenants would hang in the `OobAuthStatus` polling loop with no way to enter the PIN.
   - Credit to Tim Schindler ([aaearon](https://github.com/aaearon))
 - SMS 2FA: Resolve issue where using SMS 2FA resulted in script asking for 2FA code before 2FA code was sent to phone
-  - Thanks ([SkylerWallace](https://github.com/SkylerWallace))!!
+  - Thanks [SkylerWallace](https://github.com/SkylerWallace)!!
 
 ## [0.3] - 2025-03-09
 
