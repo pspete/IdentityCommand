@@ -1,20 +1,20 @@
 function Get-MechanismAnswer {
     <#
     .SYNOPSIS
-    Allows a user to answer an MFA chalenge Mechanism
+    Allows a user to answer an MFA challenge Mechanism
 
     .DESCRIPTION
     MFA Challenges include User Password, Security Questions, SMS, OATH, Email, OTP, Phone Call & QR Code.
     Password is supplied automatically from provided credential object.
     Users are able to provide input to answer OATH, SMS or Security Questions.
     Out of Band factors (Phone Call, QR Code App Push & Email validation Link) are polled for until satisfied.
-    U2F and DUO are not currenlty supported via this code.
+    U2F and DUO are not currently supported via this code.
 
     .PARAMETER Mechanism
     The mechanism to answer
 
     .PARAMETER Credential
-    Credential obejct containing username & password for Identity tenant authentication
+    Credential object containing username & password for Identity tenant authentication
 
     .EXAMPLE
     $Answer = Get-MechanismAnswer -Mechanism $Mechanism -Credential $Credential
@@ -44,13 +44,13 @@ function Get-MechanismAnswer {
         [PSCredential]$Credential
     )
 
-    Begin {}
+    begin {}
 
-    Process {
+    process {
 
         switch ($Mechanism.Name) {
 
-            'UP' {
+            { $PSItem -match 'UP|SMS' } {
 
                 #User Password already provided via Credential
                 $Answer = $Credential.Password
@@ -94,7 +94,7 @@ function Get-MechanismAnswer {
 
             }
 
-            { $PSItem -match 'SMS|OATH' } {
+            { $PSItem -match 'OATH' } {
 
                 #Prompt for TOTP/SMS code input
                 $Answer = Read-Host -Prompt $($Mechanism.PromptMechChosen) -AsSecureString
@@ -109,7 +109,7 @@ function Get-MechanismAnswer {
 
                 do {
 
-                    If ($attempt -ge 1) {
+                    if ($attempt -ge 1) {
 
                         Write-Warning 'Passwords did not match, please try again.'
 
@@ -140,7 +140,7 @@ function Get-MechanismAnswer {
 
     }
 
-    End {
+    end {
         $Answer
     }
 

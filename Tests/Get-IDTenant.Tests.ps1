@@ -40,7 +40,15 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
 
             Mock Invoke-IDRestMethod -MockWith {
-                [pscustomobject]@{'property' = 'value' }
+                [pscustomobject]@{
+                    'Results' = @(
+                        [pscustomobject]@{
+                            'Row' = [pscustomobject]@{
+                                'property' = 'value'
+                            }
+                        }
+                    )
+                }
             }
 
             $response = Get-IDTenant

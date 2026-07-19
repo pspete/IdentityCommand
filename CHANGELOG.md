@@ -1,50 +1,125 @@
 # Change Log
+
 All notable changes to this project will be documented in this file.
 
 ## [unreleased] - ####-##-##
 
 ### Added
+
 - N/A
 
 ### Changed
+
 - N/A
+
+### Fixed
+
+- N/A
+
+## [0.4] - 2026-07-19
+
+### Added
+
+- All credit to [Alexander Sageng](https://github.com/Slasky86) for this hefty contribution!!
+  - `Get-IDPermission`
+  - `Get-IDRole`
+  - `New-IDRole`
+  - `Update-IDRole`
+  - `Add-IDRoleMember`
+  - `Remove-IDRoleMember`
+  - `Add-IDRolePermission`
+  - `Remove-IDRolePermission`
+  - `Remove-IDRole`
+  - `Get-IDRolePermission`
+  - `Get-IDRoleMember`
+  - `Set-IDDynamicRoleScript`
+  - `Test-IDDynamicRoleScript`
+  - `Get-IDRoleApplication`
+  - `Get-IDDynamicRoleMember`
+  - `Get-IDPagedRoleMember`
+  - `Get-IDRoleWebApp`
+  - `Get-IDAuthenticationProfile`
+  - `Remove-IDAuthenticationProfile`
+  - `Get-IDAuthenticationAssuranceLevel`
+  - `New-IDAuthenticationProfile`
+  - `Set-IDAuthenticationProfile`
+  - `Get-IDAuthenticationPolicyModifier`
+  - `Get-IDAuthenticationPolicyLink`
+  - `Get-IDAuthenticationPolicyBlock`
+  - `Get-IDAuthenticationPolicyMetadata`
+  - `Get-IDAuthenticationPolicyCloudMobileGP`
+  - `Remove-IDAuthenticationPolicyBlock`
+  - `Get-IDUserOathOTPClientName`
+  - `Get-IDUserPasswordComplexityRequirement`
+  - `New-IDAuthenticationPolicy`
+  - `New-IDTenantCname`
+  - `Remove-IDTenantCname`
+  - `Get-IDTenantURL`
+  - `Set-IDTenantPreferredCname`
+  - `Get-IDTenantSuffix`
+  - `New-IDTenantSuffix`
+  - `Remove-IDTenantSuffix`
+  - `Get-IDTenantCdsSuffix`
+  - `New-IDAuthenticationPolicy`
+  - `Set-IDAuthenticationPolicy`
+
+### Changed
+
+- N/A
+
+### Fixed
+
+- `New-IDSession`: Adds support for OOB IdP Authentication flows that require a PIN code.
+  - Tenants configured to display a PIN in the browser after external IdP login are now prompted for the PIN and completed via `AdvanceAuthentication`. Previously these tenants would hang in the `OobAuthStatus` polling loop with no way to enter the PIN.
+  - Credit to Tim Schindler ([aaearon](https://github.com/aaearon))
+- SMS 2FA: Resolve issue where using SMS 2FA resulted in script asking for 2FA code before 2FA code was sent to phone
+  - Thanks [SkylerWallace](https://github.com/SkylerWallace)!!
 
 ## [0.3] - 2025-03-09
 
 ### Added
+
 - `New-IDSession: Adds support for Out-of-band IDP Authentication`
   - Federated identity users from an external IDP can now authenticate.
-      - Thanks & Credit to Tim Schindler ([aaearon](https://github.com/aaearon)) for this!
+    - Thanks & Credit to Tim Schindler ([aaearon](https://github.com/aaearon)) for this!
 
 ### Changed
+
 - N/A
 
 ### Fixed
+
 - N/A
 
 ## [0.2 - Update 3] - 2024-03-03
 
 ### Added
+
 - `Find-SharedServicesURL`
   - New helper function that can be used to find URLs for ISPSS services under a tenant
 
 ### Changed
+
 - `ConvertTo-QueryString`
   - Updates helper function to implement functionality required in `Get-DPAStrongAccount` function of the `IdentityCommand.DPA` module.
   - If multiple values are accepted and provided for a value, return all values joined, delimited by a comma.
 
 ### Fixed
+
 - N/A
 
 ## [0.2 - Update 2] - 2024-02-19
 
 ### Added
+
 - N/A
 
 ### Changed
+
 - N/A
 
 ### Fixed
+
 - `Invoke-IDRestMethod`
   - Fixes a variable declaration which prevented certain error conditions from being reported.
   - Updated to report more errors recieved in various formats from Identity and also DPA.
@@ -52,9 +127,11 @@ All notable changes to this project will be documented in this file.
 ## [0.2 - Update 1] - 2024-02-18
 
 ### Added
+
 - N/A
 
 ### Changed
+
 - `New-IDSession`
   - Adds `Authorization` header with Bearer token to WebSession object.
 - `New-IDPlatformToken`
@@ -66,9 +143,9 @@ All notable changes to this project will be documented in this file.
   - Makes contentType matching less stringent to accommodate data returned from other ISPSS services.
 
 ### Fixed
-- `New-IDPlatformToken`
-  - Updated `GetWebSession` method to utilise `Get-IDSession` in order to return the WebSession object from the module's script scope.
 
+- `New-IDPlatformToken`
+  - Updated `GetWebSession` method to utilise `Get-IDSession` in order to return the WebSession object from the module`s script scope.
 
 ## [0.2] - 2024-02-13
 
@@ -96,12 +173,14 @@ Executing this command exports variables like the URL, Username & WebSession obj
 Return data also includes details such as session start time, elapsed time, last command time, as well as data for the last invoked command and the results of the previous command useful for debugging & development purposes.
 
 ### Added
+
 - Private Function `Get-ParentFunction`
   - Helper function to get command invocation data from different scopes
 - Private Function `Get-SessionClone`
   - Helper function to create unreferenced copy of IdentityCommand session hashtable object
 
 ### Changed
+
 - `Get-IDSession`
   - Returns the module scoped `$ISPSSSession` variable (which includes the WebSession object), instead of just the WebSession object.
 - `New-IDSession`
@@ -112,28 +191,35 @@ Return data also includes details such as session start time, elapsed time, last
   - Updated entire codebase to reference `$ISPSSSession` object instead of individual script scope variables.
 
 ### Fixed
+
 - N/A
 
 ## [0.1 - Update 3] - 2023-10-08
 
 ### Added
+
 - N/A
 
 ### Changed
+
 - `New-IDSession` - Moves ScriptMethod declaration into code body from `\xml\IdCmd.ID.Session.Types.ps1xml`.
 
 ### Fixed
-- Replaces `[Environment]::GetEnvironmentVariable('Temp')` with `[System.IO.Path]::GetTempPath()` to correctly determine %TEMP% directory location on Windows as well as OSX.
+
+- Replaces `[Environment]::GetEnvironmentVariable(`Temp`)` with `[System.IO.Path]::GetTempPath()` to correctly determine %TEMP% directory location on Windows as well as OSX.
 
 ## [0.1 - Update 2] - 2023-09-19
 
 ### Added
+
 - N/A
 
 ### Changed
+
 - `New-IDSession` - Adds federated authentication support, with ability to provide a SamlResponse from an external IDP
 
 ### Fixed
+
 - N/A
 
 ## [0.1 - Update 1] - 2023-08-30
@@ -141,6 +227,7 @@ Return data also includes details such as session start time, elapsed time, last
 Additional Functions
 
 ### Added
+
 - `Get-IDUserRole` - Get a list of roles for a user
 - `Get-IDAnalyticsDataset` - Get all datasets accessible by a user
 - `Get-IDTenantCname` - Get Tenant Cnames
@@ -149,9 +236,11 @@ Additional Functions
 - `Invoke-IDSqlcmd` - Query the database tables
 
 ### Changed
+
 - N/A
 
 ### Fixed
+
 - N/A
 
 ## [0.1] - 2023-08-21
@@ -159,6 +248,7 @@ Additional Functions
 Initial module development prior to main release
 
 ### Added
+
 - `New-IDSession` - Authenticate to CyberArk Identity, answering MFA challenges to start a new API session.
 - `Close-IDSession` - Logoff CyberArk Identity API
 - `Clear-IDUserSession` - Signs out user from all active sessions
@@ -174,7 +264,9 @@ Initial module development prior to main release
 - `New-IDPlatformToken` - Request OIDC token based on grant type
 
 ### Changed
+
 - N/A
 
 ### Fixed
+
 - N/A

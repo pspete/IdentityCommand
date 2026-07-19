@@ -222,6 +222,221 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'OOB IdP Authentication' {
+
+            BeforeEach {
+
+                Mock Start-Process -MockWith {}
+
+                #Downstream switch expects a WebSession on successful auth
+                Mock Invoke-IDRestMethod -MockWith {
+                    $ISPSSSession.WebSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+                    [pscustomobject]@{
+                        Summary = 'LoginSuccess'
+                        Token   = 'SomeToken'
+                        State   = 'Success'
+                    }
+                }
+
+            }
+
+            Context 'PIN required' {
+
+                BeforeEach {
+
+                    Mock Start-Authentication -MockWith {
+                        [pscustomobject]@{
+                            TenantId              = 'SomeID'
+                            SessionId             = 'SomeSession'
+                            IdpRedirectShortUrl   = 'https://short.example/x'
+                            IdpLoginSessionId     = 'IDP-123'
+                            IdpOobAuthPinRequired = $true
+                        }
+                    }
+
+                    Mock Read-Host -MockWith {
+                        ConvertTo-SecureString 'TEST-PIN' -AsPlainText -Force
+                    }
+
+                }
+
+                It 'launches the browser to the IdpRedirectShortUrl' {
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Start-Process -Times 1 -Exactly -Scope It -ParameterFilter {
+                        $args[0] -eq 'https://short.example/x' -or $FilePath -eq 'https://short.example/x'
+                    }
+                }
+
+                It 'prompts for the PIN as a secure string' {
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Read-Host -Times 1 -Exactly -Scope It -ParameterFilter {
+                        $AsSecureString -eq $true
+                    }
+                }
+
+                It 'sends the PIN to AdvanceAuthentication with the OOBAUTHPIN mechanism' {
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Invoke-IDRestMethod -Times 1 -Exactly -Scope It -ParameterFilter {
+                        $Uri -eq 'https://somedomain.id.cyberark.cloud/Security/AdvanceAuthentication' -and
+                        $Method -eq 'POST' -and
+                        ($Body | ConvertFrom-Json).MechanismId -eq 'OOBAUTHPIN' -and
+                        ($Body | ConvertFrom-Json).Action -eq 'Answer' -and
+                        ($Body | ConvertFrom-Json).Answer -eq 'TEST-PIN'
+                    }
+                }
+
+                It 'sends the IdpLoginSessionId as the SessionId in the PIN request' {
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Invoke-IDRestMethod -Times 1 -Exactly -Scope It -ParameterFilter {
+                        $Uri -match 'AdvanceAuthentication$' -and
+                        ($Body | ConvertFrom-Json).SessionId -eq 'IDP-123'
+                    }
+                }
+
+                It 'does not call OobAuthStatus when a PIN is required' {
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Invoke-IDRestMethod -Times 0 -Exactly -Scope It -ParameterFilter {
+                        $Uri -match 'OobAuthStatus$'
+                    }
+                }
+
+                It 'does not invoke Start-AdvanceAuthentication (MFA challenge loop is bypassed)' {
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Start-AdvanceAuthentication -Times 0 -Exactly -Scope It
+                }
+
+                It 'builds the PIN request URI from ISPSSSession.tenant_url after a PodFqdn redirect' {
+                    Mock Start-Authentication -MockWith {
+                        #Simulate the PodFqdn redirect performed by Start-Authentication
+                        $ISPSSSession.tenant_url = 'https://pod.id.cyberark.cloud'
+                        [pscustomobject]@{
+                            TenantId              = 'SomeID'
+                            SessionId             = 'SomeSession'
+                            IdpRedirectShortUrl   = 'https://short.example/x'
+                            IdpLoginSessionId     = 'IDP-123'
+                            IdpOobAuthPinRequired = $true
+                        }
+                    }
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Invoke-IDRestMethod -Times 1 -Exactly -Scope It -ParameterFilter {
+                        $Uri -eq 'https://pod.id.cyberark.cloud/Security/AdvanceAuthentication'
+                    }
+                }
+
+            }
+
+            Context 'PIN required - error handling' {
+
+                BeforeEach {
+
+                    Mock Start-Authentication -MockWith {
+                        [pscustomobject]@{
+                            TenantId              = 'SomeID'
+                            SessionId             = 'SomeSession'
+                            IdpRedirectShortUrl   = 'https://short.example/x'
+                            IdpLoginSessionId     = 'IDP-123'
+                            IdpOobAuthPinRequired = $true
+                        }
+                    }
+
+                    Mock Read-Host -MockWith {
+                        ConvertTo-SecureString 'TEST-PIN' -AsPlainText -Force
+                    }
+
+                    Mock Clear-AdvanceAuthentication -MockWith {}
+
+                }
+
+                It 'invokes Clear-AdvanceAuthentication and re-throws on API error' {
+                    Mock Invoke-IDRestMethod -MockWith { throw 'Wrong PIN' }
+                    { New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds } |
+                        Should -Throw -ExpectedMessage 'Wrong PIN'
+                    Assert-MockCalled -CommandName Clear-AdvanceAuthentication -Times 1 -Exactly -Scope It
+                }
+
+                It 'invokes Clear-AdvanceAuthentication and throws on non-LoginSuccess response' {
+                    Mock Invoke-IDRestMethod -MockWith {
+                        [pscustomobject]@{
+                            Summary = 'SomeOtherSummary'
+                            Token   = 'SomeToken'
+                        }
+                    }
+                    { New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds } |
+                        Should -Throw
+                    Assert-MockCalled -CommandName Clear-AdvanceAuthentication -Times 1 -Exactly -Scope It
+                }
+
+                It 'invokes Clear-AdvanceAuthentication and throws when Token is missing' {
+                    Mock Invoke-IDRestMethod -MockWith {
+                        [pscustomobject]@{
+                            Summary = 'LoginSuccess'
+                        }
+                    }
+                    { New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds } |
+                        Should -Throw
+                    Assert-MockCalled -CommandName Clear-AdvanceAuthentication -Times 1 -Exactly -Scope It
+                }
+
+            }
+
+            Context 'Polling (no PIN required)' {
+
+                BeforeEach {
+
+                    Mock Start-Authentication -MockWith {
+                        [pscustomobject]@{
+                            TenantId            = 'SomeID'
+                            SessionId           = 'SomeSession'
+                            IdpRedirectShortUrl = 'https://short.example/x'
+                            IdpLoginSessionId   = 'IDP-123'
+                        }
+                    }
+
+                }
+
+                It 'polls OobAuthStatus with the IdpLoginSessionId' {
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Invoke-IDRestMethod -Times 1 -Exactly -Scope It -ParameterFilter {
+                        $Uri -eq 'https://somedomain.id.cyberark.cloud/Security/OobAuthStatus' -and
+                        $Method -eq 'POST' -and
+                        ($Body | ConvertFrom-Json).SessionId -eq 'IDP-123'
+                    }
+                }
+
+                It 'does not call AdvanceAuthentication when no PIN is required' {
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Invoke-IDRestMethod -Times 0 -Exactly -Scope It -ParameterFilter {
+                        $Uri -match 'AdvanceAuthentication$'
+                    }
+                }
+
+                It 'does not prompt the user for a PIN' {
+                    Mock Read-Host -MockWith { throw 'Read-Host should not be called in the polling path' }
+                    { New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds } |
+                        Should -Not -Throw
+                }
+
+                It 'builds the polling request URI from ISPSSSession.tenant_url after a PodFqdn redirect' {
+                    Mock Start-Authentication -MockWith {
+                        #Simulate the PodFqdn redirect performed by Start-Authentication
+                        $ISPSSSession.tenant_url = 'https://pod.id.cyberark.cloud'
+                        [pscustomobject]@{
+                            TenantId            = 'SomeID'
+                            SessionId           = 'SomeSession'
+                            IdpRedirectShortUrl = 'https://short.example/x'
+                            IdpLoginSessionId   = 'IDP-123'
+                        }
+                    }
+                    New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                    Assert-MockCalled -CommandName Invoke-IDRestMethod -Times 1 -Exactly -Scope It -ParameterFilter {
+                        $Uri -eq 'https://pod.id.cyberark.cloud/Security/OobAuthStatus'
+                    }
+                }
+
+            }
+
+        }
+
         Context 'Output' {
 
             BeforeEach {

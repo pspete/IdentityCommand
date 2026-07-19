@@ -29,7 +29,10 @@ Allows a user to provide authentication details, and satisfy any required MFA ch
 
 Currently supports all Identity MFA authentication mechanisms except U2F & DUO.
 
-Supports federated authentication when providing a SamlAssertion from a configured external IDP.
+When you specify a username associated with a SAML or OIDC-based federation, then you will be redirected to the external identity provider to authenticate.
+Alternatively, you can provide a SamlAssertion from a configured external IDP.
+
+If your tenant is configured to require a PIN code after external identity provider authentication, you will be prompted to enter the PIN code displayed in the browser to complete the sign-in.
 
 ## EXAMPLES
 

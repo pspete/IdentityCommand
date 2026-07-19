@@ -64,6 +64,19 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 $answer = Get-MechanismAnswer -Mechanism $Mechanism -Credential $Creds
                 Unprotect-Answer $answer | Should -Be 'SomePassword'
             }
+
+            It 'automatically uses credential secure string password as answer for SMS mechanism' {
+
+                $Mechanism.Name = 'SMS'
+                Get-MechanismAnswer -Mechanism $Mechanism -Credential $Creds | Should -Be -ExpectedValue System.Security.SecureString
+            }
+
+            It 'uses expected password value in response to SMS mechanism' {
+
+                $Mechanism.Name = 'SMS'
+                $answer = Get-MechanismAnswer -Mechanism $Mechanism -Credential $Creds
+                Unprotect-Answer $answer | Should -Be 'SomePassword'
+            }
         }
 
         Context 'Security Questions' {
@@ -202,26 +215,12 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
         Context 'OOB Answerable' {
             BeforeEach {
                 $Mechanism = [pscustomobject]@{
-                    Name             = 'SMS'
+                    Name             = 'OATH'
                     PromptMechChosen = 'SomeMessage'
                 }
                 $Creds = New-Object System.Management.Automation.PSCredential ('SomeUser', $(ConvertTo-SecureString 'SomePassword' -AsPlainText -Force))
 
                 Mock Read-Host -MockWith { $(ConvertTo-SecureString 'SomeAnswer' -AsPlainText -Force) }
-            }
-
-            It 'prompts for SMS OTP answer' {
-                Get-MechanismAnswer -Mechanism $Mechanism -Credential $Creds
-                Assert-MockCalled -CommandName Read-Host -Times 1 -ParameterFilter {
-                    $Prompt -eq 'SomeMessage'
-                } -Scope It -Exactly
-            }
-
-            It 'outputs expected SMS OTP answer' {
-
-                $answer = Get-MechanismAnswer -Mechanism $Mechanism -Credential $Creds
-                Unprotect-Answer $answer | Should -Be 'SomeAnswer'
-
             }
 
             It 'prompts for OATH OTP answer' {
