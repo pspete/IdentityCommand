@@ -1,7 +1,7 @@
 # .ExternalHelp IdentityCommand-help.xml
 function Remove-IDTenantSuffix {
-    
-    [CmdletBinding()]
+
+    [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
        
@@ -15,20 +15,24 @@ function Remove-IDTenantSuffix {
 
     PROCESS {
 
-        $RestCall = @{
+        if ($PSCmdlet.ShouldProcess((($Suffixes) -join ', '), 'Remove Tenant Suffix')) {
 
-            "URI"         = "$($ISPSSSession.tenant_url)/Core/DeleteAliases"
-            "Headers"     = $($ISPSSSession.WebSession.Headers)
-            "Method"      = "Post"
-            "Body"        = ConvertTo-Json -InputObject $Suffixes
-            "ContentType" = "application/json"
+            $RestCall = @{
+
+                "URI"         = "$($ISPSSSession.tenant_url)/Core/DeleteAliases"
+                "Headers"     = $($ISPSSSession.WebSession.Headers)
+                "Method"      = "Post"
+                "Body"        = ConvertTo-Json -InputObject $Suffixes
+                "ContentType" = "application/json"
+
+            }
+
+            #Send Request
+            $result = Invoke-IDRestMethod @RestCall
+
+            return $result
 
         }
-
-        #Send Request
-        $result = Invoke-IDRestMethod @RestCall
-
-        return $result
 
     }#process
 

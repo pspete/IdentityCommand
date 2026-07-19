@@ -1,6 +1,6 @@
 function New-IDAuthenticationProfile {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
         [Parameter(Mandatory = $True)]
@@ -48,33 +48,37 @@ function New-IDAuthenticationProfile {
 
     PROCESS {
 
-        #constructed body
-        $Body = @{
+        if ($PSCmdlet.ShouldProcess($Name, 'Create Authentication Profile')) {
 
-            "settings" = @{
-                "Name"                      = $Name
-                "Challenges"                = "$FirstFactorChallenges", "$SecondFactorChallenges"
-                "SingleChallengeMechanisms" = $SingleChallengeMechanisms
-                "DurationInMinutes"         = $DurationInMinutes
-                "AdditionalData"            = $AdditionalData
+            #constructed body
+            $Body = @{
+
+                "settings" = @{
+                    "Name"                      = $Name
+                    "Challenges"                = "$FirstFactorChallenges", "$SecondFactorChallenges"
+                    "SingleChallengeMechanisms" = $SingleChallengeMechanisms
+                    "DurationInMinutes"         = $DurationInMinutes
+                    "AdditionalData"            = $AdditionalData
+                }
             }
+
+            #Constructed parameters for the rest call
+            $RestCall = @{
+
+            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/AuthProfile/SaveProfile"
+            "Headers"     = $($ISPSSSession.WebSession.Headers)
+            "Method"      = "Post"
+            "Body"        = ConvertTo-JSON -InputObject $Body #
+            "ContentType" = "application/json"
+
+            }
+
+            # invoking the rest call
+            $result = Invoke-IDRestMethod @RestCall
+
+            return $result
+
         }
-
-        #Constructed parameters for the rest call
-        $RestCall = @{
-
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/AuthProfile/SaveProfile"
-        "Headers"     = $($ISPSSSession.WebSession.Headers)
-        "Method"      = "Post"
-        "Body"        = ConvertTo-JSON -InputObject $Body #
-        "ContentType" = "application/json"
-
-        }
-
-        # invoking the rest call
-        $result = Invoke-RestMethod @RestCall
-
-        return $result.Result
     }#process
 
     END {} #end

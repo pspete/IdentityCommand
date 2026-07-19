@@ -1,6 +1,6 @@
 function New-IDAuthenticationPolicy {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
         [Parameter(Mandatory = $true)]
@@ -20,50 +20,54 @@ function New-IDAuthenticationPolicy {
 
         $Plinks = Get-IDAuthenticationPolicyLink
 
-        $NewPolicy = [PSCustomObject]@{
-            "Description" = $Description
-            "PolicySet" = "/Policy/$PolicyName"
-            "LinkType" = $LinkType
-            "Priority" = 1
-            "Params" = @()
-            "Filters" = @()
-            "Allowedpolicies" = @()
-        }
+        if ($PSCmdlet.ShouldProcess($PolicyName, 'Create Authentication Policy')) {
 
-        $Plinks += $NewPolicy
+            $NewPolicy = [PSCustomObject]@{
+                "Description" = $Description
+                "PolicySet" = "/Policy/$PolicyName"
+                "LinkType" = $LinkType
+                "Priority" = 1
+                "Params" = @()
+                "Filters" = @()
+                "Allowedpolicies" = @()
+            }
 
-        $Plinks = (ConvertTo-Json -InputObject $Plinks)
+            $Plinks += $NewPolicy
 
-        $Body = "{
+            $Plinks = (ConvertTo-Json -InputObject $Plinks)
 
-            'plinks' : $($Plinks),
-            'policy':  {
+            $Body = "{
 
-                'Newpolicy': 'true',
-                'Version': '1',
-                'Path': '/Policy/$PolicyName',
-                'Settings': {
-                    '/Core/Security/CDS/ExternalMFA/ShowQRCode': true
-                },
-                'Description': '$($Description)'
+                'plinks' : $($Plinks),
+                'policy':  {
+
+                    'Newpolicy': 'true',
+                    'Version': '1',
+                    'Path': '/Policy/$PolicyName',
+                    'Settings': {
+                        '/Core/Security/CDS/ExternalMFA/ShowQRCode': true
+                    },
+                    'Description': '$($Description)'
+
+                }
+            }"
+
+            #Constructed parameters for the rest call
+            $RestCall = @{
+
+            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Policy/SavePolicyBlock3"
+            "Headers"     = $($ISPSSSession.WebSession.Headers)
+            "Method"      = "Post"
+            "Body"        = $Body
+            "ContentType" = "application/json"
 
             }
-        }"
+            # invoking the rest call
+            $result = Invoke-IDRestMethod @RestCall
 
-        #Constructed parameters for the rest call
-        $RestCall = @{
-
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Policy/SavePolicyBlock3"
-        "Headers"     = $($ISPSSSession.WebSession.Headers)
-        "Method"      = "Post"
-        "Body"        = $Body
-        "ContentType" = "application/json"
+            return $result
 
         }
-        # invoking the rest call
-        $result = Invoke-IDRestMethod @RestCall
-
-        return $result
     } #process
 
     END {} #end

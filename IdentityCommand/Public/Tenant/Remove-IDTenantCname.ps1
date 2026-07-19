@@ -1,6 +1,6 @@
 # .ExternalHelp IdentityCommand-help.xml
 function Remove-IDTenantCname {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
        
@@ -13,38 +13,42 @@ function Remove-IDTenantCname {
 
     PROCESS {
 
-        if ($cnamePrefix -like "*.id.cyberark.cloud") {
+        if ($PSCmdlet.ShouldProcess($customCname, 'Remove Tenant Cname')) {
 
-            $Body = @{
+            if ($cnamePrefix -like "*.id.cyberark.cloud") {
 
-                "customCname" = $customCname
+                $Body = @{
+
+                    "customCname" = $customCname
+
+                }
 
             }
 
-        }
+            else {
 
-        else {
+                $Body = @{
 
-            $Body = @{
-            
-                "customCname" = "$($customCname).id.cyberark.cloud"
-            
+                    "customCname" = "$($customCname).id.cyberark.cloud"
+
+                }
             }
+
+            $RestCall = @{
+
+                "URI"         = "$($ISPSSSession.tenant_url)/TenantCnames/UnRegister"
+                "Headers"     = $($ISPSSSession.WebSession.Headers)
+                "Method"      = "Post"
+                "Body"        = ($Body | ConvertTo-JSON)
+                "ContentType" = "application/json"
+
+            }
+            #Send Request
+            $result = Invoke-IDRestMethod @RestCall
+
+            return $result
+
         }
-
-        $RestCall = @{
-
-            "URI"         = "$($ISPSSSession.tenant_url)/TenantCnames/UnRegister"
-            "Headers"     = $($ISPSSSession.WebSession.Headers)
-            "Method"      = "Post"
-            "Body"        = ($Body | ConvertTo-JSON)
-            "ContentType" = "application/json"
-
-        }
-        #Send Request
-        $result = Invoke-IDRestMethod @RestCall
-
-        return $result
 
     }#process
 

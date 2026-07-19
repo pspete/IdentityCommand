@@ -1,6 +1,6 @@
 function Set-IDDynamicRoleScript {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
        
@@ -18,29 +18,33 @@ function Set-IDDynamicRoleScript {
 
     PROCESS {
 
-       #Constructed body for the rest call
-       $body = "{
+        if ($PSCmdlet.ShouldProcess($Name, 'Set Dynamic Role Script')) {
 
-       'User': '$($User)',
-       'Script': '$($Script)'
-   
-       }"
+            #Constructed body for the rest call
+            $body = "{
 
-        #Constructed parameters for the rest call
-        $RestCall = @{
+            'User': '$($User)',
+            'Script': '$($Script)'
 
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/SetDynamicRoleScript"
-        "Headers"     = $($ISPSSSession.WebSession.Headers)
-        "Method"      = "Post"
-        "Body"        = $body
-        "ContentType" = "application/json"
+            }"
+
+            #Constructed parameters for the rest call
+            $RestCall = @{
+
+            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/SetDynamicRoleScript"
+            "Headers"     = $($ISPSSSession.WebSession.Headers)
+            "Method"      = "Post"
+            "Body"        = $body
+            "ContentType" = "application/json"
+
+            }
+
+            # invoking the rest call
+            $result = Invoke-IDRestMethod @RestCall
+
+            return $result
 
         }
-
-        # invoking the rest call
-        $result = Invoke-RestMethod @RestCall
-
-        return $result
 
     } #process
 

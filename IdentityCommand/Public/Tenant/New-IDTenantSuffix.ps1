@@ -1,7 +1,7 @@
 # .ExternalHelp IdentityCommand-help.xml
 function New-IDTenantSuffix {
-    
-    [CmdletBinding()]
+
+    [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
        
@@ -33,30 +33,34 @@ function New-IDTenantSuffix {
 
     PROCESS {
 
-        $Body = @{
+        if ($PSCmdlet.ShouldProcess($alias, 'Create Tenant Suffix')) {
 
-            "alias"         = $alias
-            "cdsAlias"      = $cdsAlias
-            "domain"        = $domain
-            "jsutil-radio2" = $directory
-            "oldname"       = $oldname
+            $Body = @{
+
+                "alias"         = $alias
+                "cdsAlias"      = $cdsAlias
+                "domain"        = $domain
+                "jsutil-radio2" = $directory
+                "oldname"       = $oldname
+
+            }
+
+            $RestCall = @{
+
+                "URI"         = "$($ISPSSSession.tenant_url)/Core/StoreAlias"
+                "Headers"     = $($ISPSSSession.WebSession.Headers)
+                "Method"      = "Post"
+                "Body"        = ($Body | ConvertTo-JSON)
+                "ContentType" = "application/json"
+
+            }
+
+            #Send Request
+            $result = Invoke-IDRestMethod @RestCall
+
+            return $result
 
         }
-
-        $RestCall = @{
-
-            "URI"         = "$($ISPSSSession.tenant_url)/Core/StoreAlias"
-            "Headers"     = $($ISPSSSession.WebSession.Headers)
-            "Method"      = "Post"
-            "Body"        = ($Body | ConvertTo-JSON)
-            "ContentType" = "application/json"
-
-        }
-
-        #Send Request
-        $result = Invoke-IDRestMethod @RestCall
-
-        return $result
 
     }#process
 

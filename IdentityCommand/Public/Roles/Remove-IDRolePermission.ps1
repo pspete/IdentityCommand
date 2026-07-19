@@ -1,6 +1,6 @@
 function Remove-IDRolePermission {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
        
@@ -29,31 +29,35 @@ function Remove-IDRolePermission {
 
     PROCESS {
 
-        #Constructed body for the rest call
-        $body = @(
-            @{
+        if ($PSCmdlet.ShouldProcess($Name, "Remove Role Permission '$Path'")) {
 
-            "Role"        = $Name
-            "Path"        = $Path
+            #Constructed body for the rest call
+            $body = @(
+                @{
+
+                "Role"        = $Name
+                "Path"        = $Path
+
+                }
+            )
+
+            #Constructed parameters for the rest call
+            $RestCall = @{
+
+            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/UnAssignSuperRights"
+            "Headers"     = $($ISPSSSession.WebSession.Headers)
+            "Method"      = "Post"
+            "Body"        = (ConvertTo-JSON -InputObject $body)
+            "ContentType" = "application/json"
 
             }
-        )
 
-        #Constructed parameters for the rest call
-        $RestCall = @{
+            # invoking the rest call
+            $result = Invoke-IDRestMethod @RestCall
 
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/UnAssignSuperRights"
-        "Headers"     = $($ISPSSSession.WebSession.Headers)
-        "Method"      = "Post"
-        "Body"        = (ConvertTo-JSON -InputObject $body) 
-        "ContentType" = "application/json"
+            return $result
 
         }
-
-        # invoking the rest call
-        $result = Invoke-RestMethod @RestCall
-
-        return $result
 
     } #process
 

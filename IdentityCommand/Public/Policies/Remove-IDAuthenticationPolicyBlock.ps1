@@ -2,7 +2,7 @@
 
 function Remove-IDAuthenticationPolicyBlock {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
         [Parameter(Mandatory = $true,
@@ -21,27 +21,31 @@ function Remove-IDAuthenticationPolicyBlock {
             break
         }
 
-        $Body = @{
+        if ($PSCmdlet.ShouldProcess($Name, 'Remove Authentication Policy Block')) {
 
-            "path" = $Name
+            $Body = @{
+
+                "path" = $Name
+
+            }
+
+            #Constructed parameters for the rest call
+            $RestCall = @{
+
+            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Policy/DeletePolicyBlock"
+            "Headers"     = $($ISPSSSession.WebSession.Headers)
+            "Method"      = "Post"
+            "Body"        = ($Body | ConvertTo-Json)
+            "ContentType" = "application/json"
+
+            }
+
+            # invoking the rest call
+            $result = Invoke-IDRestMethod @RestCall
+
+            return $result
 
         }
-
-        #Constructed parameters for the rest call
-        $RestCall = @{
-
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Policy/DeletePolicyBlock"
-        "Headers"     = $($ISPSSSession.WebSession.Headers)
-        "Method"      = "Post"
-        "Body"        = ($Body | ConvertTo-Json)
-        "ContentType" = "application/json"
-
-        }
-
-        # invoking the rest call
-        $result = Invoke-IDRestMethod @RestCall
-
-        return $result
 
     } #process
 

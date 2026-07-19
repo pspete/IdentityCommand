@@ -51,7 +51,7 @@ function Add-IDRolePermission {
         }
 
         # invoking the rest call
-        $result = Invoke-RestMethod @RestCall
+        $result = Invoke-IDRestMethod @RestCall
 
         return $result
 

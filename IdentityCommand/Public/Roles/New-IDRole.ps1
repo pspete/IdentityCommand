@@ -1,6 +1,6 @@
 ﻿function New-IDRole {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
        
@@ -32,34 +32,38 @@
 
     PROCESS {
 
-        #Constructed body for the rest call
-        $body = [ordered]@{
+        if ($PSCmdlet.ShouldProcess($Name, 'Create Role')) {
 
-            "Name"        = $Name
-            "Description" = $Description
-            "Users"       = $Users
-            "Roles"       = $Roles
-            "Groups"      = $Groups
-            "RoleType"    = $RoleType
-            "OrgPath"     = $OrgPath
+            #Constructed body for the rest call
+            $body = [ordered]@{
+
+                "Name"        = $Name
+                "Description" = $Description
+                "Users"       = $Users
+                "Roles"       = $Roles
+                "Groups"      = $Groups
+                "RoleType"    = $RoleType
+                "OrgPath"     = $OrgPath
+
+            }
+
+            #Constructed parameters for the rest call
+            $RestCall = @{
+
+            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/StoreRole/"
+            "Headers"     = $($ISPSSSession.WebSession.Headers)
+            "Method"      = "Post"
+            "Body"        = ($body | ConvertTo-Json -Depth 3)
+            "ContentType" = "application/json"
+
+            }
+
+            # invoking the rest call
+            $result = Invoke-IDRestMethod @RestCall
+
+            return $result
 
         }
-
-        #Constructed parameters for the rest call
-        $RestCall = @{
-
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/StoreRole/"
-        "Headers"     = $($ISPSSSession.WebSession.Headers)
-        "Method"      = "Post"
-        "Body"        = ($body | ConvertTo-Json -Depth 3)
-        "ContentType" = "application/json"
-
-        }
-
-        # invoking the rest call
-        $result = Invoke-IDRestMethod @RestCall
-
-        return $result
 
     } #process
 

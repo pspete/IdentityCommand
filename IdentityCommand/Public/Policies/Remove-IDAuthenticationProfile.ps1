@@ -1,6 +1,6 @@
 function Remove-IDAuthenticationProfile {
 
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
         [Parameter(Mandatory = $true,
@@ -13,29 +13,32 @@ function Remove-IDAuthenticationProfile {
 
     PROCESS {
 
-        $Body = @{
+        if ($PSCmdlet.ShouldProcess($Name, 'Remove Authentication Profile')) {
 
-            'uuid' = $Name
+            $Body = @{
+
+                'uuid' = $Name
+
+            }
+
+            #Constructed parameters for the rest call
+            $RestCall = @{
+
+                "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/AuthProfile/DeleteProfile"
+                "Headers"     = $($ISPSSSession.WebSession.Headers)
+                "Method"      = "Post"
+                "Body"        = ($Body | ConvertTo-Json)
+                "ContentType" = "application/json"
+
+            }
+
+            # invoking the rest call
+            $result = Invoke-IDRestMethod @RestCall
+
+            return $result
 
         }
 
-        #Constructed parameters for the rest call
-        $RestCall = @{
-
-            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/AuthProfile/DeleteProfile"
-            "Headers"     = $($ISPSSSession.WebSession.Headers)
-            "Method"      = "Post"
-            "Body"        = ($Body | ConvertTo-Json)
-            "ContentType" = "application/json"
-            
-        }
-    
-        # invoking the rest call
-        $result = Invoke-IDRestMethod @RestCall
-
-        return $result
-
-    
     } #process
 
     END {} #end
