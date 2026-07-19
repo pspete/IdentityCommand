@@ -128,7 +128,7 @@
         'Get-IDAuthenticationPolicyCloudMobileGP',
         'Remove-IDAuthenticationPolicyBlock',
         'Get-IDUserOathOTPClientName',
-        'Get-IDUserPasswordComplexityRequirements',
+        'Get-IDUserPasswordComplexityRequirement',
         'New-IDAuthenticationPolicy',
         'Set-IDAuthenticationPolicy'
     )

@@ -5,7 +5,7 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-IDUserPasswordComplexityRequirements
+# Get-IDUserPasswordComplexityRequirement
 
 ## SYNOPSIS
 Get the tenant's password complexity requirements
@@ -13,7 +13,7 @@ Get the tenant's password complexity requirements
 ## SYNTAX
 
 ```
-Get-IDUserPasswordComplexityRequirements [<CommonParameters>]
+Get-IDUserPasswordComplexityRequirement [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -23,7 +23,7 @@ Retrieve the tenant's cloud directory password complexity policy, such as minimu
 
 ### Example 1
 ```
-PS C:\> Get-IDUserPasswordComplexityRequirements
+PS C:\> Get-IDUserPasswordComplexityRequirement
 ```
 
 Return the tenant's password complexity requirements.

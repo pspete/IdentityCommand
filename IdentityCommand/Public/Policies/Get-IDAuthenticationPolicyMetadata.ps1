@@ -1,5 +1,6 @@
 function Get-IDAuthenticationPolicyMetadata {
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification = 'Metadata is already singular')]
     [CmdletBinding()]
 	param
 	(

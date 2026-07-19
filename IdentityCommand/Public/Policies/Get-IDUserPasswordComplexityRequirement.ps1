@@ -1,4 +1,4 @@
-function Get-IDUserPasswordComplexityRequirements {
+function Get-IDUserPasswordComplexityRequirement {
 
     [CmdletBinding()]
 	param

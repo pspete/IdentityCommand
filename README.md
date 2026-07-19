@@ -143,7 +143,7 @@ The commands currently available in the _IdentityCommand_ module are listed here
 | `Get-IDUserRole`                             | List roles user is a member of.                                |
 | `Get-IDUserIdentifier`                       | Get user identifiers                                           |
 | `Get-IDUserOathOTPClientName`                | Get the tenant's OATH OTP client name                          |
-| `Get-IDUserPasswordComplexityRequirements`   | Get the tenant's password complexity requirements              |
+| `Get-IDUserPasswordComplexityRequirement`    | Get the tenant's password complexity requirements              |
 | `Suspend-IDUserMFA`                          | Suspend MFA for a User                                         |
 | `Test-IDUserCloudLock`                       | Check if a user is cloud locked                                |
 | `Lock-IDUser`                                 | Cloud lock a user                                              |

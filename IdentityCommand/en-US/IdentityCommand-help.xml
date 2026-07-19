@@ -2270,9 +2270,9 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
-      <command:name>Get-IDUserPasswordComplexityRequirements</command:name>
+      <command:name>Get-IDUserPasswordComplexityRequirement</command:name>
       <command:verb>Get</command:verb>
-      <command:noun>IDUserPasswordComplexityRequirements</command:noun>
+      <command:noun>IDUserPasswordComplexityRequirement</command:noun>
       <maml:description>
         <maml:para>Get the tenant's password complexity requirements</maml:para>
       </maml:description>
@@ -2282,7 +2282,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
-        <maml:name>Get-IDUserPasswordComplexityRequirements</maml:name>
+        <maml:name>Get-IDUserPasswordComplexityRequirement</maml:name>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters />
@@ -2314,7 +2314,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-IDUserPasswordComplexityRequirements</dev:code>
+        <dev:code>PS C:\&gt; Get-IDUserPasswordComplexityRequirement</dev:code>
         <dev:remarks>
           <maml:para>Return the tenant's password complexity requirements.</maml:para>
         </dev:remarks>

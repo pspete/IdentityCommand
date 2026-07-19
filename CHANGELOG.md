@@ -36,7 +36,7 @@ All notable changes to this project will be documented in this file.
   - `Get-IDAuthenticationPolicyCloudMobileGP`
   - `Remove-IDAuthenticationPolicyBlock`
   - `Get-IDUserOathOTPClientName`
-  - `Get-IDUserPasswordComplexityRequirements`
+  - `Get-IDUserPasswordComplexityRequirement`
   - `New-IDAuthenticationPolicy`
   - `New-IDTenantCname`
   - `Remove-IDTenantCname`
