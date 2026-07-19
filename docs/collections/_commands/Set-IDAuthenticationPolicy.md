@@ -13,8 +13,8 @@ Update an existing authentication policy
 ## SYNTAX
 
 ```
-Set-IDAuthenticationPolicy [-PolicyName] <Object> [[-Description] <Object>] [[-LinkType] <Object>] [-WhatIf]
- [-Confirm] [<CommonParameters>]
+Set-IDAuthenticationPolicy [-PolicyName] <Object> [[-Description] <Object>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -55,23 +55,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -LinkType
-The scope the policy link applies to: Global (applies tenant-wide), Role (applies when linked to a specific role), or Collection (applies when linked to an application/resource collection).
-Defaults to Global.
-
-```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
-Accepted values: Role, Global, Collection
-
-Required: False
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -PolicyName
 The name of the existing authentication policy to update.
 Accepts pipeline input by property name.
@@ -98,7 +81,7 @@ Aliases: cf
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -114,7 +97,7 @@ Aliases: wi
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

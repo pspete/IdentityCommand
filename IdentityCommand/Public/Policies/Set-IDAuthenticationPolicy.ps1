@@ -1,23 +1,19 @@
 function Set-IDAuthenticationPolicy {
 
     [CmdletBinding(SupportsShouldProcess)]
-	param
-	(
+    param
+    (
         [Parameter(Mandatory = $true,
-        ValueFromPipelinebyPropertyName = $true)]
+            ValueFromPipelinebyPropertyName = $true)]
         $PolicyName,
 
         [Parameter(Mandatory = $false)]
-        $Description = "",
-
-        [Parameter(Mandatory = $false)]
-        [ValidateSet('Role','Global','Collection')]
-        $LinkType = "Global"
+        $Description = ''
     )
 
-    BEGIN {} #begin
+    begin {} #begin
 
-    PROCESS {
+    process {
 
         $Plinks = Get-IDAuthenticationPolicyLink
 
@@ -50,11 +46,11 @@ function Set-IDAuthenticationPolicy {
             #Constructed parameters for the rest call
             $RestCall = @{
 
-            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Policy/SavePolicyBlock3"
-            "Headers"     = $($ISPSSSession.WebSession.Headers)
-            "Method"      = "Post"
-            "Body"        = $Body
-            "ContentType" = "application/json"
+                'URI'         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Policy/SavePolicyBlock3"
+                'Headers'     = $($ISPSSSession.WebSession.Headers)
+                'Method'      = 'Post'
+                'Body'        = $Body
+                'ContentType' = 'application/json'
 
             }
             # invoking the rest call
@@ -65,5 +61,5 @@ function Set-IDAuthenticationPolicy {
         }
     } #process
 
-    END {} #end
+    end {} #end
 }
