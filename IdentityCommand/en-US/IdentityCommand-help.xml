@@ -5247,23 +5247,6 @@ PS C:\&gt; New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -SAMLR
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-          <maml:name>LinkType</maml:name>
-          <maml:description>
-            <maml:para>The scope the policy link applies to: Global (applies tenant-wide), Role (applies when linked to a specific role), or Collection (applies when linked to an application/resource collection). Defaults to Global.</maml:para>
-          </maml:description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">Role</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Global</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">Collection</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-          <dev:type>
-            <maml:name>Object</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
           <maml:name>Confirm</maml:name>
           <maml:description>
@@ -5293,18 +5276,6 @@ PS C:\&gt; New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -SAMLR
         <maml:name>Description</maml:name>
         <maml:description>
           <maml:para>A free-text description of the authentication policy. Defaults to an empty string.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-        <dev:type>
-          <maml:name>Object</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-        <maml:name>LinkType</maml:name>
-        <maml:description>
-          <maml:para>The scope the policy link applies to: Global (applies tenant-wide), Role (applies when linked to a specific role), or Collection (applies when linked to an application/resource collection). Defaults to Global.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
