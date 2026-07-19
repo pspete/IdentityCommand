@@ -187,6 +187,30 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 } -Times 3 -Scope It -Exactly
             }
 
+            It 'prompts for SMS OTP answer before sending it as the answer' {
+                Mock Read-Host -MockWith { $(ConvertTo-SecureString 'SomePromptedAnswer' -AsPlainText -Force) }
+                $Mechanism = [pscustomobject]@{
+                    MechanismId      = 'SomeMechanismId'
+                    AnswerType       = 'StartOOB'
+                    Name             = 'SMS'
+                    PromptMechChosen = 'SomeMessage'
+                }
+                $LogonRequest | Start-AdvanceAuthentication -Mechanism $Mechanism -Answer 'SomeAnswer'
+
+                Assert-MockCalled Read-Host -Times 1 -Exactly -Scope It -ParameterFilter {
+                    $Prompt -eq 'SomeMessage'
+                }
+                Assert-MockCalled Invoke-IDRestMethod -Times 2 -Scope It -Exactly
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $RequestBody = $Body | ConvertFrom-Json
+                    $RequestBody.Action -eq 'StartOOB'
+                } -Times 1 -Scope It -Exactly
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $RequestBody = $Body | ConvertFrom-Json
+                    $RequestBody.Action -eq 'Answer' -and $RequestBody.Answer -eq 'SomePromptedAnswer'
+                } -Times 1 -Scope It -Exactly
+            }
+
             It 'sends expected request for Answer answer type' {
                 $Mechanism = [pscustomobject]@{
                     MechanismId = 'SomeMechanismId'
