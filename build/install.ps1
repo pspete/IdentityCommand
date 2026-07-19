@@ -7,6 +7,8 @@ $RequiredModules = @(
 	@{ Name = 'PowerShellGet' }
 	@{ Name = 'Pester'; RequiredVersion = '5.7.1' }
 	@{ Name = 'PSScriptAnalyzer' }
+	@{ Name = 'coveralls' }
+	@{ Name = 'PSCodeCovIo' }
 )
 
 #---------------------------------#
