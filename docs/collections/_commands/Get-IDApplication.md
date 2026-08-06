@@ -23,28 +23,28 @@ Get-IDApplication -ServiceName <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Returns the details of a single application, identified either by its unique ID or by its service name.
+Returns the details of a single application, identified either by its row key or by its service name.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Get-IDApplication -ID 'a1b2c3d4-0000-0000-0000-000000000000'
+PS C:\> Get-IDApplication -ID 'SomeApplicationName'
 ```
 
-Returns the application with the specified ID.
+Returns the application matching the specified name/row key.
 
 ### Example 2
 ```powershell
 PS C:\> Get-IDApplication -ServiceName 'SomeApp'
 ```
 
-Returns the ID of the application matching the specified service name.
+Returns the application matching the specified service name. Internally, this resolves the service name to an application ID and then fetches its full details, so the result is the same shape as the `-ID` parameter set.
 
 ## PARAMETERS
 
 ### -ID
-The unique ID of the application to retrieve.
+The name or app key (row key) of the application to retrieve. Fetch the app key from the Admin Portal after adding an application, or via a Redrock query. This cannot be the Application Id value for OAuth/OIDC-type applications - use the application's name instead for those.
 
 ```yaml
 Type: String
@@ -59,7 +59,7 @@ Accept wildcard characters: False
 ```
 
 ### -ServiceName
-The service name of the application to look up.
+The service name of the application to look up (relevant for OAuth2/OIDC-type applications, which may not have a usable `_RowKey`).
 
 ```yaml
 Type: String

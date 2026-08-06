@@ -1,7 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: Request body field ('ID'/'ServiceName') and the response object structure are inferred
-# from the SaaS Manage API spec's operation summaries only - no full schema was available.
-# Verify against a live tenant and adjust body key names / output shape as needed.
 function Get-IDApplication {
     [CmdletBinding(DefaultParameterSetName = 'ID')]
     param(
@@ -32,17 +29,30 @@ function Get-IDApplication {
 
         switch ($PSCmdlet.ParameterSetName) {
             'ID' {
-                $Request['URI'] = "$($ISPSSSession.tenant_url)/SaasManage/GetApplication"
+                #The underlying API parameter is named '_RowKey' (accepts the application's Name
+                #or AppKey - per the vendor's own parameter docs it cannot be the Application Id
+                #for OAuth/OIDC-type applications), passed as a query string with no JSON body.
+                $Request['URI'] = "$($ISPSSSession.tenant_url)/SaasManage/GetApplication?_RowKey=$($ID | Get-EscapedString)"
+
+                #Send Request
+                Invoke-IDRestMethod @Request
             }
             'ServiceName' {
-                $Request['URI'] = "$($ISPSSSession.tenant_url)/SaasManage/GetAppIDByServiceName"
+                #The underlying API parameter is named 'name', not 'ServiceName', per the vendor's
+                #own parameter docs. This endpoint only returns the application's ID rather than
+                #its full details, so chain into an ID lookup to return the same shape of result
+                #as the ID parameter set does.
+                $Request['URI'] = "$($ISPSSSession.tenant_url)/SaasManage/GetAppIDByServiceName?name=$($ServiceName | Get-EscapedString)"
+
+                $AppID = Invoke-IDRestMethod @Request
+
+                if ($null -ne $AppID) {
+
+                    Get-IDApplication -ID $AppID
+
+                }
             }
         }
-
-        $Request['Body'] = $PSBoundParameters | Get-Parameter | ConvertTo-Json
-
-        #Send Request
-        Invoke-IDRestMethod @Request
 
     }#process
 

@@ -572,7 +572,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Returns the details of a single application, identified either by its unique ID or by its service name.</maml:para>
+      <maml:para>Returns the details of a single application, identified either by its row key or by its service name.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -580,7 +580,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Uuid, AppKey">
           <maml:name>ID</maml:name>
           <maml:description>
-            <maml:para>The unique ID of the application to retrieve.</maml:para>
+            <maml:para>The name or app key (row key) of the application to retrieve. Fetch the app key from the Admin Portal after adding an application, or via a Redrock query. This cannot be the Application Id value for OAuth/OIDC-type applications - use the application's name instead for those.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -595,7 +595,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>ServiceName</maml:name>
           <maml:description>
-            <maml:para>The service name of the application to look up.</maml:para>
+            <maml:para>The service name of the application to look up (relevant for OAuth2/OIDC-type applications, which may not have a usable `_RowKey`).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -610,7 +610,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Uuid, AppKey">
         <maml:name>ID</maml:name>
         <maml:description>
-          <maml:para>The unique ID of the application to retrieve.</maml:para>
+          <maml:para>The name or app key (row key) of the application to retrieve. Fetch the app key from the Admin Portal after adding an application, or via a Redrock query. This cannot be the Application Id value for OAuth/OIDC-type applications - use the application's name instead for those.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -622,7 +622,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>ServiceName</maml:name>
         <maml:description>
-          <maml:para>The service name of the application to look up.</maml:para>
+          <maml:para>The service name of the application to look up (relevant for OAuth2/OIDC-type applications, which may not have a usable `_RowKey`).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -660,16 +660,16 @@
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-IDApplication -ID 'a1b2c3d4-0000-0000-0000-000000000000'</dev:code>
+        <dev:code>PS C:\&gt; Get-IDApplication -ID 'SomeApplicationName'</dev:code>
         <dev:remarks>
-          <maml:para>Returns the application with the specified ID.</maml:para>
+          <maml:para>Returns the application matching the specified name/row key.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
         <dev:code>PS C:\&gt; Get-IDApplication -ServiceName 'SomeApp'</dev:code>
         <dev:remarks>
-          <maml:para>Returns the ID of the application matching the specified service name.</maml:para>
+          <maml:para>Returns the application matching the specified service name. Internally, this resolves the service name to an application ID and then fetches its full details, so the result is the same shape as the `-ID` parameter set.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

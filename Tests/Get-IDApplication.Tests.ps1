@@ -61,7 +61,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/SaasManage/GetApplication'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/SaasManage/GetApplication?_RowKey=someid'
 
                 } -Times 1 -Exactly -Scope It
 
@@ -73,11 +73,9 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
-            It 'sends request with expected body' {
+            It 'sends request with no body' {
 
-                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty ID) -eq 'someid'
-                } -Times 1 -Exactly -Scope It
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter { $Body -eq $null } -Times 1 -Exactly -Scope It
 
             }
 
@@ -92,30 +90,51 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
         Context 'ServiceName' {
 
             BeforeEach {
+                Mock Invoke-IDRestMethod -ParameterFilter { $URI -like '*GetAppIDByServiceName*' } -MockWith {
+                    'someid'
+                }
+                Mock Invoke-IDRestMethod -ParameterFilter { $URI -like '*GetApplication?_RowKey=*' } -MockWith {
+                    [pscustomobject]@{'property' = 'value' }
+                }
+
                 $response = Get-IDApplication -ServiceName 'someservice'
             }
 
-            It 'sends request to expected endpoint' {
+            It 'sends request to the service name lookup endpoint' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/SaasManage/GetAppIDByServiceName'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/SaasManage/GetAppIDByServiceName?name=someservice'
 
                 } -Times 1 -Exactly -Scope It
 
             }
 
-            It 'sends request with expected body' {
+            It 'chains into a lookup by the ID returned from the service name lookup' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty ServiceName) -eq 'someservice'
+
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/SaasManage/GetApplication?_RowKey=someid'
+
                 } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'sends both requests with no body' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter { $Body -eq $null } -Times 2 -Exactly -Scope It
 
             }
 
             It 'provides output' {
 
                 $response | Should -Not -BeNullOrEmpty
+
+            }
+
+            It 'outputs the full application details from the chained ID lookup, not just the ID' {
+
+                $response | Select-Object -ExpandProperty property | Should -Be 'value'
 
             }
 
