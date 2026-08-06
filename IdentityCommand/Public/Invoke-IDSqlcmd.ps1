@@ -57,6 +57,24 @@ function Invoke-IDSqlcmd {
 
         $URI = "$($ISPSSSession.tenant_url)/Redrock/query"
 
+        #Redrock only honors Limit when it's paired with PageNumber/PageSize - default them from
+        #Limit when not explicitly supplied, so -Limit alone behaves as callers would expect.
+        if ($PSBoundParameters.ContainsKey('Limit')) {
+
+            if (-not $PSBoundParameters.ContainsKey('PageSize')) {
+
+                $PSBoundParameters.Add('PageSize', $Limit)
+
+            }
+
+            if (-not $PSBoundParameters.ContainsKey('PageNumber')) {
+
+                $PSBoundParameters.Add('PageNumber', 1)
+
+            }
+
+        }
+
         #Create request body with Script & args properties
         $Cmd = $PSBoundParameters | Get-Parameter -ParametersToKeep Script
         $Cmd.Add('args', $($PSBoundParameters | Get-Parameter -ParametersToRemove Script))

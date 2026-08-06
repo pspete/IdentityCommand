@@ -23,6 +23,8 @@ It does not allow you to modify or create data in these tables.
 
 This function requires a script with the SQL code to execute as a query and optional parameters to control the output.
 
+The underlying Redrock query API only honors `-Limit` when it's paired with `-PageNumber`/`-PageSize`; without them, the full result set is returned regardless of `-Limit`. If `-Limit` is supplied without an explicit `-PageSize` and/or `-PageNumber`, this function defaults `-PageSize` to the `-Limit` value and `-PageNumber` to `1`, so `-Limit` alone behaves as expected. Explicitly supplied `-PageSize`/`-PageNumber` values are never overridden.
+
 ## EXAMPLES
 
 ### Example 1
@@ -31,6 +33,13 @@ PS C:\> Invoke-IDSqlcmd -Script 'Select ID, Username from User ORDER BY Username
 ```
 
 Invoke query on the User table, returning the ID and name for each user who has accessed the cloud service
+
+### Example 2
+```
+PS C:\> Invoke-IDSqlcmd -Script 'Select ID, Username from User ORDER BY Username COLLATE NOCASE' -Limit 10
+```
+
+Invoke query on the User table, returning at most the first 10 results. `-PageSize` and `-PageNumber` are defaulted automatically from `-Limit`.
 
 ## PARAMETERS
 
