@@ -235,7 +235,7 @@
 								$ErrorMessage = "$ErrorMessage. $ErrorDescription"
 							}
 							{ $null -ne $ErrorDetails.code } {
-								$ErrorID, $ErrorDetails.code -join ','
+								$ErrorID = $ErrorID, $ErrorDetails.code -join ','
 							}
 
 						}
@@ -251,7 +251,7 @@
 
 						[System.Management.Automation.ErrorRecord]::new(
 
-							$ErrorMessage,
+							[System.Exception]::new($ErrorMessage),
 							$ErrorID,
 							[System.Management.Automation.ErrorCategory]::NotSpecified,
 							$PSItem
