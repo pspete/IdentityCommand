@@ -214,7 +214,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 				If ($IsCoreCLR) {
 					Mock Invoke-WebRequest { Throw $errorRecord }
 
-					{ Invoke-IDRestMethod @WebSession } | Should -Throw
+					{ Invoke-IDRestMethod @WebSession } | Should -Throw -ExpectedMessage 'Some Error Message'
 				} Else { Set-ItResult -Inconclusive }
 
 			}
@@ -225,7 +225,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 					$errorRecord = New-Object Management.Automation.ErrorRecord $exception, $errorID, $errorCategory, $targetObject
 					$errorRecord.ErrorDetails = $errorDetails
 					Mock Invoke-WebRequest { Throw $errorRecord }
-					{ Invoke-IDRestMethod @WebSession } | Should -Throw
+					{ Invoke-IDRestMethod @WebSession } | Should -Throw -ExpectedMessage ([System.Management.Automation.WildcardPattern]::Escape($errorDetails))
 				} Else { Set-ItResult -Inconclusive }
 			}
 
@@ -236,7 +236,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 					$errorRecord = New-Object Management.Automation.ErrorRecord $exception, $errorID, $errorCategory, $targetObject
 					$errorRecord.ErrorDetails = $errorDetails
 					Mock Invoke-WebRequest { Throw $errorRecord }
-					{ Invoke-IDRestMethod @WebSession } | Should -Throw
+					{ Invoke-IDRestMethod @WebSession } | Should -Throw -ExpectedMessage 'Some Error Message'
 				} Else { Set-ItResult -Inconclusive }
 			}
 

@@ -130,7 +130,17 @@
         'Get-IDUserOathOTPClientName',
         'Get-IDUserPasswordComplexityRequirement',
         'New-IDAuthenticationPolicy',
-        'Set-IDAuthenticationPolicy'
+        'Set-IDAuthenticationPolicy',
+        'Get-IDApplication',
+        'New-IDApplication',
+        'Set-IDApplication',
+        'Remove-IDApplication',
+        'Copy-IDApplication',
+        'Set-IDApplicationPermission',
+        'Get-IDApplicationTemplate',
+        'Test-IDApplicationCatalogAvailability',
+        'Get-IDApplicationClientSecret',
+        'Set-IDApplicationOwner'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
