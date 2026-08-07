@@ -1,10 +1,7 @@
 # .ExternalHelp IdentityCommand-help.xml
 # UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
 # expected before relying on it in production.
-# TODO: Request body field ('ID') and the response object structure are inferred from the SaaS
-# Manage API spec's operation summaries only - no full schema was available.
-# Verify against a live tenant and adjust body key names / output shape as needed.
-function Remove-IDApplication {
+function Remove-IDTenantSecurityQuestion {
     [CmdletBinding(SupportsShouldProcess)]
     param(
         [parameter(
@@ -12,7 +9,7 @@ function Remove-IDApplication {
             ValueFromPipelinebyPropertyName = $true
         )]
         [ValidateNotNullOrEmpty()]
-        [Alias('Uuid', 'AppKey')]
+        [Alias('Uuid')]
         [String]$ID
     )
 
@@ -20,14 +17,13 @@ function Remove-IDApplication {
 
     PROCESS {
 
-        if ($PSCmdlet.ShouldProcess($ID, 'Remove Application')) {
+        if ($PSCmdlet.ShouldProcess($ID, 'Remove Tenant Security Question')) {
 
-            #Constructed body for the rest call
             $Request = @{
 
-                'URI'    = "$($ISPSSSession.tenant_url)/SaasManage/DeleteApplication"
+                'URI'    = "$($ISPSSSession.tenant_url)/TenantConfig/DeleteAdminSecurityQuestion"
                 'Method' = 'POST'
-                'Body'   = ($PSBoundParameters | Get-Parameter | ConvertTo-Json)
+                'Body'   = (@{ 'Id' = $ID } | ConvertTo-Json)
 
             }
 

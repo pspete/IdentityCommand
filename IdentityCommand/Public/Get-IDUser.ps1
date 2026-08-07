@@ -8,6 +8,10 @@ Function Get-IDUser {
             ValueFromPipelinebyPropertyName = $true,
             ParameterSetName = 'GetUser'
         )]
+        [parameter(
+            Mandatory = $true,
+            ParameterSetName = 'GetUserSettings'
+        )]
         [ValidateNotNullOrEmpty()]
         [Alias('Uuid')]
         [String]$ID,
@@ -34,11 +38,20 @@ Function Get-IDUser {
             ParameterSetName = 'GetTechSupportUser'
         )]
         [ValidateNotNullOrEmpty()]
-        [Switch]$TechSupportUser
+        [Switch]$TechSupportUser,
+
+        [parameter(
+            Mandatory = $true,
+            ValueFromPipelinebyPropertyName = $true,
+            ParameterSetName = 'GetUserSettings'
+        )]
+        [ValidateNotNullOrEmpty()]
+        [String]$SettingType
     )
 
     BEGIN {
         #ParameterSet name matches URL portion for different requests
+        #(overridden below in PROCESS for the GetUserSettings set, which uses a different API)
         $Request = @{}
         $Request['URI'] = "$($ISPSSSession.tenant_url)/CDirectoryService/$($PSCmdlet.ParameterSetName)"
         $Request['Method'] = 'POST'
@@ -46,12 +59,23 @@ Function Get-IDUser {
 
     PROCESS {
 
-        #Include a body only if ID or username parameters specified
-        switch ($PSBoundParameters.Keys) {
-            ({ $PSItem -match 'ID|username' }) {
-                $Request['Body'] = $PSBoundParameters | Get-Parameter | ConvertTo-Json
-                break
+        if ($PSCmdlet.ParameterSetName -eq 'GetUserSettings') {
+
+            #This is a different underlying API (/Core/GetUserSettings) to the other parameter
+            #sets (/CDirectoryService/*) - query string based, not a JSON body.
+            #UNTESTED: not yet verified against a live tenant.
+            $Request['URI'] = "$($ISPSSSession.tenant_url)/Core/GetUserSettings?ID=$($ID | Get-EscapedString)&SettingType=$($SettingType | Get-EscapedString)"
+
+        } else {
+
+            #Include a body only if ID or username parameters specified
+            switch ($PSBoundParameters.Keys) {
+                ({ $PSItem -match 'ID|username' }) {
+                    $Request['Body'] = $PSBoundParameters | Get-Parameter | ConvertTo-Json
+                    break
+                }
             }
+
         }
 
         #Send Request

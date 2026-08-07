@@ -140,7 +140,27 @@
         'Get-IDApplicationTemplate',
         'Test-IDApplicationCatalogAvailability',
         'Get-IDApplicationClientSecret',
-        'Set-IDApplicationOwner'
+        'Set-IDApplicationOwner',
+        'Set-IDTenantConfiguration',
+        'Get-IDTenantSecurityQuestion',
+        'Set-IDTenantSecurityQuestion',
+        'Remove-IDTenantSecurityQuestion',
+        'Get-IDTenantMessageTemplate',
+        'New-IDPassword',
+        'Get-IDTenantConfigEntry',
+        'Set-IDTenantConfigEntry',
+        'Remove-IDTenantConfigEntry',
+        'New-IDUser',
+        'Set-IDUser',
+        'Set-IDUserState',
+        'Set-IDUserPicture',
+        'Sync-IDUser',
+        'Send-IDUserIdentityVerification',
+        'Import-IDUserCsv',
+        'New-IDUsernameReminder',
+        'Start-IDSocialAuthentication',
+        'New-IDQRCodeSession',
+        'New-IDStepUpChallenge'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.

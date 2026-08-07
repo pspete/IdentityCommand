@@ -1,4 +1,6 @@
 # .ExternalHelp IdentityCommand-help.xml
+# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
+# expected before relying on it in production.
 # TODO: Request body field names ('TemplateName'/'Name') and the response object structure are
 # inferred from the SaaS Manage API spec's operation summaries only - no full schema was available.
 # Verify against a live tenant and adjust body key names / output shape as needed.

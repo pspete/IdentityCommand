@@ -1,4 +1,6 @@
 # .ExternalHelp IdentityCommand-help.xml
+# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
+# expected before relying on it in production.
 # TODO: Request body field names ('ID'/'Grants') and the shape of each Grants entry (Principal/
 # PType/Rights property names) are inferred - the spec only confirmed a 'Grants' array exists on
 # the request schema, not its element structure. Verify against a live tenant before relying on this.
