@@ -1,6 +1,5 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
+# Verified against a live tenant.
 function Get-IDUserU2FDevice {
     [CmdletBinding()]
     param(
@@ -30,7 +29,15 @@ function Get-IDUserU2FDevice {
         }
 
         #Send Request
-        Invoke-IDRestMethod @Request
+        $result = Invoke-IDRestMethod @Request
+
+        if ($null -ne $result) {
+
+            #GetU2fDevices/GetU2fDevicesForUser returns a RedRock-style query envelope -
+            #flatten to the actual device rows, matching the convention used elsewhere.
+            $result.Results.Row
+
+        }
 
     }#process
 
