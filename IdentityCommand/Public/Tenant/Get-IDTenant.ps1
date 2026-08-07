@@ -20,7 +20,7 @@ function Get-IDTenant {
         #Send Request
         $result = Invoke-IDRestMethod @RestCall
 
-        return $result.Results.Row
+        return $result
 
     }#process
 

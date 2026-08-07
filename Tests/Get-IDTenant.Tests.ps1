@@ -41,13 +41,11 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             Mock Invoke-IDRestMethod -MockWith {
                 [pscustomobject]@{
-                    'Results' = @(
-                        [pscustomobject]@{
-                            'Row' = [pscustomobject]@{
-                                'property' = 'value'
-                            }
-                        }
-                    )
+                    'Version'     = '26.11.211'
+                    'PodRegion'   = 'London'
+                    'PodFqdn'     = 'pod1203.idaptive.app'
+                    'PodName'     = 'pod1203'
+                    'CompanyName' = 'SomeCompany'
                 }
             }
 
@@ -92,6 +90,12 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'provides output' {
 
                 $response | Should -Not -BeNullOrEmpty
+
+            }
+
+            It 'returns the unwrapped result object directly, not a Results.Row shape' {
+
+                $response.Version | Should -Be '26.11.211'
 
             }
 
