@@ -69,7 +69,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 # (no key= prefix on the query string) -- assert that literal shape.
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://SomeTenant.id.cyberark.cloud/Core/GetAssignedAdministrativeRights?SomeRole'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/Core/GetAssignedAdministrativeRights?SomeRole'
 
                 } -Times 1 -Exactly -Scope It
 

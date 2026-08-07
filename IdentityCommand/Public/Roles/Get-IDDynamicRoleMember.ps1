@@ -40,7 +40,7 @@ function Get-IDDynamicRoleMember {
         #Constructed parameters for the rest call
         $RestCall = @{
 
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/ExportDynamicRoleMembers"
+        "URI"         = "$($ISPSSSession.tenant_url)/Roles/ExportDynamicRoleMembers"
         "Headers"     = $($ISPSSSession.WebSession.Headers)
         "Method"      = "Post"
         "Body"        = ($body | ConvertTo-Json -Depth 6)

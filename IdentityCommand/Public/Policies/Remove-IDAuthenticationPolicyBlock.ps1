@@ -32,7 +32,7 @@ function Remove-IDAuthenticationPolicyBlock {
             #Constructed parameters for the rest call
             $RestCall = @{
 
-            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Policy/DeletePolicyBlock"
+            "URI"         = "$($ISPSSSession.tenant_url)/Policy/DeletePolicyBlock"
             "Headers"     = $($ISPSSSession.WebSession.Headers)
             "Method"      = "Post"
             "Body"        = ($Body | ConvertTo-Json)

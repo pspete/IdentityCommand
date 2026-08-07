@@ -27,7 +27,7 @@ function Test-IDDynamicRoleScript {
         #Constructed parameters for the rest call
         $RestCall = @{
 
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/TestDynamicRoleScript"
+        "URI"         = "$($ISPSSSession.tenant_url)/Roles/TestDynamicRoleScript"
         "Headers"     = $($ISPSSSession.WebSession.Headers)
         "Method"      = "Post"
         "Body"        = $body

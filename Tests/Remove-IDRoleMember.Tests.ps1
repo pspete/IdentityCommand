@@ -59,7 +59,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://SomeTenant.id.cyberark.cloud/SaasManage/RemoveUsersAndGroupsFromRole'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/SaasManage/RemoveUsersAndGroupsFromRole'
 
                 } -Times 1 -Exactly -Scope It
 

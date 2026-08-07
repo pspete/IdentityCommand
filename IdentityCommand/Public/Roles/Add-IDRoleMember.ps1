@@ -37,7 +37,7 @@ function Add-IDRoleMember {
         #Constructed parameters for the rest call
         $RestCall = @{
 
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/SaasManage/AddUsersAndGroupsToRole"
+        "URI"         = "$($ISPSSSession.tenant_url)/SaasManage/AddUsersAndGroupsToRole"
         "Headers"     = $($ISPSSSession.WebSession.Headers)
         "Method"      = "Post"
         "Body"        = ($body | ConvertTo-Json -Depth 6)

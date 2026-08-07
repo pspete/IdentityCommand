@@ -1,4 +1,4 @@
-﻿function Get-IDRole {
+function Get-IDRole {
 
     [CmdletBinding(DefaultParameterSetName = 'Redrock')]
 	param
@@ -33,7 +33,7 @@
             #Constructed parameters for the rest call
             $RestCall = @{
 
-                "URI"         = "https://$($ISPSSSession.tenantID).id.cyberark.cloud/redrock/query/"
+                "URI"         = "$($ISPSSSession.tenant_url)/redrock/query/"
                 "Headers"     = $($ISPSSSession.WebSession.Headers)
                 "Method"      = "Post"
                 "Body"        = ($Query | ConvertTo-Json)
@@ -54,7 +54,7 @@
             #Constructed parameters for the rest call
             $RestCall = @{
 
-                "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/GetRole?Name=$Name"
+                "URI"         = "$($ISPSSSession.tenant_url)/Roles/GetRole?Name=$Name"
                 "Headers"     = $($ISPSSSession.WebSession.Headers)
                 "Method"      = "Post"
                 "ContentType" = "application/json"

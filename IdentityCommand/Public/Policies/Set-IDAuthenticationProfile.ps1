@@ -87,7 +87,7 @@ function Set-IDAuthenticationProfile {
             #Constructed parameters for the rest call
             $RestCall = @{
 
-            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/AuthProfile/SaveProfile"
+            "URI"         = "$($ISPSSSession.tenant_url)/AuthProfile/SaveProfile"
             "Headers"     = $($ISPSSSession.WebSession.Headers)
             "Method"      = "Post"
             "Body"        = ($Body | ConvertTo-Json)

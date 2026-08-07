@@ -13,7 +13,7 @@ function Get-IDAuthenticationPolicyCloudMobileGP {
             #Constructed parameters for the rest call
             $RestCall = @{
 
-            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Policy/GetUsingCloudMobileGP"
+            "URI"         = "$($ISPSSSession.tenant_url)/Policy/GetUsingCloudMobileGP"
             "Headers"     = $($ISPSSSession.WebSession.Headers)
             "Method"      = "Post"
             "ContentType" = "application/json"

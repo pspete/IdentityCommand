@@ -1,4 +1,4 @@
-﻿function Get-IDPermission {
+function Get-IDPermission {
 
     [CmdletBinding()]
 	param
@@ -25,7 +25,7 @@
         #Constructed parameters for the rest call
         $RestCall = @{
 
-            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/redrock/query/"
+            "URI"         = "$($ISPSSSession.tenant_url)/redrock/query/"
             "Headers"     = $($ISPSSSession.WebSession.Headers)
             "Method"      = "Post"
             "Body"        = ($Query | ConvertTo-Json)

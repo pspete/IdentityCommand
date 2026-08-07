@@ -32,7 +32,7 @@ function Get-IDRolePermission {
         #Constructed parameters for the rest call
         $RestCall = @{
 
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Core/GetAssignedAdministrativeRights?$Name"
+        "URI"         = "$($ISPSSSession.tenant_url)/Core/GetAssignedAdministrativeRights?$Name"
         "Headers"     = $($ISPSSSession.WebSession.Headers)
         "Method"      = "Post"
         "Body"        = ($body | ConvertTo-Json)

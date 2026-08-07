@@ -25,7 +25,7 @@ function Get-IDRoleMember {
         #Constructed parameters for the rest call
         $RestCall = @{
 
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/GetRoleMembers"
+        "URI"         = "$($ISPSSSession.tenant_url)/Roles/GetRoleMembers"
         "Headers"     = $($ISPSSSession.WebSession.Headers)
         "Method"      = "Post"
         "Body"        = ($body | ConvertTo-Json -Depth 6)

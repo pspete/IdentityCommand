@@ -13,7 +13,7 @@ function Get-IDUserPasswordComplexityRequirement {
             #Constructed parameters for the rest call
             $RestCall = @{
 
-            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Policy/GetPasswordComplexityRequirements"
+            "URI"         = "$($ISPSSSession.tenant_url)/Policy/GetPasswordComplexityRequirements"
             "Headers"     = $($ISPSSSession.WebSession.Headers)
             "Method"      = "Post"
             "ContentType" = "application/json"

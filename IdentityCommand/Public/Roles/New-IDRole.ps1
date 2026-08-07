@@ -1,4 +1,4 @@
-﻿function New-IDRole {
+function New-IDRole {
 
     [CmdletBinding(SupportsShouldProcess)]
 	param
@@ -50,7 +50,7 @@
             #Constructed parameters for the rest call
             $RestCall = @{
 
-            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/StoreRole/"
+            "URI"         = "$($ISPSSSession.tenant_url)/Roles/StoreRole/"
             "Headers"     = $($ISPSSSession.WebSession.Headers)
             "Method"      = "Post"
             "Body"        = ($body | ConvertTo-Json -Depth 3)

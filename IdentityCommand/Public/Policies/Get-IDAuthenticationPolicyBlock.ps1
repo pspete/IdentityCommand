@@ -24,7 +24,7 @@ function Get-IDAuthenticationPolicyBlock {
         #Constructed parameters for the rest call
         $RestCall = @{
 
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Policy//GetPolicyBlock"
+        "URI"         = "$($ISPSSSession.tenant_url)/Policy/GetPolicyBlock"
         "Headers"     = $($ISPSSSession.WebSession.Headers)
         "Method"      = "Post"
         "Body"        = ($Body | ConvertTo-Json)

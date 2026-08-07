@@ -24,7 +24,7 @@ function Remove-IDAuthenticationProfile {
             #Constructed parameters for the rest call
             $RestCall = @{
 
-                "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/AuthProfile/DeleteProfile"
+                "URI"         = "$($ISPSSSession.tenant_url)/AuthProfile/DeleteProfile"
                 "Headers"     = $($ISPSSSession.WebSession.Headers)
                 "Method"      = "Post"
                 "Body"        = ($Body | ConvertTo-Json)

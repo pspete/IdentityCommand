@@ -18,7 +18,7 @@ function Get-IDRoleWebApp {
         #Constructed parameters for the rest call
         $RestCall = @{
 
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/SaasManage/GetRoleApps?role=$Name"
+        "URI"         = "$($ISPSSSession.tenant_url)/SaasManage/GetRoleApps?role=$Name"
         "Headers"     = $($ISPSSSession.WebSession.Headers)
         "Method"      = "Post"
         "Body"        = $body

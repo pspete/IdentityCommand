@@ -39,7 +39,7 @@ function Remove-IDRoleMember {
             #Constructed parameters for the rest call
             $RestCall = @{
 
-            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/SaasManage/RemoveUsersAndGroupsFromRole"
+            "URI"         = "$($ISPSSSession.tenant_url)/SaasManage/RemoveUsersAndGroupsFromRole"
             "Headers"     = $($ISPSSSession.WebSession.Headers)
             "Method"      = "Post"
             "Body"        = ($body | ConvertTo-Json -Depth 6)

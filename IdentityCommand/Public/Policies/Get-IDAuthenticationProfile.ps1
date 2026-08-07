@@ -18,7 +18,7 @@ function Get-IDAuthenticationProfile {
             #Constructed parameters for the rest call
             $RestCall = @{
 
-            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/AuthProfile/GetDecoratedProfileList"
+            "URI"         = "$($ISPSSSession.tenant_url)/AuthProfile/GetDecoratedProfileList"
             "Headers"     = $($ISPSSSession.WebSession.Headers)
             "Method"      = "Post"
             "ContentType" = "application/json"
@@ -42,7 +42,7 @@ function Get-IDAuthenticationProfile {
             #Constructed parameters for the rest call
             $RestCall = @{
 
-                "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/AuthProfile/GetProfile"
+                "URI"         = "$($ISPSSSession.tenant_url)/AuthProfile/GetProfile"
                 "Headers"     = $($ISPSSSession.WebSession.Headers)
                 "Method"      = "Post"
                 "Body"        = ($Body | ConvertTo-Json)

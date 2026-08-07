@@ -67,7 +67,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://SomeTenant.id.cyberark.cloud/Roles/GetRoleMembers'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/Roles/GetRoleMembers'
 
                 } -Times 1 -Exactly -Scope It
 
