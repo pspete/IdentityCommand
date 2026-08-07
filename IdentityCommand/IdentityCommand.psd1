@@ -174,7 +174,18 @@
         'Close-IDUserSession',
         'Get-IDUserSecurityQuestion',
         'Set-IDUserSecurityQuestion',
-        'Reset-IDUserSecurityQuestion'
+        'Reset-IDUserSecurityQuestion',
+        'New-IDOrganization',
+        'Remove-IDOrganization',
+        'Get-IDOrganization',
+        'Set-IDOrganization',
+        'Get-IDOrganizationAdministrator',
+        'Set-IDOrganizationAdministrator',
+        'Get-IDOrganizationPermission',
+        'Set-IDOrganizationPermission',
+        'Get-IDOrganizationRole',
+        'Set-IDOrganizationMembership',
+        'Get-IDUserHierarchy'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
