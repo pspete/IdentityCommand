@@ -26,7 +26,18 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
         Context 'Input' {
 
             BeforeEach {
-                Mock Invoke-IDRestMethod -MockWith { @{SomeProperty = 'SomeValue' } }
+                Mock Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{
+                        'IsAggregate' = $false
+                        'Count'       = 1
+                        'Results'     = @(
+                            [pscustomobject]@{
+                                'Row' = [pscustomobject]@{ 'ID' = 'someroleid'; 'Name' = 'Some Role' }
+                            }
+                        )
+                        'FullCount'   = 1
+                    }
+                }
                 $ISPSSSession = [ordered]@{
                     tenant_url         = 'https://somedomain.id.cyberark.cloud'
                     User               = $null
@@ -97,6 +108,12 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'provides expected output' {
 
                 $response | Should -Not -BeNullOrEmpty
+
+            }
+
+            It 'flattens the RedRock-style envelope to the role rows' {
+
+                $response.Name | Should -Be 'Some Role'
 
             }
 

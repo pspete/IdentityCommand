@@ -62,7 +62,12 @@ function Get-IDUserRole {
         $result = Invoke-IDRestMethod -Uri $URI -Method POST -Body $Body
 
         if ($null -ne $result) {
-            $result
+
+            #GetUsersRolesAndAdministrativeRights returns a RedRock-style query envelope -
+            #flatten to the actual role rows, matching the convention used elsewhere (e.g.
+            #Get-IDRole, Get-IDTenantMessageTemplate).
+            $result.Results.Row
+
         }
 
     }#process
