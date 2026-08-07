@@ -48,6 +48,20 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
         Context 'All' {
 
             BeforeEach {
+
+                Mock Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{
+                        'IsAggregate' = $false
+                        'Count'       = 1
+                        'Results'     = @(
+                            [pscustomobject]@{
+                                'Row' = [pscustomobject]@{ 'Name' = 'MFA Challenge'; 'TemplateName' = 'challenge_mail' }
+                            }
+                        )
+                        'FullCount'   = 1
+                    }
+                }
+
                 $response = Get-IDTenantMessageTemplate
             }
 
@@ -76,6 +90,12 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'provides output' {
 
                 $response | Should -Not -BeNullOrEmpty
+
+            }
+
+            It 'flattens the RedRock-style envelope to the template rows' {
+
+                $response.TemplateName | Should -Be 'challenge_mail'
 
             }
 

@@ -1,8 +1,8 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
 # TODO: Valid values for -TemplateType are not documented anywhere in the sources checked (likely
 # something like 'Email'/'SMS', by analogy with other notification-template APIs, but unconfirmed).
+# TODO: -Named set (GetEditableMessageTemplate, singular) is still unverified against a live
+# tenant - its response shape may or may not need the same Results.Row flattening as the -All set.
 function Get-IDTenantMessageTemplate {
     [CmdletBinding(DefaultParameterSetName = 'All')]
     param(
@@ -40,7 +40,19 @@ function Get-IDTenantMessageTemplate {
         }
 
         #Send Request
-        Invoke-IDRestMethod @Request
+        $result = Invoke-IDRestMethod @Request
+
+        if ($PSCmdlet.ParameterSetName -eq 'All') {
+
+            #GetEditableMessageTemplates returns a RedRock-style query envelope - flatten to the
+            #actual template rows, matching the convention used by Get-IDRole/Get-IDApplicationTemplate
+            $result.Results.Row
+
+        } else {
+
+            $result
+
+        }
 
     }#process
 
