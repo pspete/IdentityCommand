@@ -30,7 +30,11 @@ function Get-IDConnector {
         $result = Invoke-IDRestMethod -Uri $URI -Method POST
 
         if ($null -ne $result) {
-            $result.Connectors
+
+            #Each entry in Connectors nests the actual fields one level deeper under
+            #ConnectorInfo - flatten it so callers get Id/Version/MachineName etc. directly.
+            $result.Connectors.ConnectorInfo
+
         }
 
     }#process

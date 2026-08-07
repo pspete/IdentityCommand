@@ -29,7 +29,13 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 Mock Invoke-IDRestMethod -MockWith {
                     [pscustomobject]@{
                         'Connectors' = @(
-                            [pscustomobject]@{'property' = 'value' }
+                            [pscustomobject]@{
+                                'ConnectorInfo' = [pscustomobject]@{
+                                    'Id'          = 'someconnectorid'
+                                    'Version'     = '25.7.211.0'
+                                    'MachineName' = 'SOMEMACHINE'
+                                }
+                            }
                         )
                     }
                 }
@@ -102,7 +108,13 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             It 'provides expected output' {
 
-                $response | Should -Be $True
+                $response | Should -Not -BeNullOrEmpty
+
+            }
+
+            It 'flattens the ConnectorInfo wrapper so fields are directly accessible' {
+
+                $response.Id | Should -Be 'someconnectorid'
 
             }
 
