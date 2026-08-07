@@ -1,12 +1,8 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
-# TODO: No sample request was found for this endpoint anywhere checked (Bruno collection or swagger
-# schema beyond its existence and one-line summary). The no-body shape used here is inferred by
-# analogy with the admin-level equivalent, Get-IDTenantSecurityQuestion (TenantConfig/
-# GetAdminSecurityQuestions), which is a distinct, already-confirmed endpoint - this one instead
-# wraps UserMgmt/GetSecurityQuestions, presumably scoped to the current/a specific user rather than
-# tenant-wide admin questions.
+# Verified against a live tenant - returns the tenant-wide security question policy
+# (AnswerMinLength/MaxQuestions/MinAdminQuestions/MinUserQuestions/Questions), not a specific
+# user's answered questions. Despite its "User" naming, UserMgmt/GetSecurityQuestions takes no
+# per-user scoping - it reflects the policy applied to the current session's tenant.
 function Get-IDUserSecurityQuestion {
     [CmdletBinding()]
     param()
