@@ -160,7 +160,21 @@
         'New-IDUsernameReminder',
         'Start-IDSocialAuthentication',
         'New-IDQRCodeSession',
-        'New-IDStepUpChallenge'
+        'New-IDStepUpChallenge',
+        'Remove-IDUser',
+        'Get-IDUserRiskLevel',
+        'Get-IDUserAttribute',
+        'Set-IDUserAttribute',
+        'Get-IDUserInfo',
+        'Test-IDUserLockedOutByPolicy',
+        'Send-IDUserInvite',
+        'Send-IDUserLoginEmail',
+        'Send-IDUserSmsInvite',
+        'Set-IDUserPhonePin',
+        'Close-IDUserSession',
+        'Get-IDUserSecurityQuestion',
+        'Set-IDUserSecurityQuestion',
+        'Reset-IDUserSecurityQuestion'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
