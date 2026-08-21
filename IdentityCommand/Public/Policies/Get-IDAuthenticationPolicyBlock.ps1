@@ -1,5 +1,6 @@
-# Unsure what the name parameter is asking for
-
+# Verified against a live tenant. -Name is the name of the authentication policy/policy set
+# itself (e.g. as shown in the CyberArk Identity Admin Portal's Authentication -> Policies page),
+# not a role name.
 function Get-IDAuthenticationPolicyBlock {
 
     [CmdletBinding()]
