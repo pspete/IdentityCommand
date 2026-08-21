@@ -43,7 +43,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 [pscustomobject]@{'property' = 'value' }
             }
 
-            $response = Set-IDApplicationPermission -ID 'someid' -Grants @(@{'Principal' = 'someuser'; 'PType' = 'User'; 'Rights' = 'View' })
+            $response = Set-IDApplicationPermission -ID 'someid' -Principal 'someuser' -PType 'User' -Rights 'View', 'Execute' -PrincipalId 'someuserid'
 
         }
 
@@ -74,7 +74,45 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'sends request with expected body' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty ID) -eq 'someid'
+                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed.ID -eq 'someid' -and $Parsed.RowKey -eq 'someid' -and $Parsed.PVID -eq 'someid' -and
+                    $Parsed.Grants[0].Principal -eq 'someuser' -and
+                    $Parsed.Grants[0].PType -eq 'User' -and
+                    $Parsed.Grants[0].Rights -eq 'View,Execute' -and
+                    $Parsed.Grants[0].PrincipalId -eq 'someuserid'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'defaults SystemName/ExternalUuid/Type from Principal/PrincipalId/PType' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed.Grants[0].SystemName -eq 'someuser' -and
+                    $Parsed.Grants[0].ExternalUuid -eq 'someuserid' -and
+                    $Parsed.Grants[0].Type -eq 'User'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'joins multiple -Rights values with a comma' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed.Grants[0].Rights -eq 'View,Execute'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'allows overriding SystemName/ExternalUuid/Type explicitly' {
+
+                Set-IDApplicationPermission -ID 'someid' -Principal 'someuser' -PType 'User' -Rights 'View' -PrincipalId 'someuserid' -SystemName 'someothername' -ExternalUuid 'someotherid' -Type 'Role' | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed.Grants[0].SystemName -eq 'someothername' -and
+                    $Parsed.Grants[0].ExternalUuid -eq 'someotherid' -and
+                    $Parsed.Grants[0].Type -eq 'Role'
                 } -Times 1 -Exactly -Scope It
 
             }
