@@ -43,7 +43,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 [pscustomobject]@{'property' = 'value' }
             }
 
-            $response = Get-IDApplicationClientSecret -ID 'someid'
+            $response = Get-IDApplicationClientSecret -OIDCAppKey 'someid' -PublicKey 'somepublickey'
 
         }
 
@@ -74,7 +74,8 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'sends request with expected body' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty ID) -eq 'someid'
+                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed.OIDCAppKey -eq 'someid' -and $Parsed.PublicKey -eq 'somepublickey'
                 } -Times 1 -Exactly -Scope It
 
             }

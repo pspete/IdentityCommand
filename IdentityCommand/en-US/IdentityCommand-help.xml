@@ -786,15 +786,27 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Returns the OpenID Connect client secret for an OIDC web application. Kept separate from `Get-IDApplication` since it returns sensitive credential data.</maml:para>
+      <maml:para>Returns the OpenID Connect client secret for an OIDC web application. Kept separate from `Get-IDApplication` since it returns sensitive credential data. The response contains the secret encrypted with the supplied `-PublicKey` (RSA-OAEP) under an `e` property if encryption succeeds, or in plain text under a `p` property if it fails - decrypting an `e` response is left to the caller.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-IDApplicationClientSecret</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, AppKey">
-          <maml:name>ID</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, AppKey, ID">
+          <maml:name>OIDCAppKey</maml:name>
           <maml:description>
-            <maml:para>The unique ID of the OIDC web application.</maml:para>
+            <maml:para>The unique RowKey/AppKey of the OIDC web application.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>PublicKey</maml:name>
+          <maml:description>
+            <maml:para>An RSA-OAEP public key used to encrypt the returned secret.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -806,10 +818,22 @@
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, AppKey">
-        <maml:name>ID</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, AppKey, ID">
+        <maml:name>OIDCAppKey</maml:name>
         <maml:description>
-          <maml:para>The unique ID of the OIDC web application.</maml:para>
+          <maml:para>The unique RowKey/AppKey of the OIDC web application.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>PublicKey</maml:name>
+        <maml:description>
+          <maml:para>An RSA-OAEP public key used to encrypt the returned secret.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -847,9 +871,9 @@
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-IDApplicationClientSecret -ID 'a1b2c3d4-0000-0000-0000-000000000000'</dev:code>
+        <dev:code>PS C:\&gt; Get-IDApplicationClientSecret -OIDCAppKey 'a1b2c3d4-0000-0000-0000-000000000000' -PublicKey $PublicKeyString</dev:code>
         <dev:remarks>
-          <maml:para>Returns the OIDC client secret for the specified application.</maml:para>
+          <maml:para>Returns the OIDC client secret for the specified application, encrypted with the supplied public key.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
