@@ -1,6 +1,5 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
+# Verified against a live tenant.
 function Get-IDApplicationForUser {
     [CmdletBinding()]
     param(
@@ -25,7 +24,17 @@ function Get-IDApplicationForUser {
         }
 
         #Send Request
-        Invoke-IDRestMethod @Request
+        $result = Invoke-IDRestMethod @Request
+
+        #GetResultantAppsForUser returns a RedRock-style query envelope (IsAggregate/Count/
+        #Columns/Results/...) - flatten to the actual application rows, matching every other
+        #RedRock-backed command in this module (fixed live 2026-08-21, was returning the raw
+        #wrapper unflattened)
+        if ($null -ne $result) {
+
+            $result.Results.Row
+
+        }
 
     }#process
 

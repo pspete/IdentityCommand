@@ -40,7 +40,15 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
 
             Mock Invoke-IDRestMethod -MockWith {
-                [pscustomobject]@{'property' = 'value' }
+                [pscustomobject]@{
+                    'IsAggregate' = $false
+                    'Count'       = 1
+                    'Results'     = @(
+                        [pscustomobject]@{
+                            'Row' = [pscustomobject]@{ 'property' = 'value' }
+                        }
+                    )
+                }
             }
 
             $response = Get-IDApplicationForUser -UserUuid 'someuserid'
@@ -72,6 +80,12 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'provides output' {
 
                 $response | Should -Not -BeNullOrEmpty
+
+            }
+
+            It 'flattens the RedRock envelope to the row data' {
+
+                $response | Select-Object -ExpandProperty property | Should -Be 'value'
 
             }
 
