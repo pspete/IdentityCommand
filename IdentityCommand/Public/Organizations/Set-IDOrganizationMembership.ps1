@@ -1,6 +1,5 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
+# Verified against a live tenant.
 # TODO: -Add and -Remove expect arrays of hashtables shaped like the recorded sample, e.g.
 # @{ID='<userUUID>'; Type='User'}.
 function Set-IDOrganizationMembership {

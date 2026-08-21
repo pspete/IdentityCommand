@@ -1,6 +1,5 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
+# Verified against a live tenant.
 function Get-IDOrganizationAdministrator {
     [CmdletBinding()]
     param(
