@@ -43,7 +43,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 [pscustomobject]@{'property' = 'value' }
             }
 
-            $response = Start-IDWorkflowJob -Script 'somescript' -Args 'somearg'
+            $response = Start-IDWorkflowJob -Script '/lib/somescript.js' -Args @{ somearg = 'somevalue' }
 
         }
 
@@ -69,7 +69,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
                     $Parsed = $Body | ConvertFrom-Json
-                    $Parsed.script -eq 'somescript' -and $Parsed.args -eq 'somearg'
+                    $Parsed.script -eq '/lib/somescript.js' -and $Parsed.args.somearg -eq 'somevalue'
                 } -Times 1 -Exactly -Scope It
 
             }

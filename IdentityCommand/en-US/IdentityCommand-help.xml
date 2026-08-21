@@ -20762,7 +20762,7 @@ PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000'
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Starts a background workflow job that runs the specified script.</maml:para>
+      <maml:para>Starts a background workflow job that runs the specified script. Returns the new job's ID as a plain string.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -20770,7 +20770,7 @@ PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000'
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>Script</maml:name>
           <maml:description>
-            <maml:para>The name of the script to run as a job.</maml:para>
+            <maml:para>The virtual path of the script to run as a job. Must start with a forward slash (e.g. `/lib/get_superrights.js`) - a plain label without a leading `/` is rejected by the server.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -20782,11 +20782,11 @@ PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000'
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Args</maml:name>
           <maml:description>
-            <maml:para>Arguments to pass to the script.</maml:para>
+            <maml:para>A hashtable of named parameters to pass to the script, matching whatever that script expects (e.g. `@{excludeRight=''}` for `/lib/get_superrights.js`).</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Hashtable</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -20819,11 +20819,11 @@ PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000'
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Args</maml:name>
         <maml:description>
-          <maml:para>Arguments to pass to the script.</maml:para>
+          <maml:para>A hashtable of named parameters to pass to the script, matching whatever that script expects (e.g. `@{excludeRight=''}` for `/lib/get_superrights.js`).</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Hashtable</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -20843,7 +20843,7 @@ PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000'
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>Script</maml:name>
         <maml:description>
-          <maml:para>The name of the script to run as a job.</maml:para>
+          <maml:para>The virtual path of the script to run as a job. Must start with a forward slash (e.g. `/lib/get_superrights.js`) - a plain label without a leading `/` is rejected by the server.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -20893,9 +20893,9 @@ PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000'
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Start-IDWorkflowJob -Script 'SomeScriptName' -Args 'someargs'</dev:code>
+        <dev:code>PS C:\&gt; Start-IDWorkflowJob -Script '/lib/get_superrights.js' -Args @{ excludeRight = '' }</dev:code>
         <dev:remarks>
-          <maml:para>Starts a workflow job running the specified script.</maml:para>
+          <maml:para>Starts a workflow job running the specified script, and returns its job ID.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

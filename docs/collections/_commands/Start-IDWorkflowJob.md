@@ -13,28 +13,28 @@ Start a workflow job
 ## SYNTAX
 
 ```
-Start-IDWorkflowJob [-Script] <String> [[-Args] <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Start-IDWorkflowJob [-Script] <String> [[-Args] <Hashtable>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Starts a background workflow job that runs the specified script.
+Starts a background workflow job that runs the specified script. Returns the new job's ID as a plain string.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Start-IDWorkflowJob -Script 'SomeScriptName' -Args 'someargs'
+PS C:\> Start-IDWorkflowJob -Script '/lib/get_superrights.js' -Args @{ excludeRight = '' }
 ```
 
-Starts a workflow job running the specified script.
+Starts a workflow job running the specified script, and returns its job ID.
 
 ## PARAMETERS
 
 ### -Args
-Arguments to pass to the script.
+A hashtable of named parameters to pass to the script, matching whatever that script expects (e.g. `@{excludeRight=''}` for `/lib/get_superrights.js`).
 
 ```yaml
-Type: String
+Type: Hashtable
 Parameter Sets: (All)
 Aliases:
 
@@ -61,7 +61,7 @@ Accept wildcard characters: False
 ```
 
 ### -Script
-The name of the script to run as a job.
+The virtual path of the script to run as a job. Must start with a forward slash (e.g. `/lib/get_superrights.js`) - a plain label without a leading `/` is rejected by the server.
 
 ```yaml
 Type: String
