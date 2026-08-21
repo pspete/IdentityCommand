@@ -45,30 +45,6 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
-        Context 'No FileCount' {
-
-            BeforeEach {
-                $response = Get-IDRecentImportedAccountsFile
-            }
-
-            It 'sends request to expected endpoint' {
-
-                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/UPRest/GetRecentImportedAccountsFile'
-
-                } -Times 1 -Exactly -Scope It
-
-            }
-
-            It 'provides output' {
-
-                $response | Should -Not -BeNullOrEmpty
-
-            }
-
-        }
-
         Context 'With FileCount' {
 
             BeforeEach {
@@ -82,6 +58,12 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                     $URI -eq 'https://somedomain.id.cyberark.cloud/UPRest/GetRecentImportedAccountsFile?fileCount=5'
 
                 } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'provides output' {
+
+                $response | Should -Not -BeNullOrEmpty
 
             }
 

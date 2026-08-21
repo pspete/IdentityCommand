@@ -13,7 +13,7 @@ Get details of recently uploaded account import files
 ## SYNTAX
 
 ```
-Get-IDRecentImportedAccountsFile [[-FileCount] <Int32>]
+Get-IDRecentImportedAccountsFile [-FileCount] <Int32>
  [<CommonParameters>]
 ```
 
@@ -32,14 +32,15 @@ Returns details of the 5 most recently uploaded import files.
 ## PARAMETERS
 
 ### -FileCount
-The maximum number of recent files to return.
+The maximum number of recent files to return. Required - a call with no `-FileCount` fails
+server-side with a generic error page.
 
 ```yaml
 Type: Int32
 Parameter Sets: (All)
 Aliases:
 
-Required: False
+Required: True
 Position: 0
 Default value: None
 Accept pipeline input: False

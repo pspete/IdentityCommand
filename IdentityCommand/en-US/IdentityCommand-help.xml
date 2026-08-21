@@ -2594,10 +2594,10 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-IDRecentImportedAccountsFile</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>FileCount</maml:name>
           <maml:description>
-            <maml:para>The maximum number of recent files to return.</maml:para>
+            <maml:para>The maximum number of recent files to return. Required - a call with no `-FileCount` fails server-side with a generic error page.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -2609,10 +2609,10 @@
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>FileCount</maml:name>
         <maml:description>
-          <maml:para>The maximum number of recent files to return.</maml:para>
+          <maml:para>The maximum number of recent files to return. Required - a call with no `-FileCount` fails server-side with a generic error page.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
