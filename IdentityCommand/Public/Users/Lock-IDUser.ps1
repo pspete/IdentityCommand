@@ -1,4 +1,6 @@
 # .ExternalHelp IdentityCommand-help.xml
+# Verified against a live tenant. -ID added as an alias for -user, matching the rest of the
+# module's convention.
 function Lock-IDUser {
     [CmdletBinding()]
     param(
@@ -7,7 +9,7 @@ function Lock-IDUser {
             ValueFromPipelinebyPropertyName = $true
         )]
         [ValidateNotNullOrEmpty()]
-        [Alias('Uuid')]
+        [Alias('Uuid', 'ID')]
         [String]$user
     )
 

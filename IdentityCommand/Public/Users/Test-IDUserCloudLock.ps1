@@ -1,4 +1,6 @@
 # .ExternalHelp IdentityCommand-help.xml
+# -ID added as an alias for -user, matching Lock-IDUser/Unlock-IDUser (same underlying parameter
+# naming inconsistency, found and fixed via live testing).
 function Test-IDUserCloudLock {
     [CmdletBinding()]
     param(
@@ -7,7 +9,7 @@ function Test-IDUserCloudLock {
             ValueFromPipelinebyPropertyName = $true
         )]
         [ValidateNotNullOrEmpty()]
-        [Alias('Uuid')]
+        [Alias('Uuid', 'ID')]
         [String]$user
     )
 

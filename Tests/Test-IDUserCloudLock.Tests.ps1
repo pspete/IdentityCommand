@@ -98,6 +98,18 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
+            It 'accepts -ID as an alias for -user' {
+
+                Test-IDUserCloudLock -ID 5678 | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/UserMgmt/IsUserCloudLocked?user=5678'
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
         }
 
     }

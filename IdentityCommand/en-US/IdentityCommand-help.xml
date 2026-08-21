@@ -6355,7 +6355,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Lock-IDUser</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid, ID">
           <maml:name>user</maml:name>
           <maml:description>
             <maml:para>The unique ID (Uuid) of the user to cloud lock.</maml:para>
@@ -6370,7 +6370,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid, ID">
         <maml:name>user</maml:name>
         <maml:description>
           <maml:para>The unique ID (Uuid) of the user to cloud lock.</maml:para>
@@ -21549,7 +21549,7 @@ PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000'
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Test-IDUserCloudLock</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid, ID">
           <maml:name>user</maml:name>
           <maml:description>
             <maml:para>The unique ID (Uuid) of the user to check cloud lock status</maml:para>
@@ -21564,7 +21564,7 @@ PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000'
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid, ID">
         <maml:name>user</maml:name>
         <maml:description>
           <maml:para>The unique ID (Uuid) of the user to check cloud lock status</maml:para>
@@ -21816,7 +21816,7 @@ PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000'
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Unlock-IDUser</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid, ID">
           <maml:name>user</maml:name>
           <maml:description>
             <maml:para>The unique ID (Uuid) of the user to cloud unlock</maml:para>
@@ -21831,7 +21831,7 @@ PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000'
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="Uuid, ID">
         <maml:name>user</maml:name>
         <maml:description>
           <maml:para>The unique ID (Uuid) of the user to cloud unlock</maml:para>
