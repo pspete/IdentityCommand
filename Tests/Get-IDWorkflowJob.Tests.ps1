@@ -67,6 +67,14 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
+            It 'sends request with no body' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $null -eq $Body
+                } -Times 1 -Exactly -Scope It
+
+            }
+
         }
 
         Context 'Mine' {
