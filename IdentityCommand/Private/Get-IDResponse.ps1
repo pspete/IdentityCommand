@@ -78,11 +78,26 @@ function Get-IDResponse {
 
 				}
 
-				{ $PSItem -match 'application/json' } {
+				{ $PSItem -match 'json' } {
 
-					#application/json content expected
+					#json content expected (covers application/json as well as SCIM's
+					#application/scim+json and similar +json content types)
+
+					#Invoke-WebRequest only auto-decodes recognized text content types to a string;
+					#unrecognized ones (e.g. application/scim+json) come back as a raw byte[] - decode
+					#it to a string ourselves before parsing
+					If ($APIResponse.Content -is [Byte[]]) {
+
+						$RawContent = [System.Text.Encoding]::UTF8.GetString($APIResponse.Content)
+
+					} Else {
+
+						$RawContent = $APIResponse.Content
+
+					}
+
 					#Create Return Object from Returned JSON
-					$IDResponse = ConvertFrom-Json -InputObject $APIResponse.Content
+					$IDResponse = ConvertFrom-Json -InputObject $RawContent
 
 					switch ($IDResponse) {
 

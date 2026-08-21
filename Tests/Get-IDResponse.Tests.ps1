@@ -60,6 +60,16 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 				$OctetStream | Add-Member -MemberType NoteProperty -Name Headers -Value @{ 'Content-Type' = 'application/octet-stream' ; 'Content-Disposition' = 'attachment; filename=FILENAME.zip' } -Force
 				$OctetStream | Add-Member -MemberType NoteProperty -Name Content -Value $([System.Text.Encoding]::Ascii.GetBytes('Expected')) -Force
 
+				#Simulates Invoke-WebRequest's real behaviour for an unrecognized text content type
+				#(e.g. SCIM's application/scim+json) - Content comes back as a raw byte[], not a string
+				$ScimResponse = New-MockObject -Type Microsoft.PowerShell.Commands.WebResponseObject
+				$ScimResponse | Add-Member -MemberType NoteProperty -Name StatusCode -Value 200 -Force
+				$ScimResponse | Add-Member -MemberType NoteProperty -Name Headers -Value @{ 'Content-Type' = 'application/scim+json; charset=utf-8' } -Force
+				$ScimResponse | Add-Member -MemberType NoteProperty -Name Content -Value ([System.Text.Encoding]::UTF8.GetBytes((@{
+								'schemas' = @('urn:ietf:params:scim:schemas:core:2.0:ServiceProviderConfig')
+								'patch'   = @{ 'supported' = $true }
+							} | ConvertTo-Json))) -Force
+
 			}
 
 			It 'returns expected number of properties' {
@@ -79,6 +89,12 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 				$Script:ExpectHtml = $true
 				Get-IDResponse -APIResponse $HTMLResponse | Should -BeNullOrEmpty
 				$Script:ExpectHtml = $false
+			}
+
+			It 'decodes and parses a +json content type whose Content is a raw byte array' {
+				$result = Get-IDResponse -APIResponse $ScimResponse
+				$result.schemas | Should -Be 'urn:ietf:params:scim:schemas:core:2.0:ServiceProviderConfig'
+				$result.patch.supported | Should -Be $true
 			}
 
 		}
