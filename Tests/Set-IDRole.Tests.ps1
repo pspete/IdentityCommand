@@ -73,11 +73,9 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             It 'sends request with expected body' {
 
-                # NOTE: source sets body 'Name' from an undeclared $UUID variable (bug),
-                # so it always serializes as null -- don't assert on that field's value.
-                # Just verify the Users add/delete structure made it into the body.
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty Users | Select-Object -ExpandProperty Add) -eq 'someuser'
+                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed.Name -eq 'SomeRole' -and $Parsed.Users.Add -eq 'someuser'
                 } -Times 1 -Exactly -Scope It
 
             }

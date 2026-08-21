@@ -60,7 +60,7 @@ function Set-IDRole {
             #Constructed body for the rest call
             $body = [ordered]@{
 
-                "Name"        = $UUID
+                "Name"        = $Name
                 "Users"       = $UsersUpdate
                 "Roles"       = $RolesUpdate
                 "Groups"      = $GroupsUpdate
