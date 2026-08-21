@@ -1,6 +1,7 @@
 # Verified against a live tenant. -Name is the name of the authentication policy/policy set
 # itself (e.g. as shown in the CyberArk Identity Admin Portal's Authentication -> Policies page),
-# not a role name.
+# not a role name. Matches the 'ID' property on Get-IDAuthenticationPolicyLink output directly,
+# hence the -ID alias below for direct pipeline binding from that command.
 function Get-IDAuthenticationPolicyBlock {
 
     [CmdletBinding()]
@@ -8,8 +9,8 @@ function Get-IDAuthenticationPolicyBlock {
 	(
         [Parameter(Mandatory = $true,
         ValueFromPipelinebyPropertyName = $true)]
-        [Alias('PolicySet')]
-        $Name  
+        [Alias('PolicySet', 'ID')]
+        $Name
     )
 
     BEGIN { } #begin

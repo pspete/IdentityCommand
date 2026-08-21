@@ -91,6 +91,30 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'ID alias' {
+
+            It 'accepts -ID as an alias for -Name' {
+
+                Get-IDAuthenticationPolicyBlock -ID 'SomeOtherPolicy'
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty Name) -eq 'SomeOtherPolicy'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'binds -ID from pipeline by property name (e.g. Get-IDAuthenticationPolicyLink output)' {
+
+                [pscustomobject]@{ 'ID' = '/Policy/SomePolicy' } | Get-IDAuthenticationPolicyBlock
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty Name) -eq '/Policy/SomePolicy'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+        }
+
     }
 
 }
