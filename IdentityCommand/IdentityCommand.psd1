@@ -124,7 +124,7 @@
         'Get-IDAuthenticationPolicyModifier',
         'Get-IDAuthenticationPolicyLink',
         'Get-IDAuthenticationPolicyBlock',
-        'Get-IDAuthenticationPolicyMetadata',
+        #'Get-IDAuthenticationPolicyMetadata',
         'Get-IDAuthenticationPolicyCloudMobileGP',
         'Remove-IDAuthenticationPolicyBlock',
         'Get-IDUserOathOTPClientName',

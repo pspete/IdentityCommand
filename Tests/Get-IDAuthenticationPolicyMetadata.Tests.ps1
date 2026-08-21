@@ -101,6 +101,30 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'With Name' {
+
+            It 'sends the Name in the request body' {
+
+                Get-IDAuthenticationPolicyMetadata -Name 'SomePolicy'
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $null -ne $Body -and $($Body | ConvertFrom-Json | Select-Object -ExpandProperty Name) -eq 'SomePolicy'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'binds -ID from pipeline by property name' {
+
+                [pscustomobject]@{ 'ID' = '/Policy/SomePolicy' } | Get-IDAuthenticationPolicyMetadata
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $null -ne $Body -and $($Body | ConvertFrom-Json | Select-Object -ExpandProperty Name) -eq '/Policy/SomePolicy'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+        }
+
     }
 
 }
