@@ -74,7 +74,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'sends request with expected body' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty TemplateName) -eq 'SomeTemplate'
+                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty ID) -eq 'SomeTemplate'
                 } -Times 1 -Exactly -Scope It
 
             }

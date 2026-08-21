@@ -6411,27 +6411,15 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates a new application in the tenant by importing it from one of the available application templates.</maml:para>
+      <maml:para>Creates a new application in the tenant by importing it from one of the available application templates. The application is created with the template's own name - there is no way to rename it at creation time; use `Set-IDApplication` afterward if you need a different name.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>New-IDApplication</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="ID">
           <maml:name>TemplateName</maml:name>
           <maml:description>
-            <maml:para>The name of the application template to import from. Use `Get-IDApplicationTemplate` to list available templates.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-          <maml:name>Name</maml:name>
-          <maml:description>
-            <maml:para>The name to give the new application. If not specified, the template's default name is used.</maml:para>
+            <maml:para>The name of the application template to import from (this is the same value as the template's `ID`). Use `Get-IDApplicationTemplate` to list available templates.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -6477,22 +6465,10 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-        <maml:name>Name</maml:name>
-        <maml:description>
-          <maml:para>The name to give the new application. If not specified, the template's default name is used.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="ID">
         <maml:name>TemplateName</maml:name>
         <maml:description>
-          <maml:para>The name of the application template to import from. Use `Get-IDApplicationTemplate` to list available templates.</maml:para>
+          <maml:para>The name of the application template to import from (this is the same value as the template's `ID`). Use `Get-IDApplicationTemplate` to list available templates.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -6542,9 +6518,9 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; New-IDApplication -TemplateName 'GenericSAML' -Name 'My SAML App'</dev:code>
+        <dev:code>PS C:\&gt; New-IDApplication -TemplateName 'GenericSAML'</dev:code>
         <dev:remarks>
-          <maml:para>Creates a new application named 'My SAML App' from the 'GenericSAML' template.</maml:para>
+          <maml:para>Creates a new application from the 'GenericSAML' template.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

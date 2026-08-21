@@ -1,19 +1,22 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
-# TODO: Request body field names ('TemplateName'/'Name') and the response object structure are
-# inferred from the SaaS Manage API spec's operation summaries only - no full schema was available.
-# Verify against a live tenant and adjust body key names / output shape as needed.
+# Verified against a live tenant - with a real fix. The originally guessed body shape
+# ({"Name":..., "TemplateName":...}) was silently accepted by the server (success:true) but never
+# actually created an application (empty Result) - it doesn't match any field the endpoint
+# recognizes. The confirmed shape, matching Import-IDApplicationTemplate (which hits the same
+# SaasManage/ImportAppFromTemplate endpoint), is {"ID": [<template ID>]} - a template's ID is the
+# same value as its Name (see Get-IDApplicationTemplate). There is no way to rename the app at
+# creation time; the endpoint always uses the template's own name. Use Set-IDApplication afterward
+# to rename if needed.
 function New-IDApplication {
     [CmdletBinding(SupportsShouldProcess)]
     param(
-        [parameter(Mandatory = $true)]
+        [parameter(
+            Mandatory = $true,
+            ValueFromPipelinebyPropertyName = $true
+        )]
         [ValidateNotNullOrEmpty()]
-        [String]$TemplateName,
-
-        [parameter(Mandatory = $false)]
-        [ValidateNotNullOrEmpty()]
-        [String]$Name
+        [Alias('ID')]
+        [String]$TemplateName
     )
 
     BEGIN {}#begin
@@ -27,7 +30,7 @@ function New-IDApplication {
 
                 'URI'    = "$($ISPSSSession.tenant_url)/SaasManage/ImportAppFromTemplate"
                 'Method' = 'POST'
-                'Body'   = ($PSBoundParameters | Get-Parameter | ConvertTo-Json)
+                'Body'   = (@{ 'ID' = @($TemplateName) } | ConvertTo-Json)
 
             }
 

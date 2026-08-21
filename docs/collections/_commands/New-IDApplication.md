@@ -13,20 +13,20 @@ Create a new application from a template
 ## SYNTAX
 
 ```
-New-IDApplication [-TemplateName] <String> [[-Name] <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+New-IDApplication [-TemplateName] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Creates a new application in the tenant by importing it from one of the available application templates.
+Creates a new application in the tenant by importing it from one of the available application templates. The application is created with the template's own name - there is no way to rename it at creation time; use `Set-IDApplication` afterward if you need a different name.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> New-IDApplication -TemplateName 'GenericSAML' -Name 'My SAML App'
+PS C:\> New-IDApplication -TemplateName 'GenericSAML'
 ```
 
-Creates a new application named 'My SAML App' from the 'GenericSAML' template.
+Creates a new application from the 'GenericSAML' template.
 
 ## PARAMETERS
 
@@ -45,33 +45,18 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Name
-The name to give the new application. If not specified, the template's default name is used.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -TemplateName
-The name of the application template to import from. Use `Get-IDApplicationTemplate` to list available templates.
+The name of the application template to import from (this is the same value as the template's `ID`). Use `Get-IDApplicationTemplate` to list available templates.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases:
+Aliases: ID
 
 Required: True
 Position: 0
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
