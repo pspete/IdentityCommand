@@ -1,6 +1,5 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
+# Verified against a live tenant.
 # TODO: -Attributes is the full SCIM Group resource document as a hashtable, e.g.
 # @{displayName='Some Group'; members=@(@{value='someuserid'}); schemas=@('urn:ietf:params:scim:schemas:core:2.0:Group')}.
 function New-IDSCIMGroup {

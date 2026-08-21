@@ -1,6 +1,5 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
+# Verified against a live tenant.
 # TODO: -Operations expects an array of SCIM PATCH operation hashtables, e.g.
 # @(@{op='replace'; path='active'; value=$false}). -Schemas defaults to the standard SCIM PATCH
 # schema URN if not supplied, matching the recorded sample's shape.
