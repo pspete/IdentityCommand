@@ -74,6 +74,61 @@ function Get-IDResponse {
 
 						}
 
+					} Else {
+
+						#Some endpoints mislabel a JSON error/success body as text/html (confirmed live
+						#via SaasImage/SetUserPicture). Fall back to attempting a JSON parse rather than
+						#silently returning the raw, unprocessed text - so success:false errors still
+						#throw properly instead of being dumped as unparsed text.
+						Try {
+
+							$ParsedJson = ConvertFrom-Json -InputObject $IDResponse -ErrorAction Stop
+
+						} Catch {
+
+							$ParsedJson = $null
+
+						}
+
+						If (($null -ne $ParsedJson) -and ($ParsedJson.PSObject.Properties.Name -contains 'success')) {
+
+							switch ($ParsedJson) {
+
+								({ $PSItem.success -eq $false }) {
+
+									#if success property is false, throw error
+									$ErrorMessage = $ParsedJson.Message
+									$ErrorID = $ParsedJson.ErrorID
+
+									$PSCmdlet.ThrowTerminatingError(
+
+										[System.Management.Automation.ErrorRecord]::new(
+
+											$ErrorMessage,
+											$ErrorID,
+											[System.Management.Automation.ErrorCategory]::NotSpecified,
+											$ParsedJson
+
+										)
+
+									)
+
+									break
+
+								}
+
+								({ $PSItem.success -eq $true }) {
+
+									#when success property is returned, return result
+									$IDResponse = $ParsedJson.Result
+									break
+
+								}
+
+							}
+
+						}
+
 					}
 
 				}

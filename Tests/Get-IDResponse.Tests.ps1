@@ -70,6 +70,25 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 								'patch'   = @{ 'supported' = $true }
 							} | ConvertTo-Json))) -Force
 
+				#Confirmed live (SaasImage/SetUserPicture) - the server sometimes mislabels a JSON
+				#error body as text/html rather than application/json
+				$MislabeledJSONError = New-MockObject -Type Microsoft.PowerShell.Commands.WebResponseObject
+				$MislabeledJSONError | Add-Member -MemberType NoteProperty -Name StatusCode -Value 200 -Force
+				$MislabeledJSONError | Add-Member -MemberType NoteProperty -Name Headers -Value @{ 'Content-Type' = 'text/html; charset=utf-8' } -Force
+				$MislabeledJSONError | Add-Member -MemberType NoteProperty -Name Content -Value (@{
+						'success' = $false
+						'Message' = 'Something went wrong'
+						'ErrorID' = 'SomeErrorID'
+					} | ConvertTo-Json) -Force
+
+				$MislabeledJSONSuccess = New-MockObject -Type Microsoft.PowerShell.Commands.WebResponseObject
+				$MislabeledJSONSuccess | Add-Member -MemberType NoteProperty -Name StatusCode -Value 200 -Force
+				$MislabeledJSONSuccess | Add-Member -MemberType NoteProperty -Name Headers -Value @{ 'Content-Type' = 'text/html; charset=utf-8' } -Force
+				$MislabeledJSONSuccess | Add-Member -MemberType NoteProperty -Name Content -Value (@{
+						'success' = $true
+						'Result'  = @{ 'prop1' = 'value1' }
+					} | ConvertTo-Json) -Force
+
 			}
 
 			It 'returns expected number of properties' {
@@ -95,6 +114,15 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 				$result = Get-IDResponse -APIResponse $ScimResponse
 				$result.schemas | Should -Be 'urn:ietf:params:scim:schemas:core:2.0:ServiceProviderConfig'
 				$result.patch.supported | Should -Be $true
+			}
+
+			It 'throws if a JSON error body is mislabeled as text/html' {
+				{ Get-IDResponse -APIResponse $MislabeledJSONError } | Should -Throw 'Something went wrong'
+			}
+
+			It 'unwraps a JSON success body mislabeled as text/html' {
+				$result = Get-IDResponse -APIResponse $MislabeledJSONSuccess
+				$result.prop1 | Should -Be 'value1'
 			}
 
 		}
