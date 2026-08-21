@@ -21,7 +21,6 @@ function Get-IDRoleWebApp {
         "URI"         = "$($ISPSSSession.tenant_url)/SaasManage/GetRoleApps?role=$Name"
         "Headers"     = $($ISPSSSession.WebSession.Headers)
         "Method"      = "Post"
-        "Body"        = $body
         "ContentType" = "application/json"
 
         }
