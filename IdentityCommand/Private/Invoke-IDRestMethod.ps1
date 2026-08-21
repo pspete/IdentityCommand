@@ -165,7 +165,7 @@
 		#Show sanitised request body if in debug mode
 		If ([System.Management.Automation.ActionPreference]::SilentlyContinue -ne $DebugPreference) {
 
-			If (($PSBoundParameters.ContainsKey('Body')) -and (($PSBoundParameters['Body']).GetType().Name -eq 'String')) {
+			If (($PSBoundParameters.ContainsKey('Body')) -and ($null -ne $PSBoundParameters['Body']) -and (($PSBoundParameters['Body']).GetType().Name -eq 'String')) {
 
 				Write-Debug "[Body] $(Hide-SecretValue -InputValue $Body)"
 
