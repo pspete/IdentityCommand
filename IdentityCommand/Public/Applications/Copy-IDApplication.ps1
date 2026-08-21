@@ -1,9 +1,16 @@
 # .ExternalHelp IdentityCommand-help.xml
 # UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
 # expected before relying on it in production.
-# TODO: Request body field names ('ID'/'Name') and the response object structure are inferred
-# from the SaaS Manage API spec's operation summaries only - no full schema was available.
-# Verify against a live tenant and adjust body key names / output shape as needed.
+# TODO: DEPRIORITIZED - live-tested 2026-08-21. /SaasManage/CloneAnApplication returns a genuine
+# HTTP 404 "page not found" (not a validation/body error), meaning this endpoint path is almost
+# certainly wrong - it doesn't match this domain's confirmed terse Verb+Noun naming pattern
+# (GetApplication, DeleteApplication, UpdateApplicationDE, TransferOwnership,
+# SetApplicationPermissions, ImportAppFromTemplate - no articles). Two guessed alternates
+# (CloneApplication, CopyApplication) also 404'd. Not being pursued further by guessing; needs a
+# real request captured via browser DevTools from the CyberArk Identity admin portal's "duplicate
+# application" UI action (if one exists) to find the real endpoint name/body shape. In the
+# meantime, use New-IDApplication/Import-IDApplicationTemplate (confirmed endpoint,
+# SaasManage/ImportAppFromTemplate) to build test application fixtures instead of cloning.
 function Copy-IDApplication {
     [CmdletBinding(SupportsShouldProcess)]
     param(
