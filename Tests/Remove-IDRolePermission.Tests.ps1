@@ -114,6 +114,21 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'ID alias' {
+
+            It 'accepts -ID as an alias for -Name' {
+
+                Remove-IDRolePermission -ID 'SomeOtherRole' -Path '/Path/To/Permission' -Confirm:$false | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $URI -match 'UnAssignSuperRights' -and
+                    $($Body | ConvertFrom-Json | Select-Object -First 1 -ExpandProperty Role) -eq 'SomeOtherRole'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+        }
+
     }
 
 }

@@ -92,6 +92,20 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'ID alias' {
+
+            It 'accepts -ID as an alias for -Name' {
+
+                Set-IDRole -ID 'SomeOtherRole' -AddUsers @('someuser') | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty Name) -eq 'SomeOtherRole'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+        }
+
     }
 
 }

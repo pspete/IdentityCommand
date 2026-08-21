@@ -1,3 +1,7 @@
+# Confirmed live 2026-08-21: despite the parameter name, the 'API' set's -Name (Roles/GetRole)
+# requires the role's actual ID/UUID/_RowKey, not its display name - it only ever worked for
+# well-known roles like 'sysadmin' by coincidence (their RowKey happens to equal their display
+# name). Added -ID as an explicit alias for discoverability (it was already aliased -Uuid).
 function Get-IDRole {
 
     [CmdletBinding(DefaultParameterSetName = 'Redrock')]
@@ -8,10 +12,10 @@ function Get-IDRole {
         ParameterSetName = 'Redrock')]
 		$Query = @{"Script" = "Select * from Role ORDER BY Name COLLATE NOCASE"},
 
-        [Parameter(Mandatory = $true, 
+        [Parameter(Mandatory = $true,
         ParameterSetName = 'API',
         ValueFromPipelinebyPropertyName = $true)]
-		[Alias('Uuid')]
+		[Alias('Uuid', 'ID')]
         $Name
 
     )

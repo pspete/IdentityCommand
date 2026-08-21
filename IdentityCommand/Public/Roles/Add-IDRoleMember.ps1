@@ -1,12 +1,14 @@
+# Confirmed live 2026-08-21: requires the role's actual ID/UUID/_RowKey, not its display name -
+# added -ID as an explicit alias for discoverability (it was already aliased -Uuid).
 function Add-IDRoleMember {
 
     [CmdletBinding()]
 	param
 	(
-       
+
         [Parameter(Mandatory = $true,
         ValueFromPipelinebyPropertyName = $true)]
-        [Alias('Uuid')]
+        [Alias('Uuid', 'ID')]
         $Name,
 
         [Parameter(Mandatory = $false)]

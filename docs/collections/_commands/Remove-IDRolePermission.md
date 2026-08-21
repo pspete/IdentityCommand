@@ -37,7 +37,7 @@ The name (or ID) of the role to remove the permission from.
 ```yaml
 Type: Object
 Parameter Sets: (All)
-Aliases: Uuid
+Aliases: Uuid, ID
 
 Required: True
 Position: 0

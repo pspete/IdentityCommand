@@ -74,7 +74,19 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'sends request with expected body' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $Body -match "'User': 'someuser'" -and $Body -match "'Script': 'Select 1'"
+                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed.User -eq 'someuser' -and $Parsed.Script -eq 'Select 1'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'correctly escapes script content containing single quotes' {
+
+                Test-IDDynamicRoleScript -User 'someuser' -Script "User.Properties.Properties['distinguishedName']" | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed.Script -eq "User.Properties.Properties['distinguishedName']"
                 } -Times 1 -Exactly -Scope It
 
             }

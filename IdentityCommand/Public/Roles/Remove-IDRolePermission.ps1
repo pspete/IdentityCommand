@@ -1,12 +1,19 @@
+# Very likely requires the role's actual ID/UUID/_RowKey, not its display name, matching the
+# confirmed-live behavior of the sibling Add-IDRolePermission (same "Role" body key, same
+# Roles/*SuperRights endpoint family). An earlier live test that appeared to succeed with the
+# display name is not trusted as real confirmation - removing a permission that was never actually
+# granted (because the matching Add-IDRolePermission call had itself failed) can plausibly return
+# success as a no-op regardless of whether the role reference was valid. Added -ID as an explicit
+# alias for discoverability (it was already aliased -Uuid); needs live re-verification with -ID.
 function Remove-IDRolePermission {
 
     [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
-       
+
         [Parameter(Mandatory = $true,
         ValueFromPipelinebyPropertyName = $true)]
-        [Alias('Uuid')]
+        [Alias('Uuid', 'ID')]
         $Name,
 
         [Parameter(Mandatory = $true)]

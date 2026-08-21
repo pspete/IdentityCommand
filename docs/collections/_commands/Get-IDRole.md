@@ -59,7 +59,7 @@ When specified, the role is fetched via the role management API instead of the d
 ```yaml
 Type: Object
 Parameter Sets: API
-Aliases: Uuid
+Aliases: Uuid, ID
 
 Required: True
 Position: Named

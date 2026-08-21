@@ -154,6 +154,18 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
+            It 'accepts -ID as an alias for -Name' {
+
+                Get-IDRole -ID 'SomeOtherRole' | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    ([system.uri]::new($URI) | Select-Object -ExpandProperty query) -match 'Name=SomeOtherRole'
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
         }
 
     }

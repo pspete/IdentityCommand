@@ -91,7 +91,7 @@ The name (or ID) of the role to update.
 ```yaml
 Type: Object
 Parameter Sets: (All)
-Aliases: Uuid
+Aliases: Uuid, ID
 
 Required: True
 Position: 0
