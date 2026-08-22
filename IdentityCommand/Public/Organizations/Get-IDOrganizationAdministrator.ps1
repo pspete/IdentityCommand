@@ -24,7 +24,14 @@ function Get-IDOrganizationAdministrator {
         }
 
         #Send Request
-        Invoke-IDRestMethod @Request
+        $Result = Invoke-IDRestMethod @Request
+
+        #RedRock-style query envelope (IsAggregate/Count/Columns/Results/...) - flatten to the row data
+        if ($null -ne $Result) {
+
+            return $Result.Results.Row
+
+        }
 
     }#process
 

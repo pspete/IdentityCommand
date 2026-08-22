@@ -40,7 +40,15 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
 
             Mock Invoke-IDRestMethod -MockWith {
-                [pscustomobject]@{'property' = 'value' }
+                [pscustomobject]@{
+                    'IsAggregate' = $false
+                    'Count'       = 1
+                    'Results'     = @(
+                        [pscustomobject]@{
+                            'Row' = [pscustomobject]@{ 'Name' = 'someuser'; 'Guid' = 'someuserid'; 'ID' = 'someuserid' }
+                        }
+                    )
+                }
             }
 
             $response = Get-IDOrganizationAdministrator -OrgId 'someorgid'
@@ -80,6 +88,13 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'provides output' {
 
                 $response | Should -Not -BeNullOrEmpty
+
+            }
+
+            It 'flattens the RedRock envelope to the row data' {
+
+                $response.Name | Should -Be 'someuser'
+                $response.Guid | Should -Be 'someuserid'
 
             }
 
