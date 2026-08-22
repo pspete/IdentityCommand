@@ -69,7 +69,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
                     $Parsed = $Body | ConvertFrom-Json
-                    $Parsed.itemkey -eq 'someitemkey' -and $Parsed.tagnames.Count -eq 1
+                    $Parsed.sItemkey -eq 'someitemkey' -and $Parsed.tagnames.Count -eq 1
                 } -Times 1 -Exactly -Scope It
 
             }

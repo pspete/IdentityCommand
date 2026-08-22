@@ -24,7 +24,7 @@ function Set-IDSecuredItemTag {
 
             $Body = [ordered]@{
                 'tagnames' = @($TagName)
-                'itemkey'  = $ItemKey
+                'sItemkey' = $ItemKey
             }
 
             $Request = @{
