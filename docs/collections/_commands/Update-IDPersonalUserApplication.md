@@ -19,7 +19,7 @@ Update-IDPersonalUserApplication [-AppKey] <String> [-AppName] <String> [[-AppDe
 ```
 
 ## DESCRIPTION
-Updates the details of a personal user application. Confirmed live. Only the fields you supply are sent - an omitted `-AppDescription`/`-Notes`/`-AppUrl` leaves the existing value untouched.
+Updates the details of a personal user application. Only the fields you supply are sent - an omitted `-AppDescription`/`-Notes`/`-AppUrl` leaves the existing value untouched.
 
 ## EXAMPLES
 
@@ -63,7 +63,7 @@ Accept wildcard characters: False
 ```
 
 ### -AppName
-The application name. Required - confirmed live that the server rejects a blank name with "Application name cannot be blank."
+The application name. Required - the server rejects a blank name with "Application name cannot be blank."
 
 ```yaml
 Type: String

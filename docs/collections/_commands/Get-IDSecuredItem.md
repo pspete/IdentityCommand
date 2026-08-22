@@ -17,7 +17,7 @@ Get-IDSecuredItem [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Returns the current user's secured items (self-service passwords and secure notes added via the User Portal) along with the tags used to organize them. Confirmed live via a browser DevTools capture of the User Portal.
+Returns the current user's secured items (self-service passwords and secure notes added via the User Portal) along with the tags used to organize them.
 
 ## EXAMPLES
 

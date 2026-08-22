@@ -13,11 +13,11 @@ Create a new secured item
 ## SYNTAX
 
 ```
-New-IDSecuredItem [-Name] <String> [-SecuredItemType] <String> [[-Description] <String>] [[-Username] <String>] [[-Password] <SecureString>] [-WhatIf] [-Confirm] [<CommonParameters>]
+New-IDSecuredItem [-Name] <String> [-SecuredItemType] <String> [[-Description] <String>] [[-Username] <String>] [[-Password] <SecureString>] [[-Notes] <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Creates a new self-service secured item (a password or secure note added via the User Portal) owned by the current user. Confirmed live for -SecuredItemType 'Password'.
+Creates a new self-service secured item (a password or secure note added via the User Portal) owned by the current user.
 
 ## EXAMPLES
 
@@ -27,6 +27,13 @@ PS C:\> New-IDSecuredItem -Name 'ZZZ-test' -SecuredItemType 'Password' -Username
 ```
 
 Creates a new password-type secured item and returns its new ItemKey.
+
+### Example 2
+```powershell
+PS C:\> New-IDSecuredItem -Name 'ZZZ-test-note' -SecuredItemType 'SecureNote' -Notes 'Some note content'
+```
+
+Creates a new secure-note-type secured item and returns its new ItemKey.
 
 ## PARAMETERS
 
@@ -46,7 +53,7 @@ Accept wildcard characters: False
 ```
 
 ### -SecuredItemType
-The type of secured item to create. Confirmed live: 'Password'. Other values (e.g. 'SecureNote', seen on existing items via `Get-IDSecuredItem`) likely need different fields and are unconfirmed.
+The type of secured item to create - 'Password' or 'SecureNote'. For 'SecureNote', use `-Notes` instead of `-Username`/`-Password`.
 
 ```yaml
 Type: String
@@ -100,6 +107,21 @@ Aliases:
 
 Required: False
 Position: 4
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Notes
+The note content, for a 'SecureNote'-type secured item.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 5
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

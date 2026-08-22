@@ -55,7 +55,7 @@ Accept wildcard characters: False
 ```
 
 ### -ID
-The ID/UUID/`_RowKey` of the role to remove members from - not its display name (confirmed live).
+The ID/UUID/`_RowKey` of the role to remove members from - not its display name.
 
 ```yaml
 Type: Object

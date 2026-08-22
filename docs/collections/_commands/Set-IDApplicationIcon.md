@@ -18,7 +18,7 @@ Set-IDApplicationIcon [-AppKey] <String> [-Path] <String> [-WhatIf]
 ```
 
 ## DESCRIPTION
-Uploads a custom icon for a self-service "Personal App" (an app a user has added themselves via the User Portal), identified by its Personal App key. Confirmed live end-to-end.
+Uploads a custom icon for a self-service "Personal App" (an app a user has added themselves via the User Portal), identified by its Personal App key.
 
 ## EXAMPLES
 

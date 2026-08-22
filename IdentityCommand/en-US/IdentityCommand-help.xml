@@ -18,7 +18,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
           <maml:name>ID</maml:name>
           <maml:description>
-            <maml:para>The ID/UUID/`_RowKey` of the role to add members to - not its display name (confirmed live).</maml:para>
+            <maml:para>The ID/UUID/`_RowKey` of the role to add members to - not its display name.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -81,7 +81,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
         <maml:name>ID</maml:name>
         <maml:description>
-          <maml:para>The ID/UUID/`_RowKey` of the role to add members to - not its display name (confirmed live).</maml:para>
+          <maml:para>The ID/UUID/`_RowKey` of the role to add members to - not its display name.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -176,7 +176,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
           <maml:name>ID</maml:name>
           <maml:description>
-            <maml:para>The ID/UUID/`_RowKey` of the role to assign the permission to - not its display name (confirmed live).</maml:para>
+            <maml:para>The ID/UUID/`_RowKey` of the role to assign the permission to - not its display name.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -203,7 +203,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
         <maml:name>ID</maml:name>
         <maml:description>
-          <maml:para>The ID/UUID/`_RowKey` of the role to assign the permission to - not its display name (confirmed live).</maml:para>
+          <maml:para>The ID/UUID/`_RowKey` of the role to assign the permission to - not its display name.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -2700,7 +2700,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Uuid">
           <maml:name>ID</maml:name>
           <maml:description>
-            <maml:para>The ID/UUID/`_RowKey` of a specific role to fetch - not its display name (confirmed live; a display name only worked by coincidence for well-known roles whose RowKey happens to equal their name). When specified, the role is fetched via the role management API instead of the default Redrock query.</maml:para>
+            <maml:para>The ID/UUID/`_RowKey` of a specific role to fetch - not its display name (a display name only works by coincidence for well-known roles whose RowKey happens to equal their name). When specified, the role is fetched via the role management API instead of the default Redrock query.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -2730,7 +2730,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Uuid">
         <maml:name>ID</maml:name>
         <maml:description>
-          <maml:para>The ID/UUID/`_RowKey` of a specific role to fetch - not its display name (confirmed live; a display name only worked by coincidence for well-known roles whose RowKey happens to equal their name). When specified, the role is fetched via the role management API instead of the default Redrock query.</maml:para>
+          <maml:para>The ID/UUID/`_RowKey` of a specific role to fetch - not its display name (a display name only works by coincidence for well-known roles whose RowKey happens to equal their name). When specified, the role is fetched via the role management API instead of the default Redrock query.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -2899,7 +2899,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
           <maml:name>ID</maml:name>
           <maml:description>
-            <maml:para>The ID/UUID/`_RowKey` of the role to get members of - not its display name (confirmed live).</maml:para>
+            <maml:para>The ID/UUID/`_RowKey` of the role to get members of - not its display name.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -2914,7 +2914,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
         <maml:name>ID</maml:name>
         <maml:description>
-          <maml:para>The ID/UUID/`_RowKey` of the role to get members of - not its display name (confirmed live).</maml:para>
+          <maml:para>The ID/UUID/`_RowKey` of the role to get members of - not its display name.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -3735,7 +3735,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Returns the current user's secured items (self-service passwords and secure notes added via the User Portal) along with the tags used to organize them. Confirmed live via a browser DevTools capture of the User Portal.</maml:para>
+      <maml:para>Returns the current user's secured items (self-service passwords and secure notes added via the User Portal) along with the tags used to organize them.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -8986,7 +8986,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates a new self-service secured item (a password or secure note added via the User Portal) owned by the current user. Confirmed live for -SecuredItemType 'Password'.</maml:para>
+      <maml:para>Creates a new self-service secured item (a password or secure note added via the User Portal) owned by the current user.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -9006,7 +9006,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>SecuredItemType</maml:name>
           <maml:description>
-            <maml:para>The type of secured item to create. Confirmed live: 'Password'. Other values (e.g. 'SecureNote', seen on existing items via `Get-IDSecuredItem`) likely need different fields and are unconfirmed.</maml:para>
+            <maml:para>The type of secured item to create - 'Password' or 'SecureNote'. For 'SecureNote', use `-Notes` instead of `-Username`/`-Password`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -9051,6 +9051,18 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+          <maml:name>Notes</maml:name>
+          <maml:description>
+            <maml:para>The note content, for a 'SecureNote'-type secured item.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
           <maml:name>Confirm</maml:name>
           <maml:description>
@@ -9091,7 +9103,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>SecuredItemType</maml:name>
         <maml:description>
-          <maml:para>The type of secured item to create. Confirmed live: 'Password'. Other values (e.g. 'SecureNote', seen on existing items via `Get-IDSecuredItem`) likely need different fields and are unconfirmed.</maml:para>
+          <maml:para>The type of secured item to create - 'Password' or 'SecureNote'. For 'SecureNote', use `-Notes` instead of `-Username`/`-Password`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -9132,6 +9144,18 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
         <command:parameterValue required="true" variableLength="false">SecureString</command:parameterValue>
         <dev:type>
           <maml:name>SecureString</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+        <maml:name>Notes</maml:name>
+        <maml:description>
+          <maml:para>The note content, for a 'SecureNote'-type secured item.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -9192,6 +9216,13 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
         <dev:code>PS C:\&gt; New-IDSecuredItem -Name 'ZZZ-test' -SecuredItemType 'Password' -Username 'someuser' -Password (ConvertTo-SecureString 'somepassword' -AsPlainText -Force)</dev:code>
         <dev:remarks>
           <maml:para>Creates a new password-type secured item and returns its new ItemKey.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; New-IDSecuredItem -Name 'ZZZ-test-note' -SecuredItemType 'SecureNote' -Notes 'Some note content'</dev:code>
+        <dev:remarks>
+          <maml:para>Creates a new secure-note-type secured item and returns its new ItemKey.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -11959,7 +11990,7 @@ PS C:\&gt; New-IDUserSignup -PrimaryIdentifier 'someuser@example.com' -Password 
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
           <maml:name>ID</maml:name>
           <maml:description>
-            <maml:para>The ID/UUID/`_RowKey` of the role to remove members from - not its display name (confirmed live).</maml:para>
+            <maml:para>The ID/UUID/`_RowKey` of the role to remove members from - not its display name.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -12044,7 +12075,7 @@ PS C:\&gt; New-IDUserSignup -PrimaryIdentifier 'someuser@example.com' -Password 
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
         <maml:name>ID</maml:name>
         <maml:description>
-          <maml:para>The ID/UUID/`_RowKey` of the role to remove members from - not its display name (confirmed live).</maml:para>
+          <maml:para>The ID/UUID/`_RowKey` of the role to remove members from - not its display name.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -12163,7 +12194,7 @@ PS C:\&gt; New-IDUserSignup -PrimaryIdentifier 'someuser@example.com' -Password 
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
           <maml:name>ID</maml:name>
           <maml:description>
-            <maml:para>The ID/UUID/`_RowKey` of the role to remove the permission from - not its display name (confirmed live).</maml:para>
+            <maml:para>The ID/UUID/`_RowKey` of the role to remove the permission from - not its display name.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -12212,7 +12243,7 @@ PS C:\&gt; New-IDUserSignup -PrimaryIdentifier 'someuser@example.com' -Password 
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
         <maml:name>ID</maml:name>
         <maml:description>
-          <maml:para>The ID/UUID/`_RowKey` of the role to remove the permission from - not its display name (confirmed live).</maml:para>
+          <maml:para>The ID/UUID/`_RowKey` of the role to remove the permission from - not its display name.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -15031,7 +15062,7 @@ PS C:\&gt; Send-IDUserInvite -Role 'SomeRole' -Entities $Entities -EmailInvite</
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Uploads a custom icon for a self-service "Personal App" (an app a user has added themselves via the User Portal), identified by its Personal App key. Confirmed live end-to-end.</maml:para>
+      <maml:para>Uploads a custom icon for a self-service "Personal App" (an app a user has added themselves via the User Portal), identified by its Personal App key.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -15331,8 +15362,8 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
     </command:details>
     <maml:description>
       <maml:para>Grants a user or role one or more rights on an application. This replaces the existing permission grant for that principal on the application with the one supplied.</maml:para>
-      <maml:para>Confirmed live via a browser DevTools capture of the admin portal's application permissions UI. `-Rights` accepts one or more of the confirmed valid flag names (`Grant`, `View`, `Admin`, `ViewDetail`, `Delete`, `Execute`, `Automatic`) and are joined into the comma-separated string the API expects - `Execute` is the "run this app" right, not `Run`.</maml:para>
-      <maml:para>`-SystemName`/`-ExternalUuid`/`-Type` default to `-Principal`/`-PrincipalId`/`-PType` respectively when not explicitly supplied, matching the confirmed live example where they were identical - override them if a real case ever needs them to diverge.</maml:para>
+      <maml:para>`-Rights` accepts one or more of the valid flag names (`Grant`, `View`, `Admin`, `ViewDetail`, `Delete`, `Execute`, `Automatic`) and are joined into the comma-separated string the API expects - `Execute` is the "run this app" right, not `Run`.</maml:para>
+      <maml:para>`-SystemName`/`-ExternalUuid`/`-Type` default to `-Principal`/`-PrincipalId`/`-PType` respectively when not explicitly supplied - override them if a real case ever needs them to diverge.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -17459,7 +17490,7 @@ PS C:\&gt; Set-IDOrganizationPermission -OrgId 'a1b2c3d4-0000-0000-0000-00000000
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
           <maml:name>ID</maml:name>
           <maml:description>
-            <maml:para>The ID/UUID/`_RowKey` of the role to update - not its display name (confirmed live).</maml:para>
+            <maml:para>The ID/UUID/`_RowKey` of the role to update - not its display name.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -17604,7 +17635,7 @@ PS C:\&gt; Set-IDOrganizationPermission -OrgId 'a1b2c3d4-0000-0000-0000-00000000
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
         <maml:name>ID</maml:name>
         <maml:description>
-          <maml:para>The ID/UUID/`_RowKey` of the role to update - not its display name (confirmed live).</maml:para>
+          <maml:para>The ID/UUID/`_RowKey` of the role to update - not its display name.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -22692,7 +22723,7 @@ PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000'
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the details of a personal user application. Confirmed live. Only the fields you supply are sent - an omitted `-AppDescription`/`-Notes`/`-AppUrl` leaves the existing value untouched.</maml:para>
+      <maml:para>Updates the details of a personal user application. Only the fields you supply are sent - an omitted `-AppDescription`/`-Notes`/`-AppUrl` leaves the existing value untouched.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -22712,7 +22743,7 @@ PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000'
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>AppName</maml:name>
           <maml:description>
-            <maml:para>The application name. Required - confirmed live that the server rejects a blank name with "Application name cannot be blank."</maml:para>
+            <maml:para>The application name. Required - the server rejects a blank name with "Application name cannot be blank."</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -22809,7 +22840,7 @@ PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000'
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>AppName</maml:name>
         <maml:description>
-          <maml:para>The application name. Required - confirmed live that the server rejects a blank name with "Application name cannot be blank."</maml:para>
+          <maml:para>The application name. Required - the server rejects a blank name with "Application name cannot be blank."</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>

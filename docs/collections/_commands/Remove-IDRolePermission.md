@@ -32,7 +32,7 @@ Remove the specified administrative permission from the role
 ## PARAMETERS
 
 ### -ID
-The ID/UUID/`_RowKey` of the role to remove the permission from - not its display name (confirmed live).
+The ID/UUID/`_RowKey` of the role to remove the permission from - not its display name.
 
 ```yaml
 Type: Object

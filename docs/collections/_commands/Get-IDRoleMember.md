@@ -31,7 +31,7 @@ Return the members of the role
 ## PARAMETERS
 
 ### -ID
-The ID/UUID/`_RowKey` of the role to get members of - not its display name (confirmed live).
+The ID/UUID/`_RowKey` of the role to get members of - not its display name.
 
 ```yaml
 Type: Object

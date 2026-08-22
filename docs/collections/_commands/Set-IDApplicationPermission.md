@@ -19,9 +19,9 @@ Set-IDApplicationPermission [-ID] <String> [-Principal] <String> [-PType] <Strin
 ## DESCRIPTION
 Grants a user or role one or more rights on an application. This replaces the existing permission grant for that principal on the application with the one supplied.
 
-Confirmed live via a browser DevTools capture of the admin portal's application permissions UI. `-Rights` accepts one or more of the confirmed valid flag names (`Grant`, `View`, `Admin`, `ViewDetail`, `Delete`, `Execute`, `Automatic`) and are joined into the comma-separated string the API expects - `Execute` is the "run this app" right, not `Run`.
+`-Rights` accepts one or more of the valid flag names (`Grant`, `View`, `Admin`, `ViewDetail`, `Delete`, `Execute`, `Automatic`) and are joined into the comma-separated string the API expects - `Execute` is the "run this app" right, not `Run`.
 
-`-SystemName`/`-ExternalUuid`/`-Type` default to `-Principal`/`-PrincipalId`/`-PType` respectively when not explicitly supplied, matching the confirmed live example where they were identical - override them if a real case ever needs them to diverge.
+`-SystemName`/`-ExternalUuid`/`-Type` default to `-Principal`/`-PrincipalId`/`-PType` respectively when not explicitly supplied - override them if a real case ever needs them to diverge.
 
 ## EXAMPLES
 

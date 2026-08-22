@@ -32,7 +32,7 @@ Assign the specified administrative permission to the role
 ## PARAMETERS
 
 ### -ID
-The ID/UUID/`_RowKey` of the role to assign the permission to - not its display name (confirmed live).
+The ID/UUID/`_RowKey` of the role to assign the permission to - not its display name.
 
 ```yaml
 Type: Object
