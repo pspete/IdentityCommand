@@ -1,7 +1,9 @@
 # .ExternalHelp IdentityCommand-help.xml
 # UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
 # expected before relying on it in production.
-# TODO: -Entities expects an array of hashtables shaped like the recorded sample, e.g.
+# TODO: DEPRIORITIZED - needs a real test user with an accessible mailbox to confirm the invite
+# actually arrives (an invite sent to a disposable/fake address can't be verified end-to-end).
+# -Entities expects an array of hashtables shaped like the recorded sample, e.g.
 # @{Type='user'; Guid='<userUUID>'; Name='<userName>'}, @{Type='group'; Guid='<groupUUID>'},
 # @{Type='role'; Guid='<roleUUID>'} - the exact required/optional fields per Type are unconfirmed.
 function Send-IDUserInvite {

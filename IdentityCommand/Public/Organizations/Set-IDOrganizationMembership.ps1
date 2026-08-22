@@ -1,6 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: -Add and -Remove expect arrays of hashtables shaped like the recorded sample, e.g.
-# @{ID='<userUUID>'; Type='User'}.
 function Set-IDOrganizationMembership {
     [CmdletBinding(SupportsShouldProcess)]
     param(
