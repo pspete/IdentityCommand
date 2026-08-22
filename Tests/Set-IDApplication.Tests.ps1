@@ -79,6 +79,17 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
+            It 'sends _RowKey and PVID alongside ID' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    $BodyObject = $Body | ConvertFrom-Json
+                    $BodyObject._RowKey -eq 'someid' -and $BodyObject.PVID -eq 'someid'
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
         }
 
         Context 'Output' {
