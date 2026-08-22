@@ -93,6 +93,37 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'Collection request with a SCIM ListResponse envelope' {
+
+            BeforeEach {
+
+                Mock Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{
+                        schemas      = @('urn:ietf:params:scim:api:messages:2.0:ListResponse')
+                        totalResults = 2
+                        itemsPerPage = 2
+                        startIndex   = 1
+                        Resources    = @(
+                            [pscustomobject]@{ name = 'User' }
+                            [pscustomobject]@{ name = 'Group' }
+                        )
+                    }
+                }
+
+                $response = Invoke-IDSCIMRequest -Resource 'ResourceTypes' -Method 'GET'
+
+            }
+
+            It 'flattens the envelope to just the Resources array' {
+
+                $response | Should -HaveCount 2
+                $response[0].name | Should -Be 'User'
+                $response[1].name | Should -Be 'Group'
+
+            }
+
+        }
+
         Context 'Request with body' {
 
             BeforeEach {

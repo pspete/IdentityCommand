@@ -6,7 +6,9 @@ function Invoke-IDSCIMRequest {
 	.DESCRIPTION
 	Builds the /scim/<Resource>[/<ID>] URI for the given SCIM resource type and dispatches the
 	request via Invoke-IDRestMethod, so individual SCIM Public commands only need to supply the
-	resource name, HTTP method, optional resource ID, and optional body.
+	resource name, HTTP method, optional resource ID, and optional body. A collection request (no
+	-ID) returns a SCIM ListResponse envelope (schemas/totalResults/itemsPerPage/startIndex/
+	Resources) - this is flattened to just the Resources array before being returned.
 
 	.PARAMETER Resource
 	The SCIM resource collection name, e.g. 'Users', 'Groups', 'Containers'.
@@ -74,7 +76,17 @@ function Invoke-IDSCIMRequest {
 		}
 
 		#Send Request
-		Invoke-IDRestMethod @Request
+		$Result = Invoke-IDRestMethod @Request
+
+		#A collection request (no -ID) returns a SCIM ListResponse envelope
+		#(schemas/totalResults/itemsPerPage/startIndex/Resources) - flatten to just the resources
+		if ($null -ne $Result.Resources) {
+
+			return $Result.Resources
+
+		}
+
+		return $Result
 
 	}#process
 
