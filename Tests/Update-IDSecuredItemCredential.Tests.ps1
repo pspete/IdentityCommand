@@ -59,7 +59,22 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/UPRest/UpdateCredsForSecuredItem?itemkey=someitemkey'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/UPRest/UpdateCredsForSecuredItem?sItemkey=someitemkey'
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'only sends fields actually supplied' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    $BodyObject = $Body | ConvertFrom-Json
+                    $BodyProperties = $BodyObject.PSObject.Properties.Name
+                    ($BodyProperties -contains 'Username') -and
+                    -not ($BodyProperties -contains 'CustomFields') -and
+                    -not ($BodyProperties -contains 'Notes') -and
+                    -not ($BodyProperties -contains 'ItemKey')
 
                 } -Times 1 -Exactly -Scope It
 

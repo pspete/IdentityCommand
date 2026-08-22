@@ -1,9 +1,5 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
-# TODO: The recorded Bruno sample's body has no field identifying which secured item to update
-# (no itemkey/sItemkey). -ItemKey is added here as an inferred query-string parameter by analogy
-# with Get-IDApplicationData's ?appkey= pattern, but this is unconfirmed.
+# TODO: The real expected format for -CustomFields is unconfirmed.
 function Update-IDSecuredItemCredential {
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -33,11 +29,9 @@ function Update-IDSecuredItemCredential {
 
         if ($PSCmdlet.ShouldProcess($ItemKey, 'Update Secured Item Credentials')) {
 
-            $Body = [ordered]@{
-                'CustomFields' = $CustomFields
-                'Notes'        = $Notes
-                'Username'     = $Username
-            }
+            #Only send fields actually supplied - the server rejects an empty string for
+            #CustomFields with a type-casting error when it's sent unset
+            $Body = $PSBoundParameters | Get-Parameter -ParametersToRemove ItemKey, Password
 
             if ($PSBoundParameters.ContainsKey('Password')) {
 
@@ -47,7 +41,7 @@ function Update-IDSecuredItemCredential {
 
             $Request = @{
 
-                'URI'    = "$($ISPSSSession.tenant_url)/UPRest/UpdateCredsForSecuredItem`?itemkey=$($ItemKey | Get-EscapedString)"
+                'URI'    = "$($ISPSSSession.tenant_url)/UPRest/UpdateCredsForSecuredItem`?sItemkey=$($ItemKey | Get-EscapedString)"
                 'Method' = 'POST'
                 'Body'   = ($Body | ConvertTo-Json -Depth 6)
 
