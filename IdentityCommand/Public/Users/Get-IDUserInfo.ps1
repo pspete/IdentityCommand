@@ -1,6 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
 function Get-IDUserInfo {
     [CmdletBinding()]
     param(
@@ -13,9 +11,9 @@ function Get-IDUserInfo {
         [String]$ID
     )
 
-    BEGIN {}#begin
+    begin {}#begin
 
-    PROCESS {
+    process {
 
         $URI = "$($ISPSSSession.tenant_url)/UserMgmt/GetUserInfo?ID=$($ID | Get-EscapedString)"
 
@@ -24,6 +22,6 @@ function Get-IDUserInfo {
 
     }#process
 
-    END {}#end
+    end {}#end
 
 }
