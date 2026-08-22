@@ -1,7 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: -FileCount is required in practice - a call with no arguments fails server-side with a
-# generic HTML error page rather than a JSON error, even though the recorded Bruno sample didn't
-# indicate it was mandatory.
 function Get-IDRecentImportedAccountsFile {
     [CmdletBinding()]
     param(
