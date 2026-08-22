@@ -230,6 +230,7 @@
         'Get-IDSCIMResourceType',
         'Set-IDApplicationTag',
         'Get-IDSecuredItem',
+        'New-IDSecuredItem',
         'Set-IDSecuredItemTag',
         'New-IDApplicationTag',
         'Remove-IDApplicationTag',
