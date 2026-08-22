@@ -1,12 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: DEPRIORITIZED - no command in this module can enumerate "secured items" to find a real
-# -ItemKey to test against (no Get-IDSecuredItem exists), so this has never been live-tested at
-# all. The sibling Set-IDApplicationIcon (same UPRest namespace) was live-tested and rejected a
-# genuine admin-managed application with "This application is no longer available." - UPRest
-# appears to be scoped to "Personal Apps" (a distinct self-service object type - see
-# Update-IDPersonalUserApplication), not admin-managed items, so -ItemKey likely has the same scope
-# mismatch. Needs a DevTools capture of wherever "secured items" actually come from in the portal
-# (what a secured item even is has never been confirmed) before this can be tested at all.
 function Set-IDSecuredItemIcon {
     [CmdletBinding(SupportsShouldProcess)]
     param(
