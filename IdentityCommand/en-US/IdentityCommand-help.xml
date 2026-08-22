@@ -14749,7 +14749,7 @@ PS C:\&gt; Send-IDUserInvite -Role 'SomeRole' -Entities $Entities -EmailInvite</
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Uploads a custom icon for a personal application. TODO: the recorded sample only shows an 'appkey' field in the body with no visible file part - the multipart file field name ('Icon') is a best guess, matching the pattern used by Set-IDUserPicture.</maml:para>
+      <maml:para>Uploads a custom icon for a self-service "Personal App" (an app a user has added themselves via the User Portal), identified by its Personal App key. Confirmed live end-to-end.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -14757,7 +14757,7 @@ PS C:\&gt; Send-IDUserInvite -Role 'SomeRole' -Entities $Entities -EmailInvite</
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
           <maml:name>AppKey</maml:name>
           <maml:description>
-            <maml:para>The unique key of the application.</maml:para>
+            <maml:para>The Personal App's key, in the form `@~/apps/imported_&lt;Name&gt;_&lt;uuid&gt;` - not a plain application `_RowKey`/UUID. Retrieve it from `(Get-IDUserPortalData).apps`, filtering for `Personal -eq $true`; the value is available under both `.AppKey` and `._RowKey`. This does not accept an admin-managed catalog application's key (see `Get-IDApplication`).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -14769,7 +14769,7 @@ PS C:\&gt; Send-IDUserInvite -Role 'SomeRole' -Entities $Entities -EmailInvite</
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Path</maml:name>
           <maml:description>
-            <maml:para>Path to the local image file to upload.</maml:para>
+            <maml:para>Path to the local image file to upload. The image must be at least 512 bytes, no more than 1 MB, no larger than 1024x1024, and one of .png, .jpg, .ico, .gif (non-animated), or .bmp.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -14806,7 +14806,7 @@ PS C:\&gt; Send-IDUserInvite -Role 'SomeRole' -Entities $Entities -EmailInvite</
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
         <maml:name>AppKey</maml:name>
         <maml:description>
-          <maml:para>The unique key of the application.</maml:para>
+          <maml:para>The Personal App's key, in the form `@~/apps/imported_&lt;Name&gt;_&lt;uuid&gt;` - not a plain application `_RowKey`/UUID. Retrieve it from `(Get-IDUserPortalData).apps`, filtering for `Personal -eq $true`; the value is available under both `.AppKey` and `._RowKey`. This does not accept an admin-managed catalog application's key (see `Get-IDApplication`).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -14830,7 +14830,7 @@ PS C:\&gt; Send-IDUserInvite -Role 'SomeRole' -Entities $Entities -EmailInvite</
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Path</maml:name>
         <maml:description>
-          <maml:para>Path to the local image file to upload.</maml:para>
+          <maml:para>Path to the local image file to upload. The image must be at least 512 bytes, no more than 1 MB, no larger than 1024x1024, and one of .png, .jpg, .ico, .gif (non-animated), or .bmp.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -14880,9 +14880,10 @@ PS C:\&gt; Send-IDUserInvite -Role 'SomeRole' -Entities $Entities -EmailInvite</
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Set-IDApplicationIcon -AppKey 'someappkey' -Path 'C:\Icons\someapp.png'</dev:code>
+        <dev:code>PS C:\&gt; $AppKey = (Get-IDUserPortalData).apps | Where-Object Personal -eq $true | Select-Object -First 1 -ExpandProperty AppKey
+PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</dev:code>
         <dev:remarks>
-          <maml:para>Uploads a custom icon for the specified application.</maml:para>
+          <maml:para>Uploads a custom icon for the specified personal application.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

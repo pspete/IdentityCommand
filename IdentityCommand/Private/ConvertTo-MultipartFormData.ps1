@@ -11,7 +11,9 @@ function ConvertTo-MultipartFormData {
 
 	.PARAMETER Field
 	A hashtable of form field names to values. Values that are a FileSystemInfo object (e.g. from
-	Get-Item) are sent as file parts; all other values are sent as plain text fields.
+	Get-Item) are sent as file parts, with a Content-Type derived from the file's extension
+	(recognised image extensions only - anything else falls back to application/octet-stream); all
+	other values are sent as plain text fields.
 
 	.PARAMETER Boundary
 	The multipart boundary string to use. A random one is generated if not supplied.
@@ -47,8 +49,22 @@ function ConvertTo-MultipartFormData {
 
 			if ($Value -is [System.IO.FileSystemInfo]) {
 
+				#A file part's Content-Type must reflect its actual content, not a generic
+				#'application/octet-stream' - confirmed live via Set-IDApplicationIcon: the server
+				#rejects an otherwise-valid image as "invalid format" when the part is labelled
+				#application/octet-stream, even though the bytes/size/extension are all correct.
+				$FileContentType = switch ($Value.Extension.ToLowerInvariant()) {
+					'.png' { 'image/png' }
+					'.jpg' { 'image/jpeg' }
+					'.jpeg' { 'image/jpeg' }
+					'.gif' { 'image/gif' }
+					'.bmp' { 'image/bmp' }
+					'.ico' { 'image/x-icon' }
+					default { 'application/octet-stream' }
+				}
+
 				$Header = "Content-Disposition: form-data; name=`"$Key`"; filename=`"$($Value.Name)`"$LF" +
-				"Content-Type: application/octet-stream$LF$LF"
+				"Content-Type: $FileContentType$LF$LF"
 				$Bytes = [System.Text.Encoding]::UTF8.GetBytes($Header)
 				$Stream.Write($Bytes, 0, $Bytes.Length)
 

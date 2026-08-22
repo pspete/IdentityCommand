@@ -72,6 +72,31 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
+            It 'defaults to application/octet-stream for an unrecognised extension' {
+
+                [System.Text.Encoding]::UTF8.GetString($response.Body) | Should -Match 'Content-Type: application/octet-stream'
+
+            }
+
+        }
+
+        Context 'Image file field' {
+
+            BeforeAll {
+                $TestImageFile = Join-Path $TestDrive 'test.png'
+                Set-Content -Path $TestImageFile -Value 'not a real png, just bytes' -NoNewline
+            }
+
+            BeforeEach {
+                $response = ConvertTo-MultipartFormData -Field @{ 'Icon' = (Get-Item -Path $TestImageFile) } -Boundary 'someboundary'
+            }
+
+            It 'sets the Content-Type based on the file extension' {
+
+                [System.Text.Encoding]::UTF8.GetString($response.Body) | Should -Match 'Content-Type: image/png'
+
+            }
+
         }
 
     }
