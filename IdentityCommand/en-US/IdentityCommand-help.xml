@@ -479,6 +479,131 @@
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
+      <command:name>Complete-IDUserU2FRegistrationChallenge</command:name>
+      <command:verb>Complete</command:verb>
+      <command:noun>IDUserU2FRegistrationChallenge</command:noun>
+      <maml:description>
+        <maml:para>Complete a U2F device registration challenge</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Submits the result of a completed browser WebAuthn registration ceremony (started via `Get-IDUserU2FRegistrationChallenge`) to finish enrolling a new U2F device for the current user. `-RawRegisterResponse` must be the JSON-stringified response from the browser's `navigator.credentials.create()` call, answering the challenge returned by `Get-IDUserU2FRegistrationChallenge` - this module cannot produce that value itself, since it requires a real WebAuthn ceremony with physical/platform authenticator hardware inside a browser.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Complete-IDUserU2FRegistrationChallenge</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>RawRegisterResponse</maml:name>
+          <maml:description>
+            <maml:para>The JSON-stringified result of the browser's `navigator.credentials.create()` call.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+          <maml:name>Confirm</maml:name>
+          <maml:description>
+            <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+          <maml:name>WhatIf</maml:name>
+          <maml:description>
+            <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>RawRegisterResponse</maml:name>
+        <maml:description>
+          <maml:para>The JSON-stringified result of the browser's `navigator.credentials.create()` call.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+        <maml:name>Confirm</maml:name>
+        <maml:description>
+          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+        <maml:name>WhatIf</maml:name>
+        <maml:description>
+          <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Complete-IDUserU2FRegistrationChallenge -RawRegisterResponse $RawRegisterResponseJson</dev:code>
+        <dev:remarks>
+          <maml:para>Completes registration of a new U2F device using a previously-obtained WebAuthn response.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
       <command:name>Copy-IDApplication</command:name>
       <command:verb>Copy</command:verb>
       <command:noun>IDApplication</command:noun>
@@ -5524,24 +5649,12 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Returns a registration challenge to begin enrolling a new U2F device for the current user.</maml:para>
+      <maml:para>Returns a registration challenge to begin enrolling a new U2F device for the current user. Pass the returned `Challenge` (and the request's `RpId`/`UserName`/etc.) to a browser's WebAuthn `navigator.credentials.create()` call, then submit its result via `Complete-IDUserU2FRegistrationChallenge`.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-IDUserU2FRegistrationChallenge</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
-          <maml:name>AuthenticatorType</maml:name>
-          <maml:description>
-            <maml:para>The type of U2F authenticator being registered.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>UserDefinedName</maml:name>
           <maml:description>
             <maml:para>A friendly name for the new device.</maml:para>
@@ -5553,22 +5666,22 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>AuthenticatorType</maml:name>
+          <maml:description>
+            <maml:para>The type of U2F authenticator being registered - 'SECURITYKEY' for a physical security key, or 'PASSKEY' for a passkey.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>SECURITYKEY</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
-        <maml:name>AuthenticatorType</maml:name>
-        <maml:description>
-          <maml:para>The type of U2F authenticator being registered.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>UserDefinedName</maml:name>
         <maml:description>
           <maml:para>A friendly name for the new device.</maml:para>
@@ -5579,6 +5692,18 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>AuthenticatorType</maml:name>
+        <maml:description>
+          <maml:para>The type of U2F authenticator being registered - 'SECURITYKEY' for a physical security key, or 'PASSKEY' for a passkey.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>SECURITYKEY</dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <command:inputTypes>

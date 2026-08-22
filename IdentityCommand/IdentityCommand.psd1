@@ -201,6 +201,7 @@
         'Test-IDUserOathOtpCode',
         'Remove-IDUserU2FDevice',
         'Get-IDUserU2FRegistrationChallenge',
+        'Complete-IDUserU2FRegistrationChallenge',
         'Get-IDUserU2FDevice',
         'Set-IDUserPassword',
         'Get-IDSCIMUser',
