@@ -3,7 +3,7 @@ function New-IDTenantCname {
     [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
-       
+
         [Parameter(Mandatory = $true)]
 		$cnamePrefix
 

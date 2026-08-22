@@ -1,3 +1,4 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Get-IDAuthenticationProfile {
 
     [CmdletBinding()]
@@ -47,9 +48,9 @@ function Get-IDAuthenticationProfile {
                 "Method"      = "Post"
                 "Body"        = ($Body | ConvertTo-Json)
                 "ContentType" = "application/json"
-                
+
             }
-        
+
             # invoking the rest call
             $result = Invoke-IDRestMethod @RestCall
 

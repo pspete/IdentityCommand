@@ -1,9 +1,10 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Get-IDRoleApplication {
 
     [CmdletBinding()]
 	param
 	(
-       
+
         [Parameter(Mandatory = $true,
         ValueFromPipelinebyPropertyName = $true)]
         [Alias('Uuid')]

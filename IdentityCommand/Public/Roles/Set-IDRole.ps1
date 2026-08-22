@@ -1,3 +1,4 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Set-IDRole {
 
     [CmdletBinding(SupportsShouldProcess)]

@@ -1,9 +1,10 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Get-IDPermission {
 
     [CmdletBinding()]
 	param
 	(
-       
+
     )
 
     BEGIN {

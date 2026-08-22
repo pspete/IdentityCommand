@@ -1,3 +1,4 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Remove-IDRole {
 
     [CmdletBinding(SupportsShouldProcess)]

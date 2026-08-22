@@ -1,3 +1,4 @@
+# .ExternalHelp IdentityCommand-help.xml
 function New-IDAuthenticationProfile {
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -13,7 +14,7 @@ function New-IDAuthenticationProfile {
 
         [Parameter(Mandatory = $false)]
         $AdditionalData = @{},
-        
+
         [Parameter(Mandatory = $false)]
         [ValidateSet("QR","PASSKEY")]
         $SingleChallengeMechanisms = "",
@@ -25,7 +26,7 @@ function New-IDAuthenticationProfile {
         $Name
     )
 
-    BEGIN {      
+    BEGIN {
 
         $SQ = ("SQ" -in $FirstFactorChallenges) -or ("SQ" -in $SecondFactorChallenges)
 

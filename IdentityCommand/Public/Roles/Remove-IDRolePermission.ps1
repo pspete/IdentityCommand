@@ -1,3 +1,4 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Remove-IDRolePermission {
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -21,7 +22,7 @@ function Remove-IDRolePermission {
         if ($Path -notin $currentAvailablePermissions.Path) {
 
             Write-Warning "$Path is not a valid permission. Run Get-IDPermission to list all available permissions"
-            break 
+            break
 
         }
 

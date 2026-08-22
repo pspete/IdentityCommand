@@ -1,9 +1,10 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Get-IDRolePermission {
 
     [CmdletBinding()]
 	param
 	(
-       
+
         [Parameter(Mandatory = $true,
         ValueFromPipelinebyPropertyName = $true)]
         [Alias('Uuid')]
@@ -22,7 +23,7 @@ function Get-IDRolePermission {
                 "Limit"      = "100000"
                 "SortBy"     = ""
                 "Caching"    = "-1"
-            } 
+            }
         }
 
     } #begin

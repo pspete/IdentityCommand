@@ -1,9 +1,10 @@
+# .ExternalHelp IdentityCommand-help.xml
 function New-IDRole {
 
     [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
-       
+
         [Parameter(Mandatory = $true)]
         $Name,
 

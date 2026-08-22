@@ -1,3 +1,4 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Add-IDRolePermission {
 
     [CmdletBinding()]
@@ -21,7 +22,7 @@ function Add-IDRolePermission {
         if ($Path -notin $currentAvailablePermissions.Path) {
 
             Write-Warning "$Path is not a valid permission. Run Get-IDPermission to list all available permissions"
-            break 
+            break
 
         }
 
@@ -45,7 +46,7 @@ function Add-IDRolePermission {
         "URI"         = "$($ISPSSSession.tenant_url)/Roles/AssignSuperRights"
         "Headers"     = $($ISPSSSession.WebSession.Headers)
         "Method"      = "Post"
-        "Body"        = (ConvertTo-JSON -InputObject $body) 
+        "Body"        = (ConvertTo-JSON -InputObject $body)
         "ContentType" = "application/json"
 
         }

@@ -4,7 +4,7 @@ function Remove-IDTenantSuffix {
     [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
-       
+
         # The new tenant Suffix
         [Parameter(Mandatory = $true)]
 		[array]$Suffixes

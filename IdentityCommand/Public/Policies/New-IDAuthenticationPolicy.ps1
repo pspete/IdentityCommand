@@ -1,3 +1,4 @@
+# .ExternalHelp IdentityCommand-help.xml
 function New-IDAuthenticationPolicy {
 
     [CmdletBinding(SupportsShouldProcess)]

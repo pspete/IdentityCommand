@@ -1,3 +1,4 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Set-IDAuthenticationProfile {
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -22,7 +23,7 @@ function Set-IDAuthenticationProfile {
         [Parameter(Mandatory = $false,
         ValueFromPipelinebyPropertyName = $true)]
         $AdditionalData = @{},
-        
+
         [Parameter(Mandatory = $false,
         ValueFromPipelinebyPropertyName = $true)]
         [ValidateSet("","QR","PASSKEY")]
@@ -42,8 +43,8 @@ function Set-IDAuthenticationProfile {
         $Challenges = ""
     )
 
-    BEGIN {  
-        
+    BEGIN {
+
         $SQ = ("SQ" -in $FirstFactorChallenges) -or ("SQ" -in $SecondFactorChallenges)
 
         [string]$FirstFactorChallenges  = $FirstFactorChallenges
