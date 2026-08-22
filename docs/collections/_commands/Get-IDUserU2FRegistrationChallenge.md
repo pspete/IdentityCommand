@@ -13,12 +13,12 @@ Get a U2F device registration challenge
 ## SYNTAX
 
 ```
-Get-IDUserU2FRegistrationChallenge [[-AuthenticatorType] <String>] [[-UserDefinedName] <String>]
+Get-IDUserU2FRegistrationChallenge [-UserDefinedName] <String> [[-AuthenticatorType] <String>]
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Returns a registration challenge to begin enrolling a new U2F device for the current user.
+Returns a registration challenge to begin enrolling a new U2F device for the current user. Pass the returned `Challenge` (and the request's `RpId`/`UserName`/etc.) to a browser's WebAuthn `navigator.credentials.create()` call, then submit its result via `Complete-IDUserU2FRegistrationChallenge`.
 
 ## EXAMPLES
 
@@ -31,21 +31,6 @@ Returns a registration challenge for a new U2F device.
 
 ## PARAMETERS
 
-### -AuthenticatorType
-The type of U2F authenticator being registered.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 0
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -UserDefinedName
 A friendly name for the new device.
 
@@ -54,9 +39,24 @@ Type: String
 Parameter Sets: (All)
 Aliases:
 
+Required: True
+Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -AuthenticatorType
+The type of U2F authenticator being registered - 'SECURITYKEY' for a physical security key, or 'PASSKEY' for a passkey.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
 Required: False
 Position: 1
-Default value: None
+Default value: SECURITYKEY
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -1,17 +1,12 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
-# TODO: DEPRIORITIZED - U2f/GetRegistrationChallenge always fails with "Parameter host may not be
-# null or whitespace", regardless of where a 'host' value is supplied (query string, JSON body, or
-# both). The server may be deriving 'host' from request context this command doesn't set. Needs a
-# DevTools capture of the actual U2F/security-key registration flow.
 function Get-IDUserU2FRegistrationChallenge {
     [CmdletBinding()]
     param(
         [parameter(Mandatory = $false)]
-        [String]$AuthenticatorType,
+        [String]$AuthenticatorType = 'SECURITYKEY',
 
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty()]
         [String]$UserDefinedName
     )
 
@@ -19,23 +14,20 @@ function Get-IDUserU2FRegistrationChallenge {
 
     PROCESS {
 
-        $URI = "$($ISPSSSession.tenant_url)/U2f/GetRegistrationChallenge"
-
-        $Query = @{}
-
-        if ($PSBoundParameters.ContainsKey('AuthenticatorType')) { $Query['authenticatorType'] = $AuthenticatorType }
-        if ($PSBoundParameters.ContainsKey('UserDefinedName')) { $Query['userDefinedName'] = $UserDefinedName }
-
-        if ($Query.Count -gt 0) {
-
-            $URI = "$URI`?$($Query | ConvertTo-QueryString)"
-
+        $Body = @{
+            'authenticatorType' = $AuthenticatorType
+            'userDefinedName'   = $UserDefinedName
         }
 
+        #A browser always sends an Origin header, which this endpoint appears to require to
+        #determine the WebAuthn relying-party host - Invoke-WebRequest doesn't send one by
+        #default, causing "Unexpected null arguments passed to the server." without it
         $Request = @{
 
-            'URI'    = $URI
-            'Method' = 'POST'
+            'URI'     = "$($ISPSSSession.tenant_url)/U2f/GetRegistrationChallenge"
+            'Method'  = 'POST'
+            'Body'    = ($Body | ConvertTo-Json)
+            'Headers' = @{ 'Origin' = $ISPSSSession.tenant_url }
 
         }
 
