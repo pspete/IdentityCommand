@@ -17,7 +17,7 @@ Set-IDUserPicture [-ID] <String> [-Path] <String> [-WhatIf] [-Confirm] [<CommonP
 ```
 
 ## DESCRIPTION
-Uploads an image file as a user's profile picture.
+Uploads an image file as a user's profile picture, then returns the newly-set picture as an object with ContentType, Length, and Bytes properties.
 
 ## EXAMPLES
 
@@ -46,7 +46,7 @@ Accept wildcard characters: False
 ```
 
 ### -Path
-The path to the image file to upload.
+The path to the image file to upload. The image must be at least 512 bytes, no more than 1 MB, no larger than 1024x1024, and one of .png, .jpg, .ico, .gif (non-animated), or .bmp.
 
 ```yaml
 Type: String

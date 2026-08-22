@@ -1,6 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: The full success path (a real image actually being accepted and set) is still
-# unconfirmed.
 function Set-IDUserPicture {
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -34,8 +32,24 @@ function Set-IDUserPicture {
 
             }
 
-            #Send Request
-            Invoke-IDRestMethod @Request
+            #Send Request - on success this returns a relative path to fetch the uploaded picture
+            #from, rather than the picture data itself. Follow it and return the picture, wrapped
+            #with its Content-Type/Length so the raw bytes aren't dumped to the console by default.
+            $PicturePath = Invoke-IDRestMethod @Request
+
+            if ($PicturePath) {
+
+                $Bytes = Invoke-IDRestMethod -URI "$($ISPSSSession.tenant_url)$PicturePath" -Method GET
+
+                [PSCustomObject]@{
+
+                    'ContentType' = $ISPSSSession.LastCommandResults.Headers['Content-Type']
+                    'Length'      = $Bytes.Length
+                    'Bytes'       = $Bytes
+
+                }
+
+            }
 
         }
 

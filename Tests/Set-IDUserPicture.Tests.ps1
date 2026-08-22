@@ -40,8 +40,21 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
 
             Mock Invoke-IDRestMethod -MockWith {
-                [pscustomobject]@{'property' = 'value' }
-            }
+                '/UserMgmt/GetUserPicture?id=someid'
+            } -ParameterFilter { $Method -eq 'POST' }
+
+            Mock Invoke-IDRestMethod -MockWith {
+
+                #Real Invoke-IDRestMethod stashes the full WebResponseObject (including headers)
+                #on $ISPSSSession.LastCommandResults - mimic that here so the command under test
+                #can read the real Content-Type back out of it.
+                $ISPSSSession.LastCommandResults = [PSCustomObject]@{
+                    Headers = @{ 'Content-Type' = 'image/png' }
+                }
+
+                [Byte[]]@(1, 2, 3, 4)
+
+            } -ParameterFilter { $Method -eq 'GET' }
 
             $TestFile = Join-Path $TestDrive 'picture.png'
             Set-Content -Path $TestFile -Value 'fake image bytes' -NoNewline
@@ -52,27 +65,31 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         Context 'Input' {
 
-            It 'sends request' {
-
-                Assert-MockCalled Invoke-IDRestMethod -Times 1 -Exactly -Scope It
-
-            }
-
-            It 'sends request to expected endpoint' {
+            It 'sends the upload request' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/CDirectoryService/SetUserPicture?ID=someid'
+                    $Method -eq 'POST' -and $URI -eq 'https://somedomain.id.cyberark.cloud/CDirectoryService/SetUserPicture?ID=someid'
 
                 } -Times 1 -Exactly -Scope It
 
             }
 
-            It 'sends request with a multipart content type' {
+            It 'sends the upload request with a multipart content type' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $ContentType -like 'multipart/form-data; boundary=*'
+                    $Method -eq 'POST' -and $ContentType -like 'multipart/form-data; boundary=*'
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'follows the returned path to fetch the picture' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    $Method -eq 'GET' -and $URI -eq 'https://somedomain.id.cyberark.cloud/UserMgmt/GetUserPicture?id=someid'
 
                 } -Times 1 -Exactly -Scope It
 
@@ -82,9 +99,27 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         Context 'Output' {
 
-            It 'provides output' {
+            It 'provides the fetched picture as output' {
 
                 $response | Should -Not -BeNullOrEmpty
+
+            }
+
+            It 'wraps the picture with its Content-Type' {
+
+                $response.ContentType | Should -Be 'image/png'
+
+            }
+
+            It 'wraps the picture with its Length' {
+
+                $response.Length | Should -Be 4
+
+            }
+
+            It 'exposes the raw picture bytes' {
+
+                ($response.Bytes -join ',') | Should -Be '1,2,3,4'
 
             }
 

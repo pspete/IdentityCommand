@@ -20075,7 +20075,7 @@ PS C:\&gt; Set-IDUserPassword -OldPassword $Old -NewPassword $New</dev:code>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Uploads an image file as a user's profile picture.</maml:para>
+      <maml:para>Uploads an image file as a user's profile picture, then returns the newly-set picture as an object with ContentType, Length, and Bytes properties.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -20095,7 +20095,7 @@ PS C:\&gt; Set-IDUserPassword -OldPassword $Old -NewPassword $New</dev:code>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Path</maml:name>
           <maml:description>
-            <maml:para>The path to the image file to upload.</maml:para>
+            <maml:para>The path to the image file to upload. The image must be at least 512 bytes, no more than 1 MB, no larger than 1024x1024, and one of .png, .jpg, .ico, .gif (non-animated), or .bmp.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -20144,7 +20144,7 @@ PS C:\&gt; Set-IDUserPassword -OldPassword $Old -NewPassword $New</dev:code>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Path</maml:name>
         <maml:description>
-          <maml:para>The path to the image file to upload.</maml:para>
+          <maml:para>The path to the image file to upload. The image must be at least 512 bytes, no more than 1 MB, no larger than 1024x1024, and one of .png, .jpg, .ico, .gif (non-animated), or .bmp.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
