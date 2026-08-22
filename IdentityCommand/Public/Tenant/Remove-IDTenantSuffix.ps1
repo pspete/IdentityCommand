@@ -1,4 +1,5 @@
 # .ExternalHelp IdentityCommand-help.xml
+# Verified against a live tenant.
 function Remove-IDTenantSuffix {
 
     [CmdletBinding(SupportsShouldProcess)]

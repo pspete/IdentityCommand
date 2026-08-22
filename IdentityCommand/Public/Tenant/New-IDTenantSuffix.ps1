@@ -1,4 +1,8 @@
 # .ExternalHelp IdentityCommand-help.xml
+# Confirmed live via a browser DevTools capture of the admin portal's "new suffix" UI action -
+# body field names (alias/cdsAlias/domain/jsutil-radio2/oldName) match. Two real discrepancies
+# fixed: cdsAlias must be the string "true"/"false", not a raw JSON boolean; and the field is
+# "oldName" (capital N), not "oldname".
 function New-IDTenantSuffix {
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -11,7 +15,7 @@ function New-IDTenantSuffix {
 
         # Boolean if it is a Cloud directory alias
         [Parameter(Mandatory = $false)]
-		$cdsAlias = $true,
+		[bool]$cdsAlias = $true,
 
         # The suffix to be mapped to the new suffix
         [Parameter(Mandatory = $true)]
@@ -38,10 +42,10 @@ function New-IDTenantSuffix {
             $Body = @{
 
                 "alias"         = $alias
-                "cdsAlias"      = $cdsAlias
+                "cdsAlias"      = $cdsAlias.ToString().ToLower()
                 "domain"        = $domain
                 "jsutil-radio2" = $directory
-                "oldname"       = $oldname
+                "oldName"       = $oldname
 
             }
 
