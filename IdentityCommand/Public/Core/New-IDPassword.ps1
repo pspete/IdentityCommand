@@ -1,34 +1,42 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: DEPRIORITIZED - Core/GeneratePassword returns a generic "Something went wrong" HTML error
-# page (not a JSON error), and the alternate guess UserMgmt/GeneratePassword 404s outright. The
-# endpoint name/path is unconfirmed. Needs a real request captured via browser DevTools - open the
-# admin portal's "generate password" action (e.g. on a user's account page) if one exists.
 function New-IDPassword {
     [CmdletBinding(SupportsShouldProcess)]
     param(
+        [parameter(
+            Mandatory = $true,
+            ValueFromPipelinebyPropertyName = $true
+        )]
+        [ValidateNotNullOrEmpty()]
+        [Alias('Uuid', 'UserUuid')]
+        [String]$ID,
+
         [parameter(Mandatory = $false)]
         [ValidateNotNullOrEmpty()]
-        [Int]$Length
+        [Int]$Length = 0
     )
 
     BEGIN {}#begin
 
     PROCESS {
 
-        if ($PSCmdlet.ShouldProcess($ISPSSSession.tenant_url, 'Generate Password')) {
+        if ($PSCmdlet.ShouldProcess($ID, 'Generate Password')) {
 
-            $URI = "$($ISPSSSession.tenant_url)/Core/GeneratePassword"
+            #Confirmed live via browser DevTools capture: the endpoint is lower-case
+            #'generatepassword' (unlike the rest of this API's PascalCase paths), and both
+            #'userUuid' and 'passwordLength' are required in the POST body - not a query string,
+            #and there's no way to generate a tenant-wide password with no target user at all.
+            $Body = @{
 
-            if ($PSBoundParameters.ContainsKey('Length')) {
-
-                $URI = "$URI`?passwordLength=$($Length | Get-EscapedString)"
+                'userUuid'       = $ID
+                'passwordLength' = $Length
 
             }
 
             $Request = @{
 
-                'URI'    = $URI
+                'URI'    = "$($ISPSSSession.tenant_url)/Core/generatepassword"
                 'Method' = 'POST'
+                'Body'   = ($Body | ConvertTo-Json)
 
             }
 

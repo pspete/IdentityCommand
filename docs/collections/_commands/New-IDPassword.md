@@ -13,29 +13,45 @@ Generate a random password
 ## SYNTAX
 
 ```
-New-IDPassword [[-Length] <Int32>] [-WhatIf] [-Confirm] [<CommonParameters>]
+New-IDPassword [-ID] <String> [[-Length] <Int32>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Generates a random password value using the tenant's configured password complexity rules.
+Generates a random password value for the specified user, using the tenant's configured password
+complexity rules.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> New-IDPassword
+PS C:\> New-IDPassword -ID '881512ca-d441-4997-a55e-19ec5374f3b3'
 ```
 
-Generates a random password using the tenant's default length.
+Generates a random password for the specified user, using the tenant's default length.
 
 ### Example 2
 ```powershell
-PS C:\> New-IDPassword -Length 16
+PS C:\> New-IDPassword -ID '881512ca-d441-4997-a55e-19ec5374f3b3' -Length 16
 ```
 
-Generates a random 16-character password.
+Generates a random 16-character password for the specified user.
 
 ## PARAMETERS
+
+### -ID
+The UUID of the user to generate a password for.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases: Uuid, UserUuid
+
+Required: True
+Position: 0
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
 
 ### -Length
 The length of the password to generate.
@@ -46,8 +62,8 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 0
-Default value: None
+Position: 1
+Default value: 0
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -88,7 +104,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### None
+### System.String
 ## OUTPUTS
 
 ### System.Object

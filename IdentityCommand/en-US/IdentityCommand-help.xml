@@ -7576,12 +7576,24 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Generates a random password value using the tenant's configured password complexity rules.</maml:para>
+      <maml:para>Generates a random password value for the specified user, using the tenant's configured password complexity rules.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>New-IDPassword</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, UserUuid">
+          <maml:name>ID</maml:name>
+          <maml:description>
+            <maml:para>The UUID of the user to generate a password for.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Length</maml:name>
           <maml:description>
             <maml:para>The length of the password to generate.</maml:para>
@@ -7591,7 +7603,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
             <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
+          <dev:defaultValue>0</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
           <maml:name>Confirm</maml:name>
@@ -7618,7 +7630,19 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, UserUuid">
+        <maml:name>ID</maml:name>
+        <maml:description>
+          <maml:para>The UUID of the user to generate a password for.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Length</maml:name>
         <maml:description>
           <maml:para>The length of the password to generate.</maml:para>
@@ -7628,7 +7652,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
           <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
+        <dev:defaultValue>0</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
         <maml:name>Confirm</maml:name>
@@ -7658,7 +7682,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -7683,16 +7707,16 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; New-IDPassword</dev:code>
+        <dev:code>PS C:\&gt; New-IDPassword -ID '881512ca-d441-4997-a55e-19ec5374f3b3'</dev:code>
         <dev:remarks>
-          <maml:para>Generates a random password using the tenant's default length.</maml:para>
+          <maml:para>Generates a random password for the specified user, using the tenant's default length.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; New-IDPassword -Length 16</dev:code>
+        <dev:code>PS C:\&gt; New-IDPassword -ID '881512ca-d441-4997-a55e-19ec5374f3b3' -Length 16</dev:code>
         <dev:remarks>
-          <maml:para>Generates a random 16-character password.</maml:para>
+          <maml:para>Generates a random 16-character password for the specified user.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

@@ -48,7 +48,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
         Context 'Default' {
 
             BeforeEach {
-                $response = New-IDPassword
+                $response = New-IDPassword -ID 'someuseruuid'
             }
 
             It 'sends request' {
@@ -61,7 +61,18 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/Core/GeneratePassword'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/Core/generatepassword' -and $Method -eq 'POST'
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'sends request with expected body' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    $BodyObject = $Body | ConvertFrom-Json
+                    $BodyObject.userUuid -eq 'someuseruuid' -and $BodyObject.passwordLength -eq 0
 
                 } -Times 1 -Exactly -Scope It
 
@@ -78,14 +89,15 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
         Context 'Length' {
 
             BeforeEach {
-                $response = New-IDPassword -Length 16
+                $response = New-IDPassword -ID 'someuseruuid' -Length 16
             }
 
-            It 'sends request to expected endpoint' {
+            It 'sends request with expected body' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/Core/GeneratePassword?passwordLength=16'
+                    $BodyObject = $Body | ConvertFrom-Json
+                    $BodyObject.userUuid -eq 'someuseruuid' -and $BodyObject.passwordLength -eq 16
 
                 } -Times 1 -Exactly -Scope It
 
@@ -94,6 +106,24 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'provides output' {
 
                 $response | Should -Not -BeNullOrEmpty
+
+            }
+
+        }
+
+        Context 'Uuid alias' {
+
+            BeforeEach {
+                New-IDPassword -Uuid 'someuseruuid'
+            }
+
+            It 'sends request with expected body' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty userUuid) -eq 'someuseruuid'
+
+                } -Times 1 -Exactly -Scope It
 
             }
 
