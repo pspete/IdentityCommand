@@ -36,7 +36,7 @@ Returns all editable message templates.
 
 ### Example 2
 ```powershell
-PS C:\> Get-IDTenantMessageTemplate -TemplateName 'InviteUser' -TemplateType 'Email'
+PS C:\> Get-IDTenantMessageTemplate -TemplateName 'audiomessage_challenge_failure' -TemplateType 'AudioMessage'
 ```
 
 Returns the specified message template.
@@ -44,7 +44,7 @@ Returns the specified message template.
 ## PARAMETERS
 
 ### -TemplateName
-The name of the template to retrieve.
+The template's internal identifier - the `TemplateName` property of a row from the `-All` set (e.g. `'audiomessage_challenge_failure'`), not its display `Name`. Passing the display Name instead still returns a 200 response with plausible-looking constructed paths, but silently omits the template's actual content (`FileText`).
 
 ```yaml
 Type: String
@@ -59,7 +59,7 @@ Accept wildcard characters: False
 ```
 
 ### -TemplateType
-The type of the template to retrieve.
+The template's type - the `Type` property of a row from the `-All` set (e.g. `'AudioMessage'`). The full set of valid values is otherwise undocumented.
 
 ```yaml
 Type: String

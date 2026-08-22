@@ -1,8 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: Valid values for -TemplateType are not documented anywhere in the sources checked (likely
-# something like 'Email'/'SMS', by analogy with other notification-template APIs, but unconfirmed).
-# TODO: -Named set (GetEditableMessageTemplate, singular) is still unverified against a live
-# tenant - its response shape may or may not need the same Results.Row flattening as the -All set.
 function Get-IDTenantMessageTemplate {
     [CmdletBinding(DefaultParameterSetName = 'All')]
     param(

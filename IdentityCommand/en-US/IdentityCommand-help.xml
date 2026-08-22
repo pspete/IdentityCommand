@@ -4056,7 +4056,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>TemplateName</maml:name>
           <maml:description>
-            <maml:para>The name of the template to retrieve.</maml:para>
+            <maml:para>The template's internal identifier - the `TemplateName` property of a row from the `-All` set (e.g. `'audiomessage_challenge_failure'`), not its display `Name`. Passing the display Name instead still returns a 200 response with plausible-looking constructed paths, but silently omits the template's actual content (`FileText`).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -4068,7 +4068,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>TemplateType</maml:name>
           <maml:description>
-            <maml:para>The type of the template to retrieve.</maml:para>
+            <maml:para>The template's type - the `Type` property of a row from the `-All` set (e.g. `'AudioMessage'`). The full set of valid values is otherwise undocumented.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -4083,7 +4083,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>TemplateName</maml:name>
         <maml:description>
-          <maml:para>The name of the template to retrieve.</maml:para>
+          <maml:para>The template's internal identifier - the `TemplateName` property of a row from the `-All` set (e.g. `'audiomessage_challenge_failure'`), not its display `Name`. Passing the display Name instead still returns a 200 response with plausible-looking constructed paths, but silently omits the template's actual content (`FileText`).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -4095,7 +4095,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>TemplateType</maml:name>
         <maml:description>
-          <maml:para>The type of the template to retrieve.</maml:para>
+          <maml:para>The template's type - the `Type` property of a row from the `-All` set (e.g. `'AudioMessage'`). The full set of valid values is otherwise undocumented.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -4140,7 +4140,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-IDTenantMessageTemplate -TemplateName 'InviteUser' -TemplateType 'Email'</dev:code>
+        <dev:code>PS C:\&gt; Get-IDTenantMessageTemplate -TemplateName 'audiomessage_challenge_failure' -TemplateType 'AudioMessage'</dev:code>
         <dev:remarks>
           <maml:para>Returns the specified message template.</maml:para>
         </dev:remarks>
