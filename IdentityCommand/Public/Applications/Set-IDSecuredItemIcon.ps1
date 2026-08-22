@@ -1,10 +1,12 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
-# TODO: The recorded Bruno sample's body only shows the 'sItemkey' field with no visible file part,
-# but this is an icon upload - it is assumed (by analogy with Set-IDUserPicture) that the image is
-# sent as a multipart/form-data file field alongside 'sItemkey'. The exact field name for the file
-# part is unconfirmed - 'Icon' is a best guess.
+# TODO: DEPRIORITIZED - no command in this module can enumerate "secured items" to find a real
+# -ItemKey to test against (no Get-IDSecuredItem exists), so this has never been live-tested at
+# all. The sibling Set-IDApplicationIcon (same UPRest namespace) was live-tested and rejected a
+# genuine admin-managed application with "This application is no longer available." - UPRest
+# appears to be scoped to "Personal Apps" (a distinct self-service object type - see
+# Update-IDPersonalUserApplication), not admin-managed items, so -ItemKey likely has the same scope
+# mismatch. Needs a DevTools capture of wherever "secured items" actually come from in the portal
+# (what a secured item even is has never been confirmed) before this can be tested at all.
 function Set-IDSecuredItemIcon {
     [CmdletBinding(SupportsShouldProcess)]
     param(

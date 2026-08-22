@@ -1,10 +1,13 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
-# TODO: The recorded Bruno sample's body only shows the 'appkey' field with no visible file part,
-# but this is an icon upload - it is assumed (by analogy with Set-IDUserPicture) that the image is
-# sent as a multipart/form-data file field alongside 'appkey'. The exact field name for the file
-# part is unconfirmed - 'Icon' is a best guess.
+# TODO: DEPRIORITIZED - live-tested against a genuine, existing admin-managed catalog application
+# (created via Import-IDApplicationTemplate); UPRest/UploadPersonalAppIcon rejected it with "This
+# application is no longer available." "UPRest" = User Portal REST, and a "Personal App" appears
+# to be a distinct, separate object type in this API (a self-service app a user bookmarks/adds
+# themselves via the User Portal or browser extension - see Update-IDPersonalUserApplication /
+# Update-IDCapturedUserApplication) from an admin-managed catalog application. This endpoint may
+# simply not apply to -AppKey values from New-IDApplication/Import-IDApplicationTemplate at all.
+# Needs either a genuine Personal App's key to retest against, or a DevTools capture of the User
+# Portal's "change icon" action on a personal app.
 function Set-IDApplicationIcon {
     [CmdletBinding(SupportsShouldProcess)]
     param(
