@@ -1,11 +1,9 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: The request pipeline is confirmed live (server correctly rejected a phone-less test
-# user with "no mobile phone number in profile"), but the full success path (an SMS actually being
-# sent) is unconfirmed - re-test with a user that has a mobile number.
-# TODO: The recorded sample request for this operation was mislabeled in its source (it pointed at
-# the same URL as Send-IDUserLoginEmail's SendLoginEmails endpoint) so no real sample exists for
-# SendSmsInvite specifically. This command's shape (query string, single ID) is inferred by analogy
-# with Get-IDUserInfo/Test-IDUserLockedOutByPolicy rather than confirmed.
+# UNTESTED: The full success path (an SMS actually being sent) is unconfirmed - re-test with a
+# user that has a mobile number.
+# TODO: No real sample request exists for this endpoint - this command's shape (query string,
+# single ID) is inferred by analogy with Get-IDUserInfo/Test-IDUserLockedOutByPolicy rather than
+# confirmed.
 function Send-IDUserSmsInvite {
     [CmdletBinding(SupportsShouldProcess)]
     param(

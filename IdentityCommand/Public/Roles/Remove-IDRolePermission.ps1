@@ -1,9 +1,3 @@
-# Confirmed live 2026-08-22: requires the role's actual ID/UUID/_RowKey, not its display name,
-# matching the confirmed-live behavior of the sibling Add-IDRolePermission (same "Role" body key,
-# same Roles/*SuperRights endpoint family). Verified end-to-end against a permission genuinely
-# granted first via Add-IDRolePermission -ID, then removed via this command. Renamed the parameter
-# from -Name to -ID to reflect this (it was previously named -Name with -ID only as an alias,
-# which misled callers into passing a display name that doesn't work).
 function Remove-IDRolePermission {
 
     [CmdletBinding(SupportsShouldProcess)]

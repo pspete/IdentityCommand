@@ -1,8 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# Confirmed live via a browser DevTools capture of the admin portal's "new suffix" UI action -
-# body field names (alias/cdsAlias/domain/jsutil-radio2/oldName) match. Two real discrepancies
-# fixed: cdsAlias must be the string "true"/"false", not a raw JSON boolean; and the field is
-# "oldName" (capital N), not "oldname".
 function New-IDTenantSuffix {
 
     [CmdletBinding(SupportsShouldProcess)]

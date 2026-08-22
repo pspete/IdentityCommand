@@ -1,8 +1,3 @@
-# TODO: Fixed a real bug found live while testing the sibling Set-IDDynamicRoleScript - the body
-# was hand-built via raw string interpolation with single-quoted values and no escaping, which
-# silently corrupts the JSON for any real-world script (nearly all contain a literal ' character,
-# e.g. User.Properties.Properties['distinguishedName']). It only ever appeared to work with trivial
-# placeholder scripts that happen to contain no quotes. Switched to ConvertTo-Json.
 function Test-IDDynamicRoleScript {
 
     [CmdletBinding()]

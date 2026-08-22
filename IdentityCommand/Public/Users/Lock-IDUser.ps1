@@ -1,5 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: -ID added as an alias for -user, matching the rest of the module's convention.
 function Lock-IDUser {
     [CmdletBinding()]
     param(

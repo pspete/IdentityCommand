@@ -1,6 +1,3 @@
-# Confirmed live 2026-08-21: requires the role's actual ID/UUID/_RowKey, not its display name -
-# renamed the parameter from -Name to -ID to reflect this (it was previously named -Name with -ID
-# only as an alias, which misled callers into passing a display name that doesn't work).
 function Remove-IDRoleMember {
 
     [CmdletBinding(SupportsShouldProcess)]

@@ -1,14 +1,11 @@
 # .ExternalHelp IdentityCommand-help.xml
-# -OIDCAppKey confirmed correct against a live tenant - the server accepts it without complaint.
-# -PublicKey's exact expected wire format is UNCONFIRMED and DEPRIORITIZED: three plausible
-# encodings (X.509 SubjectPublicKeyInfo DER, PKCS#1 RSAPublicKey DER, JWK JSON) were tried live and
-# all rejected identically with "Invalid PublicKey"; a 4th (.NET RSA XML) was rejected separately by
-# ASP.NET request validation before reaching the endpoint. Not actively being pursued further -
-# capturing a real request via browser DevTools would be the most reliable next step if revisited.
-# TODO: Per the vendor's own API docs, the response returns the secret in encrypted form under an
-# 'e' property (encrypted with the supplied -PublicKey, RSA-OAEP) if encryption succeeds, or in
-# plain text under a 'p' property if it fails. Decrypting an 'e' response (requires the matching
-# RSA private key) is left to the caller - this command does not attempt decryption.
+# TODO: DEPRIORITIZED - -PublicKey's exact expected wire format is unconfirmed. Three plausible
+# encodings (X.509 SubjectPublicKeyInfo DER, PKCS#1 RSAPublicKey DER, JWK JSON) were all rejected
+# with "Invalid PublicKey". Needs a real request captured via browser DevTools.
+# TODO: Per the vendor's API docs, the response returns the secret encrypted under an 'e' property
+# (RSA-OAEP with the supplied -PublicKey) if encryption succeeds, or plain text under a 'p'
+# property if it fails. Decrypting an 'e' response is left to the caller - this command does not
+# attempt decryption.
 function Get-IDApplicationClientSecret {
     [CmdletBinding()]
     param(

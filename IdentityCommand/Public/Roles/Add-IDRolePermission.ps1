@@ -1,9 +1,3 @@
-# Confirmed live 2026-08-21: requires the role's actual ID/UUID/_RowKey, not its display name -
-# despite this endpoint's "Role" body key (shared with Get-IDRolePermission, which genuinely does
-# accept the display name via a different underlying endpoint, Core/GetAssignedAdministrativeRights
-# - this one hits Roles/AssignSuperRights instead). Renamed the parameter from -Name to -ID to
-# reflect this (it was previously named -Name with -ID only as an alias, which misled callers into
-# passing a display name that doesn't work).
 function Add-IDRolePermission {
 
     [CmdletBinding()]

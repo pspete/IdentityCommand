@@ -1,11 +1,6 @@
-# NOT EXPORTED - left out of FunctionsToExport in the manifest. Confirmed against a live tenant
-# that Policy/GetPolicyMetaData always returns "The requested data or its dependent data was not
-# found in the service", both with no body and with -Name set to a real, working policy name (in
-# both bare and full "/Policy/<name>" forms - the exact shapes GetPolicyBlock accepts). The
-# endpoint is also absent from the official CyberArk API docs (Policy Management section lists
-# GetPolicyBlock, GetNicePlinks, GetPasswordComplexityRequirements, SavePolicyBlock3,
-# DeletePolicyBlock - no GetPolicyMetaData), matching the same pattern as the also-unexported
-# Get-IDPagedRoleMember. Likely not a real/current endpoint - left in place for reference only.
+# TODO: NOT EXPORTED - left out of FunctionsToExport. Policy/GetPolicyMetaData returns a not-found
+# error for any input and is absent from the official API docs - likely not a real/current
+# endpoint. Left in place for reference only.
 function Get-IDAuthenticationPolicyMetadata {
 
     [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Justification = 'Metadata is already singular')]

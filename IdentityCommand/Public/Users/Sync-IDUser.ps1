@@ -1,13 +1,9 @@
 # .ExternalHelp IdentityCommand-help.xml
 # UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production. Live-tested 2026-08-21: returned "Feature is not
-# enabled" - most likely directory sync isn't licensed/configured on that tenant, not a code bug,
-# but this means the request/response path itself remains genuinely unconfirmed.
-# TODO: No sample request was found for this endpoint anywhere checked (Bruno collection or
-# swagger schema) - only the operation's existence and one-line summary ("Migrated user objects
-# synchronise with the cloud directory service"). The -ID parameter/body shape is inferred purely
-# by analogy with other single-user CDirectoryService operations and is unverified. It's also
-# unclear whether this targets a single user or operates tenant-wide with no input.
+# expected before relying on it in production.
+# TODO: No sample request was found for this endpoint - the -ID parameter/body shape is inferred
+# purely by analogy with other single-user CDirectoryService operations and is unverified. It's
+# also unclear whether this targets a single user or operates tenant-wide with no input.
 function Sync-IDUser {
     [CmdletBinding(SupportsShouldProcess)]
     param(
