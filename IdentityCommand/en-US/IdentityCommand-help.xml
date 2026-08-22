@@ -22692,7 +22692,7 @@ PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000'
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the details of a personal user application.</maml:para>
+      <maml:para>Updates the details of a personal user application. Confirmed live. Only the fields you supply are sent - an omitted `-AppDescription`/`-Notes`/`-AppUrl` leaves the existing value untouched.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -22709,10 +22709,10 @@ PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000'
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>AppName</maml:name>
           <maml:description>
-            <maml:para>The application name.</maml:para>
+            <maml:para>The application name. Required - confirmed live that the server rejects a blank name with "Application name cannot be blank."</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -22806,10 +22806,10 @@ PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000'
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>AppName</maml:name>
         <maml:description>
-          <maml:para>The application name.</maml:para>
+          <maml:para>The application name. Required - confirmed live that the server rejects a blank name with "Application name cannot be blank."</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>

@@ -65,6 +65,30 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
+            It 'sends request with expected body' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    $BodyObject = $Body | ConvertFrom-Json
+                    $BodyObject.appkey -eq 'someappkey' -and $BodyObject.appName -eq 'someapp'
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'only sends optional fields actually supplied' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    $BodyProperties = ($Body | ConvertFrom-Json).PSObject.Properties.Name
+                    -not ($BodyProperties -contains 'appDescription') -and
+                    -not ($BodyProperties -contains 'notes') -and
+                    -not ($BodyProperties -contains 'appUrl')
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
         }
 
         Context 'Output' {

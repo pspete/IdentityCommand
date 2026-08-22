@@ -1,6 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
 function Update-IDPersonalUserApplication {
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -11,7 +9,8 @@ function Update-IDPersonalUserApplication {
         [ValidateNotNullOrEmpty()]
         [String]$AppKey,
 
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty()]
         [String]$AppName,
 
         [parameter(Mandatory = $false)]
@@ -30,13 +29,17 @@ function Update-IDPersonalUserApplication {
 
         if ($PSCmdlet.ShouldProcess($AppKey, 'Update Personal User Application')) {
 
+            #-AppName is mandatory (confirmed live: rejected with "Application name cannot be
+            #blank." when unset) and other fields are only sent when actually supplied, so an
+            #omitted -AppDescription/-Notes/-AppUrl doesn't clear an existing value
             $Body = [ordered]@{
-                'appName'        = $AppName
-                'appkey'         = $AppKey
-                'appDescription' = $AppDescription
-                'notes'          = $Notes
-                'appUrl'         = $AppUrl
+                'appkey'  = $AppKey
+                'appName' = $AppName
             }
+
+            if ($PSBoundParameters.ContainsKey('AppDescription')) { $Body['appDescription'] = $AppDescription }
+            if ($PSBoundParameters.ContainsKey('Notes')) { $Body['notes'] = $Notes }
+            if ($PSBoundParameters.ContainsKey('AppUrl')) { $Body['appUrl'] = $AppUrl }
 
             $Request = @{
 

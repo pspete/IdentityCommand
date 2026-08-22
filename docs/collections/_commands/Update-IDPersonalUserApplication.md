@@ -13,13 +13,13 @@ Update a personal user application
 ## SYNTAX
 
 ```
-Update-IDPersonalUserApplication [-AppKey] <String> [[-AppName] <String>] [[-AppDescription] <String>]
+Update-IDPersonalUserApplication [-AppKey] <String> [-AppName] <String> [[-AppDescription] <String>]
  [[-Notes] <String>] [[-AppUrl] <String>] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Updates the details of a personal user application.
+Updates the details of a personal user application. Confirmed live. Only the fields you supply are sent - an omitted `-AppDescription`/`-Notes`/`-AppUrl` leaves the existing value untouched.
 
 ## EXAMPLES
 
@@ -63,14 +63,14 @@ Accept wildcard characters: False
 ```
 
 ### -AppName
-The application name.
+The application name. Required - confirmed live that the server rejects a blank name with "Application name cannot be blank."
 
 ```yaml
 Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: False
+Required: True
 Position: 1
 Default value: None
 Accept pipeline input: False
