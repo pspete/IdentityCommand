@@ -1,5 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: The 'All' set (no -ID) is confirmed live. The 'ID' set is still unconfirmed.
 function Get-IDTenantSecurityQuestion {
     [CmdletBinding(DefaultParameterSetName = 'All')]
     param(

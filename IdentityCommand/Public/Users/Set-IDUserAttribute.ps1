@@ -1,9 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
-# TODO: The recorded sample body only showed CmaRedirectedUserUuid, ID, MobileNumber, and OrgPath -
-# the full set of AD attributes this endpoint accepts is unconfirmed and may not be limited to
-# these fields.
 function Set-IDUserAttribute {
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -28,9 +23,9 @@ function Set-IDUserAttribute {
         [String]$CmaRedirectedUserUuid
     )
 
-    BEGIN {}#begin
+    begin {}#begin
 
-    PROCESS {
+    process {
 
         if ($PSCmdlet.ShouldProcess($ID, 'Set User Attributes')) {
 
@@ -49,6 +44,6 @@ function Set-IDUserAttribute {
 
     }#process
 
-    END {}#end
+    end {}#end
 
 }
