@@ -61,7 +61,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 [pscustomobject]@{'property' = 'value' }
             }
 
-            $response = Add-IDRolePermission -Name 'SomeRole' -Path '/Path/To/Permission'
+            $response = Add-IDRolePermission -ID 'SomeRole' -Path '/Path/To/Permission'
 
         }
 
@@ -114,11 +114,11 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
-        Context 'ID alias' {
+        Context 'Uuid alias' {
 
-            It 'accepts -ID as an alias for -Name' {
+            It 'accepts -Uuid as an alias for -ID' {
 
-                Add-IDRolePermission -ID 'SomeOtherRole' -Path '/Path/To/Permission' | Out-Null
+                Add-IDRolePermission -Uuid 'SomeOtherRole' -Path '/Path/To/Permission' | Out-Null
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
                     $URI -match 'AssignSuperRights' -and

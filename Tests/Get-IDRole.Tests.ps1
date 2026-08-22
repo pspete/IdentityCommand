@@ -99,7 +99,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 Mock Invoke-IDRestMethod -MockWith {
                     [pscustomobject]@{ 'property' = 'value' }
                 }
-                $response = Get-IDRole -Name 'SomeRole'
+                $response = Get-IDRole -ID 'SomeRole'
             }
 
             It 'sends request' {
@@ -154,9 +154,9 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
-            It 'accepts -ID as an alias for -Name' {
+            It 'accepts -Uuid as an alias for -ID' {
 
-                Get-IDRole -ID 'SomeOtherRole' | Out-Null
+                Get-IDRole -Uuid 'SomeOtherRole' | Out-Null
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 

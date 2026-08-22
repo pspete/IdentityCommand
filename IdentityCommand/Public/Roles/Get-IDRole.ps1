@@ -1,28 +1,29 @@
-# Confirmed live 2026-08-21: despite the parameter name, the 'API' set's -Name (Roles/GetRole)
-# requires the role's actual ID/UUID/_RowKey, not its display name - it only ever worked for
-# well-known roles like 'sysadmin' by coincidence (their RowKey happens to equal their display
-# name). Added -ID as an explicit alias for discoverability (it was already aliased -Uuid).
+# Confirmed live 2026-08-21: the 'API' set requires the role's actual ID/UUID/_RowKey, not its
+# display name - it only ever worked for well-known roles like 'sysadmin' by coincidence (their
+# RowKey happens to equal their display name). Renamed the parameter from -Name to -ID to reflect
+# this (it was previously named -Name with -ID only as an alias, which misled callers into passing
+# a display name that doesn't work).
 function Get-IDRole {
 
     [CmdletBinding(DefaultParameterSetName = 'Redrock')]
 	param
 	(
-       
-        [Parameter(Mandatory = $false, 
+
+        [Parameter(Mandatory = $false,
         ParameterSetName = 'Redrock')]
 		$Query = @{"Script" = "Select * from Role ORDER BY Name COLLATE NOCASE"},
 
         [Parameter(Mandatory = $true,
         ParameterSetName = 'API',
         ValueFromPipelinebyPropertyName = $true)]
-		[Alias('Uuid', 'ID')]
-        $Name
+		[Alias('Uuid')]
+        $ID
 
     )
 
     BEGIN {
 
-        if ($Name) {
+        if ($ID) {
 
             $API = $true
 
@@ -58,7 +59,7 @@ function Get-IDRole {
             #Constructed parameters for the rest call
             $RestCall = @{
 
-                "URI"         = "$($ISPSSSession.tenant_url)/Roles/GetRole?Name=$Name"
+                "URI"         = "$($ISPSSSession.tenant_url)/Roles/GetRole?Name=$ID"
                 "Headers"     = $($ISPSSSession.WebSession.Headers)
                 "Method"      = "Post"
                 "ContentType" = "application/json"

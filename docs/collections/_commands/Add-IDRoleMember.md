@@ -13,7 +13,7 @@ Add users, roles, or groups to a role
 ## SYNTAX
 
 ```
-Add-IDRoleMember [-Name] <Object> [[-Users] <Array>] [[-Roles] <Array>] [[-Groups] <Array>]
+Add-IDRoleMember [-ID] <Object> [[-Users] <Array>] [[-Roles] <Array>] [[-Groups] <Array>]
  [<CommonParameters>]
 ```
 
@@ -25,14 +25,14 @@ Supply one or more of -Users, -Roles, or -Groups with the identifiers of the pri
 
 ### Example 1
 ```
-PS C:\> Add-IDRoleMember -Name 'Role Admins' -Users someuser@somedomain.com
+PS C:\> Add-IDRoleMember -ID '881512ca-d441-4997-a55e-19ec5374f3b3' -Users someuser@somedomain.com
 ```
 
 Add a user as a member of the role
 
 ### Example 2
 ```
-PS C:\> Add-IDRoleMember -Name 'Role Admins' -Roles 'Helpdesk','App Owners' -Groups 'Contractors'
+PS C:\> Add-IDRoleMember -ID '881512ca-d441-4997-a55e-19ec5374f3b3' -Roles 'Helpdesk','App Owners' -Groups 'Contractors'
 ```
 
 Add roles and a group as members of the role
@@ -54,13 +54,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Name
-The name (or ID) of the role to add members to.
+### -ID
+The ID/UUID/`_RowKey` of the role to add members to - not its display name (confirmed live).
 
 ```yaml
 Type: Object
 Parameter Sets: (All)
-Aliases: Uuid, ID
+Aliases: Uuid
 
 Required: True
 Position: 0

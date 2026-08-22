@@ -1,5 +1,6 @@
 # Confirmed live 2026-08-21: requires the role's actual ID/UUID/_RowKey, not its display name -
-# added -ID as an explicit alias for discoverability (it was already aliased -Uuid).
+# renamed the parameter from -Name to -ID to reflect this (it was previously named -Name with -ID
+# only as an alias, which misled callers into passing a display name that doesn't work).
 function Set-IDRole {
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -8,8 +9,8 @@ function Set-IDRole {
 
         [Parameter(Mandatory = $true,
         ValueFromPipelinebyPropertyName = $true)]
-        [Alias('Uuid', 'ID')]
-        $Name,
+        [Alias('Uuid')]
+        $ID,
 
         [Parameter(Mandatory = $false)]
         [array]$AddUsers = @(),
@@ -35,7 +36,7 @@ function Set-IDRole {
 
     PROCESS {
 
-        if ($PSCmdlet.ShouldProcess($Name, 'Update Role')) {
+        if ($PSCmdlet.ShouldProcess($ID, 'Update Role')) {
 
             # contructed list of users, roles or groups to add or delete
             $UsersUpdate = @{
@@ -62,7 +63,7 @@ function Set-IDRole {
             #Constructed body for the rest call
             $body = [ordered]@{
 
-                "Name"        = $Name
+                "Name"        = $ID
                 "Users"       = $UsersUpdate
                 "Roles"       = $RolesUpdate
                 "Groups"      = $GroupsUpdate

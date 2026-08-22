@@ -15,10 +15,10 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Add-IDRoleMember</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, ID">
-          <maml:name>Name</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
+          <maml:name>ID</maml:name>
           <maml:description>
-            <maml:para>The name (or ID) of the role to add members to.</maml:para>
+            <maml:para>The ID/UUID/`_RowKey` of the role to add members to - not its display name (confirmed live).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -78,10 +78,10 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, ID">
-        <maml:name>Name</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
+        <maml:name>ID</maml:name>
         <maml:description>
-          <maml:para>The name (or ID) of the role to add members to.</maml:para>
+          <maml:para>The ID/UUID/`_RowKey` of the role to add members to - not its display name (confirmed live).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -143,14 +143,14 @@
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Add-IDRoleMember -Name 'Role Admins' -Users someuser@somedomain.com</dev:code>
+        <dev:code>PS C:\&gt; Add-IDRoleMember -ID '881512ca-d441-4997-a55e-19ec5374f3b3' -Users someuser@somedomain.com</dev:code>
         <dev:remarks>
           <maml:para>Add a user as a member of the role</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Add-IDRoleMember -Name 'Role Admins' -Roles 'Helpdesk','App Owners' -Groups 'Contractors'</dev:code>
+        <dev:code>PS C:\&gt; Add-IDRoleMember -ID '881512ca-d441-4997-a55e-19ec5374f3b3' -Roles 'Helpdesk','App Owners' -Groups 'Contractors'</dev:code>
         <dev:remarks>
           <maml:para>Add roles and a group as members of the role</maml:para>
         </dev:remarks>
@@ -173,10 +173,10 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Add-IDRolePermission</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, ID">
-          <maml:name>Name</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
+          <maml:name>ID</maml:name>
           <maml:description>
-            <maml:para>The name (or ID) of the role to assign the permission to.</maml:para>
+            <maml:para>The ID/UUID/`_RowKey` of the role to assign the permission to - not its display name (confirmed live).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -200,10 +200,10 @@
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, ID">
-        <maml:name>Name</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
+        <maml:name>ID</maml:name>
         <maml:description>
-          <maml:para>The name (or ID) of the role to assign the permission to.</maml:para>
+          <maml:para>The ID/UUID/`_RowKey` of the role to assign the permission to - not its display name (confirmed live).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -253,7 +253,7 @@
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Add-IDRolePermission -Name 'Role Admins' -Path '/Core/ManageUsers'</dev:code>
+        <dev:code>PS C:\&gt; Add-IDRolePermission -ID '881512ca-d441-4997-a55e-19ec5374f3b3' -Path '/Core/ManageUsers'</dev:code>
         <dev:remarks>
           <maml:para>Assign the specified administrative permission to the role</maml:para>
         </dev:remarks>
@@ -2692,15 +2692,15 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>By default, returns all roles in the tenant by running a Redrock query against the Role table. Specify -Query to run a custom Redrock query instead. Specify -Name to fetch a single role by name (or ID) via the role management API instead of Redrock.</maml:para>
+      <maml:para>By default, returns all roles in the tenant by running a Redrock query against the Role table. Specify -Query to run a custom Redrock query instead. Specify -ID to fetch a single role by its ID/UUID/`_RowKey` (not its display name) via the role management API instead of Redrock.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-IDRole</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Uuid, ID">
-          <maml:name>Name</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Uuid">
+          <maml:name>ID</maml:name>
           <maml:description>
-            <maml:para>The name (or ID) of a specific role to fetch. When specified, the role is fetched via the role management API instead of the default Redrock query.</maml:para>
+            <maml:para>The ID/UUID/`_RowKey` of a specific role to fetch - not its display name (confirmed live; a display name only worked by coincidence for well-known roles whose RowKey happens to equal their name). When specified, the role is fetched via the role management API instead of the default Redrock query.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -2727,10 +2727,10 @@
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Uuid, ID">
-        <maml:name>Name</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="Uuid">
+        <maml:name>ID</maml:name>
         <maml:description>
-          <maml:para>The name (or ID) of a specific role to fetch. When specified, the role is fetched via the role management API instead of the default Redrock query.</maml:para>
+          <maml:para>The ID/UUID/`_RowKey` of a specific role to fetch - not its display name (confirmed live; a display name only worked by coincidence for well-known roles whose RowKey happens to equal their name). When specified, the role is fetched via the role management API instead of the default Redrock query.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -2787,9 +2787,9 @@
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-IDRole -Name 'Role Admins'</dev:code>
+        <dev:code>PS C:\&gt; Get-IDRole -ID '881512ca-d441-4997-a55e-19ec5374f3b3'</dev:code>
         <dev:remarks>
-          <maml:para>Return the role with the matching name</maml:para>
+          <maml:para>Return the role with the matching ID</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
@@ -2896,10 +2896,10 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-IDRoleMember</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, ID">
-          <maml:name>Name</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
+          <maml:name>ID</maml:name>
           <maml:description>
-            <maml:para>The name (or ID) of the role to get members of.</maml:para>
+            <maml:para>The ID/UUID/`_RowKey` of the role to get members of - not its display name (confirmed live).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -2911,10 +2911,10 @@
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, ID">
-        <maml:name>Name</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
+        <maml:name>ID</maml:name>
         <maml:description>
-          <maml:para>The name (or ID) of the role to get members of.</maml:para>
+          <maml:para>The ID/UUID/`_RowKey` of the role to get members of - not its display name (confirmed live).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -2952,7 +2952,7 @@
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-IDRoleMember -Name 'Role Admins'</dev:code>
+        <dev:code>PS C:\&gt; Get-IDRoleMember -ID '881512ca-d441-4997-a55e-19ec5374f3b3'</dev:code>
         <dev:remarks>
           <maml:para>Return the members of the role</maml:para>
         </dev:remarks>
@@ -11650,10 +11650,10 @@ PS C:\&gt; New-IDUserSignup -PrimaryIdentifier 'someuser@example.com' -Password 
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Remove-IDRoleMember</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, ID">
-          <maml:name>Name</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
+          <maml:name>ID</maml:name>
           <maml:description>
-            <maml:para>The name (or ID) of the role to remove members from.</maml:para>
+            <maml:para>The ID/UUID/`_RowKey` of the role to remove members from - not its display name (confirmed live).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -11735,10 +11735,10 @@ PS C:\&gt; New-IDUserSignup -PrimaryIdentifier 'someuser@example.com' -Password 
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, ID">
-        <maml:name>Name</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
+        <maml:name>ID</maml:name>
         <maml:description>
-          <maml:para>The name (or ID) of the role to remove members from.</maml:para>
+          <maml:para>The ID/UUID/`_RowKey` of the role to remove members from - not its display name (confirmed live).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -11824,14 +11824,14 @@ PS C:\&gt; New-IDUserSignup -PrimaryIdentifier 'someuser@example.com' -Password 
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Remove-IDRoleMember -Name 'Role Admins' -Users someuser@somedomain.com</dev:code>
+        <dev:code>PS C:\&gt; Remove-IDRoleMember -ID '881512ca-d441-4997-a55e-19ec5374f3b3' -Users someuser@somedomain.com</dev:code>
         <dev:remarks>
           <maml:para>Remove a user from the role's membership</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Remove-IDRoleMember -Name 'Role Admins' -Roles 'Helpdesk' -Groups 'Contractors'</dev:code>
+        <dev:code>PS C:\&gt; Remove-IDRoleMember -ID '881512ca-d441-4997-a55e-19ec5374f3b3' -Roles 'Helpdesk' -Groups 'Contractors'</dev:code>
         <dev:remarks>
           <maml:para>Remove a role and a group from the role's membership</maml:para>
         </dev:remarks>
@@ -11854,10 +11854,10 @@ PS C:\&gt; New-IDUserSignup -PrimaryIdentifier 'someuser@example.com' -Password 
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Remove-IDRolePermission</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, ID">
-          <maml:name>Name</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
+          <maml:name>ID</maml:name>
           <maml:description>
-            <maml:para>The name (or ID) of the role to remove the permission from.</maml:para>
+            <maml:para>The ID/UUID/`_RowKey` of the role to remove the permission from - not its display name (confirmed live).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -11903,10 +11903,10 @@ PS C:\&gt; New-IDUserSignup -PrimaryIdentifier 'someuser@example.com' -Password 
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, ID">
-        <maml:name>Name</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
+        <maml:name>ID</maml:name>
         <maml:description>
-          <maml:para>The name (or ID) of the role to remove the permission from.</maml:para>
+          <maml:para>The ID/UUID/`_RowKey` of the role to remove the permission from - not its display name (confirmed live).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -11980,7 +11980,7 @@ PS C:\&gt; New-IDUserSignup -PrimaryIdentifier 'someuser@example.com' -Password 
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Remove-IDRolePermission -Name 'Role Admins' -Path '/Core/ManageUsers'</dev:code>
+        <dev:code>PS C:\&gt; Remove-IDRolePermission -ID '881512ca-d441-4997-a55e-19ec5374f3b3' -Path '/Core/ManageUsers'</dev:code>
         <dev:remarks>
           <maml:para>Remove the specified administrative permission from the role</maml:para>
         </dev:remarks>
@@ -16305,10 +16305,10 @@ PS C:\&gt; Set-IDApplicationUserCredential -AppKey 'someappkey' -Username 'someu
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Set-IDDynamicRoleScript</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, ID">
-          <maml:name>Name</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
+          <maml:name>ID</maml:name>
           <maml:description>
-            <maml:para>The role's ID/UUID/`_RowKey` (not its display name) of the dynamic role to set the membership script for. The role must have been created with `-RoleType Script` (see `New-IDRole`).</maml:para>
+            <maml:para>The dynamic role's ID/UUID/`_RowKey` (not its display name) to set the membership script for. The role must have been created with `-RoleType Script` (see `New-IDRole`).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -16354,10 +16354,10 @@ PS C:\&gt; Set-IDApplicationUserCredential -AppKey 'someappkey' -Username 'someu
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, ID">
-        <maml:name>Name</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
+        <maml:name>ID</maml:name>
         <maml:description>
-          <maml:para>The role's ID/UUID/`_RowKey` (not its display name) of the dynamic role to set the membership script for. The role must have been created with `-RoleType Script` (see `New-IDRole`).</maml:para>
+          <maml:para>The dynamic role's ID/UUID/`_RowKey` (not its display name) to set the membership script for. The role must have been created with `-RoleType Script` (see `New-IDRole`).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -17149,10 +17149,10 @@ PS C:\&gt; Set-IDOrganizationPermission -OrgId 'a1b2c3d4-0000-0000-0000-00000000
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Set-IDRole</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, ID">
-          <maml:name>Name</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
+          <maml:name>ID</maml:name>
           <maml:description>
-            <maml:para>The name (or ID) of the role to update.</maml:para>
+            <maml:para>The ID/UUID/`_RowKey` of the role to update - not its display name (confirmed live).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -17294,10 +17294,10 @@ PS C:\&gt; Set-IDOrganizationPermission -OrgId 'a1b2c3d4-0000-0000-0000-00000000
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, ID">
-        <maml:name>Name</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
+        <maml:name>ID</maml:name>
         <maml:description>
-          <maml:para>The name (or ID) of the role to update.</maml:para>
+          <maml:para>The ID/UUID/`_RowKey` of the role to update - not its display name (confirmed live).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -17395,14 +17395,14 @@ PS C:\&gt; Set-IDOrganizationPermission -OrgId 'a1b2c3d4-0000-0000-0000-00000000
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Set-IDRole -Name 'Role Admins' -AddUsers someuser@somedomain.com -RemoveUsers otheruser@somedomain.com</dev:code>
+        <dev:code>PS C:\&gt; Set-IDRole -ID '881512ca-d441-4997-a55e-19ec5374f3b3' -AddUsers someuser@somedomain.com -RemoveUsers otheruser@somedomain.com</dev:code>
         <dev:remarks>
           <maml:para>Add one user to the role's membership and remove another</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Set-IDRole -Name 'Role Admins' -AddRoles 'Helpdesk' -AddGroups 'Contractors'</dev:code>
+        <dev:code>PS C:\&gt; Set-IDRole -ID '881512ca-d441-4997-a55e-19ec5374f3b3' -AddRoles 'Helpdesk' -AddGroups 'Contractors'</dev:code>
         <dev:remarks>
           <maml:para>Add a role and a group to the role's membership</maml:para>
         </dev:remarks>

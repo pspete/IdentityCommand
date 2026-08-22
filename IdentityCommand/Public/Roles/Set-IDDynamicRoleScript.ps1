@@ -1,6 +1,7 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: Requires the role's actual ID/UUID/_RowKey, not its display name - added -ID as an
-# explicit alias for discoverability (it was already aliased -Uuid). Also requires a role of
+# TODO: Requires the role's actual ID/UUID/_RowKey, not its display name - renamed the parameter
+# from -Name to -ID to reflect this (it was previously named -Name with -ID only as an alias,
+# which misled callers into passing a display name that doesn't work). Also requires a role of
 # -RoleType Script (New-IDRole) - a PrincipalList role does not support a dynamic membership
 # script.
 # Two more real bugs found and fixed live:
@@ -23,8 +24,8 @@ function Set-IDDynamicRoleScript {
 
         [Parameter(Mandatory = $true,
         ValueFromPipelinebyPropertyName = $true)]
-        [Alias('Uuid', 'ID')]
-        $Name,
+        [Alias('Uuid')]
+        $ID,
 
         [Parameter(Mandatory = $true)]
         [string]$Script
@@ -35,7 +36,7 @@ function Set-IDDynamicRoleScript {
 
     PROCESS {
 
-        if ($PSCmdlet.ShouldProcess($Name, 'Set Dynamic Role Script')) {
+        if ($PSCmdlet.ShouldProcess($ID, 'Set Dynamic Role Script')) {
 
             #Constructed body for the rest call - previously referenced an undeclared $User variable
             #(always empty, a copy-paste artifact from the similarly-shaped Test-IDDynamicRoleScript,
@@ -45,7 +46,7 @@ function Set-IDDynamicRoleScript {
             #header comment). Built via ConvertTo-Json (not raw string interpolation) so script
             #content containing quotes/newlines is escaped correctly.
             $body = ([ordered]@{
-                'ID'     = $Name
+                'ID'     = $ID
                 'Script' = $Script
             } | ConvertTo-Json)
 

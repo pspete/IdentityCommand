@@ -43,7 +43,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 [pscustomobject]@{'property' = 'value' }
             }
 
-            $response = Set-IDDynamicRoleScript -Name 'SomeRole' -Script 'Select 1'
+            $response = Set-IDDynamicRoleScript -ID 'SomeRole' -Script 'Select 1'
 
         }
 
@@ -82,7 +82,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             It 'correctly escapes script content containing single quotes' {
 
-                Set-IDDynamicRoleScript -Name 'SomeRole' -Script "User.Properties.Properties['distinguishedName']" | Out-Null
+                Set-IDDynamicRoleScript -ID 'SomeRole' -Script "User.Properties.Properties['distinguishedName']" | Out-Null
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
                     $Parsed = $Body | ConvertFrom-Json
@@ -103,11 +103,11 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
-        Context 'ID alias' {
+        Context 'Uuid alias' {
 
-            It 'accepts -ID as an alias for -Name' {
+            It 'accepts -Uuid as an alias for -ID' {
 
-                Set-IDDynamicRoleScript -ID 'SomeOtherRole' -Script 'Select 1' | Out-Null
+                Set-IDDynamicRoleScript -Uuid 'SomeOtherRole' -Script 'Select 1' | Out-Null
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
                     $($Body | ConvertFrom-Json | Select-Object -ExpandProperty ID) -eq 'SomeOtherRole'

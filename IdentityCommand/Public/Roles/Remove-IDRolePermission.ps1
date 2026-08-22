@@ -1,10 +1,9 @@
-# Very likely requires the role's actual ID/UUID/_RowKey, not its display name, matching the
-# confirmed-live behavior of the sibling Add-IDRolePermission (same "Role" body key, same
-# Roles/*SuperRights endpoint family). An earlier live test that appeared to succeed with the
-# display name is not trusted as real confirmation - removing a permission that was never actually
-# granted (because the matching Add-IDRolePermission call had itself failed) can plausibly return
-# success as a no-op regardless of whether the role reference was valid. Added -ID as an explicit
-# alias for discoverability (it was already aliased -Uuid); needs live re-verification with -ID.
+# Confirmed live 2026-08-22: requires the role's actual ID/UUID/_RowKey, not its display name,
+# matching the confirmed-live behavior of the sibling Add-IDRolePermission (same "Role" body key,
+# same Roles/*SuperRights endpoint family). Verified end-to-end against a permission genuinely
+# granted first via Add-IDRolePermission -ID, then removed via this command. Renamed the parameter
+# from -Name to -ID to reflect this (it was previously named -Name with -ID only as an alias,
+# which misled callers into passing a display name that doesn't work).
 function Remove-IDRolePermission {
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -13,8 +12,8 @@ function Remove-IDRolePermission {
 
         [Parameter(Mandatory = $true,
         ValueFromPipelinebyPropertyName = $true)]
-        [Alias('Uuid', 'ID')]
-        $Name,
+        [Alias('Uuid')]
+        $ID,
 
         [Parameter(Mandatory = $true)]
         [string]$Path
@@ -36,13 +35,13 @@ function Remove-IDRolePermission {
 
     PROCESS {
 
-        if ($PSCmdlet.ShouldProcess($Name, "Remove Role Permission '$Path'")) {
+        if ($PSCmdlet.ShouldProcess($ID, "Remove Role Permission '$Path'")) {
 
             #Constructed body for the rest call
             $body = @(
                 @{
 
-                "Role"        = $Name
+                "Role"        = $ID
                 "Path"        = $Path
 
                 }

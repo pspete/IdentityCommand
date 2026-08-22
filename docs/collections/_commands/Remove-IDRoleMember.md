@@ -13,7 +13,7 @@ Remove users, roles, or groups from a role
 ## SYNTAX
 
 ```
-Remove-IDRoleMember [-Name] <Object> [[-Users] <Array>] [[-Roles] <Array>] [[-Groups] <Array>] [-WhatIf]
+Remove-IDRoleMember [-ID] <Object> [[-Users] <Array>] [[-Roles] <Array>] [[-Groups] <Array>] [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```
 
@@ -25,14 +25,14 @@ Supply one or more of -Users, -Roles, or -Groups with the identifiers of the pri
 
 ### Example 1
 ```
-PS C:\> Remove-IDRoleMember -Name 'Role Admins' -Users someuser@somedomain.com
+PS C:\> Remove-IDRoleMember -ID '881512ca-d441-4997-a55e-19ec5374f3b3' -Users someuser@somedomain.com
 ```
 
 Remove a user from the role's membership
 
 ### Example 2
 ```
-PS C:\> Remove-IDRoleMember -Name 'Role Admins' -Roles 'Helpdesk' -Groups 'Contractors'
+PS C:\> Remove-IDRoleMember -ID '881512ca-d441-4997-a55e-19ec5374f3b3' -Roles 'Helpdesk' -Groups 'Contractors'
 ```
 
 Remove a role and a group from the role's membership
@@ -54,13 +54,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Name
-The name (or ID) of the role to remove members from.
+### -ID
+The ID/UUID/`_RowKey` of the role to remove members from - not its display name (confirmed live).
 
 ```yaml
 Type: Object
 Parameter Sets: (All)
-Aliases: Uuid, ID
+Aliases: Uuid
 
 Required: True
 Position: 0

@@ -19,13 +19,13 @@ Get-IDRole [-Query <Object>] [<CommonParameters>]
 
 ### API
 ```
-Get-IDRole -Name <Object> [<CommonParameters>]
+Get-IDRole -ID <Object> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 By default, returns all roles in the tenant by running a Redrock query against the Role table.
 Specify -Query to run a custom Redrock query instead.
-Specify -Name to fetch a single role by name (or ID) via the role management API instead of Redrock.
+Specify -ID to fetch a single role by its ID/UUID/`_RowKey` (not its display name) via the role management API instead of Redrock.
 
 ## EXAMPLES
 
@@ -38,10 +38,10 @@ Return all roles, ordered by name
 
 ### Example 2
 ```
-PS C:\> Get-IDRole -Name 'Role Admins'
+PS C:\> Get-IDRole -ID '881512ca-d441-4997-a55e-19ec5374f3b3'
 ```
 
-Return the role with the matching name
+Return the role with the matching ID
 
 ### Example 3
 ```
@@ -52,14 +52,14 @@ Return roles matching a custom Redrock query
 
 ## PARAMETERS
 
-### -Name
-The name (or ID) of a specific role to fetch.
+### -ID
+The ID/UUID/`_RowKey` of a specific role to fetch - not its display name (confirmed live; a display name only worked by coincidence for well-known roles whose RowKey happens to equal their name).
 When specified, the role is fetched via the role management API instead of the default Redrock query.
 
 ```yaml
 Type: Object
 Parameter Sets: API
-Aliases: Uuid, ID
+Aliases: Uuid
 
 Required: True
 Position: Named

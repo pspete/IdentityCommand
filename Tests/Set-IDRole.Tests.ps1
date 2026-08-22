@@ -43,7 +43,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 [pscustomobject]@{'property' = 'value' }
             }
 
-            $response = Set-IDRole -Name 'SomeRole' -AddUsers @('someuser')
+            $response = Set-IDRole -ID 'SomeRole' -AddUsers @('someuser')
 
         }
 
@@ -92,11 +92,11 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
-        Context 'ID alias' {
+        Context 'Uuid alias' {
 
-            It 'accepts -ID as an alias for -Name' {
+            It 'accepts -Uuid as an alias for -ID' {
 
-                Set-IDRole -ID 'SomeOtherRole' -AddUsers @('someuser') | Out-Null
+                Set-IDRole -Uuid 'SomeOtherRole' -AddUsers @('someuser') | Out-Null
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
                     $($Body | ConvertFrom-Json | Select-Object -ExpandProperty Name) -eq 'SomeOtherRole'

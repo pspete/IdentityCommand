@@ -13,7 +13,7 @@ Update role membership
 ## SYNTAX
 
 ```
-Set-IDRole [-Name] <Object> [[-AddUsers] <Array>] [[-RemoveUsers] <Array>] [[-AddRoles] <Array>]
+Set-IDRole [-ID] <Object> [[-AddUsers] <Array>] [[-RemoveUsers] <Array>] [[-AddRoles] <Array>]
  [[-RemoveRoles] <Array>] [[-AddGroups] <Array>] [[-RemoveGroups] <Array>] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
@@ -26,14 +26,14 @@ Use the \`Add \` parameters to add members and the \`Remove \` parameters to rem
 
 ### Example 1
 ```
-PS C:\> Set-IDRole -Name 'Role Admins' -AddUsers someuser@somedomain.com -RemoveUsers otheruser@somedomain.com
+PS C:\> Set-IDRole -ID '881512ca-d441-4997-a55e-19ec5374f3b3' -AddUsers someuser@somedomain.com -RemoveUsers otheruser@somedomain.com
 ```
 
 Add one user to the role's membership and remove another
 
 ### Example 2
 ```
-PS C:\> Set-IDRole -Name 'Role Admins' -AddRoles 'Helpdesk' -AddGroups 'Contractors'
+PS C:\> Set-IDRole -ID '881512ca-d441-4997-a55e-19ec5374f3b3' -AddRoles 'Helpdesk' -AddGroups 'Contractors'
 ```
 
 Add a role and a group to the role's membership
@@ -85,13 +85,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Name
-The name (or ID) of the role to update.
+### -ID
+The ID/UUID/`_RowKey` of the role to update - not its display name (confirmed live).
 
 ```yaml
 Type: Object
 Parameter Sets: (All)
-Aliases: Uuid, ID
+Aliases: Uuid
 
 Required: True
 Position: 0

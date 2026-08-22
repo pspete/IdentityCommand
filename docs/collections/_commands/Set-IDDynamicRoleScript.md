@@ -13,7 +13,7 @@ Set the membership script for a dynamic role
 ## SYNTAX
 
 ```
-Set-IDDynamicRoleScript [-Name] <Object> [-Script] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-IDDynamicRoleScript [-ID] <Object> [-Script] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -31,13 +31,13 @@ Set the membership script for the dynamic role
 
 ## PARAMETERS
 
-### -Name
-The role's ID/UUID/`_RowKey` (not its display name) of the dynamic role to set the membership script for. The role must have been created with `-RoleType Script` (see `New-IDRole`).
+### -ID
+The dynamic role's ID/UUID/`_RowKey` (not its display name) to set the membership script for. The role must have been created with `-RoleType Script` (see `New-IDRole`).
 
 ```yaml
 Type: Object
 Parameter Sets: (All)
-Aliases: Uuid, ID
+Aliases: Uuid
 
 Required: True
 Position: 0

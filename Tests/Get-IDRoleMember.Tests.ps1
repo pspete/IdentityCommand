@@ -51,7 +51,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 }
             }
 
-            $response = Get-IDRoleMember -Name 'SomeRole'
+            $response = Get-IDRoleMember -ID 'SomeRole'
 
         }
 
@@ -103,9 +103,9 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
-            It 'accepts -ID as an alias for -Name' {
+            It 'accepts -Uuid as an alias for -ID' {
 
-                Get-IDRoleMember -ID 'SomeOtherRole' | Out-Null
+                Get-IDRoleMember -Uuid 'SomeOtherRole' | Out-Null
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
                     $($Body | ConvertFrom-Json | Select-Object -ExpandProperty Name) -eq 'SomeOtherRole'
