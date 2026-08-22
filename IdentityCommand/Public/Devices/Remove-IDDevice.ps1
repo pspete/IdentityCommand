@@ -1,7 +1,7 @@
 # .ExternalHelp IdentityCommand-help.xml
-# Verified against a live tenant. -DeviceID is the literal value supplied to New-IDDevice's -Udid
-# at creation, not a server-generated ID - look devices up via Invoke-IDSqlcmd against the
-# Device Redrock table if you don't already have the ID (no Get-IDDevice command exists).
+# TODO: -DeviceID is the literal value supplied to New-IDDevice's -Udid at creation, not a
+# server-generated ID - look devices up via Invoke-IDSqlcmd against the Device Redrock table if
+# you don't already have the ID (no Get-IDDevice command exists).
 function Remove-IDDevice {
     [CmdletBinding(SupportsShouldProcess)]
     param(

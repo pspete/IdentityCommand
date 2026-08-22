@@ -1,5 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# Verified against a live tenant.
 # TODO: -Add and -Remove expect arrays of hashtables shaped like the recorded sample, e.g.
 # @{ID='<userUUID>'; Type='User'}.
 function Set-IDOrganizationMembership {

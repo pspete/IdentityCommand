@@ -1,5 +1,5 @@
 # .ExternalHelp IdentityCommand-help.xml
-# Verified against a live tenant. -Script must be a real virtual script path starting with a
+# TODO: -Script must be a real virtual script path starting with a
 # forward slash (e.g. '/lib/get_superrights.js', matching the same script-path convention used
 # elsewhere in this API by Get-IDPermission/Get-IDDynamicRoleMember) - a plain label like
 # 'SomeTestScript' fails with "must start with a forward slash". -Args must be a

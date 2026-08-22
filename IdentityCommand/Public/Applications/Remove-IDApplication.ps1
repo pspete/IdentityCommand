@@ -1,8 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# Verified against a live tenant.
-# TODO: Request body field ('ID') and the response object structure are inferred from the SaaS
-# Manage API spec's operation summaries only - no full schema was available.
-# Verify against a live tenant and adjust body key names / output shape as needed.
 function Remove-IDApplication {
     [CmdletBinding(SupportsShouldProcess)]
     param(

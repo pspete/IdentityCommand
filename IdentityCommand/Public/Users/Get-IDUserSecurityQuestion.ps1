@@ -1,8 +1,8 @@
 # .ExternalHelp IdentityCommand-help.xml
-# Verified against a live tenant - returns the tenant-wide security question policy
-# (AnswerMinLength/MaxQuestions/MinAdminQuestions/MinUserQuestions/Questions), not a specific
-# user's answered questions. Despite its "User" naming, UserMgmt/GetSecurityQuestions takes no
-# per-user scoping - it reflects the policy applied to the current session's tenant.
+# TODO: Returns the tenant-wide security question policy (AnswerMinLength/MaxQuestions/
+# MinAdminQuestions/MinUserQuestions/Questions), not a specific user's answered questions. Despite
+# its "User" naming, UserMgmt/GetSecurityQuestions takes no per-user scoping - it reflects the
+# policy applied to the current session's tenant.
 function Get-IDUserSecurityQuestion {
     [CmdletBinding()]
     param()

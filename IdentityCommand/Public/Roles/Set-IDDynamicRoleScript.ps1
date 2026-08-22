@@ -1,7 +1,8 @@
-# Verified against a live tenant. Requires the role's actual ID/UUID/_RowKey, not its display
-# name - added -ID as an explicit alias for discoverability (it was already aliased -Uuid). Also
-# requires a role of -RoleType Script (New-IDRole) - a PrincipalList role does not support a
-# dynamic membership script.
+# .ExternalHelp IdentityCommand-help.xml
+# TODO: Requires the role's actual ID/UUID/_RowKey, not its display name - added -ID as an
+# explicit alias for discoverability (it was already aliased -Uuid). Also requires a role of
+# -RoleType Script (New-IDRole) - a PrincipalList role does not support a dynamic membership
+# script.
 # Two more real bugs found and fixed live:
 # 1. The body was hand-built via raw string interpolation with single-quoted values and no
 #    escaping ("{'Name': '$Name', 'Script': '$Script'}"), which silently corrupts the JSON for any

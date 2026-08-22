@@ -1,5 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# Verified against a live tenant.
 # TODO: -Operations expects an array of SCIM PATCH operation hashtables, e.g.
 # @(@{op='add'; path='members'; value=@(@{value='someuserid'})}). -Schemas defaults to the standard
 # SCIM PATCH schema URN if not supplied, matching the recorded sample's shape.

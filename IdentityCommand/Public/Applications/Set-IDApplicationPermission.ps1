@@ -1,6 +1,6 @@
 # .ExternalHelp IdentityCommand-help.xml
-# Verified against a live tenant. Confirmed 2026-08-21 via a browser DevTools capture of the admin
-# portal's application permissions UI. The request body needs RowKey/PVID alongside ID (all three
+# TODO: Confirmed 2026-08-21 via a browser DevTools capture of the admin portal's application
+# permissions UI. The request body needs RowKey/PVID alongside ID (all three
 # the same app key) and each Grants entry needs this full shape (not just Principal/PType/Rights
 # as originally guessed) - exposed below as individual parameters (one grant per call, matching
 # how the confirmed-working capture was itself a single-entry Grants array) rather than requiring

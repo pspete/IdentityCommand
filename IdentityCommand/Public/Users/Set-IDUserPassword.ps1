@@ -1,5 +1,5 @@
 # .ExternalHelp IdentityCommand-help.xml
-# Verified against a live tenant. CAUTION - this is SELF-SERVICE ONLY: it always changes the
+# TODO: CAUTION - this is SELF-SERVICE ONLY: it always changes the
 # password of whichever account the current session is authenticated as (UserMgmt/ChangeUserPassword
 # has no user-targeting field, and $ISPSSSession.User is only used for the -WhatIf/-Confirm message,
 # not sent in the request body). There is no way to change another user's password via this command

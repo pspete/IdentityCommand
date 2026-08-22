@@ -1,9 +1,8 @@
 # .ExternalHelp IdentityCommand-help.xml
-# Verified against a live tenant. Confirmed: this only ever adds a new question - there is no
-# update-by-ID path despite the 'Set' verb (matches the TODO's original suspicion, since the
-# request body has no 'Id' field). The response itself carries no ID either - use
-# Get-IDTenantSecurityQuestion afterward to find the new question's Uuid (needed by
-# Remove-IDTenantSecurityQuestion).
+# TODO: Confirmed live - this only ever adds a new question - there is no update-by-ID path
+# despite the 'Set' verb (matches the TODO's original suspicion, since the request body has no
+# 'Id' field). The response itself carries no ID either - use Get-IDTenantSecurityQuestion
+# afterward to find the new question's Uuid (needed by Remove-IDTenantSecurityQuestion).
 function Set-IDTenantSecurityQuestion {
     [CmdletBinding(SupportsShouldProcess)]
     param(

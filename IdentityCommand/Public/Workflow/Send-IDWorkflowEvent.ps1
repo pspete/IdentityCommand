@@ -1,10 +1,10 @@
 # .ExternalHelp IdentityCommand-help.xml
-# Verified against a live tenant - the request/response pipeline is confirmed correct: sending an
-# 'Approve' event to an already-completed job correctly returned "Workflow is in state Failed and
-# may not accept further input." (a legitimate business-state rejection, not a code error). Retest
-# against a genuinely pending/in-progress job to confirm the full success path.
-# TODO: -Args expects a hashtable shaped like the event's expected argument payload - the recorded
-# sample only shows an empty object ({}), so the real shape is unconfirmed.
+# TODO: The request/response pipeline is confirmed correct - sending an 'Approve' event to an
+# already-completed job correctly returned "Workflow is in state Failed and may not accept further
+# input." (a legitimate business-state rejection, not a code error). Retest against a genuinely
+# pending/in-progress job to confirm the full success path. -Args expects a hashtable shaped like
+# the event's expected argument payload - the recorded sample only shows an empty object ({}), so
+# the real shape is unconfirmed.
 function Send-IDWorkflowEvent {
     [CmdletBinding(SupportsShouldProcess)]
     param(

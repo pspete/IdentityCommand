@@ -1,10 +1,10 @@
 # .ExternalHelp IdentityCommand-help.xml
-# Verified against a live tenant - confirmed correct, returns "NotFound" for an already-terminated
-# job (legitimate, matches Send-IDWorkflowEvent's confirmed pipeline). Retest against a genuinely
-# pending/in-progress job to see the full success response shape.
-# TODO: The recorded Bruno sample for this endpoint (Task/CancelJob) is named "Start Job.bru" - the
-# filename appears to be mislabeled relative to the URL/body shape. The URL and body ("jobId",
-# "reason") are trusted here as the correct description of a job-cancel operation.
+# TODO: Confirmed correct - returns "NotFound" for an already-terminated job (legitimate, matches
+# Send-IDWorkflowEvent's confirmed pipeline). Retest against a genuinely pending/in-progress job to
+# see the full success response shape. The recorded Bruno sample for this endpoint (Task/CancelJob)
+# is named "Start Job.bru" - the filename appears to be mislabeled relative to the URL/body shape.
+# The URL and body ("jobId", "reason") are trusted here as the correct description of a job-cancel
+# operation.
 function Stop-IDWorkflowJob {
     [CmdletBinding(SupportsShouldProcess)]
     param(

@@ -1,5 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# Verified against a live tenant.
 function Test-IDUserLockedOutByPolicy {
     [CmdletBinding()]
     param(

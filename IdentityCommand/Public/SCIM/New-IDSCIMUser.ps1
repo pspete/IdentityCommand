@@ -1,6 +1,6 @@
 # .ExternalHelp IdentityCommand-help.xml
-# Verified against a live tenant. -Attributes' userName must be in name@suffix form.
-# TODO: -Attributes is the full SCIM User resource document as a hashtable, e.g.
+# TODO: -Attributes' userName must be in name@suffix form (confirmed live). -Attributes is the
+# full SCIM User resource document as a hashtable, e.g.
 # @{userName='someuser'; displayName='Some User'; active=$true; schemas=@('urn:ietf:params:scim:schemas:core:2.0:User')}.
 # The recorded sample also shows optional nested 'name', 'emails', 'phoneNumbers', an
 # 'urn:ietf:params:scim:schemas:extension:enterprise:2.0:User' extension, and a custom extension

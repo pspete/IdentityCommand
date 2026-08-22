@@ -1,6 +1,5 @@
 # .ExternalHelp IdentityCommand-help.xml
-# Verified against a live tenant. -ID added as an alias for -user, matching the rest of the
-# module's convention.
+# TODO: -ID added as an alias for -user, matching the rest of the module's convention.
 function Unlock-IDUser {
     [CmdletBinding()]
     param(

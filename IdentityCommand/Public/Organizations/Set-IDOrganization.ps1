@@ -1,5 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# Verified against a live tenant.
 function Set-IDOrganization {
     [CmdletBinding(SupportsShouldProcess)]
     param(

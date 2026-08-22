@@ -1,6 +1,6 @@
 # .ExternalHelp IdentityCommand-help.xml
-# Verified against a live tenant. Org/Create returns an object with ID/Name/Description/Path -
-# the new organization's key is under .ID, not .OrgId.
+# TODO: Org/Create returns an object with ID/Name/Description/Path - the new organization's key
+# is under .ID, not .OrgId.
 function New-IDOrganization {
     [CmdletBinding(SupportsShouldProcess)]
     param(

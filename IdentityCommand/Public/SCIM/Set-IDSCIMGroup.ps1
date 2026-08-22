@@ -1,5 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# Verified against a live tenant.
 # TODO: -Attributes is the full replacement SCIM Group resource document as a hashtable - see
 # New-IDSCIMGroup for the recorded field shape. This performs a full PUT replace, not a partial
 # update; use Update-IDSCIMGroup for a PATCH-style partial update.
