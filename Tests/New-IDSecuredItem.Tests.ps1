@@ -103,6 +103,25 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'SecureNote' {
+
+            BeforeEach {
+                New-IDSecuredItem -Name 'SomeNote' -SecuredItemType 'SecureNote' -Notes 'Some note content'
+            }
+
+            It 'sends request with expected body' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    $BodyObject = $Body | ConvertFrom-Json
+                    $BodyObject.SecuredItemType -eq 'SecureNote' -and $BodyObject.Notes -eq 'Some note content'
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+        }
+
     }
 
 }

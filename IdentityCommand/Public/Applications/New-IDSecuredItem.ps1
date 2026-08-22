@@ -1,7 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: Confirmed live for -SecuredItemType 'Password' only. Other types (e.g. 'SecureNote', seen
-# on existing items via Get-IDSecuredItem) likely need different fields (a note's content, rather
-# than -Username/-Password) - unconfirmed.
 function New-IDSecuredItem {
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -20,7 +17,10 @@ function New-IDSecuredItem {
         [String]$Username,
 
         [parameter(Mandatory = $false)]
-        [SecureString]$Password
+        [SecureString]$Password,
+
+        [parameter(Mandatory = $false)]
+        [String]$Notes
     )
 
     BEGIN {}#begin
