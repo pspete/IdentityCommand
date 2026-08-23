@@ -43,7 +43,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 [pscustomobject]@{'property' = 'value' }
             }
 
-            $response = Set-IDTenantConfiguration -Settings @{'CompanyName' = 'SomeCompany' }
+            $response = Set-IDTenantConfiguration -CompanyName 'SomeCompany' -CompanySupportLink 'https://example.com/support'
 
         }
 
@@ -59,22 +59,62 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/TenantConfig/SetCustomerConfig'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/TenantConfig/SetCustomerConfig' -and $Method -eq 'POST'
 
                 } -Times 1 -Exactly -Scope It
-
-            }
-
-            It 'uses expected method' {
-
-                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter { $Method -match 'POST' } -Times 1 -Exactly -Scope It
 
             }
 
             It 'sends request with expected body' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty CompanyName) -eq 'SomeCompany'
+                    $BodyObject = $Body | ConvertFrom-Json
+                    $BodyObject.CompanyName -eq 'SomeCompany' -and $BodyObject.CompanySupportLink -eq 'https://example.com/support'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'only sends fields actually supplied' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    ($Body | ConvertFrom-Json).PSObject.Properties.Name -notcontains 'ThemeColor'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+        }
+
+        Context 'Array and typed parameters' {
+
+            BeforeEach {
+                Set-IDTenantConfiguration -AllowCors @('https://example.com') -OtpCodeLength 6 -EnableQRCode $true
+            }
+
+            It 'sends arrays and typed values correctly' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $BodyObject = $Body | ConvertFrom-Json
+                    (@($BodyObject.AllowCors) -contains 'https://example.com') -and
+                    $BodyObject.OtpCodeLength -eq 6 -and
+                    $BodyObject.EnableQRCode -eq $true
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+        }
+
+        Context 'AdditionalSettings' {
+
+            BeforeEach {
+                Set-IDTenantConfiguration -AdditionalSettings @{ 'SomeUndocumentedField' = 'SomeValue' }
+            }
+
+            It 'merges in the additional settings as literal field names' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $BodyObject = $Body | ConvertFrom-Json
+                    ($BodyObject.PSObject.Properties.Name -contains 'SomeUndocumentedField') -and
+                    $BodyObject.SomeUndocumentedField -eq 'SomeValue'
                 } -Times 1 -Exactly -Scope It
 
             }
