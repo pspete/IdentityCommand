@@ -612,27 +612,15 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates a copy of an existing application under a new name.</maml:para>
+      <maml:para>Creates a copy of an existing application.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Copy-IDApplication</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, AppKey">
-          <maml:name>ID</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="ID, Uuid, AppKey">
+          <maml:name>Key</maml:name>
           <maml:description>
             <maml:para>The unique ID of the application to clone.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-          <maml:name>Name</maml:name>
-          <maml:description>
-            <maml:para>The name to give the cloned application.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -678,22 +666,10 @@
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, AppKey">
-        <maml:name>ID</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="ID, Uuid, AppKey">
+        <maml:name>Key</maml:name>
         <maml:description>
           <maml:para>The unique ID of the application to clone.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-        <maml:name>Name</maml:name>
-        <maml:description>
-          <maml:para>The name to give the cloned application.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -743,9 +719,9 @@
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Copy-IDApplication -ID 'a1b2c3d4-0000-0000-0000-000000000000' -Name 'My App (Copy)'</dev:code>
+        <dev:code>PS C:\&gt; Copy-IDApplication -Key 'a1b2c3d4-0000-0000-0000-000000000000'</dev:code>
         <dev:remarks>
-          <maml:para>Clones the specified application, naming the clone 'My App (Copy)'.</maml:para>
+          <maml:para>Clones the specified application.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

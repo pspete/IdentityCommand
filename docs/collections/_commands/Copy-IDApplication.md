@@ -13,20 +13,20 @@ Clone an existing application
 ## SYNTAX
 
 ```
-Copy-IDApplication [-ID] <String> [-Name] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
+Copy-IDApplication [-Key] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Creates a copy of an existing application under a new name.
+Creates a copy of an existing application.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Copy-IDApplication -ID 'a1b2c3d4-0000-0000-0000-000000000000' -Name 'My App (Copy)'
+PS C:\> Copy-IDApplication -Key 'a1b2c3d4-0000-0000-0000-000000000000'
 ```
 
-Clones the specified application, naming the clone 'My App (Copy)'.
+Clones the specified application.
 
 ## PARAMETERS
 
@@ -45,33 +45,18 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -ID
+### -Key
 The unique ID of the application to clone.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: Uuid, AppKey
+Aliases: ID, Uuid, AppKey
 
 Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -Name
-The name to give the cloned application.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 1
-Default value: None
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

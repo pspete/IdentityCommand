@@ -43,7 +43,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 [pscustomobject]@{'property' = 'value' }
             }
 
-            $response = Copy-IDApplication -ID 'someid' -Name 'SomeClone'
+            $response = Copy-IDApplication -Key 'someid'
 
         }
 
@@ -59,22 +59,24 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/SaasManage/CloneAnApplication'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/SaasManage/CloneAnApplicaton?key=someid' -and $Method -eq 'POST'
 
                 } -Times 1 -Exactly -Scope It
 
             }
 
-            It 'uses expected method' {
+        }
 
-                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter { $Method -match 'POST' } -Times 1 -Exactly -Scope It
+        Context 'ID alias' {
 
-            }
+            It 'accepts -ID as an alias for -Key' {
 
-            It 'sends request with expected body' {
+                Copy-IDApplication -ID 'anotherid' | Out-Null
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty Name) -eq 'SomeClone'
+
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/SaasManage/CloneAnApplicaton?key=anotherid'
+
                 } -Times 1 -Exactly -Scope It
 
             }
