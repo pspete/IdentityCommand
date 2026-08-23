@@ -43,6 +43,9 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 [pscustomobject]@{'property' = 'value' }
             }
 
+            #No existing grant by default - most tests aren't exercising the auto-fetched baseline
+            Mock Get-IDApplicationPermission -MockWith { @() }
+
             $response = Set-IDApplicationPermission -ID 'someid' -Principal 'someuser' -PType 'User' -View $true -Execute $true -PrincipalId 'someuserid'
 
         }
@@ -175,7 +178,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
-        Context 'No rights set to $true' {
+        Context 'No rights, nothing existing' {
 
             It 'sends Rights of None' {
 
@@ -184,6 +187,108 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
                     $Parsed = $Body | ConvertFrom-Json
                     $Parsed.Grants[0].Rights -eq 'None'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+        }
+
+        Context 'Revoking by explicit $false' {
+
+            It 'removes an existing right when its switch is explicitly $false' {
+
+                Mock Get-IDApplicationPermission -MockWith {
+                    @([pscustomobject]@{ Principal = 'revokeuserid'; Rights = @('View', 'Delete') })
+                }
+
+                Set-IDApplicationPermission -ID 'someid' -Principal 'someuser' -PType 'User' -PrincipalId 'revokeuserid' -Delete $false | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed.Grants[0].Rights -eq 'View'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+        }
+
+        Context 'Auto-fetched baseline' {
+
+            It 'calls Get-IDApplicationPermission with -ID when -Rights is not supplied' {
+
+                Set-IDApplicationPermission -ID 'fetchid' -Principal 'fetchuser' -PType 'User' -PrincipalId 'fetchuserid' -Delete $true | Out-Null
+
+                Assert-MockCalled Get-IDApplicationPermission -ParameterFilter { $ID -eq 'fetchid' } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'does not call Get-IDApplicationPermission when -Rights is supplied explicitly' {
+
+                Set-IDApplicationPermission -ID 'explicitid' -Principal 'explicituser' -PType 'User' -PrincipalId 'explicituserid' -Rights 'View' | Out-Null
+
+                #The outer BeforeEach's default call doesn't supply -Rights, so it triggers one
+                #fetch on its own - this call (which does supply -Rights) shouldn't add another
+                Assert-MockCalled Get-IDApplicationPermission -ParameterFilter { $ID -eq 'explicitid' } -Times 0 -Exactly -Scope It
+
+            }
+
+            It 'uses the matching principal''s existing Rights as the baseline' {
+
+                Mock Get-IDApplicationPermission -MockWith {
+                    @(
+                        [pscustomobject]@{ Principal = 'otheruserid'; Rights = @('Admin') }
+                        [pscustomobject]@{ Principal = 'matchuserid'; Rights = @('View', 'Execute') }
+                    )
+                }
+
+                Set-IDApplicationPermission -ID 'someid' -Principal 'matchuser' -PType 'User' -PrincipalId 'matchuserid' -Delete $true | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed.Grants[0].Rights -eq 'View,Delete,Execute'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+        }
+
+        Context '-Rights supplied explicitly' {
+
+            It 'includes rights from the baseline that were not explicitly overridden' {
+
+                Set-IDApplicationPermission -ID 'baselineonlyid' -Principal 'baselineonlyuser' -PType 'User' -PrincipalId 'baselineonlyuserid' -Rights 'View', 'Execute' | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed.Grants[0].PrincipalId -eq 'baselineonlyuserid' -and $Parsed.Grants[0].Rights -eq 'View,Execute'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'lets an explicit switch override the supplied baseline for that right only' {
+
+                Set-IDApplicationPermission -ID 'someid' -Principal 'someuser' -PType 'User' -PrincipalId 'someuserid' -Rights 'View', 'Execute' -Execute $false -Admin $true | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed.Grants[0].Rights -eq 'View,Admin'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'binds -Rights from a piped object' {
+
+                [pscustomobject]@{
+                    ID          = 'baselineid'
+                    Principal   = 'baselineuser'
+                    PType       = 'User'
+                    PrincipalId = 'baselineuserid'
+                    Rights      = @('View', 'Delete')
+                } | Set-IDApplicationPermission -Admin $true | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed.Grants[0].Rights -eq 'View,Admin,Delete'
                 } -Times 1 -Exactly -Scope It
 
             }

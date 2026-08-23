@@ -1,8 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: The 'Grant'/'GrantStr' bitmask on each entry hasn't been decoded to the named rights
-# Set-IDApplicationPermission uses (Grant/View/Admin/ViewDetail/Delete/Execute/Automatic) - a
-# Set-IDApplicationPermission call with a single known right, followed by a Get-IDApplicationPermission
-# against the same principal, would let that bit be identified.
 function Get-IDApplicationPermission {
     [CmdletBinding()]
     param(
@@ -47,14 +43,15 @@ function Get-IDApplicationPermission {
 
         $Result = Invoke-IDRestMethod @Request
 
-        if ($IncludeInherited) {
+        if (-not $IncludeInherited) {
 
-            $Result
+            $Result = $Result | Where-Object { -not $_.Inherited }
 
         }
-        else {
 
-            $Result | Where-Object { -not $_.Inherited }
+        foreach ($Entry in $Result) {
+
+            $Entry | Add-Member -NotePropertyName 'Rights' -NotePropertyValue @(ConvertFrom-IDApplicationPermissionGrant -Grant $Entry.Grant) -PassThru
 
         }
 

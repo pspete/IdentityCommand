@@ -46,6 +46,11 @@ function Set-IDApplicationPermission {
         [parameter(Mandatory = $false, ValueFromPipelinebyPropertyName = $true)]
         [Bool]$Automatic,
 
+        #Baseline right set. Defaults to the principal's current grant, fetched via
+        #Get-IDApplicationPermission - pass this explicitly to skip that lookup
+        [parameter(Mandatory = $false, ValueFromPipelinebyPropertyName = $true)]
+        [String[]]$Rights,
+
         [parameter(Mandatory = $false)]
         [String]$DirectoryServiceUuid = '',
 
@@ -66,7 +71,28 @@ function Set-IDApplicationPermission {
 
     PROCESS {
 
-        $RightNames = 'Grant', 'View', 'Admin', 'ViewDetail', 'Delete', 'Execute', 'Automatic' | Where-Object { Get-Variable -Name $_ -ValueOnly }
+        #Baseline defaults to the principal's current grant on this application unless -Rights was
+        #supplied explicitly - matched by PrincipalId, since Principal (the display name) isn't
+        #guaranteed unique
+        $Baseline = if ($PSBoundParameters.ContainsKey('Rights')) {
+
+            $Rights
+
+        }
+        else {
+
+            (Get-IDApplicationPermission -ID $ID | Where-Object { $_.Principal -eq $PrincipalId }).Rights
+
+        }
+
+        #Each right defaults to its presence in the baseline unless explicitly overridden by its
+        #own switch, so a single right can be changed without resupplying the whole set
+        $RightNames = foreach ($Name in 'Grant', 'View', 'Admin', 'ViewDetail', 'Delete', 'Execute', 'Automatic') {
+
+            $Included = if ($PSBoundParameters.ContainsKey($Name)) { Get-Variable -Name $Name -ValueOnly } else { $Baseline -contains $Name }
+            if ($Included) { $Name }
+
+        }
         $RightsString = if ($RightNames) { $RightNames -join ',' } else { 'None' }
         $Action = if ($RightNames) { 'Set' } else { 'Revoke' }
 

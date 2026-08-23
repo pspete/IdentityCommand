@@ -1424,7 +1424,7 @@
     <maml:description>
       <maml:para>Returns the access control entries (ACEs) for an application - each principal's direct permission grant, as set by `Set-IDApplicationPermission`.</maml:para>
       <maml:para>By default only direct, non-inherited entries are returned. `-IncludeInherited` also returns role-based/system administration grants inherited from elsewhere in the tenant, which aren't scoped to this application and can't be changed via `Set-IDApplicationPermission`.</maml:para>
-      <maml:para>Each entry's `Grant`/`GrantStr` properties are the raw permission bitmask as returned by the API - they haven't yet been decoded to the named rights `Set-IDApplicationPermission` uses.</maml:para>
+      <maml:para>Each entry's raw `Grant` bitmask is decoded into a `Rights` property listing the same right names `Set-IDApplicationPermission` uses (`Grant`, `View`, `Admin`, `ViewDetail`, `Delete`, `Execute`, `Automatic`) - pipe an entry straight into `Set-IDApplicationPermission` and its `Rights` output is picked up as that command's `-Rights` baseline.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -15883,8 +15883,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Sets a user or role's rights on an application to exactly the rights set to `$true`. This replaces the existing permission grant for that principal on the application - it isn't incremental.</maml:para>
-      <maml:para>Every right defaults to `$false` if not specified, so passing none of them revokes the principal's access entirely (sends `Rights` of `None`). Since each right is a named boolean property rather than a switch, a whole permission set can be piped in from an object with matching property names - e.g. an imported CSV row.</maml:para>
+      <maml:para>Sets a user or role's rights on an application to exactly the rights set to `$true`. Any right not explicitly passed falls back to the principal's current grant, fetched automatically via `Get-IDApplicationPermission` (matched by `-PrincipalId`) - so changing one right doesn't require resupplying the rest. `-Rights` skips that lookup and supplies the baseline directly. To revoke a right, pass `$false` for it explicitly.</maml:para>
       <maml:para>`-SystemName`/`-ExternalUuid` are only sent for a `User` `-PType`, defaulting to `-Principal`/`-PrincipalId` respectively when not explicitly supplied - a `Role` grant doesn't carry these fields at all. `-Type` defaults to `-PType` when not explicitly supplied.</maml:para>
     </maml:description>
     <command:syntax>
@@ -15948,7 +15947,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
             <maml:name>Boolean</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
+          <dev:defaultValue>Value's presence in the baseline (auto-fetched or -Rights), or False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>View</maml:name>
@@ -15960,7 +15959,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
             <maml:name>Boolean</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
+          <dev:defaultValue>Value's presence in the baseline (auto-fetched or -Rights), or False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Admin</maml:name>
@@ -15972,7 +15971,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
             <maml:name>Boolean</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
+          <dev:defaultValue>Value's presence in the baseline (auto-fetched or -Rights), or False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>ViewDetail</maml:name>
@@ -15984,7 +15983,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
             <maml:name>Boolean</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
+          <dev:defaultValue>Value's presence in the baseline (auto-fetched or -Rights), or False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Delete</maml:name>
@@ -15996,7 +15995,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
             <maml:name>Boolean</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
+          <dev:defaultValue>Value's presence in the baseline (auto-fetched or -Rights), or False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Execute</maml:name>
@@ -16008,7 +16007,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
             <maml:name>Boolean</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
+          <dev:defaultValue>Value's presence in the baseline (auto-fetched or -Rights), or False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Automatic</maml:name>
@@ -16020,7 +16019,19 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
             <maml:name>Boolean</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
+          <dev:defaultValue>Value's presence in the baseline (auto-fetched or -Rights), or False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>Rights</maml:name>
+          <maml:description>
+            <maml:para>An explicit baseline right set, skipping the automatic `Get-IDApplicationPermission` lookup. Any right not explicitly passed as one of the switches above falls back to whether it's present here instead of the principal's live grant - useful when you already know the baseline, or the principal has never been granted anything yet.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>The principal's current grant on this application, from Get-IDApplicationPermission</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>DirectoryServiceUuid</maml:name>
@@ -16153,7 +16164,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
           <maml:name>Boolean</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
+        <dev:defaultValue>Value's presence in the baseline (auto-fetched or -Rights), or False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>View</maml:name>
@@ -16165,7 +16176,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
           <maml:name>Boolean</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
+        <dev:defaultValue>Value's presence in the baseline (auto-fetched or -Rights), or False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>Admin</maml:name>
@@ -16177,7 +16188,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
           <maml:name>Boolean</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
+        <dev:defaultValue>Value's presence in the baseline (auto-fetched or -Rights), or False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>ViewDetail</maml:name>
@@ -16189,7 +16200,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
           <maml:name>Boolean</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
+        <dev:defaultValue>Value's presence in the baseline (auto-fetched or -Rights), or False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>Delete</maml:name>
@@ -16201,7 +16212,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
           <maml:name>Boolean</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
+        <dev:defaultValue>Value's presence in the baseline (auto-fetched or -Rights), or False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>Execute</maml:name>
@@ -16213,7 +16224,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
           <maml:name>Boolean</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
+        <dev:defaultValue>Value's presence in the baseline (auto-fetched or -Rights), or False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>Automatic</maml:name>
@@ -16225,7 +16236,19 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
           <maml:name>Boolean</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
+        <dev:defaultValue>Value's presence in the baseline (auto-fetched or -Rights), or False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <maml:name>Rights</maml:name>
+        <maml:description>
+          <maml:para>An explicit baseline right set, skipping the automatic `Get-IDApplicationPermission` lookup. Any right not explicitly passed as one of the switches above falls back to whether it's present here instead of the principal's live grant - useful when you already know the baseline, or the principal has never been granted anything yet.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>The principal's current grant on this application, from Get-IDApplicationPermission</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>DirectoryServiceUuid</maml:name>
@@ -16335,16 +16358,30 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Set-IDApplicationPermission -ID 'a1b2c3d4-0000-0000-0000-000000000000' -Principal 'someuser@somedomain.com' -PType 'User' -PrincipalId '&lt;user-uuid&gt;'</dev:code>
+        <dev:code>PS C:\&gt; Set-IDApplicationPermission -ID 'a1b2c3d4-0000-0000-0000-000000000000' -Principal 'someuser@somedomain.com' -PType 'User' -PrincipalId '&lt;user-uuid&gt;' -Delete $false</dev:code>
         <dev:remarks>
-          <maml:para>Revokes the specified user's rights on the application (no rights set to `$true`).</maml:para>
+          <maml:para>Revokes just the Delete right from the user's existing grant, leaving their other rights unchanged.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 3 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Set-IDApplicationPermission -ID 'a1b2c3d4-0000-0000-0000-000000000000' -Principal 'someuser@somedomain.com' -PType 'User' -PrincipalId '&lt;user-uuid&gt;' -Delete $true</dev:code>
+        <dev:remarks>
+          <maml:para>Adds the Delete right to the user's existing grant on the application, without changing any of their other rights (the existing grant is looked up automatically).</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 4 --------------------------</maml:title>
         <dev:code>PS C:\&gt; Import-Csv .\permissions.csv | Set-IDApplicationPermission</dev:code>
         <dev:remarks>
           <maml:para>Applies a permission set per row of a CSV with columns matching this command's parameter names (`ID`, `Principal`, `PType`, `PrincipalId`, and any of the right columns).</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 5 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Set-IDApplicationPermission -ID 'a1b2c3d4-0000-0000-0000-000000000000' -Principal 'someuser@somedomain.com' -PType 'User' -PrincipalId '&lt;user-uuid&gt;' -Rights 'View', 'Delete' -Automatic $true</dev:code>
+        <dev:remarks>
+          <maml:para>Skips the automatic lookup (an explicit `-Rights` baseline of View and Delete is used instead), then adds Automatic on top since it was passed explicitly - sets the grant to View, Delete and Automatic. An explicitly-passed right switch always wins over the baseline, whether that baseline came from `-Rights` or the automatic lookup.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

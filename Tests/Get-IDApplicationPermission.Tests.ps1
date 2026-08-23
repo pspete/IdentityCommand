@@ -101,6 +101,14 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
+            It 'decodes the Grant bitmask into named Rights' {
+
+                $Entry = $response | Where-Object { $_.PrincipalName -eq 'directuser' }
+
+                $Entry.Rights | Should -Be @('View', 'Execute', 'Automatic')
+
+            }
+
         }
 
     }

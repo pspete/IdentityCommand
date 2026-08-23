@@ -13,13 +13,11 @@ Set a principal's permission on an application
 ## SYNTAX
 
 ```
-Set-IDApplicationPermission [-ID] <String> [-Principal] <String> [-PType] <String> [-PrincipalId] <String> [-Grant <Boolean>] [-View <Boolean>] [-Admin <Boolean>] [-ViewDetail <Boolean>] [-Delete <Boolean>] [-Execute <Boolean>] [-Automatic <Boolean>] [-DirectoryServiceUuid <String>] [-ExternalUuid <String>] [-SystemName <String>] [-Type <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-IDApplicationPermission [-ID] <String> [-Principal] <String> [-PType] <String> [-PrincipalId] <String> [-Grant <Boolean>] [-View <Boolean>] [-Admin <Boolean>] [-ViewDetail <Boolean>] [-Delete <Boolean>] [-Execute <Boolean>] [-Automatic <Boolean>] [-Rights <String[]>] [-DirectoryServiceUuid <String>] [-ExternalUuid <String>] [-SystemName <String>] [-Type <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Sets a user or role's rights on an application to exactly the rights set to `$true`. This replaces the existing permission grant for that principal on the application - it isn't incremental.
-
-Every right defaults to `$false` if not specified, so passing none of them revokes the principal's access entirely (sends `Rights` of `None`). Since each right is a named boolean property rather than a switch, a whole permission set can be piped in from an object with matching property names - e.g. an imported CSV row.
+Sets a user or role's rights on an application to exactly the rights set to `$true`. Any right not explicitly passed falls back to the principal's current grant, fetched automatically via `Get-IDApplicationPermission` (matched by `-PrincipalId`) - so changing one right doesn't require resupplying the rest. `-Rights` skips that lookup and supplies the baseline directly. To revoke a right, pass `$false` for it explicitly.
 
 `-SystemName`/`-ExternalUuid` are only sent for a `User` `-PType`, defaulting to `-Principal`/`-PrincipalId` respectively when not explicitly supplied - a `Role` grant doesn't carry these fields at all. `-Type` defaults to `-PType` when not explicitly supplied.
 
@@ -34,17 +32,31 @@ Sets the specified user's rights on the application to View and Execute only.
 
 ### Example 2
 ```powershell
-PS C:\> Set-IDApplicationPermission -ID 'a1b2c3d4-0000-0000-0000-000000000000' -Principal 'someuser@somedomain.com' -PType 'User' -PrincipalId '<user-uuid>'
+PS C:\> Set-IDApplicationPermission -ID 'a1b2c3d4-0000-0000-0000-000000000000' -Principal 'someuser@somedomain.com' -PType 'User' -PrincipalId '<user-uuid>' -Delete $false
 ```
 
-Revokes the specified user's rights on the application (no rights set to `$true`).
+Revokes just the Delete right from the user's existing grant, leaving their other rights unchanged.
 
 ### Example 3
+```powershell
+PS C:\> Set-IDApplicationPermission -ID 'a1b2c3d4-0000-0000-0000-000000000000' -Principal 'someuser@somedomain.com' -PType 'User' -PrincipalId '<user-uuid>' -Delete $true
+```
+
+Adds the Delete right to the user's existing grant on the application, without changing any of their other rights (the existing grant is looked up automatically).
+
+### Example 4
 ```powershell
 PS C:\> Import-Csv .\permissions.csv | Set-IDApplicationPermission
 ```
 
 Applies a permission set per row of a CSV with columns matching this command's parameter names (`ID`, `Principal`, `PType`, `PrincipalId`, and any of the right columns).
+
+### Example 5
+```powershell
+PS C:\> Set-IDApplicationPermission -ID 'a1b2c3d4-0000-0000-0000-000000000000' -Principal 'someuser@somedomain.com' -PType 'User' -PrincipalId '<user-uuid>' -Rights 'View', 'Delete' -Automatic $true
+```
+
+Skips the automatic lookup (an explicit `-Rights` baseline of View and Delete is used instead), then adds Automatic on top since it was passed explicitly - sets the grant to View, Delete and Automatic. An explicitly-passed right switch always wins over the baseline, whether that baseline came from `-Rights` or the automatic lookup.
 
 ## PARAMETERS
 
@@ -118,7 +130,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: False
+Default value: Value's presence in the baseline (auto-fetched or -Rights), or False
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
@@ -133,7 +145,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: False
+Default value: Value's presence in the baseline (auto-fetched or -Rights), or False
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
@@ -148,7 +160,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: False
+Default value: Value's presence in the baseline (auto-fetched or -Rights), or False
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
@@ -163,7 +175,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: False
+Default value: Value's presence in the baseline (auto-fetched or -Rights), or False
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
@@ -178,7 +190,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: False
+Default value: Value's presence in the baseline (auto-fetched or -Rights), or False
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
@@ -193,7 +205,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: False
+Default value: Value's presence in the baseline (auto-fetched or -Rights), or False
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
@@ -208,7 +220,22 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: False
+Default value: Value's presence in the baseline (auto-fetched or -Rights), or False
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Rights
+An explicit baseline right set, skipping the automatic `Get-IDApplicationPermission` lookup. Any right not explicitly passed as one of the switches above falls back to whether it's present here instead of the principal's live grant - useful when you already know the baseline, or the principal has never been granted anything yet.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: The principal's current grant on this application, from Get-IDApplicationPermission
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```

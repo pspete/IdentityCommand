@@ -21,7 +21,7 @@ Returns the access control entries (ACEs) for an application - each principal's 
 
 By default only direct, non-inherited entries are returned. `-IncludeInherited` also returns role-based/system administration grants inherited from elsewhere in the tenant, which aren't scoped to this application and can't be changed via `Set-IDApplicationPermission`.
 
-Each entry's `Grant`/`GrantStr` properties are the raw permission bitmask as returned by the API - they haven't yet been decoded to the named rights `Set-IDApplicationPermission` uses.
+Each entry's raw `Grant` bitmask is decoded into a `Rights` property listing the same right names `Set-IDApplicationPermission` uses (`Grant`, `View`, `Admin`, `ViewDetail`, `Delete`, `Execute`, `Automatic`) - pipe an entry straight into `Set-IDApplicationPermission` and its `Rights` output is picked up as that command's `-Rights` baseline.
 
 ## EXAMPLES
 
