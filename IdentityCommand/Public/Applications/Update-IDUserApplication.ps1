@@ -1,6 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
 function Update-IDUserApplication {
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -12,7 +10,14 @@ function Update-IDUserApplication {
         [String]$AppKey,
 
         [parameter(Mandatory = $false)]
-        [String]$Notes
+        [String]$Notes,
+
+        [parameter(Mandatory = $false)]
+        [ValidateSet('', 'BaseDomain', 'RegularExpression', 'ExactMatch', 'Hostname')]
+        [String]$UrlMatchDetection,
+
+        [parameter(Mandatory = $false)]
+        [String]$MatchPattern
     )
 
     BEGIN {}#begin
@@ -21,10 +26,11 @@ function Update-IDUserApplication {
 
         if ($PSCmdlet.ShouldProcess($AppKey, 'Update User Application')) {
 
-            $Body = [ordered]@{
-                'appkey' = $AppKey
-                'notes'  = $Notes
-            }
+            $Body = [ordered]@{ 'appkey' = $AppKey }
+
+            if ($PSBoundParameters.ContainsKey('Notes')) { $Body['notes'] = $Notes }
+            if ($PSBoundParameters.ContainsKey('UrlMatchDetection')) { $Body['UrlMatchDetection'] = $UrlMatchDetection }
+            if ($PSBoundParameters.ContainsKey('MatchPattern')) { $Body['MatchPattern'] = $MatchPattern }
 
             $Request = @{
 

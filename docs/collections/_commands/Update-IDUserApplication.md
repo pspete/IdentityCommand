@@ -8,17 +8,17 @@ schema: 2.0.0
 # Update-IDUserApplication
 
 ## SYNOPSIS
-Update the current user's application notes
+Update the current user's application settings
 
 ## SYNTAX
 
 ```
-Update-IDUserApplication [-AppKey] <String> [[-Notes] <String>] [-WhatIf]
+Update-IDUserApplication [-AppKey] <String> [[-Notes] <String>] [[-UrlMatchDetection] <String>] [[-MatchPattern] <String>] [-WhatIf]
  [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Updates the current user's notes for an application.
+Updates the current user's notes and/or URL match detection settings for an application.
 
 ## EXAMPLES
 
@@ -28,6 +28,13 @@ PS C:\> Update-IDUserApplication -AppKey 'someappkey' -Notes 'Updated notes'
 ```
 
 Updates the current user's notes for an application.
+
+### Example 2
+```powershell
+PS C:\> Update-IDUserApplication -AppKey 'someappkey' -UrlMatchDetection 'RegularExpression' -MatchPattern '^https://example\.com/.*'
+```
+
+Sets the application's URL match detection to a regular expression.
 
 ## PARAMETERS
 
@@ -71,6 +78,36 @@ Aliases:
 
 Required: False
 Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UrlMatchDetection
+How the application's launch URL is matched - '', 'BaseDomain', 'RegularExpression' (requires `-MatchPattern`), 'ExactMatch', or 'Hostname'.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -MatchPattern
+The pattern to match against, when `-UrlMatchDetection` is 'RegularExpression'.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

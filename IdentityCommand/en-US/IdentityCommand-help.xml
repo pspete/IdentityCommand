@@ -23633,11 +23633,11 @@ PS C:\&gt; Update-IDSecuredItemCredential -ItemKey 'someitemkey' -Username 'some
       <command:verb>Update</command:verb>
       <command:noun>IDUserApplication</command:noun>
       <maml:description>
-        <maml:para>Update the current user's application notes</maml:para>
+        <maml:para>Update the current user's application settings</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the current user's notes for an application.</maml:para>
+      <maml:para>Updates the current user's notes and/or URL match detection settings for an application.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -23658,6 +23658,30 @@ PS C:\&gt; Update-IDSecuredItemCredential -ItemKey 'someitemkey' -Username 'some
           <maml:name>Notes</maml:name>
           <maml:description>
             <maml:para>Free-text notes.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>UrlMatchDetection</maml:name>
+          <maml:description>
+            <maml:para>How the application's launch URL is matched - '', 'BaseDomain', 'RegularExpression' (requires `-MatchPattern`), 'ExactMatch', or 'Hostname'.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+          <maml:name>MatchPattern</maml:name>
+          <maml:description>
+            <maml:para>The pattern to match against, when `-UrlMatchDetection` is 'RegularExpression'.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -23727,6 +23751,30 @@ PS C:\&gt; Update-IDSecuredItemCredential -ItemKey 'someitemkey' -Username 'some
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>UrlMatchDetection</maml:name>
+        <maml:description>
+          <maml:para>How the application's launch URL is matched - '', 'BaseDomain', 'RegularExpression' (requires `-MatchPattern`), 'ExactMatch', or 'Hostname'.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+        <maml:name>MatchPattern</maml:name>
+        <maml:description>
+          <maml:para>The pattern to match against, when `-UrlMatchDetection` is 'RegularExpression'.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
         <maml:name>WhatIf</maml:name>
         <maml:description>
@@ -23771,6 +23819,13 @@ PS C:\&gt; Update-IDSecuredItemCredential -ItemKey 'someitemkey' -Username 'some
         <dev:code>PS C:\&gt; Update-IDUserApplication -AppKey 'someappkey' -Notes 'Updated notes'</dev:code>
         <dev:remarks>
           <maml:para>Updates the current user's notes for an application.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Update-IDUserApplication -AppKey 'someappkey' -UrlMatchDetection 'RegularExpression' -MatchPattern '^https://example\.com/.*'</dev:code>
+        <dev:remarks>
+          <maml:para>Sets the application's URL match detection to a regular expression.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

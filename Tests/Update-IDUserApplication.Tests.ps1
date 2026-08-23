@@ -74,6 +74,32 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
+            It 'only sends optional fields actually supplied' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    ($Body | ConvertFrom-Json).PSObject.Properties.Name -notcontains 'UrlMatchDetection'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+        }
+
+        Context 'UrlMatchDetection' {
+
+            BeforeEach {
+                Update-IDUserApplication -AppKey 'someappkey' -UrlMatchDetection 'BaseDomain'
+            }
+
+            It 'sends the supplied UrlMatchDetection' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $BodyObject = $Body | ConvertFrom-Json
+                    ($BodyObject.PSObject.Properties.Name -contains 'UrlMatchDetection') -and
+                    $BodyObject.UrlMatchDetection -eq 'BaseDomain'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
         }
 
         Context 'Output' {
