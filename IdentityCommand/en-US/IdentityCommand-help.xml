@@ -15775,13 +15775,13 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
       <command:verb>Set</command:verb>
       <command:noun>IDApplicationPermission</command:noun>
       <maml:description>
-        <maml:para>Grant a principal permission on an application</maml:para>
+        <maml:para>Set a principal's permission on an application</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Grants a user or role one or more rights on an application. This replaces the existing permission grant for that principal on the application with the one supplied.</maml:para>
-      <maml:para>`-Rights` accepts one or more of the valid flag names (`Grant`, `View`, `Admin`, `ViewDetail`, `Delete`, `Execute`, `Automatic`) and are joined into the comma-separated string the API expects - `Execute` is the "run this app" right, not `Run`.</maml:para>
-      <maml:para>`-SystemName`/`-ExternalUuid`/`-Type` default to `-Principal`/`-PrincipalId`/`-PType` respectively when not explicitly supplied - override them if a real case ever needs them to diverge.</maml:para>
+      <maml:para>Sets a user or role's rights on an application to exactly the rights set to `$true`. This replaces the existing permission grant for that principal on the application - it isn't incremental.</maml:para>
+      <maml:para>Every right defaults to `$false` if not specified, so passing none of them revokes the principal's access entirely (sends `Rights` of `None`). Since each right is a named boolean property rather than a switch, a whole permission set can be piped in from an object with matching property names - e.g. an imported CSV row.</maml:para>
+      <maml:para>`-SystemName`/`-ExternalUuid` are only sent for a `User` `-PType`, defaulting to `-Principal`/`-PrincipalId` respectively when not explicitly supplied - a `Role` grant doesn't carry these fields at all. `-Type` defaults to `-PType` when not explicitly supplied.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -15798,10 +15798,10 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
           <maml:name>Principal</maml:name>
           <maml:description>
-            <maml:para>The username of the user or role to grant permission to.</maml:para>
+            <maml:para>The username of the user or role to set permission for.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -15810,7 +15810,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
           <maml:name>PType</maml:name>
           <maml:description>
             <maml:para>The type of principal being granted permission.</maml:para>
@@ -15822,19 +15822,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-          <maml:name>Rights</maml:name>
-          <maml:description>
-            <maml:para>One or more rights to grant. Confirmed valid values: `Grant`, `View`, `Admin`, `ViewDetail`, `Delete`, `Execute`, `Automatic`. Joined into the comma-separated string the API expects.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-          <dev:type>
-            <maml:name>String[]</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="3" aliases="none">
           <maml:name>PrincipalId</maml:name>
           <maml:description>
             <maml:para>The UUID of the user or role being granted permission.</maml:para>
@@ -15845,6 +15833,90 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>Grant</maml:name>
+          <maml:description>
+            <maml:para>Whether to include the "grant" right - lets the principal grant this application's permissions to others.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+          <dev:type>
+            <maml:name>Boolean</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>View</maml:name>
+          <maml:description>
+            <maml:para>Whether to include the "view" right.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+          <dev:type>
+            <maml:name>Boolean</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>Admin</maml:name>
+          <maml:description>
+            <maml:para>Whether to include the "admin" right.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+          <dev:type>
+            <maml:name>Boolean</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>ViewDetail</maml:name>
+          <maml:description>
+            <maml:para>Whether to include the "view detail" right.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+          <dev:type>
+            <maml:name>Boolean</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>Delete</maml:name>
+          <maml:description>
+            <maml:para>Whether to include the "delete" right.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+          <dev:type>
+            <maml:name>Boolean</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>Execute</maml:name>
+          <maml:description>
+            <maml:para>Whether to include the "execute" right - lets the principal run the application.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+          <dev:type>
+            <maml:name>Boolean</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>Automatic</maml:name>
+          <maml:description>
+            <maml:para>Whether to include the "automatic" right.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+          <dev:type>
+            <maml:name>Boolean</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>DirectoryServiceUuid</maml:name>
@@ -15861,7 +15933,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>ExternalUuid</maml:name>
           <maml:description>
-            <maml:para>The principal's external UUID. Defaults to `-PrincipalId` if not specified.</maml:para>
+            <maml:para>The principal's external UUID. Only sent for a `User` `-PType`. Defaults to `-PrincipalId` if not specified.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -15873,7 +15945,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>SystemName</maml:name>
           <maml:description>
-            <maml:para>The principal's system name. Defaults to `-Principal` if not specified.</maml:para>
+            <maml:para>The principal's system name. Only sent for a `User` `-PType`. Defaults to `-Principal` if not specified.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -15931,10 +16003,10 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
         <maml:name>Principal</maml:name>
         <maml:description>
-          <maml:para>The username of the user or role to grant permission to.</maml:para>
+          <maml:para>The username of the user or role to set permission for.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -15943,7 +16015,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
         <maml:name>PType</maml:name>
         <maml:description>
           <maml:para>The type of principal being granted permission.</maml:para>
@@ -15955,19 +16027,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-        <maml:name>Rights</maml:name>
-        <maml:description>
-          <maml:para>One or more rights to grant. Confirmed valid values: `Grant`, `View`, `Admin`, `ViewDetail`, `Delete`, `Execute`, `Automatic`. Joined into the comma-separated string the API expects.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
-        <dev:type>
-          <maml:name>String[]</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="3" aliases="none">
         <maml:name>PrincipalId</maml:name>
         <maml:description>
           <maml:para>The UUID of the user or role being granted permission.</maml:para>
@@ -15978,6 +16038,90 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <maml:name>Grant</maml:name>
+        <maml:description>
+          <maml:para>Whether to include the "grant" right - lets the principal grant this application's permissions to others.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+        <dev:type>
+          <maml:name>Boolean</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <maml:name>View</maml:name>
+        <maml:description>
+          <maml:para>Whether to include the "view" right.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+        <dev:type>
+          <maml:name>Boolean</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <maml:name>Admin</maml:name>
+        <maml:description>
+          <maml:para>Whether to include the "admin" right.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+        <dev:type>
+          <maml:name>Boolean</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <maml:name>ViewDetail</maml:name>
+        <maml:description>
+          <maml:para>Whether to include the "view detail" right.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+        <dev:type>
+          <maml:name>Boolean</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <maml:name>Delete</maml:name>
+        <maml:description>
+          <maml:para>Whether to include the "delete" right.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+        <dev:type>
+          <maml:name>Boolean</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <maml:name>Execute</maml:name>
+        <maml:description>
+          <maml:para>Whether to include the "execute" right - lets the principal run the application.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+        <dev:type>
+          <maml:name>Boolean</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+        <maml:name>Automatic</maml:name>
+        <maml:description>
+          <maml:para>Whether to include the "automatic" right.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+        <dev:type>
+          <maml:name>Boolean</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>DirectoryServiceUuid</maml:name>
@@ -15994,7 +16138,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>ExternalUuid</maml:name>
         <maml:description>
-          <maml:para>The principal's external UUID. Defaults to `-PrincipalId` if not specified.</maml:para>
+          <maml:para>The principal's external UUID. Only sent for a `User` `-PType`. Defaults to `-PrincipalId` if not specified.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -16006,7 +16150,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>SystemName</maml:name>
         <maml:description>
-          <maml:para>The principal's system name. Defaults to `-Principal` if not specified.</maml:para>
+          <maml:para>The principal's system name. Only sent for a `User` `-PType`. Defaults to `-Principal` if not specified.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -16055,7 +16199,7 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>System.String</maml:name>
+          <maml:name>System.Object</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -16080,9 +16224,23 @@ PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</d
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Set-IDApplicationPermission -ID 'a1b2c3d4-0000-0000-0000-000000000000' -Principal 'someuser@somedomain.com' -PType 'User' -Rights 'View','Execute' -PrincipalId '&lt;user-uuid&gt;' -DirectoryServiceUuid '&lt;from Get-IDUserAttribute&gt;'</dev:code>
+        <dev:code>PS C:\&gt; Set-IDApplicationPermission -ID 'a1b2c3d4-0000-0000-0000-000000000000' -Principal 'someuser@somedomain.com' -PType 'User' -View $true -Execute $true -PrincipalId '&lt;user-uuid&gt;' -DirectoryServiceUuid '&lt;from Get-IDUserAttribute&gt;'</dev:code>
         <dev:remarks>
-          <maml:para>Grants the specified user View and Execute rights on the application.</maml:para>
+          <maml:para>Sets the specified user's rights on the application to View and Execute only.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Set-IDApplicationPermission -ID 'a1b2c3d4-0000-0000-0000-000000000000' -Principal 'someuser@somedomain.com' -PType 'User' -PrincipalId '&lt;user-uuid&gt;'</dev:code>
+        <dev:remarks>
+          <maml:para>Revokes the specified user's rights on the application (no rights set to `$true`).</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 3 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Import-Csv .\permissions.csv | Set-IDApplicationPermission</dev:code>
+        <dev:remarks>
+          <maml:para>Applies a permission set per row of a CSV with columns matching this command's parameter names (`ID`, `Principal`, `PType`, `PrincipalId`, and any of the right columns).</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

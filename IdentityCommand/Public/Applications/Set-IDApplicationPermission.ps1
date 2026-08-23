@@ -1,7 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: -Revoke's shape is unconfirmed (no revoke request was captured). It's also unconfirmed
-# whether Role-type Grants entries need the same DirectoryServiceUuid/ExternalUuid fields as
-# User-type ones.
 function Set-IDApplicationPermission {
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -13,28 +10,50 @@ function Set-IDApplicationPermission {
         [Alias('Uuid', 'AppKey')]
         [String]$ID,
 
-        [parameter(Mandatory = $true)]
+        [parameter(Mandatory = $true, ValueFromPipelinebyPropertyName = $true)]
         [ValidateNotNullOrEmpty()]
         [String]$Principal,
 
-        [parameter(Mandatory = $true)]
+        [parameter(Mandatory = $true, ValueFromPipelinebyPropertyName = $true)]
         [ValidateSet('User', 'Role')]
         [String]$PType,
 
-        [parameter(Mandatory = $true)]
-        [ValidateNotNullOrEmpty()]
-        [String[]]$Rights,
-
-        [parameter(Mandatory = $true)]
+        [parameter(Mandatory = $true, ValueFromPipelinebyPropertyName = $true)]
         [ValidateNotNullOrEmpty()]
         [String]$PrincipalId,
+
+        #One boolean per confirmed right, so a permission set can be fed in from a CSV row or any
+        #object with matching property names. All $false revokes (sends Rights of None), since the
+        #API always expects the principal's complete right set for this application, not a delta
+        [parameter(Mandatory = $false, ValueFromPipelinebyPropertyName = $true)]
+        [Bool]$Grant,
+
+        [parameter(Mandatory = $false, ValueFromPipelinebyPropertyName = $true)]
+        [Bool]$View,
+
+        [parameter(Mandatory = $false, ValueFromPipelinebyPropertyName = $true)]
+        [Bool]$Admin,
+
+        [parameter(Mandatory = $false, ValueFromPipelinebyPropertyName = $true)]
+        [Bool]$ViewDetail,
+
+        [parameter(Mandatory = $false, ValueFromPipelinebyPropertyName = $true)]
+        [Bool]$Delete,
+
+        [parameter(Mandatory = $false, ValueFromPipelinebyPropertyName = $true)]
+        [Bool]$Execute,
+
+        [parameter(Mandatory = $false, ValueFromPipelinebyPropertyName = $true)]
+        [Bool]$Automatic,
 
         [parameter(Mandatory = $false)]
         [String]$DirectoryServiceUuid = '',
 
+        #Only sent for a User -PType - a live Role capture confirmed Role grants don't carry this
         [parameter(Mandatory = $false)]
         [String]$ExternalUuid,
 
+        #Only sent for a User -PType - a live Role capture confirmed Role grants don't carry this
         [parameter(Mandatory = $false)]
         [String]$SystemName,
 
@@ -47,21 +66,11 @@ function Set-IDApplicationPermission {
 
     PROCESS {
 
-        if ($PSCmdlet.ShouldProcess($ID, "Set Application Permission for '$Principal'")) {
+        $RightNames = 'Grant', 'View', 'Admin', 'ViewDetail', 'Delete', 'Execute', 'Automatic' | Where-Object { Get-Variable -Name $_ -ValueOnly }
+        $RightsString = if ($RightNames) { $RightNames -join ',' } else { 'None' }
+        $Action = if ($RightNames) { 'Set' } else { 'Revoke' }
 
-            #SystemName/ExternalUuid/Type default to Principal/PrincipalId/PType when not
-            #explicitly supplied - matches the confirmed live example, where they were identical
-            if (-not $PSBoundParameters.ContainsKey('SystemName')) {
-
-                $SystemName = $Principal
-
-            }
-
-            if (-not $PSBoundParameters.ContainsKey('ExternalUuid')) {
-
-                $ExternalUuid = $PrincipalId
-
-            }
+        if ($PSCmdlet.ShouldProcess($ID, "$Action Application Permission for '$Principal'")) {
 
             if (-not $PSBoundParameters.ContainsKey('Type')) {
 
@@ -69,15 +78,22 @@ function Set-IDApplicationPermission {
 
             }
 
-            $Grant = [ordered]@{
+            $GrantEntry = [ordered]@{
                 'Principal'            = $Principal
                 'PType'                = $PType
-                'Rights'               = ($Rights -join ',')
+                'Rights'               = $RightsString
                 'PrincipalId'          = $PrincipalId
                 'DirectoryServiceUuid' = $DirectoryServiceUuid
-                'ExternalUuid'         = $ExternalUuid
-                'SystemName'           = $SystemName
                 'Type'                 = $Type
+            }
+
+            #SystemName/ExternalUuid default to Principal/PrincipalId when not explicitly supplied
+            #- confirmed live for a User grant; a Role grant doesn't carry these fields at all
+            if ($PType -eq 'User') {
+
+                $GrantEntry['ExternalUuid'] = if ($PSBoundParameters.ContainsKey('ExternalUuid')) { $ExternalUuid } else { $PrincipalId }
+                $GrantEntry['SystemName'] = if ($PSBoundParameters.ContainsKey('SystemName')) { $SystemName } else { $Principal }
+
             }
 
             #Constructed body for the rest call - RowKey/PVID confirmed required alongside ID via
@@ -86,7 +102,7 @@ function Set-IDApplicationPermission {
                 'ID'     = $ID
                 'RowKey' = $ID
                 'PVID'   = $ID
-                'Grants' = @($Grant)
+                'Grants' = @($GrantEntry)
             }
 
             $Request = @{
