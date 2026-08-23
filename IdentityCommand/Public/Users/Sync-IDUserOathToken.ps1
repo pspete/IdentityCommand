@@ -1,8 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
-# TODO: Still needs live re-verification with a real enrolled OATH token/codes to confirm the URL
-# and body shape succeed end-to-end.
 function Sync-IDUserOathToken {
     [CmdletBinding(SupportsShouldProcess)]
     param(

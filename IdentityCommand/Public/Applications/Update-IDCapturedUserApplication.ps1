@@ -1,6 +1,6 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
+# TODO: DEPRIORITIZED -  server returned success:true but silently made no actual change
+# needs a genuine browser-extension-captured app to test properly
 function Update-IDCapturedUserApplication {
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -24,19 +24,21 @@ function Update-IDCapturedUserApplication {
         [String]$AppUrl
     )
 
-    BEGIN {}#begin
+    begin {}#begin
 
-    PROCESS {
+    process {
 
         if ($PSCmdlet.ShouldProcess($AppKey, 'Update Captured User Application')) {
 
-            $Body = [ordered]@{
-                'appName'        = $AppName
-                'appkey'         = $AppKey
-                'appDescription' = $AppDescription
-                'notes'          = $Notes
-                'appUrl'         = $AppUrl
-            }
+            #Only send fields actually supplied - the near-identical Update-IDPersonalUserApplication
+            #confirmed live that always sending blank strings for unset optional fields would
+            #silently clear existing values
+            $Body = [ordered]@{ 'appkey' = $AppKey }
+
+            if ($PSBoundParameters.ContainsKey('AppName')) { $Body['appName'] = $AppName }
+            if ($PSBoundParameters.ContainsKey('AppDescription')) { $Body['appDescription'] = $AppDescription }
+            if ($PSBoundParameters.ContainsKey('Notes')) { $Body['notes'] = $Notes }
+            if ($PSBoundParameters.ContainsKey('AppUrl')) { $Body['appUrl'] = $AppUrl }
 
             $Request = @{
 
@@ -53,6 +55,6 @@ function Update-IDCapturedUserApplication {
 
     }#process
 
-    END {}#end
+    end {}#end
 
 }

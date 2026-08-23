@@ -1,8 +1,6 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
-# TODO: Valid values for -UseOathDefaults are not documented anywhere in the sources checked (likely
-# a boolean-as-string, but unconfirmed).
+# TODO: DEPRIORITIZED - tested against a genuine, currently-valid OATH TOTP code
+#  got back a generic "Exception occurred while performing action."
 function Test-IDUserOathOtpCode {
     [CmdletBinding()]
     param(
@@ -22,9 +20,9 @@ function Test-IDUserOathOtpCode {
         [String]$UseOathDefaults
     )
 
-    BEGIN {}#begin
+    begin {}#begin
 
-    PROCESS {
+    process {
 
         $URI = "$($ISPSSSession.tenant_url)/Oath/ValidateOtpCode`?otpCode=$($OtpCode | Get-EscapedString)&uuid=$($ID | Get-EscapedString)"
 
@@ -46,6 +44,6 @@ function Test-IDUserOathOtpCode {
 
     }#process
 
-    END {}#end
+    end {}#end
 
 }

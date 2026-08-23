@@ -1,9 +1,6 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
-# TODO: -Grant expects an array of hashtables shaped like the recorded sample, e.g.
-# @{DirectoryServiceUuid='...'; Id='<userUUID>'; SystemName='<user>'; Type='User'} - -Revoke expects
-# an array of hashtables like @{Id='<userUUID>'}.
+# TODO: -Revoke's shape is unconfirmed (no revoke request has been tested) - presumed to be an
+# array of hashtables like @{Id='<userUUID>'}, matching -Grant's confirmed shape.
 function Set-IDOrganizationAdministrator {
     [CmdletBinding(SupportsShouldProcess)]
     param(
