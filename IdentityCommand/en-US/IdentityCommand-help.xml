@@ -6815,6 +6815,222 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
+      <command:name>Move-IDUserOwnership</command:name>
+      <command:verb>Move</command:verb>
+      <command:noun>IDUserOwnership</command:noun>
+      <maml:description>
+        <maml:para>Transfer ownership of everything one or more users own</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Transfers ownership of everything the specified users own (applications, secured items, notes, etc.) to another user, or to each user's manager.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Move-IDUserOwnership</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, ID">
+          <maml:name>Users</maml:name>
+          <maml:description>
+            <maml:para>The unique ID(s) of the user(s) to transfer ownership from.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>TargetUser</maml:name>
+          <maml:description>
+            <maml:para>The username of the user to transfer ownership to.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+          <maml:name>Confirm</maml:name>
+          <maml:description>
+            <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+          <maml:name>WhatIf</maml:name>
+          <maml:description>
+            <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Move-IDUserOwnership</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, ID">
+          <maml:name>Users</maml:name>
+          <maml:description>
+            <maml:para>The unique ID(s) of the user(s) to transfer ownership from.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+          <dev:type>
+            <maml:name>String[]</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+          <maml:name>Confirm</maml:name>
+          <maml:description>
+            <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>TransferToManager</maml:name>
+          <maml:description>
+            <maml:para>Transfer ownership to each user's manager instead of a specific target user.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+          <maml:name>WhatIf</maml:name>
+          <maml:description>
+            <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+        <maml:name>Confirm</maml:name>
+        <maml:description>
+          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>TargetUser</maml:name>
+        <maml:description>
+          <maml:para>The username of the user to transfer ownership to.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>TransferToManager</maml:name>
+        <maml:description>
+          <maml:para>Transfer ownership to each user's manager instead of a specific target user.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, ID">
+        <maml:name>Users</maml:name>
+        <maml:description>
+          <maml:para>The unique ID(s) of the user(s) to transfer ownership from.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
+        <dev:type>
+          <maml:name>String[]</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+        <maml:name>WhatIf</maml:name>
+        <maml:description>
+          <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String[]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples>
+      <command:example>
+        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Move-IDUserOwnership -Users 'a1b2c3d4-0000-0000-0000-000000000000' -TargetUser 'newowner@example.com'</dev:code>
+        <dev:remarks>
+          <maml:para>Transfers everything owned by the specified user to 'newowner@example.com'.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Move-IDUserOwnership -Users 'a1b2c3d4-0000-0000-0000-000000000000' -TransferToManager</dev:code>
+        <dev:remarks>
+          <maml:para>Transfers everything owned by the specified user to that user's manager.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <command:relatedLinks />
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
       <command:name>New-IDApplication</command:name>
       <command:verb>New</command:verb>
       <command:noun>IDApplication</command:noun>
@@ -15548,155 +15764,6 @@ PS C:\&gt; Send-IDUserInvite -Role 'SomeRole' -Entities $Entities -EmailInvite</
 PS C:\&gt; Set-IDApplicationIcon -AppKey $AppKey -Path 'C:\Icons\someapp.png'</dev:code>
         <dev:remarks>
           <maml:para>Uploads a custom icon for the specified personal application.</maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
-    <command:relatedLinks />
-  </command:command>
-  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-    <command:details>
-      <command:name>Set-IDApplicationOwner</command:name>
-      <command:verb>Set</command:verb>
-      <command:noun>IDApplicationOwner</command:noun>
-      <maml:description>
-        <maml:para>Transfer ownership of an application</maml:para>
-      </maml:description>
-    </command:details>
-    <maml:description>
-      <maml:para>Transfers ownership of an application (and any items it shares) to another user.</maml:para>
-    </maml:description>
-    <command:syntax>
-      <command:syntaxItem>
-        <maml:name>Set-IDApplicationOwner</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, AppKey">
-          <maml:name>ID</maml:name>
-          <maml:description>
-            <maml:para>The unique ID of the application to transfer.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-          <maml:name>NewOwner</maml:name>
-          <maml:description>
-            <maml:para>The username of the user to transfer ownership to.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
-          <maml:name>Confirm</maml:name>
-          <maml:description>
-            <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
-          </maml:description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
-          <maml:name>WhatIf</maml:name>
-          <maml:description>
-            <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
-          </maml:description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-    </command:syntax>
-    <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
-        <maml:name>Confirm</maml:name>
-        <maml:description>
-          <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
-        </maml:description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid, AppKey">
-        <maml:name>ID</maml:name>
-        <maml:description>
-          <maml:para>The unique ID of the application to transfer.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-        <maml:name>NewOwner</maml:name>
-        <maml:description>
-          <maml:para>The username of the user to transfer ownership to.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
-        <maml:name>WhatIf</maml:name>
-        <maml:description>
-          <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
-        </maml:description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
-    </command:parameters>
-    <command:inputTypes>
-      <command:inputType>
-        <dev:type>
-          <maml:name>System.String</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:inputType>
-    </command:inputTypes>
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>System.Object</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
-    <maml:alertSet>
-      <maml:alert>
-        <maml:para></maml:para>
-      </maml:alert>
-    </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Set-IDApplicationOwner -ID 'a1b2c3d4-0000-0000-0000-000000000000' -NewOwner 'someuser@somedomain.com'</dev:code>
-        <dev:remarks>
-          <maml:para>Transfers ownership of the specified application to the given user.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

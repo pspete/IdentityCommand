@@ -43,11 +43,15 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 [pscustomobject]@{'property' = 'value' }
             }
 
-            $response = Set-IDApplicationOwner -ID 'someid' -NewOwner 'someuser@somedomain.com'
-
         }
 
-        Context 'Input' {
+        Context 'TargetUser' {
+
+            BeforeEach {
+
+                $response = Move-IDUserOwnership -Users 'someuserid' -TargetUser 'someuser@somedomain.com'
+
+            }
 
             It 'sends request' {
 
@@ -59,33 +63,67 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/SaasManage/TransferOwnership'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/SaasManage/TransferOwnership' -and $Method -eq 'POST'
 
                 } -Times 1 -Exactly -Scope It
-
-            }
-
-            It 'uses expected method' {
-
-                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter { $Method -match 'POST' } -Times 1 -Exactly -Scope It
 
             }
 
             It 'sends request with expected body' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty NewOwner) -eq 'someuser@somedomain.com'
+                    $BodyObject = $Body | ConvertFrom-Json
+                    (@($BodyObject.Users) -contains 'someuserid') -and
+                    $BodyObject.TransferToManager -eq $false -and
+                    $BodyObject.TargetUser -eq 'someuser@somedomain.com'
                 } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'provides output' {
+
+                $response | Should -Not -BeNullOrEmpty
 
             }
 
         }
 
-        Context 'Output' {
+        Context 'TransferToManager' {
+
+            BeforeEach {
+
+                $response = Move-IDUserOwnership -Users 'someuserid' -TransferToManager
+
+            }
+
+            It 'sends request with expected body' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $BodyObject = $Body | ConvertFrom-Json
+                    (@($BodyObject.Users) -contains 'someuserid') -and
+                    $BodyObject.TransferToManager -eq $true
+                } -Times 1 -Exactly -Scope It
+
+            }
 
             It 'provides output' {
 
                 $response | Should -Not -BeNullOrEmpty
+
+            }
+
+        }
+
+        Context 'Multiple users' {
+
+            It 'sends every supplied user ID' {
+
+                Move-IDUserOwnership -Users 'firstuserid', 'seconduserid' -TargetUser 'someuser@somedomain.com' | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $BodyObject = $Body | ConvertFrom-Json
+                    (@($BodyObject.Users) -contains 'firstuserid') -and (@($BodyObject.Users) -contains 'seconduserid')
+                } -Times 1 -Exactly -Scope It
 
             }
 

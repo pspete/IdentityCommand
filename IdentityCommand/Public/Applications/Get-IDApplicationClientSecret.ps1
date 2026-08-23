@@ -1,7 +1,7 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: DEPRIORITIZED - -PublicKey's exact expected wire format is unconfirmed. Three plausible
-# encodings (X.509 SubjectPublicKeyInfo DER, PKCS#1 RSAPublicKey DER, JWK JSON) were all rejected
-# with "Invalid PublicKey". Needs a real request captured via browser DevTools.
+# TODO: Per the vendor's OpenAPI schema, -PublicKey is `string($byte)` - base64-encoded bytes.
+# Which DER format those bytes must decode to (X.509 SubjectPublicKeyInfo vs PKCS#1 RSAPublicKey)
+# is still unconfirmed - untested with a base64-encoded key.
 # TODO: Per the vendor's API docs, the response returns the secret encrypted under an 'e' property
 # (RSA-OAEP with the supplied -PublicKey) if encryption succeeds, or plain text under a 'p'
 # property if it fails. Decrypting an 'e' response is left to the caller - this command does not
