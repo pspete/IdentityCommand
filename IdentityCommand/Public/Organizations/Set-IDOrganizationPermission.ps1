@@ -1,11 +1,10 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
-# TODO: DEPRIORITIZED - -Grant expects an array of hashtables like @{Right=@('<right>');
-# Principal='<principal>'; PrincipalType='<type>'} ('Right' must itself be an array, even for a
-# single right). The actual valid values for 'Right' remain unknown - 'View' was rejected as an
-# invalid enum value. Needs a DevTools capture of the admin portal's organization permissions UI,
-# or vendor API documentation listing the enum's real members.
+# TODO: DEPRIORITIZED - -Grant entries are @{Right='<right>'; Principal='<id>';
+# PrincipalType='<type>'} and -Revoke entries are @{Right='<right>'; Principal='<id>'} (no
+# PrincipalType), per the vendor's OpenAPI schema. Despite the schema saying Right is a string,
+# 'View' was rejected with a server-side type-casting failure, not an invalid-enum error - Right's
+# real type/values remain unknown. No UI surface sets this (the portal's org "Roles" tab is a
+# different, already-covered concept - see Get-IDOrganizationRole).
 function Set-IDOrganizationPermission {
     [CmdletBinding(SupportsShouldProcess)]
     param(
