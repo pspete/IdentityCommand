@@ -5,61 +5,33 @@ online version:
 schema: 2.0.0
 ---
 
-# Set-IDUserState
+# Enable-IDUser
 
 ## SYNOPSIS
-Set a user's state
+Enable a user
 
 ## SYNTAX
 
-### ByState (Default)
 ```
-Set-IDUserState -ID <String> -State <String> [-WhatIf] [-Confirm] [<CommonParameters>]
-```
-
-### ByEnabled
-```
-Set-IDUserState -ID <String> -Enabled <Boolean> [-WhatIf] [-Confirm] [<CommonParameters>]
+Enable-IDUser [-ID] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Sets a user's state, either to a named state value or to a simple enabled/disabled boolean. These map to two distinct underlying API operations that both describe themselves as setting user state.
+Enables the specified user.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Set-IDUserState -ID 'a1b2c3d4-0000-0000-0000-000000000000' -State 'None'
+PS C:\> Enable-IDUser -ID 'a1b2c3d4-0000-0000-0000-000000000000'
 ```
 
-Sets the specified user's state value.
-
-### Example 2
-```powershell
-PS C:\> Set-IDUserState -ID 'a1b2c3d4-0000-0000-0000-000000000000' -Enabled $false
-```
-
-Disables the specified user.
+Enables the specified user.
 
 ## PARAMETERS
 
-### -Enabled
-Whether the user is enabled.
-
-```yaml
-Type: Boolean
-Parameter Sets: ByEnabled
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -ID
-The unique ID of the user to update.
+The unique ID of the user to enable.
 
 ```yaml
 Type: String
@@ -67,24 +39,9 @@ Parameter Sets: (All)
 Aliases: Uuid
 
 Required: True
-Position: Named
+Position: 0
 Default value: None
 Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -State
-The state value to set.
-
-```yaml
-Type: String
-Parameter Sets: ByState
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

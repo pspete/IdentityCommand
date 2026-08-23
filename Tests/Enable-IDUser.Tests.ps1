@@ -43,13 +43,11 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 [pscustomobject]@{'property' = 'value' }
             }
 
+            $response = Enable-IDUser -ID 'someuserid'
+
         }
 
-        Context 'ByState' {
-
-            BeforeEach {
-                $response = Set-IDUserState -ID 'someid' -State 'None'
-            }
+        Context 'Input' {
 
             It 'sends request' {
 
@@ -61,7 +59,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/cdirectoryservice/setuserstate'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/CDirectoryService/ChangeUserState' -and $Method -eq 'POST'
 
                 } -Times 1 -Exactly -Scope It
 
@@ -70,44 +68,33 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'sends request with expected body' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $Parsed = $Body | ConvertFrom-Json
-                    $Parsed.ID -eq 'someid' -and $Parsed.state -eq 'None'
+
+                    $BodyObject = $Body | ConvertFrom-Json
+                    $BodyObject.uuid -eq 'someuserid' -and $BodyObject.state -eq $true
+
                 } -Times 1 -Exactly -Scope It
-
-            }
-
-            It 'provides output' {
-
-                $response | Should -Not -BeNullOrEmpty
 
             }
 
         }
 
-        Context 'ByEnabled' {
+        Context 'Uuid alias' {
 
-            BeforeEach {
-                $response = Set-IDUserState -ID 'someid' -Enabled $true
-            }
+            It 'accepts -Uuid as an alias for -ID' {
 
-            It 'sends request to expected endpoint' {
+                Enable-IDUser -Uuid 'anotheruserid' | Out-Null
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/CDirectoryService/ChangeUserState'
+                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty uuid) -eq 'anotheruserid'
 
                 } -Times 1 -Exactly -Scope It
 
             }
 
-            It 'sends request with expected body' {
+        }
 
-                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $Parsed = $Body | ConvertFrom-Json
-                    $Parsed.uuid -eq 'someid' -and $Parsed.state -eq $true
-                } -Times 1 -Exactly -Scope It
-
-            }
+        Context 'Output' {
 
             It 'provides output' {
 
