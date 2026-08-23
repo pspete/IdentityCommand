@@ -140,6 +140,7 @@
         'Remove-IDApplication',
         'Copy-IDApplication',
         'Set-IDApplicationPermission',
+        'Get-IDApplicationPermission',
         'Get-IDApplicationTemplate',
         'Test-IDApplicationCatalogAvailability',
         'Get-IDApplicationClientSecret',
