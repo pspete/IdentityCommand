@@ -1,10 +1,5 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
-# TODO: This wraps /Core/GetTenantConfig, a different underlying config store to
-# Get-IDTenantConfiguration (which wraps /TenantConfig/GetCustomerConfig) - kept as a distinct
-# command/noun deliberately to avoid conflating the two. The exact set of recognised keys for
-# this store is undocumented.
+# TODO: The exact set of recognised keys for this config store is undocumented.
 function Get-IDTenantConfigEntry {
     [CmdletBinding()]
     param(

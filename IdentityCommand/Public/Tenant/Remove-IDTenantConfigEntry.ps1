@@ -1,9 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
-# TODO: This wraps /Core/DeleteTenantConfig, a different underlying config store to
-# Get/Set-IDTenantConfiguration (which wrap /TenantConfig/*CustomerConfig) - kept as a distinct
-# command/noun deliberately to avoid conflating the two.
 function Remove-IDTenantConfigEntry {
     [CmdletBinding(SupportsShouldProcess)]
     param(
