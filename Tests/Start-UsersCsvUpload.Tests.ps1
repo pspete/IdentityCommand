@@ -43,7 +43,10 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 [pscustomobject]@{'ReturnID' = 'somereturnid' }
             }
 
-            $response = Start-UsersCsvUpload -FileName 'users.csv' -Settings @{ 'PasswordNeverExpire' = $true }
+            $TestFile = Join-Path $TestDrive 'users.csv'
+            Set-Content -Path $TestFile -Value 'Login Name,Email Address' -NoNewline
+
+            $response = Start-UsersCsvUpload -Path $TestFile
 
         }
 
@@ -65,11 +68,25 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
-            It 'sends request with expected body' {
+            It 'sends request with a multipart content type' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $Parsed = $Body | ConvertFrom-Json
-                    $Parsed.FileName -eq 'users.csv' -and $Parsed.'users.csv'.PasswordNeverExpire -eq $true
+
+                    $ContentType -like 'multipart/form-data; boundary=*'
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'includes the FileName field and the file itself under Icon' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    $Text = [System.Text.Encoding]::UTF8.GetString($Body)
+                    ($Text -match 'name="FileName"[\s\S]*?users\.csv') -and
+                    ($Text -match 'name="Icon"; filename="users\.csv"') -and
+                    ($Text -match 'Content-Type: text/csv')
+
                 } -Times 1 -Exactly -Scope It
 
             }

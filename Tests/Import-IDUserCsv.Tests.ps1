@@ -44,20 +44,23 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             }
 
             Mock Submit-UsersCsvUpload -MockWith {
-                [pscustomobject]@{ 'property' = 'value' }
+                [pscustomobject]@{ 'success' = $true; 'Result' = 'Your job for creating users has been submitted successfully.' }
             }
 
-            $response = Import-IDUserCsv -FileName 'users.csv' -AdminEmail 'admin@example.com' -SendEmailInvite
+            $TestFile = Join-Path $TestDrive 'users.csv'
+            Set-Content -Path $TestFile -Value 'Login Name,Email Address' -NoNewline
+
+            $response = Import-IDUserCsv -Path $TestFile -AdminEmail 'admin@example.com' -SendEmailInvite
 
         }
 
         Context 'Input' {
 
-            It 'registers the CSV file' {
+            It 'uploads the CSV file' {
 
                 Assert-MockCalled Start-UsersCsvUpload -ParameterFilter {
 
-                    $FileName -eq 'users.csv'
+                    $Path -eq $TestFile
 
                 } -Times 1 -Exactly -Scope It
 
@@ -80,6 +83,13 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'provides output' {
 
                 $response | Should -Not -BeNullOrEmpty
+
+            }
+
+            It 'shapes the output to Success/Message' {
+
+                $response.Success | Should -Be $true
+                $response.Message | Should -Be 'Your job for creating users has been submitted successfully.'
 
             }
 

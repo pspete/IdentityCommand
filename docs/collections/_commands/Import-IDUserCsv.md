@@ -13,23 +13,38 @@ Bulk import users from a CSV file
 ## SYNTAX
 
 ```
-Import-IDUserCsv [-FileName] <String> [-AdminEmail] <String> [[-DefaultSettings] <Hashtable>]
- [-SendEmailInvite] [-SendSMSInvite] [-WhatIf] [-Confirm] [<CommonParameters>]
+Import-IDUserCsv [-Path] <String> [-AdminEmail] <String> [-SendEmailInvite] [-SendSMSInvite]
+ [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Imports users in bulk from a previously uploaded CSV file, applying the specified default field values to users where the CSV itself does not specify a value. Orchestrates the two-step bulk import API (register, then commit) into a single command.
+Uploads a local CSV file and imports the users it contains. Orchestrates the two-step bulk import API (upload, then commit) into a single command, returning an object with `Success` and `Message` properties.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Import-IDUserCsv -FileName 'users.csv' -AdminEmail 'admin@example.com' -SendEmailInvite
+PS C:\> Import-IDUserCsv -Path .\users.csv -AdminEmail 'admin@example.com' -SendEmailInvite
 ```
 
-Imports users from 'users.csv', notifying admin@example.com of the outcome, and sending each imported user an email invite.
+Uploads and imports users from 'users.csv', notifying admin@example.com of the outcome, and sending each imported user an email invite.
 
 ## PARAMETERS
+
+### -Path
+Path to the local CSV file to upload and import.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -AdminEmail
 The email address to notify of the import's outcome.
@@ -41,36 +56,6 @@ Aliases:
 
 Required: True
 Position: 1
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -DefaultSettings
-A hashtable of default field values (e.g. InEverybodyRole, PasswordNeverExpire) to apply to users imported from the file where the CSV itself does not specify a value.
-
-```yaml
-Type: Hashtable
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -FileName
-The name of the previously uploaded CSV file.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

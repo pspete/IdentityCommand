@@ -12,8 +12,8 @@ function ConvertTo-MultipartFormData {
 	.PARAMETER Field
 	A hashtable of form field names to values. Values that are a FileSystemInfo object (e.g. from
 	Get-Item) are sent as file parts, with a Content-Type derived from the file's extension
-	(recognised image extensions only - anything else falls back to application/octet-stream); all
-	other values are sent as plain text fields.
+	(recognised image/CSV extensions only - anything else falls back to application/octet-stream);
+	all other values are sent as plain text fields.
 
 	.PARAMETER Boundary
 	The multipart boundary string to use. A random one is generated if not supplied.
@@ -60,6 +60,7 @@ function ConvertTo-MultipartFormData {
 					'.gif' { 'image/gif' }
 					'.bmp' { 'image/bmp' }
 					'.ico' { 'image/x-icon' }
+					'.csv' { 'text/csv' }
 					default { 'application/octet-stream' }
 				}
 

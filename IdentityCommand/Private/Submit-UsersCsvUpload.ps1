@@ -24,6 +24,7 @@ function Submit-UsersCsvUpload {
 	Submit-UsersCsvUpload -ReturnID $ReturnID -AdminEmail 'admin@example.com' -SendEmailInvite
 	#>
 	[CmdletBinding()]
+	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingEmptyCatchBlock', '', Justification = 'Deliberately falls back to the raw string if it is not JSON')]
 	param(
 		[Parameter(Mandatory = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -43,10 +44,10 @@ function Submit-UsersCsvUpload {
 	Process {
 
 		$Body = [ordered]@{
-			'AdminEmail'      = $AdminEmail
 			'ReturnID'        = $ReturnID
+			'AdminEmail'      = $AdminEmail
+			'SendSmsInvite'   = [Bool]$SendSMSInvite
 			'SendEmailInvite' = [Bool]$SendEmailInvite
-			'SendSMSInvite'   = [Bool]$SendSMSInvite
 		}
 
 		$Request = @{
@@ -57,7 +58,17 @@ function Submit-UsersCsvUpload {
 
 		}
 
-		Invoke-IDRestMethod @Request
+		$Result = Invoke-IDRestMethod @Request
+
+		#Confirmed live: Result is itself a JSON-encoded string containing a second, identically-
+		#shaped envelope - unwrap it so the caller sees a normal object instead of raw JSON text
+		if ($Result -is [String]) {
+
+			try { $Result = $Result | ConvertFrom-Json } catch {}
+
+		}
+
+		$Result
 
 	}
 

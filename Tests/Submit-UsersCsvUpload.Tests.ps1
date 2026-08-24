@@ -69,8 +69,25 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
                     $Parsed = $Body | ConvertFrom-Json
-                    $Parsed.ReturnID -eq 'somereturnid' -and $Parsed.AdminEmail -eq 'admin@example.com' -and $Parsed.SendEmailInvite -eq $true -and $Parsed.SendSMSInvite -eq $false
+                    $Parsed.ReturnID -eq 'somereturnid' -and $Parsed.AdminEmail -eq 'admin@example.com' -and $Parsed.SendEmailInvite -eq $true -and $Parsed.SendSmsInvite -eq $false
                 } -Times 1 -Exactly -Scope It
+
+            }
+
+        }
+
+        Context 'Double-encoded response envelope' {
+
+            It 'unwraps a JSON-string Result into an object' {
+
+                Mock Invoke-IDRestMethod -MockWith {
+                    '{"success":true,"Result":"Your job for creating users has been submitted successfully."}'
+                }
+
+                $response = Submit-UsersCsvUpload -ReturnID 'somereturnid' -AdminEmail 'admin@example.com'
+
+                $response.success | Should -Be $true
+                $response.Result | Should -Be 'Your job for creating users has been submitted successfully.'
 
             }
 

@@ -1,48 +1,47 @@
 function Start-UsersCsvUpload {
 	<#
 	.SYNOPSIS
-	Registers a CSV file for bulk user import (step 1 of 2).
+	Uploads a CSV file for bulk user import (step 1 of 2).
 
 	.DESCRIPTION
-	Calls /CDirectoryService/GetUsersFromCsvFile to register the default field values to apply to a
-	named, already-uploaded CSV file, returning a ReturnID which must be passed to
-	Submit-UsersCsvUpload to complete the import.
+	Calls /CDirectoryService/GetUsersFromCsvFile as a multipart file upload, returning a preview of
+	the parsed rows and a ReturnID which must be passed to Submit-UsersCsvUpload to complete the
+	import.
 	Not exported - called internally by the public Import-IDUserCsv command.
 
-	.PARAMETER FileName
-	The name of the previously uploaded CSV file.
-
-	.PARAMETER Settings
-	A hashtable of default field values (e.g. InEverybodyRole, PasswordNeverExpire) to apply to
-	users imported from the file where the CSV itself does not specify a value.
+	.PARAMETER Path
+	Path to the local CSV file to upload.
 
 	.EXAMPLE
-	Start-UsersCsvUpload -FileName 'users.csv' -Settings @{ SendEmailInvite = $true }
+	Start-UsersCsvUpload -Path .\users.csv
 	#>
 	[CmdletBinding(SupportsShouldProcess)]
 	param(
 		[Parameter(Mandatory = $true)]
-		[ValidateNotNullOrEmpty()]
-		[String]$FileName,
-
-		[Parameter(Mandatory = $false)]
-		[Hashtable]$Settings = @{}
+		[ValidateScript({ Test-Path -Path $PSItem -PathType Leaf })]
+		[String]$Path
 	)
 
 	Process {
 
-		if ($PSCmdlet.ShouldProcess($FileName, 'Register CSV File For Bulk User Import')) {
+		$File = Get-Item -Path $Path
 
-			$Body = [ordered]@{
-				'FileName' = $FileName
+		if ($PSCmdlet.ShouldProcess($File.Name, 'Upload CSV File For Bulk User Import')) {
+
+			#Confirmed live: a multipart upload with the file itself under the 'Icon' field name
+			#(reused from a generic upload component elsewhere in the product) alongside the plain
+			#'FileName' field
+			$Form = ConvertTo-MultipartFormData -Field @{
+				'FileName' = $File.Name
+				'Icon'     = $File
 			}
-			$Body[$FileName] = $Settings
 
 			$Request = @{
 
-				'URI'    = "$($ISPSSSession.tenant_url)/CDirectoryService/GetUsersFromCsvFile?importType=ImportBulkUser"
-				'Method' = 'POST'
-				'Body'   = ($Body | ConvertTo-Json -Depth 6)
+				'URI'         = "$($ISPSSSession.tenant_url)/CDirectoryService/GetUsersFromCsvFile?importType=ImportBulkUser"
+				'Method'      = 'POST'
+				'Body'        = $Form.Body
+				'ContentType' = $Form.ContentType
 
 			}
 

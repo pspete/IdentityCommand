@@ -6474,15 +6474,15 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Imports users in bulk from a previously uploaded CSV file, applying the specified default field values to users where the CSV itself does not specify a value. Orchestrates the two-step bulk import API (register, then commit) into a single command.</maml:para>
+      <maml:para>Uploads a local CSV file and imports the users it contains. Orchestrates the two-step bulk import API (upload, then commit) into a single command, returning an object with `Success` and `Message` properties.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Import-IDUserCsv</maml:name>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
-          <maml:name>FileName</maml:name>
+          <maml:name>Path</maml:name>
           <maml:description>
-            <maml:para>The name of the previously uploaded CSV file.</maml:para>
+            <maml:para>Path to the local CSV file to upload and import.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -6499,18 +6499,6 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-          <maml:name>DefaultSettings</maml:name>
-          <maml:description>
-            <maml:para>A hashtable of default field values (e.g. InEverybodyRole, PasswordNeverExpire) to apply to users imported from the file where the CSV itself does not specify a value.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
-          <dev:type>
-            <maml:name>Hashtable</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -6562,10 +6550,10 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-        <maml:name>AdminEmail</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>Path</maml:name>
         <maml:description>
-          <maml:para>The email address to notify of the import's outcome.</maml:para>
+          <maml:para>Path to the local CSV file to upload and import.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -6574,22 +6562,10 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-        <maml:name>DefaultSettings</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>AdminEmail</maml:name>
         <maml:description>
-          <maml:para>A hashtable of default field values (e.g. InEverybodyRole, PasswordNeverExpire) to apply to users imported from the file where the CSV itself does not specify a value.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
-        <dev:type>
-          <maml:name>Hashtable</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
-        <maml:name>FileName</maml:name>
-        <maml:description>
-          <maml:para>The name of the previously uploaded CSV file.</maml:para>
+          <maml:para>The email address to notify of the import's outcome.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -6675,9 +6651,9 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Import-IDUserCsv -FileName 'users.csv' -AdminEmail 'admin@example.com' -SendEmailInvite</dev:code>
+        <dev:code>PS C:\&gt; Import-IDUserCsv -Path .\users.csv -AdminEmail 'admin@example.com' -SendEmailInvite</dev:code>
         <dev:remarks>
-          <maml:para>Imports users from 'users.csv', notifying admin@example.com of the outcome, and sending each imported user an email invite.</maml:para>
+          <maml:para>Uploads and imports users from 'users.csv', notifying admin@example.com of the outcome, and sending each imported user an email invite.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

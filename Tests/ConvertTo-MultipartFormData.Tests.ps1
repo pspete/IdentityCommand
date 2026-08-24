@@ -80,6 +80,25 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'CSV file field' {
+
+            BeforeAll {
+                $TestCsvFile = Join-Path $TestDrive 'test.csv'
+                Set-Content -Path $TestCsvFile -Value 'Login Name,Email Address' -NoNewline
+            }
+
+            BeforeEach {
+                $response = ConvertTo-MultipartFormData -Field @{ 'Icon' = (Get-Item -Path $TestCsvFile) } -Boundary 'someboundary'
+            }
+
+            It 'sets the Content-Type to text/csv' {
+
+                [System.Text.Encoding]::UTF8.GetString($response.Body) | Should -Match 'Content-Type: text/csv'
+
+            }
+
+        }
+
         Context 'Image file field' {
 
             BeforeAll {
