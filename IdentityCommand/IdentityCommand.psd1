@@ -182,6 +182,7 @@
         'Get-IDOrganization',
         'Set-IDOrganization',
         'Get-IDOrganizationAdministrator',
+        'Get-IDOrganizationMember',
         'Set-IDOrganizationAdministrator',
         'Get-IDOrganizationPermission',
         'Set-IDOrganizationPermission',
