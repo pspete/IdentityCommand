@@ -13,7 +13,7 @@ Update organization membership
 ## SYNTAX
 
 ```
-Set-IDOrganizationMembership [-OrgId] <String> [[-Add] <Array>] [[-Remove] <Array>] [-WhatIf] [-Confirm]
+Set-IDOrganizationMembership [-ID] <String> [[-Add] <Array>] [[-Remove] <Array>] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
@@ -25,7 +25,7 @@ Adds and/or removes members of an organization in a single call.
 ### Example 1
 ```powershell
 PS C:\> $Add = @(@{ ID = 'a1b2c3d4-0000-0000-0000-000000000000'; Type = 'User' })
-PS C:\> Set-IDOrganizationMembership -OrgId 'b2c3d4e5-0000-0000-0000-000000000000' -Add $Add
+PS C:\> Set-IDOrganizationMembership -ID 'b2c3d4e5-0000-0000-0000-000000000000' -Add $Add
 ```
 
 Adds the specified user to the organization.
@@ -47,13 +47,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -OrgId
+### -ID
 The unique ID of the organization to update.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: Uuid
+Aliases:
 
 Required: True
 Position: 0

@@ -19,7 +19,7 @@ Get-IDOrganization [-Format <String>] [<CommonParameters>]
 
 ### ID
 ```
-Get-IDOrganization -OrgId <String> [<CommonParameters>]
+Get-IDOrganization -ID <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -36,7 +36,7 @@ Returns all organizations in the tenant.
 
 ### Example 2
 ```powershell
-PS C:\> Get-IDOrganization -OrgId 'a1b2c3d4-0000-0000-0000-000000000000'
+PS C:\> Get-IDOrganization -ID 'a1b2c3d4-0000-0000-0000-000000000000'
 ```
 
 Returns the specified organization.
@@ -58,13 +58,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -OrgId
+### -ID
 The unique ID of the organization to retrieve.
 
 ```yaml
 Type: String
 Parameter Sets: ID
-Aliases: Uuid
+Aliases:
 
 Required: True
 Position: Named

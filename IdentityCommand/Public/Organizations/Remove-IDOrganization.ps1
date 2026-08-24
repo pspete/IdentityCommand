@@ -7,21 +7,20 @@ function Remove-IDOrganization {
             ValueFromPipelinebyPropertyName = $true
         )]
         [ValidateNotNullOrEmpty()]
-        [Alias('Uuid')]
-        [String]$OrgId
+        [String]$ID
     )
 
     BEGIN {}#begin
 
     PROCESS {
 
-        if ($PSCmdlet.ShouldProcess($OrgId, 'Remove Organization')) {
+        if ($PSCmdlet.ShouldProcess($ID, 'Remove Organization')) {
 
             $Request = @{
 
                 'URI'    = "$($ISPSSSession.tenant_url)/Org/Delete"
                 'Method' = 'POST'
-                'Body'   = (@{ 'OrgId' = $OrgId } | ConvertTo-Json)
+                'Body'   = (@{ 'OrgId' = $ID } | ConvertTo-Json)
 
             }
 

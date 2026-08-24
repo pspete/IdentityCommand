@@ -43,7 +43,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 [pscustomobject]@{'property' = 'value' }
             }
 
-            $response = Set-IDOrganization -OrgId 'someorgid' -Name 'Acme'
+            $response = Set-IDOrganization -ID 'someorgid' -Name 'Acme'
 
         }
 

@@ -13,7 +13,7 @@ Get organization administrators
 ## SYNTAX
 
 ```
-Get-IDOrganizationAdministrator [-OrgId] <String> [<CommonParameters>]
+Get-IDOrganizationAdministrator [-ID] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -23,20 +23,20 @@ Returns the administrators of an organization.
 
 ### Example 1
 ```powershell
-PS C:\> Get-IDOrganizationAdministrator -OrgId 'a1b2c3d4-0000-0000-0000-000000000000'
+PS C:\> Get-IDOrganizationAdministrator -ID 'a1b2c3d4-0000-0000-0000-000000000000'
 ```
 
 Returns the administrators of the specified organization.
 
 ## PARAMETERS
 
-### -OrgId
+### -ID
 The unique ID of the organization to get administrators for.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: Uuid
+Aliases:
 
 Required: True
 Position: 0

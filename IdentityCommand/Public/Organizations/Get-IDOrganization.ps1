@@ -8,8 +8,7 @@ function Get-IDOrganization {
             ParameterSetName = 'ID'
         )]
         [ValidateNotNullOrEmpty()]
-        [Alias('Uuid')]
-        [String]$OrgId,
+        [String]$ID,
 
         [parameter(
             Mandatory = $false,
@@ -30,7 +29,7 @@ function Get-IDOrganization {
 
                     'URI'    = "$($ISPSSSession.tenant_url)/Org/Get"
                     'Method' = 'POST'
-                    'Body'   = (@{ 'OrgId' = $OrgId } | ConvertTo-Json)
+                    'Body'   = (@{ 'OrgId' = $ID } | ConvertTo-Json)
 
                 }
 

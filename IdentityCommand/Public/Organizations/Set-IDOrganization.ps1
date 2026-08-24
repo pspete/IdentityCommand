@@ -7,8 +7,7 @@ function Set-IDOrganization {
             ValueFromPipelinebyPropertyName = $true
         )]
         [ValidateNotNullOrEmpty()]
-        [Alias('Uuid')]
-        [String]$OrgId,
+        [String]$ID,
 
         [parameter(Mandatory = $false)]
         [ValidateNotNullOrEmpty()]
@@ -23,13 +22,16 @@ function Set-IDOrganization {
 
     PROCESS {
 
-        if ($PSCmdlet.ShouldProcess($OrgId, 'Update Organization')) {
+        if ($PSCmdlet.ShouldProcess($ID, 'Update Organization')) {
+
+            $Body = $PSBoundParameters | Get-Parameter -ParametersToRemove ID
+            $Body['OrgId'] = $ID
 
             $Request = @{
 
                 'URI'    = "$($ISPSSSession.tenant_url)/Org/Update"
                 'Method' = 'POST'
-                'Body'   = ($PSBoundParameters | Get-Parameter | ConvertTo-Json)
+                'Body'   = ($Body | ConvertTo-Json)
 
             }
 

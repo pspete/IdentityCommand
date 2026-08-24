@@ -45,7 +45,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             $Grant = @(@{ 'Right' = 'someright'; 'Principal' = 'someuser'; 'PrincipalType' = 'User' })
 
-            $response = Set-IDOrganizationPermission -OrgId 'someorgid' -Grant $Grant
+            $response = Set-IDOrganizationPermission -ID 'someorgid' -Grant $Grant
 
         }
 

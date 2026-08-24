@@ -1,6 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: -Revoke's shape is unconfirmed (no revoke request has been tested) - presumed to be an
-# array of hashtables like @{Id='<userUUID>'}, matching -Grant's confirmed shape.
 function Set-IDOrganizationAdministrator {
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -9,25 +7,26 @@ function Set-IDOrganizationAdministrator {
             ValueFromPipelinebyPropertyName = $true
         )]
         [ValidateNotNullOrEmpty()]
-        [Alias('Uuid')]
-        [String]$OrgId,
+        [String]$ID,
 
+        #Array of @{Id='<userUUID>'}
         [parameter(Mandatory = $false)]
         [Array]$Grant = @(),
 
+        #Array of plain user UUID strings - confirmed a different shape to -Grant
         [parameter(Mandatory = $false)]
-        [Array]$Revoke = @()
+        [String[]]$Revoke = @()
     )
 
     BEGIN {}#begin
 
     PROCESS {
 
-        if ($PSCmdlet.ShouldProcess($OrgId, 'Update Organization Administrators')) {
+        if ($PSCmdlet.ShouldProcess($ID, 'Update Organization Administrators')) {
 
             $Body = [ordered]@{
                 'Grant'  = $Grant
-                'OrgId'  = $OrgId
+                'OrgId'  = $ID
                 'Revoke' = $Revoke
             }
 

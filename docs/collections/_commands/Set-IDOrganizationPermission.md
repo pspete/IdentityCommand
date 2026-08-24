@@ -13,22 +13,24 @@ Update organization administrative rights
 ## SYNTAX
 
 ```
-Set-IDOrganizationPermission [-OrgId] <String> [[-Grant] <Array>] [[-Revoke] <Array>] [-WhatIf] [-Confirm]
+Set-IDOrganizationPermission [-ID] <String> [[-Grant] <Array>] [[-Revoke] <Array>] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 Grants and/or revokes administrative rights on an organization in a single call.
 
+`-Grant`'s shape is confirmed (`@{Right='<right>'; Principal='<principal>'; PrincipalType='<type>'}`, `-Revoke` the same without `PrincipalType`), but the real values accepted for `Right` are not - a server-side type-casting error was returned for `'View'`, despite the vendor's schema describing it as a string.
+
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> $Grant = @(@{ Right = 'View'; Principal = 'someuser@example.com'; PrincipalType = 'User' })
-PS C:\> Set-IDOrganizationPermission -OrgId 'a1b2c3d4-0000-0000-0000-000000000000' -Grant $Grant
+PS C:\> $Grant = @(@{ Right = '<a confirmed right value>'; Principal = 'someuser@example.com'; PrincipalType = 'User' })
+PS C:\> Set-IDOrganizationPermission -ID 'a1b2c3d4-0000-0000-0000-000000000000' -Grant $Grant
 ```
 
-Grants the specified user the 'View' right on the organization.
+Grants the specified user a right on the organization.
 
 ## PARAMETERS
 
@@ -47,13 +49,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -OrgId
+### -ID
 The unique ID of the organization to update.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: Uuid
+Aliases:
 
 Required: True
 Position: 0

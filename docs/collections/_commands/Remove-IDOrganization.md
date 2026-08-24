@@ -13,7 +13,7 @@ Delete an organization
 ## SYNTAX
 
 ```
-Remove-IDOrganization [-OrgId] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
+Remove-IDOrganization [-ID] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -23,20 +23,20 @@ Deletes an organization from the tenant.
 
 ### Example 1
 ```powershell
-PS C:\> Remove-IDOrganization -OrgId 'a1b2c3d4-0000-0000-0000-000000000000'
+PS C:\> Remove-IDOrganization -ID 'a1b2c3d4-0000-0000-0000-000000000000'
 ```
 
 Deletes the specified organization.
 
 ## PARAMETERS
 
-### -OrgId
+### -ID
 The unique ID of the organization to delete.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: Uuid
+Aliases:
 
 Required: True
 Position: 0

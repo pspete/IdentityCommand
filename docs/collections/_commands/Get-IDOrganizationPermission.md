@@ -13,7 +13,7 @@ Get organization administrative rights
 ## SYNTAX
 
 ```
-Get-IDOrganizationPermission [-OrgId] <String> [<CommonParameters>]
+Get-IDOrganizationPermission [-ID] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -23,20 +23,20 @@ Returns the administrative rights (permissions) configured on an organization.
 
 ### Example 1
 ```powershell
-PS C:\> Get-IDOrganizationPermission -OrgId 'a1b2c3d4-0000-0000-0000-000000000000'
+PS C:\> Get-IDOrganizationPermission -ID 'a1b2c3d4-0000-0000-0000-000000000000'
 ```
 
 Returns the administrative rights on the specified organization.
 
 ## PARAMETERS
 
-### -OrgId
+### -ID
 The unique ID of the organization to get permissions for.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: Uuid
+Aliases:
 
 Required: True
 Position: 0

@@ -13,7 +13,7 @@ Update organization administrators
 ## SYNTAX
 
 ```
-Set-IDOrganizationAdministrator [-OrgId] <String> [[-Grant] <Array>] [[-Revoke] <Array>] [-WhatIf] [-Confirm]
+Set-IDOrganizationAdministrator [-ID] <String> [[-Grant] <Array>] [[-Revoke] <String[]>] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
@@ -25,10 +25,17 @@ Grants and/or revokes administrator status for an organization in a single call.
 ### Example 1
 ```powershell
 PS C:\> $Grant = @(@{ DirectoryServiceUuid = '09B9A9B0-6CE8-465F-AB03-65766D33B05E'; Id = 'a1b2c3d4-0000-0000-0000-000000000000'; SystemName = 'someuser@example.com'; Type = 'User' })
-PS C:\> Set-IDOrganizationAdministrator -OrgId 'b2c3d4e5-0000-0000-0000-000000000000' -Grant $Grant
+PS C:\> Set-IDOrganizationAdministrator -ID 'b2c3d4e5-0000-0000-0000-000000000000' -Grant $Grant
 ```
 
 Grants the specified user administrator status on the organization.
+
+### Example 2
+```powershell
+PS C:\> Set-IDOrganizationAdministrator -ID 'b2c3d4e5-0000-0000-0000-000000000000' -Revoke @('a1b2c3d4-0000-0000-0000-000000000000')
+```
+
+Revokes the specified user's administrator status on the organization.
 
 ## PARAMETERS
 
@@ -47,13 +54,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -OrgId
+### -ID
 The unique ID of the organization to update.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: Uuid
+Aliases:
 
 Required: True
 Position: 0
@@ -63,10 +70,10 @@ Accept wildcard characters: False
 ```
 
 ### -Revoke
-An array of hashtables describing administrators to revoke, e.g. `@{Id='<userUUID>'}`.
+An array of plain user UUID strings to revoke administrator status from - a different shape to `-Grant`.
 
 ```yaml
-Type: Array
+Type: String[]
 Parameter Sets: (All)
 Aliases:
 

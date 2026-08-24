@@ -45,7 +45,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             $Add = @(@{ 'ID' = 'someuserid'; 'Type' = 'User' })
 
-            $response = Set-IDOrganizationMembership -OrgId 'someorgid' -Add $Add
+            $response = Set-IDOrganizationMembership -ID 'someorgid' -Add $Add
 
         }
 

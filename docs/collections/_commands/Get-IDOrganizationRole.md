@@ -13,7 +13,7 @@ Get organization roles
 ## SYNTAX
 
 ```
-Get-IDOrganizationRole [-OrgId] <String> [<CommonParameters>]
+Get-IDOrganizationRole [-ID] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -23,20 +23,20 @@ Returns the roles associated with an organization.
 
 ### Example 1
 ```powershell
-PS C:\> Get-IDOrganizationRole -OrgId 'a1b2c3d4-0000-0000-0000-000000000000'
+PS C:\> Get-IDOrganizationRole -ID 'a1b2c3d4-0000-0000-0000-000000000000'
 ```
 
 Returns the roles associated with the specified organization.
 
 ## PARAMETERS
 
-### -OrgId
+### -ID
 The unique ID of the organization to get roles for.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: Uuid
+Aliases:
 
 Required: True
 Position: 0

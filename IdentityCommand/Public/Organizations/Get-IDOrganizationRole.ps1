@@ -7,8 +7,7 @@ function Get-IDOrganizationRole {
             ValueFromPipelinebyPropertyName = $true
         )]
         [ValidateNotNullOrEmpty()]
-        [Alias('Uuid')]
-        [String]$OrgId
+        [String]$ID
     )
 
     BEGIN {}#begin
@@ -19,7 +18,7 @@ function Get-IDOrganizationRole {
 
             'URI'    = "$($ISPSSSession.tenant_url)/Org/GetRoles"
             'Method' = 'POST'
-            'Body'   = (@{ 'OrgId' = $OrgId } | ConvertTo-Json)
+            'Body'   = (@{ 'OrgId' = $ID } | ConvertTo-Json)
 
         }
 

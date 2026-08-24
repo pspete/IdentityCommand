@@ -51,7 +51,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 }
             }
 
-            $response = Get-IDOrganizationAdministrator -OrgId 'someorgid'
+            $response = Get-IDOrganizationAdministrator -ID 'someorgid'
 
         }
 

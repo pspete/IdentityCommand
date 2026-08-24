@@ -13,8 +13,7 @@ function Set-IDOrganizationPermission {
             ValueFromPipelinebyPropertyName = $true
         )]
         [ValidateNotNullOrEmpty()]
-        [Alias('Uuid')]
-        [String]$OrgId,
+        [String]$ID,
 
         [parameter(Mandatory = $false)]
         [Array]$Grant = @(),
@@ -27,11 +26,11 @@ function Set-IDOrganizationPermission {
 
     PROCESS {
 
-        if ($PSCmdlet.ShouldProcess($OrgId, 'Update Organization Permissions')) {
+        if ($PSCmdlet.ShouldProcess($ID, 'Update Organization Permissions')) {
 
             $Body = [ordered]@{
                 'Grant'  = $Grant
-                'OrgId'  = $OrgId
+                'OrgId'  = $ID
                 'Revoke' = $Revoke
             }
 

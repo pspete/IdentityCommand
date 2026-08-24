@@ -45,7 +45,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             $Grant = @(@{ 'DirectoryServiceUuid' = 'someuuid'; 'Id' = 'someid'; 'SystemName' = 'someuser'; 'Type' = 'User' })
 
-            $response = Set-IDOrganizationAdministrator -OrgId 'someorgid' -Grant $Grant
+            $response = Set-IDOrganizationAdministrator -ID 'someorgid' -Grant $Grant
 
         }
 
@@ -72,6 +72,21 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
                     $Parsed = $Body | ConvertFrom-Json
                     $Parsed.OrgId -eq 'someorgid' -and $Parsed.Grant.Count -eq 1
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+        }
+
+        Context 'Revoke' {
+
+            It 'sends -Revoke as an array of plain UUID strings' {
+
+                Set-IDOrganizationAdministrator -ID 'someorgid' -Revoke @('someuserid') | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed.Revoke[0] -eq 'someuserid'
                 } -Times 1 -Exactly -Scope It
 
             }

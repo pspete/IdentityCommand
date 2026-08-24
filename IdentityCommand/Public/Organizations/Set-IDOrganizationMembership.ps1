@@ -7,8 +7,7 @@ function Set-IDOrganizationMembership {
             ValueFromPipelinebyPropertyName = $true
         )]
         [ValidateNotNullOrEmpty()]
-        [Alias('Uuid')]
-        [String]$OrgId,
+        [String]$ID,
 
         [parameter(Mandatory = $false)]
         [Array]$Add = @(),
@@ -21,11 +20,11 @@ function Set-IDOrganizationMembership {
 
     PROCESS {
 
-        if ($PSCmdlet.ShouldProcess($OrgId, 'Update Organization Membership')) {
+        if ($PSCmdlet.ShouldProcess($ID, 'Update Organization Membership')) {
 
             $Body = [ordered]@{
                 'Add'    = $Add
-                'OrgId'  = $OrgId
+                'OrgId'  = $ID
                 'Remove' = $Remove
             }
 

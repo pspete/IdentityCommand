@@ -13,7 +13,7 @@ Update an organization
 ## SYNTAX
 
 ```
-Set-IDOrganization [-OrgId] <String> [[-Name] <String>] [[-Description] <String>] [-WhatIf] [-Confirm]
+Set-IDOrganization [-ID] <String> [[-Name] <String>] [[-Description] <String>] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
@@ -24,7 +24,7 @@ Updates the name and/or description of an existing organization.
 
 ### Example 1
 ```powershell
-PS C:\> Set-IDOrganization -OrgId 'a1b2c3d4-0000-0000-0000-000000000000' -Description 'Updated description'
+PS C:\> Set-IDOrganization -ID 'a1b2c3d4-0000-0000-0000-000000000000' -Description 'Updated description'
 ```
 
 Updates the description of the specified organization.
@@ -61,13 +61,13 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -OrgId
+### -ID
 The unique ID of the organization to update.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: Uuid
+Aliases:
 
 Required: True
 Position: 0

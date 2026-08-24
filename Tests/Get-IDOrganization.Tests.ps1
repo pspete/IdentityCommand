@@ -84,7 +84,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
         Context 'ID' {
 
             BeforeEach {
-                $response = Get-IDOrganization -OrgId 'someorgid'
+                $response = Get-IDOrganization -ID 'someorgid'
             }
 
             It 'sends request to expected endpoint' {
