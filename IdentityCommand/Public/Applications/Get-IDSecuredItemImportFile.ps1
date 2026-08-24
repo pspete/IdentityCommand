@@ -1,5 +1,5 @@
 # .ExternalHelp IdentityCommand-help.xml
-function Get-IDRecentImportedAccountsFile {
+function Get-IDSecuredItemImportFile {
     [CmdletBinding()]
     param(
         [parameter(Mandatory = $true)]

@@ -5,43 +5,45 @@ online version:
 schema: 2.0.0
 ---
 
-# Get-IDImportedAccountsLog
+# Get-IDSecuredItemImportFile
 
 ## SYNOPSIS
-Download an imported accounts log file
+Get details of recently uploaded secured item import files
 
 ## SYNTAX
 
 ```
-Get-IDImportedAccountsLog [-FileKey] <String> [<CommonParameters>]
+Get-IDSecuredItemImportFile [-FileCount] <Int32>
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Downloads the log file produced by an account import job.
+Returns details of recently uploaded secured item (credential) import files, including each job's status and the `RowKey` needed by `Get-IDSecuredItemImportLog`.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Get-IDImportedAccountsLog -FileKey 'somefilekey'
+PS C:\> Get-IDSecuredItemImportFile -FileCount 5
 ```
 
-Downloads the specified import log file.
+Returns details of the 5 most recently uploaded import files.
 
 ## PARAMETERS
 
-### -FileKey
-The unique key of the import log file to download.
+### -FileCount
+The maximum number of recent files to return. Required - a call with no `-FileCount` fails
+server-side with a generic error page.
 
 ```yaml
-Type: String
+Type: Int32
 Parameter Sets: (All)
 Aliases:
 
 Required: True
 Position: 0
 Default value: None
-Accept pipeline input: True (ByPropertyName)
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -50,7 +52,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## INPUTS
 
-### System.String
+### None
 
 ## OUTPUTS
 

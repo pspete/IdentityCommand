@@ -247,12 +247,12 @@
         'Get-IDApplicationData',
         'Get-IDUserPortalData',
         'Get-IDCredentialProvider',
-        'Get-IDRecentImportedAccountsFile',
+        'Get-IDSecuredItemImportFile',
         'Import-IDApplicationTemplate',
         'Set-IDApplicationUserCredential',
         'Update-IDSecuredItemCredential',
         'Test-IDApplicationUsername',
-        'Get-IDImportedAccountsLog',
+        'Get-IDSecuredItemImportLog',
         'Set-IDApplicationIcon',
         'Set-IDSecuredItemIcon'
     )
