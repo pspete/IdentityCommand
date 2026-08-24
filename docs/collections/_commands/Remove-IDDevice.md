@@ -46,7 +46,7 @@ Accept wildcard characters: False
 ```
 
 ### -DeviceID
-The unique ID of the device to delete.
+The unique ID of the device to delete - the literal value supplied to `New-IDDevice`'s `-Udid` at creation, not a server-generated ID. If you don't already have it, look devices up via `Invoke-IDSqlcmd` against the `Device` Redrock table - there is no `Get-IDDevice` command.
 
 ```yaml
 Type: String

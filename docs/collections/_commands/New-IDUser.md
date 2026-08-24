@@ -24,6 +24,8 @@ New-IDUser [-Name] <String> [-Mail] <String> [[-DisplayName] <String>] [[-Descri
 ## DESCRIPTION
 Creates a new user in the tenant's cloud directory.
 
+`CDirectoryService/CreateUser`'s response IS the new user's UUID as a plain string, not an object with a `.Uuid`/`.ID` property.
+
 ## EXAMPLES
 
 ### Example 1

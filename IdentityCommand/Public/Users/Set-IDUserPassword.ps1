@@ -1,9 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: CAUTION - this is SELF-SERVICE ONLY: it always changes the password of whichever account
-# the current session is authenticated as (UserMgmt/ChangeUserPassword has no user-targeting field,
-# and $ISPSSSession.User is only used for the -WhatIf/-Confirm message, not sent in the request
-# body). There is no way to change another user's password via this command. The server also does
-# not appear to validate -OldPassword against the session user's actual current password.
 function Set-IDUserPassword {
     [CmdletBinding(SupportsShouldProcess)]
     param(

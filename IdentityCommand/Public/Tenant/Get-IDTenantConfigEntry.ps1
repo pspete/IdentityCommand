@@ -1,5 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: The exact set of recognised keys for this config store is undocumented.
 function Get-IDTenantConfigEntry {
     [CmdletBinding()]
     param(

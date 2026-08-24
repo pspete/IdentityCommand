@@ -1,6 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: Requires a role of -RoleType Script (New-IDRole) - a PrincipalList role does not support a
-# dynamic membership script.
 function Set-IDDynamicRoleScript {
 
     [CmdletBinding(SupportsShouldProcess)]

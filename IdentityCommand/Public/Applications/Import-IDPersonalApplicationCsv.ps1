@@ -1,7 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: Only the generic 'Other' template (name,url,username,password,notes,totp,folder columns)
-# is supported - importing a provider-native export (LastPass, Dashlane, Google, KeePass, etc.)
-# would need that provider's real column layout captured first.
 function Import-IDPersonalApplicationCsv {
     [CmdletBinding(SupportsShouldProcess)]
     param(

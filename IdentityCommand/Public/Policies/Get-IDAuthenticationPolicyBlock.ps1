@@ -1,8 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: -Name is the name of the authentication policy/policy set itself (e.g. as shown in the
-# CyberArk Identity Admin Portal's Authentication -> Policies page), not a role name. Matches the
-# 'ID' property on Get-IDAuthenticationPolicyLink output directly, hence the -ID alias below for
-# direct pipeline binding from that command.
 function Get-IDAuthenticationPolicyBlock {
 
     [CmdletBinding()]

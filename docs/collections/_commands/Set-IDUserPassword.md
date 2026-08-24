@@ -20,6 +20,8 @@ Set-IDUserPassword [-OldPassword] <SecureString> [-NewPassword] <SecureString> [
 ## DESCRIPTION
 Changes the current user's password, given their existing password.
 
+**CAUTION - this is self-service only.** `UserMgmt/ChangeUserPassword` has no user-targeting field, so this always changes the password of whichever account the current session is authenticated as - there is no way to change another user's password via this command. `$ISPSSSession.User` is used only for the `-WhatIf`/`-Confirm` message, it is not sent in the request body. The server also does not appear to validate `-OldPassword` against the session user's actual current password.
+
 ## EXAMPLES
 
 ### Example 1

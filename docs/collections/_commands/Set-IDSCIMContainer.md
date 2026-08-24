@@ -32,7 +32,7 @@ Replaces the specified SCIM Container.
 ## PARAMETERS
 
 ### -Attributes
-A hashtable representing the SCIM resource document. See the command examples for the recorded field shape.
+A hashtable representing the SCIM resource document. See `New-IDSCIMContainer` for the recorded field shape.
 
 ```yaml
 Type: Hashtable

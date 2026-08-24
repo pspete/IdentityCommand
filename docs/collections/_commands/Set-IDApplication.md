@@ -20,6 +20,8 @@ Set-IDApplication [-ID] <String> [[-Name] <String>] [[-Description] <String>] [-
 ## DESCRIPTION
 Updates the properties of an existing application.
 
+The response is just `{State: 0}`, not the updated application object - call `Get-IDApplication` afterward to confirm the change took effect.
+
 ## EXAMPLES
 
 ### Example 1

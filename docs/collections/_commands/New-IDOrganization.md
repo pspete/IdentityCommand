@@ -19,6 +19,8 @@ New-IDOrganization [-Name] <String> [[-Description] <String>] [-WhatIf] [-Confir
 ## DESCRIPTION
 Creates a new organization in the tenant.
 
+The response is an object with `ID`/`Name`/`Description`/`Path` - the new organization's key is under `.ID`, not `.OrgId`.
+
 ## EXAMPLES
 
 ### Example 1

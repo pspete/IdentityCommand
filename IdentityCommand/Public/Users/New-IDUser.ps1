@@ -1,6 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: CDirectoryService/CreateUser returns the new user's UUID as a plain string (the whole
-# return value IS the UUID) - not an object with a .Uuid/.ID property.
 function New-IDUser {
     [CmdletBinding(SupportsShouldProcess)]
     param(

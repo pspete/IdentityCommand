@@ -1,7 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: -directoryServiceUUID uses lowercase-first casing to match the underlying API's query
-# parameter name exactly (consistent with -username on Get-IDUser), rather than standard PowerShell
-# parameter casing.
 function Get-IDUserAttribute {
     [CmdletBinding()]
     param(

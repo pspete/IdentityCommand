@@ -19,6 +19,8 @@ Set-IDTenantSecurityQuestion [-Question] <String> [[-Culture] <String>] [-WhatIf
 ## DESCRIPTION
 Adds a new security question to the set of tenant admin security questions. The underlying API only supports adding a new question - there is no update-by-ID path (use Remove-IDTenantSecurityQuestion followed by Set-IDTenantSecurityQuestion to replace one).
 
+The response carries no ID - use `Get-IDTenantSecurityQuestion` afterward to find the new question's Uuid (needed by `Remove-IDTenantSecurityQuestion`).
+
 ## EXAMPLES
 
 ### Example 1

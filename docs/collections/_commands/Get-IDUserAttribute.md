@@ -46,7 +46,7 @@ Accept wildcard characters: False
 ```
 
 ### -directoryServiceUUID
-The unique ID of the directory service to scope the attribute lookup to.
+The unique ID of the directory service to scope the attribute lookup to. Uses lowercase-first casing (rather than standard PowerShell parameter casing) to match the underlying API's query parameter name exactly, consistent with `-username` on `Get-IDUser`.
 
 ```yaml
 Type: String

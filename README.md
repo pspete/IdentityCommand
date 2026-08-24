@@ -165,6 +165,8 @@ The current list is:
 | `Get-IDWorkflowJob -Type` | `-Type` is mandatory server-side with an unknown enum |
 | `Send-IDWorkflowEvent` / `Stop-IDWorkflowJob` | Success path untested against a genuinely _pending_ approval job |
 | `New-IDUsernameReminder -Interactive` | Needs confirming across more than one challenge/mechanism level |
+| `Set-IDOrganizationPermission` | `Right`'s real values are unknown; a guess was rejected server-side |
+| `Set-IDUser -AccountExp` | DateTime serialization against the API's expected format is unverified |
 
 ## Installation
 

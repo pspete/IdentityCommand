@@ -1,7 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: This only ever adds a new question - there is no update-by-ID path despite the 'Set' verb.
-# The response carries no ID either - use Get-IDTenantSecurityQuestion afterward to find the new
-# question's Uuid (needed by Remove-IDTenantSecurityQuestion).
 function Set-IDTenantSecurityQuestion {
     [CmdletBinding(SupportsShouldProcess)]
     param(

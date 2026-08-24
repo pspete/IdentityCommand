@@ -1,6 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: The response is just {State: 0}, not the updated application object - use Get-IDApplication
-# afterward to confirm the change took effect.
 function Set-IDApplication {
     [CmdletBinding(SupportsShouldProcess)]
     param(

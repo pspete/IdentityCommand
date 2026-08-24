@@ -1,9 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: -RawRegisterResponse must be a genuine browser WebAuthn ceremony result (the JSON-stringified
-# response from navigator.credentials.create(), answering the challenge from
-# Get-IDUserU2FRegistrationChallenge) - this can't be produced by PowerShell alone, since it requires
-# real interaction with a physical/platform authenticator inside a browser. This command only submits
-# an already-obtained response.
 function Complete-IDUserU2FRegistrationChallenge {
     [CmdletBinding(SupportsShouldProcess)]
     param(

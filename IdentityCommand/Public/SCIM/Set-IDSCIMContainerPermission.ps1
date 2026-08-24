@@ -1,8 +1,6 @@
 # .ExternalHelp IdentityCommand-help.xml
 # UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
 # expected before relying on it in production.
-# TODO: -Attributes is the full replacement SCIM ContainerPermissions resource document as a
-# hashtable - see New-IDSCIMContainerPermission for the recorded field shape.
 function Set-IDSCIMContainerPermission {
     [CmdletBinding(SupportsShouldProcess)]
     param(

@@ -1669,10 +1669,10 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-IDAuthenticationPolicyBlock</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="PolicySet">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="PolicySet, ID">
           <maml:name>Name</maml:name>
           <maml:description>
-            <maml:para>The name of the authentication policy block to retrieve. Also aliased as PolicySet. Accepts pipeline input by property name.</maml:para>
+            <maml:para>The name of the authentication policy/policy set itself (e.g. as shown in the CyberArk Identity Admin Portal's Authentication -&gt; Policies page) - not a role name. Matches the `ID` property on `Get-IDAuthenticationPolicyLink` output directly, hence the `-ID` alias, for direct pipeline binding from that command.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -1684,10 +1684,10 @@
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="PolicySet">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="PolicySet, ID">
         <maml:name>Name</maml:name>
         <maml:description>
-          <maml:para>The name of the authentication policy block to retrieve. Also aliased as PolicySet. Accepts pipeline input by property name.</maml:para>
+          <maml:para>The name of the authentication policy/policy set itself (e.g. as shown in the CyberArk Identity Admin Portal's Authentication -&gt; Policies page) - not a role name. Matches the `ID` property on `Get-IDAuthenticationPolicyLink` output directly, hence the `-ID` alias, for direct pipeline binding from that command.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -1836,60 +1836,6 @@
         <dev:code>PS C:\&gt; Get-IDAuthenticationPolicyLink</dev:code>
         <dev:remarks>
           <maml:para>Return the tenant's current authentication policy links.</maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
-    <command:relatedLinks />
-  </command:command>
-  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-    <command:details>
-      <command:name>Get-IDAuthenticationPolicyMetadata</command:name>
-      <command:verb>Get</command:verb>
-      <command:noun>IDAuthenticationPolicyMetadata</command:noun>
-      <maml:description>
-        <maml:para>Get authentication policy metadata</maml:para>
-      </maml:description>
-    </command:details>
-    <maml:description>
-      <maml:para>Retrieve metadata describing the settings, options, and fields available when building or editing authentication policies for the tenant.</maml:para>
-    </maml:description>
-    <command:syntax>
-      <command:syntaxItem>
-        <maml:name>Get-IDAuthenticationPolicyMetadata</maml:name>
-      </command:syntaxItem>
-    </command:syntax>
-    <command:parameters />
-    <command:inputTypes>
-      <command:inputType>
-        <dev:type>
-          <maml:name>None</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:inputType>
-    </command:inputTypes>
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>System.Object</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
-    <maml:alertSet>
-      <maml:alert>
-        <maml:para></maml:para>
-      </maml:alert>
-    </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-IDAuthenticationPolicyMetadata</dev:code>
-        <dev:remarks>
-          <maml:para>Return the tenant's authentication policy metadata.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -4951,7 +4897,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>directoryServiceUUID</maml:name>
           <maml:description>
-            <maml:para>The unique ID of the directory service to scope the attribute lookup to.</maml:para>
+            <maml:para>The unique ID of the directory service to scope the attribute lookup to. Uses lowercase-first casing (rather than standard PowerShell parameter casing) to match the underlying API's query parameter name exactly, consistent with `-username` on `Get-IDUser`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -4978,7 +4924,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>directoryServiceUUID</maml:name>
         <maml:description>
-          <maml:para>The unique ID of the directory service to scope the attribute lookup to.</maml:para>
+          <maml:para>The unique ID of the directory service to scope the attribute lookup to. Uses lowercase-first casing (rather than standard PowerShell parameter casing) to match the underlying API's query parameter name exactly, consistent with `-username` on `Get-IDUser`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -5702,11 +5648,11 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       <command:verb>Get</command:verb>
       <command:noun>IDUserSecurityQuestion</command:noun>
       <maml:description>
-        <maml:para>Get the current user's security questions</maml:para>
+        <maml:para>Get the tenant's security question policy</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Returns the security questions configured for the current user. This is distinct from Get-IDTenantSecurityQuestion, which returns tenant-wide admin security questions.</maml:para>
+      <maml:para>Despite its "User" naming, this returns the tenant-wide security question policy (`AnswerMinLength`/`MaxQuestions`/`MinAdminQuestions`/`MinUserQuestions`/`Questions`) applied to the current session's tenant - not a specific user's answered questions. The underlying `UserMgmt/GetSecurityQuestions` endpoint takes no per-user scoping. This is distinct from `Get-IDTenantSecurityQuestion`, which returns the tenant's admin security questions.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -5744,7 +5690,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
         <dev:code>PS C:\&gt; Get-IDUserSecurityQuestion</dev:code>
         <dev:remarks>
-          <maml:para>Returns the current user's security questions.</maml:para>
+          <maml:para>Returns the tenant's security question policy.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -8171,6 +8117,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
     </command:details>
     <maml:description>
       <maml:para>Creates a new organization in the tenant.</maml:para>
+      <maml:para>The response is an object with `ID`/`Name`/`Description`/`Path` - the new organization's key is under `.ID`, not `.OrgId`.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -10341,6 +10288,7 @@ PS C:\&gt; New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -SAMLR
     </command:details>
     <maml:description>
       <maml:para>Creates a new user in the tenant's cloud directory.</maml:para>
+      <maml:para>`CDirectoryService/CreateUser`'s response IS the new user's UUID as a plain string, not an object with a `.Uuid`/`.ID` property.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -11667,7 +11615,7 @@ PS C:\&gt; New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -SAMLR
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
           <maml:name>DeviceID</maml:name>
           <maml:description>
-            <maml:para>The unique ID of the device to delete.</maml:para>
+            <maml:para>The unique ID of the device to delete - the literal value supplied to `New-IDDevice`'s `-Udid` at creation, not a server-generated ID. If you don't already have it, look devices up via `Invoke-IDSqlcmd` against the `Device` Redrock table - there is no `Get-IDDevice` command.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -11716,7 +11664,7 @@ PS C:\&gt; New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -SAMLR
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
         <maml:name>DeviceID</maml:name>
         <maml:description>
-          <maml:para>The unique ID of the device to delete.</maml:para>
+          <maml:para>The unique ID of the device to delete - the literal value supplied to `New-IDDevice`'s `-Udid` at creation, not a server-generated ID. If you don't already have it, look devices up via `Invoke-IDSqlcmd` against the `Device` Redrock table - there is no `Get-IDDevice` command.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -14818,6 +14766,7 @@ PS C:\&gt; Send-IDUserInvite -Role 'SomeRole' -Entities $Entities -EmailInvite</
     </command:details>
     <maml:description>
       <maml:para>Updates the properties of an existing application.</maml:para>
+      <maml:para>The response is just `{State: 0}`, not the updated application object - call `Get-IDApplication` afterward to confirm the change took effect.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -17760,7 +17709,7 @@ PS C:\&gt; Set-IDOrganizationPermission -ID 'a1b2c3d4-0000-0000-0000-00000000000
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Attributes</maml:name>
           <maml:description>
-            <maml:para>A hashtable representing the SCIM resource document. See the command examples for the recorded field shape.</maml:para>
+            <maml:para>A hashtable representing the SCIM resource document. See `New-IDSCIMContainer` for the recorded field shape.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
           <dev:type>
@@ -17797,7 +17746,7 @@ PS C:\&gt; Set-IDOrganizationPermission -ID 'a1b2c3d4-0000-0000-0000-00000000000
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Attributes</maml:name>
         <maml:description>
-          <maml:para>A hashtable representing the SCIM resource document. See the command examples for the recorded field shape.</maml:para>
+          <maml:para>A hashtable representing the SCIM resource document. See `New-IDSCIMContainer` for the recorded field shape.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
         <dev:type>
@@ -17909,7 +17858,7 @@ PS C:\&gt; Set-IDOrganizationPermission -ID 'a1b2c3d4-0000-0000-0000-00000000000
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Attributes</maml:name>
           <maml:description>
-            <maml:para>A hashtable representing the SCIM resource document. See the command examples for the recorded field shape.</maml:para>
+            <maml:para>A hashtable representing the SCIM resource document. See `New-IDSCIMContainerPermission` for the recorded field shape.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
           <dev:type>
@@ -17946,7 +17895,7 @@ PS C:\&gt; Set-IDOrganizationPermission -ID 'a1b2c3d4-0000-0000-0000-00000000000
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Attributes</maml:name>
         <maml:description>
-          <maml:para>A hashtable representing the SCIM resource document. See the command examples for the recorded field shape.</maml:para>
+          <maml:para>A hashtable representing the SCIM resource document. See `New-IDSCIMContainerPermission` for the recorded field shape.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
         <dev:type>
@@ -18058,7 +18007,7 @@ PS C:\&gt; Set-IDOrganizationPermission -ID 'a1b2c3d4-0000-0000-0000-00000000000
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Attributes</maml:name>
           <maml:description>
-            <maml:para>A hashtable representing the SCIM resource document. See the command examples for the recorded field shape.</maml:para>
+            <maml:para>A hashtable representing the SCIM resource document. See `New-IDSCIMGroup` for the recorded field shape.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
           <dev:type>
@@ -18095,7 +18044,7 @@ PS C:\&gt; Set-IDOrganizationPermission -ID 'a1b2c3d4-0000-0000-0000-00000000000
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Attributes</maml:name>
         <maml:description>
-          <maml:para>A hashtable representing the SCIM resource document. See the command examples for the recorded field shape.</maml:para>
+          <maml:para>A hashtable representing the SCIM resource document. See `New-IDSCIMGroup` for the recorded field shape.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
         <dev:type>
@@ -18207,7 +18156,7 @@ PS C:\&gt; Set-IDOrganizationPermission -ID 'a1b2c3d4-0000-0000-0000-00000000000
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Attributes</maml:name>
           <maml:description>
-            <maml:para>A hashtable representing the SCIM resource document. See the command examples for the recorded field shape.</maml:para>
+            <maml:para>A hashtable representing the SCIM resource document. See `New-IDSCIMPrivilegedData` for the recorded field shape.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
           <dev:type>
@@ -18244,7 +18193,7 @@ PS C:\&gt; Set-IDOrganizationPermission -ID 'a1b2c3d4-0000-0000-0000-00000000000
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Attributes</maml:name>
         <maml:description>
-          <maml:para>A hashtable representing the SCIM resource document. See the command examples for the recorded field shape.</maml:para>
+          <maml:para>A hashtable representing the SCIM resource document. See `New-IDSCIMPrivilegedData` for the recorded field shape.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
         <dev:type>
@@ -20045,6 +19994,7 @@ PS C:\&gt; Set-IDOrganizationPermission -ID 'a1b2c3d4-0000-0000-0000-00000000000
     </command:details>
     <maml:description>
       <maml:para>Adds a new security question to the set of tenant admin security questions. The underlying API only supports adding a new question - there is no update-by-ID path (use Remove-IDTenantSecurityQuestion followed by Set-IDTenantSecurityQuestion to replace one).</maml:para>
+      <maml:para>The response carries no ID - use `Get-IDTenantSecurityQuestion` afterward to find the new question's Uuid (needed by `Remove-IDTenantSecurityQuestion`).</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -20941,7 +20891,7 @@ PS C:\&gt; Set-IDOrganizationPermission -ID 'a1b2c3d4-0000-0000-0000-00000000000
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Changes the current user's password, given their existing password.</maml:para>
+      <maml:para>Changes the current user's password, given their existing password. CAUTION - this is self-service only. `UserMgmt/ChangeUserPassword` has no user-targeting field, so this always changes the password of whichever account the current session is authenticated as - there is no way to change another user's password via this command. `$ISPSSSession.User` is used only for the `-WhatIf`/`-Confirm` message, it is not sent in the request body. The server also does not appear to validate `-OldPassword` against the session user's actual current password.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>

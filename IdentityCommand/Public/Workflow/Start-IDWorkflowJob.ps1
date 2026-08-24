@@ -1,9 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: -Script must be a real virtual script path starting with a forward slash (e.g.
-# '/lib/get_superrights.js'). -Args must be a dictionary/hashtable of named parameters matching
-# what the target script expects (e.g. @{excludeRight=''} for get_superrights.js), not a bare
-# string or positional array. On success, the response Result is the new job's ID as a plain
-# string (not an object with a .jobid property) - this command's return value IS the job ID.
 function Start-IDWorkflowJob {
     [CmdletBinding(SupportsShouldProcess)]
     param(
