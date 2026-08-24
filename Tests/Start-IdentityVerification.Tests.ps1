@@ -43,45 +43,43 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 [pscustomobject]@{'property' = 'value' }
             }
 
+            $response = Start-IdentityVerification -ID 'someuserid'
+
         }
 
-        Context 'Without UseOathDefaults' {
+        Context 'Input' {
 
-            BeforeEach {
-                $response = Test-IDUserOathOtpCode -ID 'someuuid' -OtpCode '123456'
+            It 'sends request' {
+
+                Assert-MockCalled Invoke-IDRestMethod -Times 1 -Exactly -Scope It
+
             }
 
             It 'sends request to expected endpoint' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/Oath/ValidateOtpCode?otpCode=123456&uuid=someuuid'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/CDirectoryService/StartAuthentication' -and $Method -eq 'POST'
 
                 } -Times 1 -Exactly -Scope It
 
             }
+
+            It 'sends request with expected body' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty UUID) -eq 'someuserid'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+        }
+
+        Context 'Output' {
 
             It 'provides output' {
 
                 $response | Should -Not -BeNullOrEmpty
-
-            }
-
-        }
-
-        Context 'With UseOathDefaults' {
-
-            BeforeEach {
-                $response = Test-IDUserOathOtpCode -ID 'someuuid' -OtpCode '123456' -UseOathDefaults 'true'
-            }
-
-            It 'sends request to expected endpoint' {
-
-                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/Oath/ValidateOtpCode?otpCode=123456&uuid=someuuid&useOathDefaults=true'
-
-                } -Times 1 -Exactly -Scope It
 
             }
 

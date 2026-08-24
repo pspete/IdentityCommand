@@ -1,10 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
-# TODO: DEPRIORITIZED - fails with a generic HTML error page, suggesting the endpoint URL and/or
-# body shape is wrong. No sample request was ever found for this endpoint - the -ID parameter/body
-# shape was inferred purely by analogy with other single-user CDirectoryService operations. Needs a
-# DevTools capture of whatever portal flow triggers an identity-verification OTP send.
 function Send-IDUserIdentityVerification {
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -23,16 +17,96 @@ function Send-IDUserIdentityVerification {
 
         if ($PSCmdlet.ShouldProcess($ID, 'Send Identity Verification')) {
 
+            #Step 1: start the challenge for this user, listing their enrolled mechanisms
+            $Verification = Start-IdentityVerification -ID $ID
+
+            $Mechanisms = @($Verification.ReturnData.Challenges.Mechanisms)
+
+            if ($Mechanisms.Count -eq 0) {
+
+                $PSCmdlet.ThrowTerminatingError(
+
+                    [System.Management.Automation.ErrorRecord]::new(
+
+                        "User '$ID' has no enrolled identity verification mechanisms.",
+                        'MechanismNotFound',
+                        [System.Management.Automation.ErrorCategory]::ObjectNotFound,
+                        $ID
+
+                    )
+
+                )
+
+            }
+
+            #Same interactive picker used to select a mechanism during login
+            $Mechanism = $Mechanisms | Select-ChallengeMechanism
+
+            #Same answer collection used during login. No credential exists for the target user in
+            #this admin-initiated flow, so the UP/SMS password-based answer will be empty - harmless,
+            #since those mechanisms aren't relevant to verifying someone else's identity.
+            $Answer = Get-MechanismAnswer -Mechanism $Mechanism -Credential ([PSCredential]::Empty)
+
             $Request = @{
 
                 'URI'    = "$($ISPSSSession.tenant_url)/CDirectoryService/SendIdentityVerification"
                 'Method' = 'POST'
-                'Body'   = (@{ 'ID' = $ID } | ConvertTo-Json)
 
             }
 
-            #Send Request
-            Invoke-IDRestMethod @Request
+            $Body = [ordered]@{
+                'UUID'        = $ID
+                'TenantId'    = $ISPSSSession.TenantId
+                'SessionId'   = $Verification.ReturnData.SessionId
+                'MechanismId' = $Mechanism.MechanismId
+            }
+
+            #Mirrors Start-AdvanceAuthentication's Action resolution for the login flow
+            switch ($Mechanism) {
+
+                { $($PSItem.AnswerType) -like 'Start*Oob' } {
+
+                    #StartOOB begins the waiting period for MFA approval
+                    $Body['Action'] = 'StartOOB'
+                    $Request['Body'] = $Body | ConvertTo-Json
+
+                    $null = Invoke-IDRestMethod @Request
+
+                }
+
+                { $($PSItem.Name) -match 'EMAIL|OTP|U2F|QR|PF' } {
+
+                    #Poll for response
+                    $Body['Action'] = 'Poll'
+                    break
+
+                }
+
+                { $($PSItem.Name) -match 'SQ|UP|OATH|SMS|RESET' } {
+
+                    #Provide Answer Directly
+                    $Body['Action'] = 'Answer'
+                    $Body['Answer'] = Unprotect-Answer $Answer
+                    break
+
+                }
+
+            }
+
+            $Request['Body'] = $Body | ConvertTo-Json
+
+            $Result = Invoke-IDRestMethod @Request
+
+            while ($Result.Summary -match 'OobPending') {
+
+                #Polls every second while the challenge is pending
+                Start-Sleep 1
+
+                $Result = Invoke-IDRestMethod @Request
+
+            }
+
+            $Result
 
         }
 

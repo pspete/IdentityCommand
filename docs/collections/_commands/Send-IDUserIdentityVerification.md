@@ -8,7 +8,7 @@ schema: 2.0.0
 # Send-IDUserIdentityVerification
 
 ## SYNOPSIS
-Send an identity verification OTP to a user
+Challenge a user's identity verification mechanism
 
 ## SYNTAX
 
@@ -17,7 +17,9 @@ Send-IDUserIdentityVerification [-ID] <String> [-WhatIf] [-Confirm] [<CommonPara
 ```
 
 ## DESCRIPTION
-Sends an identity verification one-time passcode to the specified user.
+Starts an identity verification challenge for a user and works through it - the same mechanism-selection/challenge/answer system used for interactive login (`New-IDSession`), but initiated by an admin against a target user rather than the user authenticating themselves.
+
+When the user has more than one enrolled mechanism, you're prompted interactively to choose one, exactly as during login. Out-of-band mechanisms (e.g. Email) are challenged and then polled automatically until answered. Direct-answer mechanisms (e.g. OATH) prompt you for the code.
 
 ## EXAMPLES
 
@@ -26,12 +28,12 @@ Sends an identity verification one-time passcode to the specified user.
 PS C:\> Send-IDUserIdentityVerification -ID 'a1b2c3d4-0000-0000-0000-000000000000'
 ```
 
-Sends an identity verification OTP to the specified user.
+Starts an identity verification challenge for the specified user, prompting for a mechanism if more than one is enrolled.
 
 ## PARAMETERS
 
 ### -ID
-The unique ID of the user to send the verification OTP to.
+The unique ID of the user being verified.
 
 ```yaml
 Type: String

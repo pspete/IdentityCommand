@@ -193,7 +193,6 @@
         'Remove-IDDevice',
         'Unregister-IDDevice',
         'Sync-IDUserOathToken',
-        'Test-IDUserOathOtpCode',
         'Remove-IDUserU2FDevice',
         'Get-IDUserU2FRegistrationChallenge',
         'Complete-IDUserU2FRegistrationChallenge',
