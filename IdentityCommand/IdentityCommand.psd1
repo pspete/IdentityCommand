@@ -116,7 +116,6 @@
         'Test-IDDynamicRoleScript',
         'Get-IDRoleApplication',
         'Get-IDDynamicRoleMember',
-        #'Get-IDPagedRoleMember',
         'Get-IDRoleWebApp',
         'Get-IDAuthenticationProfile',
         'Remove-IDAuthenticationProfile',
