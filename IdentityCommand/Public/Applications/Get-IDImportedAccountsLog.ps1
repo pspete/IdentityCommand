@@ -1,6 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
 function Get-IDImportedAccountsLog {
     [CmdletBinding()]
     param(
@@ -24,7 +22,21 @@ function Get-IDImportedAccountsLog {
         }
 
         #Send Request
-        Invoke-IDRestMethod @Request
+        $Result = Invoke-IDRestMethod @Request
+
+        #The response is a CSV file - Get-IDResponse has no handling for application/csv, so
+        #Invoke-WebRequest hands back the raw, undecoded bytes. These arrive here as [Object[]],
+        #not [Byte[]] - the pipeline between Get-IDResponse and here unrolls then recollects the
+        #array, losing its element type - so check for [Array] generally and cast explicitly
+        if ($Result -is [Array]) {
+
+            $Bytes = [Byte[]]$Result
+            $Text = [System.Text.Encoding]::UTF8.GetString($Bytes).TrimStart([Char]0xFEFF)
+            $Result = $Text | ConvertFrom-Csv
+
+        }
+
+        $Result
 
     }#process
 

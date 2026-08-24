@@ -77,6 +77,57 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'CSV byte[] response' {
+
+            BeforeEach {
+
+                $Csv = "idx,name,url,username,ImportedType,Status,StatusDescription,SharedPermissions`r`n1,exampleApp,https://www.examplewebsite.com,exampleuser,App,Success,,[]`r`n"
+                $Bom = [Byte[]](0xEF, 0xBB, 0xBF)
+                $Bytes = [Byte[]]($Bom + [System.Text.Encoding]::UTF8.GetBytes($Csv))
+
+                Mock Invoke-IDRestMethod -MockWith { , $Bytes }
+
+                $response = Get-IDImportedAccountsLog -FileKey 'somefilekey'
+
+            }
+
+            It 'parses the CSV into objects' {
+
+                $response.Count | Should -Be 1
+                $response[0].name | Should -Be 'exampleApp'
+                $response[0].Status | Should -Be 'Success'
+
+            }
+
+        }
+
+        Context 'CSV response unrolled to untyped Object[]' {
+
+            BeforeEach {
+
+                #Confirmed live: crossing the Invoke-IDRestMethod/Get-IDResponse function boundary
+                #unrolls a real Byte[] response into individual bytes, which get recollected here
+                #as untyped Object[] rather than Byte[] - not the clean Byte[] case above
+                $Csv = "idx,name`r`n1,exampleApp`r`n"
+                $Bom = [Byte[]](0xEF, 0xBB, 0xBF)
+                $Bytes = [Byte[]]($Bom + [System.Text.Encoding]::UTF8.GetBytes($Csv))
+                $UnrolledBytes = [Object[]]$Bytes
+
+                Mock Invoke-IDRestMethod -MockWith { $UnrolledBytes }
+
+                $response = Get-IDImportedAccountsLog -FileKey 'somefilekey'
+
+            }
+
+            It 'still parses the CSV into objects' {
+
+                $response.Count | Should -Be 1
+                $response[0].name | Should -Be 'exampleApp'
+
+            }
+
+        }
+
     }
 
 }
