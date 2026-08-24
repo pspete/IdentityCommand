@@ -8994,7 +8994,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; New-IDSCIMContainer -Attributes @{ name = 'SomeSafe'; schemas = @('urn:ietf:params:scim:schemas:cyberark:1.0:Safe') }</dev:code>
+        <dev:code>PS C:\&gt; New-IDSCIMContainer -Attributes @{ name = 'SomeSafe'; description = 'Some description'; 'urn:ietf:params:scim:schemas:cyberark:1.0:Safe' = @{ NumberOfDaysRetention = 7; ManagingCPM = 'PasswordManager' }; schemas = @('urn:ietf:params:scim:schemas:cyberark:1.0:Safe') }</dev:code>
         <dev:remarks>
           <maml:para>Creates a new SCIM Container (Safe).</maml:para>
         </dev:remarks>
@@ -9119,7 +9119,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; New-IDSCIMContainerPermission -Attributes @{ container = @{ value = 'somecontainerid' }; user = @{ value = 'someuserid' }; rights = @('ListContent') }</dev:code>
+        <dev:code>PS C:\&gt; New-IDSCIMContainerPermission -Attributes @{ container = @{ value = 'somecontainerid' }; user = @{ value = 'someuserid' }; rights = @('ListContent'); 'urn:ietf:params:scim:schemas:cyberark:1.0:SafeMember' = @{ membershipExpirationDate = 0; searchIn = 'string' }; schemas = @('urn:ietf:params:scim:schemas:cyberark:1.0:SafeMember') }</dev:code>
         <dev:remarks>
           <maml:para>Grants the specified user rights on a Container.</maml:para>
         </dev:remarks>
@@ -9244,7 +9244,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; New-IDSCIMGroup -Attributes @{ displayName = 'Some Group'; schemas = @('urn:ietf:params:scim:schemas:core:2.0:Group') }</dev:code>
+        <dev:code>PS C:\&gt; New-IDSCIMGroup -Attributes @{ displayName = 'Some Group'; members = @(@{ value = 'someuserid' }); schemas = @('urn:ietf:params:scim:schemas:core:2.0:Group') }</dev:code>
         <dev:remarks>
           <maml:para>Creates a new SCIM Group.</maml:para>
         </dev:remarks>
@@ -9369,7 +9369,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; New-IDSCIMPrivilegedData -Attributes @{ name = 'SomeAccount'; schemas = @('urn:ietf:params:scim:schemas:cyberark:1.0:PrivilegedData') }</dev:code>
+        <dev:code>PS C:\&gt; New-IDSCIMPrivilegedData -Attributes @{ name = 'SomeAccount'; description = 'Some description'; type = 'sometype'; 'urn:ietf:params:scim:schemas:cyberark:1.0:PrivilegedData' = @{ safe = 'SomeSafe'; remoteMachinesAccess = @{ remoteMachines = 'string'; accessRestrictedToRemoteMachines = 'string' }; properties = @(@{ key = 'someproperty'; value = 'somevalue' }) }; schemas = @('urn:ietf:params:scim:schemas:cyberark:1.0:PrivilegedData') }</dev:code>
         <dev:remarks>
           <maml:para>Creates a new SCIM Privileged Data item.</maml:para>
         </dev:remarks>
@@ -9395,7 +9395,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>Attributes</maml:name>
           <maml:description>
-            <maml:para>A hashtable representing the SCIM resource document. See the command examples for the recorded field shape.</maml:para>
+            <maml:para>A hashtable representing the SCIM resource document. See the command examples for the recorded field shape. `userName` must be in `name@suffix` form.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
           <dev:type>
@@ -9432,7 +9432,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>Attributes</maml:name>
         <maml:description>
-          <maml:para>A hashtable representing the SCIM resource document. See the command examples for the recorded field shape.</maml:para>
+          <maml:para>A hashtable representing the SCIM resource document. See the command examples for the recorded field shape. `userName` must be in `name@suffix` form.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
         <dev:type>
@@ -9494,9 +9494,26 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; New-IDSCIMUser -Attributes @{ userName = 'someuser'; displayName = 'Some User'; schemas = @('urn:ietf:params:scim:schemas:core:2.0:User') }</dev:code>
+        <dev:code>PS C:\&gt; New-IDSCIMUser -Attributes @{ userName = 'someuser@somedomain.com'; displayName = 'Some User'; schemas = @('urn:ietf:params:scim:schemas:core:2.0:User') }</dev:code>
         <dev:remarks>
-          <maml:para>Creates a new SCIM User.</maml:para>
+          <maml:para>Creates a new SCIM User. `userName` must be in `name@suffix` form.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; New-IDSCIMUser -Attributes @{
+    userName          = 'someuser@somedomain.com'
+    displayName       = 'Some User'
+    name              = @{ formatted = 'Some User'; familyName = 'User'; givenName = 'Some' }
+    preferredLanguage = 'en-US'
+    active            = $true
+    emails            = @(@{ type = 'work'; primary = $true; value = 'someuser@somedomain.com' })
+    phoneNumbers      = @(@{ type = 'mobile'; value = '+15555550100' })
+    'urn:ietf:params:scim:schemas:extension:enterprise:2.0:User' = @{ organization = 'Some Org'; manager = @{ value = '&lt;manager-uuid&gt;' } }
+    schemas           = @('urn:ietf:params:scim:schemas:core:2.0:User', 'urn:ietf:params:scim:schemas:extension:enterprise:2.0:User')
+}</dev:code>
+        <dev:remarks>
+          <maml:para>Creates a new SCIM User with the fuller set of optional fields the resource document supports.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -18338,7 +18355,7 @@ PS C:\&gt; Set-IDOrganizationPermission -ID 'a1b2c3d4-0000-0000-0000-00000000000
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Attributes</maml:name>
           <maml:description>
-            <maml:para>A hashtable representing the SCIM resource document. See the command examples for the recorded field shape.</maml:para>
+            <maml:para>A hashtable representing the SCIM resource document. See `New-IDSCIMUser` for the confirmed field shape. `userName` must be in `name@suffix` form.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
           <dev:type>
@@ -18375,7 +18392,7 @@ PS C:\&gt; Set-IDOrganizationPermission -ID 'a1b2c3d4-0000-0000-0000-00000000000
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Attributes</maml:name>
         <maml:description>
-          <maml:para>A hashtable representing the SCIM resource document. See the command examples for the recorded field shape.</maml:para>
+          <maml:para>A hashtable representing the SCIM resource document. See `New-IDSCIMUser` for the confirmed field shape. `userName` must be in `name@suffix` form.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
         <dev:type>
@@ -18449,7 +18466,7 @@ PS C:\&gt; Set-IDOrganizationPermission -ID 'a1b2c3d4-0000-0000-0000-00000000000
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Set-IDSCIMUser -ID 'someuserid' -Attributes @{ userName = 'someuser'; displayName = 'Some User'; schemas = @('urn:ietf:params:scim:schemas:core:2.0:User') }</dev:code>
+        <dev:code>PS C:\&gt; Set-IDSCIMUser -ID 'someuserid' -Attributes @{ userName = 'someuser@somedomain.com'; displayName = 'Some User'; schemas = @('urn:ietf:params:scim:schemas:core:2.0:User') }</dev:code>
         <dev:remarks>
           <maml:para>Replaces the specified SCIM User.</maml:para>
         </dev:remarks>

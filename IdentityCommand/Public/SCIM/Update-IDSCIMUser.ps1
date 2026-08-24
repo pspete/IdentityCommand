@@ -1,7 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: -Operations expects an array of SCIM PATCH operation hashtables, e.g.
-# @(@{op='replace'; path='active'; value=$false}). -Schemas defaults to the standard SCIM PATCH
-# schema URN if not supplied, matching the recorded sample's shape.
 function Update-IDSCIMUser {
     [CmdletBinding(SupportsShouldProcess)]
     param(

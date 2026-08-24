@@ -24,7 +24,7 @@ Creates a new SCIM Group resource.
 
 ### Example 1
 ```powershell
-PS C:\> New-IDSCIMGroup -Attributes @{ displayName = 'Some Group'; schemas = @('urn:ietf:params:scim:schemas:core:2.0:Group') }
+PS C:\> New-IDSCIMGroup -Attributes @{ displayName = 'Some Group'; members = @(@{ value = 'someuserid' }); schemas = @('urn:ietf:params:scim:schemas:core:2.0:Group') }
 ```
 
 Creates a new SCIM Group.

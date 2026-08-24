@@ -24,7 +24,7 @@ Creates a new SCIM Container (Safe) resource.
 
 ### Example 1
 ```powershell
-PS C:\> New-IDSCIMContainer -Attributes @{ name = 'SomeSafe'; schemas = @('urn:ietf:params:scim:schemas:cyberark:1.0:Safe') }
+PS C:\> New-IDSCIMContainer -Attributes @{ name = 'SomeSafe'; description = 'Some description'; 'urn:ietf:params:scim:schemas:cyberark:1.0:Safe' = @{ NumberOfDaysRetention = 7; ManagingCPM = 'PasswordManager' }; schemas = @('urn:ietf:params:scim:schemas:cyberark:1.0:Safe') }
 ```
 
 Creates a new SCIM Container (Safe).

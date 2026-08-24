@@ -24,15 +24,32 @@ Creates a new SCIM User resource.
 
 ### Example 1
 ```powershell
-PS C:\> New-IDSCIMUser -Attributes @{ userName = 'someuser'; displayName = 'Some User'; schemas = @('urn:ietf:params:scim:schemas:core:2.0:User') }
+PS C:\> New-IDSCIMUser -Attributes @{ userName = 'someuser@somedomain.com'; displayName = 'Some User'; schemas = @('urn:ietf:params:scim:schemas:core:2.0:User') }
 ```
 
-Creates a new SCIM User.
+Creates a new SCIM User. `userName` must be in `name@suffix` form.
+
+### Example 2
+```powershell
+PS C:\> New-IDSCIMUser -Attributes @{
+    userName          = 'someuser@somedomain.com'
+    displayName       = 'Some User'
+    name              = @{ formatted = 'Some User'; familyName = 'User'; givenName = 'Some' }
+    preferredLanguage = 'en-US'
+    active            = $true
+    emails            = @(@{ type = 'work'; primary = $true; value = 'someuser@somedomain.com' })
+    phoneNumbers      = @(@{ type = 'mobile'; value = '+15555550100' })
+    'urn:ietf:params:scim:schemas:extension:enterprise:2.0:User' = @{ organization = 'Some Org'; manager = @{ value = '<manager-uuid>' } }
+    schemas           = @('urn:ietf:params:scim:schemas:core:2.0:User', 'urn:ietf:params:scim:schemas:extension:enterprise:2.0:User')
+}
+```
+
+Creates a new SCIM User with the fuller set of optional fields the resource document supports.
 
 ## PARAMETERS
 
 ### -Attributes
-A hashtable representing the SCIM resource document. See the command examples for the recorded field shape.
+A hashtable representing the SCIM resource document. See the command examples for the recorded field shape. `userName` must be in `name@suffix` form.
 
 ```yaml
 Type: Hashtable

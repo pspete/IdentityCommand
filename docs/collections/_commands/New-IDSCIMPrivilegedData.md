@@ -24,7 +24,7 @@ Creates a new SCIM Privileged Data resource.
 
 ### Example 1
 ```powershell
-PS C:\> New-IDSCIMPrivilegedData -Attributes @{ name = 'SomeAccount'; schemas = @('urn:ietf:params:scim:schemas:cyberark:1.0:PrivilegedData') }
+PS C:\> New-IDSCIMPrivilegedData -Attributes @{ name = 'SomeAccount'; description = 'Some description'; type = 'sometype'; 'urn:ietf:params:scim:schemas:cyberark:1.0:PrivilegedData' = @{ safe = 'SomeSafe'; remoteMachinesAccess = @{ remoteMachines = 'string'; accessRestrictedToRemoteMachines = 'string' }; properties = @(@{ key = 'someproperty'; value = 'somevalue' }) }; schemas = @('urn:ietf:params:scim:schemas:cyberark:1.0:PrivilegedData') }
 ```
 
 Creates a new SCIM Privileged Data item.

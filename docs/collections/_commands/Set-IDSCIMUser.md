@@ -24,7 +24,7 @@ Replaces (PUT) an existing SCIM User resource in full. Use Update-IDSCIMUser for
 
 ### Example 1
 ```powershell
-PS C:\> Set-IDSCIMUser -ID 'someuserid' -Attributes @{ userName = 'someuser'; displayName = 'Some User'; schemas = @('urn:ietf:params:scim:schemas:core:2.0:User') }
+PS C:\> Set-IDSCIMUser -ID 'someuserid' -Attributes @{ userName = 'someuser@somedomain.com'; displayName = 'Some User'; schemas = @('urn:ietf:params:scim:schemas:core:2.0:User') }
 ```
 
 Replaces the specified SCIM User.
@@ -32,7 +32,7 @@ Replaces the specified SCIM User.
 ## PARAMETERS
 
 ### -Attributes
-A hashtable representing the SCIM resource document. See the command examples for the recorded field shape.
+A hashtable representing the SCIM resource document. See `New-IDSCIMUser` for the confirmed field shape. `userName` must be in `name@suffix` form.
 
 ```yaml
 Type: Hashtable

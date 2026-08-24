@@ -24,7 +24,7 @@ Creates a new SCIM Container Permission (Safe membership) resource.
 
 ### Example 1
 ```powershell
-PS C:\> New-IDSCIMContainerPermission -Attributes @{ container = @{ value = 'somecontainerid' }; user = @{ value = 'someuserid' }; rights = @('ListContent') }
+PS C:\> New-IDSCIMContainerPermission -Attributes @{ container = @{ value = 'somecontainerid' }; user = @{ value = 'someuserid' }; rights = @('ListContent'); 'urn:ietf:params:scim:schemas:cyberark:1.0:SafeMember' = @{ membershipExpirationDate = 0; searchIn = 'string' }; schemas = @('urn:ietf:params:scim:schemas:cyberark:1.0:SafeMember') }
 ```
 
 Grants the specified user rights on a Container.
