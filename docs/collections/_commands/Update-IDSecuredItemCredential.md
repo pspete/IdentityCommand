@@ -14,7 +14,7 @@ Update credentials for a secured item
 
 ```
 Update-IDSecuredItemCredential [-ItemKey] <String> [[-Username] <String>] [[-Password] <SecureString>]
- [[-CustomFields] <String>] [[-Notes] <String>] [-WhatIf] [-Confirm]
+ [[-CustomFields] <Hashtable[]>] [[-Notes] <String>] [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
@@ -30,6 +30,13 @@ PS C:\> Update-IDSecuredItemCredential -ItemKey 'someitemkey' -Username 'someuse
 ```
 
 Updates the credentials for the specified secured item.
+
+### Example 2
+```powershell
+PS C:\> Update-IDSecuredItemCredential -ItemKey 'someitemkey' -CustomFields @{ Key = 'Environment'; Value = 'Production' }, @{ Key = 'Secret'; Value = 'hidden-value'; Hidden = $true }
+```
+
+Sets two custom fields on the secured item, hiding the value of the second.
 
 ## PARAMETERS
 
@@ -49,10 +56,10 @@ Accept wildcard characters: False
 ```
 
 ### -CustomFields
-Custom field data for the secured item.
+Custom field data for the secured item. Each entry is `@{Key='<name>'; Value='<value>'; Hidden=$true/$false}` - `Hidden` defaults to `$false` if omitted.
 
 ```yaml
-Type: String
+Type: Hashtable[]
 Parameter Sets: (All)
 Aliases:
 

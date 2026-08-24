@@ -1,5 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: The real expected format for -CustomFields is unconfirmed.
 function Update-IDSecuredItemCredential {
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -16,8 +15,10 @@ function Update-IDSecuredItemCredential {
         [parameter(Mandatory = $false)]
         [SecureString]$Password,
 
+        #Each entry: @{Key='<name>'; Value='<value>'; Hidden=$true/$false} - Hidden defaults to
+        #$false if omitted
         [parameter(Mandatory = $false)]
-        [String]$CustomFields,
+        [Hashtable[]]$CustomFields,
 
         [parameter(Mandatory = $false)]
         [String]$Notes
@@ -31,11 +32,25 @@ function Update-IDSecuredItemCredential {
 
             #Only send fields actually supplied - the server rejects an empty string for
             #CustomFields with a type-casting error when it's sent unset
-            $Body = $PSBoundParameters | Get-Parameter -ParametersToRemove ItemKey, Password
+            $Body = $PSBoundParameters | Get-Parameter -ParametersToRemove ItemKey, Password, CustomFields
 
             if ($PSBoundParameters.ContainsKey('Password')) {
 
                 $Body['Password'] = ($Password | ConvertTo-InsecureString)
+
+            }
+
+            if ($PSBoundParameters.ContainsKey('CustomFields')) {
+
+                $Body['CustomFields'] = @(foreach ($Field in $CustomFields) {
+
+                        [ordered]@{
+                            'CustomFields_Key'      = $Field.Key
+                            'CustomFields_Value'    = $Field.Value
+                            'CustomFields_IsHidden' = if ($Field.ContainsKey('Hidden')) { [Bool]$Field.Hidden } else { $false }
+                        }
+
+                    })
 
             }
 

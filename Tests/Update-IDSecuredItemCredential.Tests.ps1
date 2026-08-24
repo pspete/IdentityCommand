@@ -82,6 +82,49 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'CustomFields' {
+
+            It 'sends confirmed field names, defaulting Hidden to $false' {
+
+                Update-IDSecuredItemCredential -ItemKey 'someitemkey' -CustomFields @{ Key = 'zzzTest'; Value = 'testing' } | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $Parsed = $Body | ConvertFrom-Json
+                    ($Parsed.PSObject.Properties.Name -contains 'CustomFields') -and
+                    $Parsed.CustomFields[0].CustomFields_Key -eq 'zzzTest' -and
+                    $Parsed.CustomFields[0].CustomFields_Value -eq 'testing' -and
+                    $Parsed.CustomFields[0].CustomFields_IsHidden -eq $false
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'sends an explicit Hidden value' {
+
+                Update-IDSecuredItemCredential -ItemKey 'someitemkey' -CustomFields @{ Key = 'zzzTest'; Value = 'testing'; Hidden = $true } | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $Parsed = $Body | ConvertFrom-Json
+                    ($Parsed.PSObject.Properties.Name -contains 'CustomFields') -and
+                    $Parsed.CustomFields[0].CustomFields_IsHidden -eq $true
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'sends multiple fields' {
+
+                Update-IDSecuredItemCredential -ItemKey 'someitemkey' -CustomFields @{ Key = 'first'; Value = '1' }, @{ Key = 'second'; Value = '2' } | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $Parsed = $Body | ConvertFrom-Json
+                    ($Parsed.PSObject.Properties.Name -contains 'CustomFields') -and
+                    $Parsed.CustomFields.Count -eq 2 -and
+                    $Parsed.CustomFields[1].CustomFields_Key -eq 'second'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+        }
+
         Context 'Output' {
 
             It 'provides output' {
