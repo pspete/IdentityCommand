@@ -172,7 +172,6 @@
         'Test-IDUserLockedOutByPolicy',
         'Send-IDUserInvite',
         'Send-IDUserLoginEmail',
-        'Send-IDUserSmsInvite',
         'Set-IDUserPhonePin',
         'Close-IDUserSession',
         'Get-IDUserSecurityQuestion',

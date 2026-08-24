@@ -48,7 +48,7 @@ Accept wildcard characters: False
 ```
 
 ### -Entities
-An array of hashtables describing the users, groups, or roles to invite, e.g. `@{Type='user'; Guid='<userUUID>'; Name='<userName>'}`, `@{Type='group'; Guid='<groupUUID>'}`, or `@{Type='role'; Guid='<roleUUID>'}`.
+An array of hashtables describing the users, groups, or roles to invite: `@{Type='user'; Guid='<userUUID>'; Name='<userName>'}`, `@{Type='role'; Guid='<roleUUID>'; Name='<roleName>'}`, or `@{Type='group'; Guid='<groupUUID>'; Name='<groupName>'}` - all three confirmed live.
 
 ```yaml
 Type: Array
