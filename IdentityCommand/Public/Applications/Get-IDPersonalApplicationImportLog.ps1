@@ -1,5 +1,5 @@
 # .ExternalHelp IdentityCommand-help.xml
-function Get-IDSecuredItemImportLog {
+function Get-IDPersonalApplicationImportLog {
     [CmdletBinding()]
     param(
         [parameter(

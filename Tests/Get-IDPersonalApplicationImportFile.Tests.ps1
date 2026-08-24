@@ -48,7 +48,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
         Context 'With FileCount' {
 
             BeforeEach {
-                $response = Get-IDSecuredItemImportFile -FileCount 5
+                $response = Get-IDPersonalApplicationImportFile -FileCount 5
             }
 
             It 'sends request to expected endpoint' {

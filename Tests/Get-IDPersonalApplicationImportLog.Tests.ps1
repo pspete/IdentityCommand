@@ -43,7 +43,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 [pscustomobject]@{'property' = 'value' }
             }
 
-            $response = Get-IDSecuredItemImportLog -FileKey 'somefilekey'
+            $response = Get-IDPersonalApplicationImportLog -FileKey 'somefilekey'
 
         }
 
@@ -87,7 +87,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Mock Invoke-IDRestMethod -MockWith { , $Bytes }
 
-                $response = Get-IDSecuredItemImportLog -FileKey 'somefilekey'
+                $response = Get-IDPersonalApplicationImportLog -FileKey 'somefilekey'
 
             }
 
@@ -115,7 +115,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Mock Invoke-IDRestMethod -MockWith { $UnrolledBytes }
 
-                $response = Get-IDSecuredItemImportLog -FileKey 'somefilekey'
+                $response = Get-IDPersonalApplicationImportLog -FileKey 'somefilekey'
 
             }
 

@@ -159,6 +159,7 @@
         'Sync-IDUser',
         'Send-IDUserIdentityVerification',
         'Import-IDUserCsv',
+        'Import-IDPersonalApplicationCsv',
         'New-IDUsernameReminder',
         'Start-IDSocialAuthentication',
         'New-IDQRCodeSession',
@@ -247,12 +248,12 @@
         'Get-IDApplicationData',
         'Get-IDUserPortalData',
         'Get-IDCredentialProvider',
-        'Get-IDSecuredItemImportFile',
+        'Get-IDPersonalApplicationImportFile',
         'Import-IDApplicationTemplate',
         'Set-IDApplicationUserCredential',
         'Update-IDSecuredItemCredential',
         'Test-IDApplicationUsername',
-        'Get-IDSecuredItemImportLog',
+        'Get-IDPersonalApplicationImportLog',
         'Set-IDApplicationIcon',
         'Set-IDSecuredItemIcon'
     )

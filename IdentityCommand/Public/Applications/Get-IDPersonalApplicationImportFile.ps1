@@ -1,5 +1,5 @@
 # .ExternalHelp IdentityCommand-help.xml
-function Get-IDSecuredItemImportFile {
+function Get-IDPersonalApplicationImportFile {
     [CmdletBinding()]
     param(
         [parameter(Mandatory = $true)]
