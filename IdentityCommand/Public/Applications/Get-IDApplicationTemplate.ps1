@@ -1,6 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: Unconfirmed whether AppTemplates.Results always has this exact shape (e.g. under
-# pagination) and the full set of fields on each row.
 function Get-IDApplicationTemplate {
     [CmdletBinding()]
     param( )
