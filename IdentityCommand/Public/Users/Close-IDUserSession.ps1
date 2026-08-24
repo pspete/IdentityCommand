@@ -1,10 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
-# TODO: It's unconfirmed whether this is functionally distinct from Close-IDSession (which wraps
-# /Security/Logout) or a near-duplicate of it via a different API namespace. Verify against a live
-# tenant whether the two behave differently (e.g. scope of what gets signed out) before assuming
-# either is redundant.
 function Close-IDUserSession {
     [CmdletBinding(SupportsShouldProcess)]
     param()
@@ -23,7 +17,16 @@ function Close-IDUserSession {
             }
 
             #Send Request
-            Invoke-IDRestMethod @Request
+            Invoke-IDRestMethod @Request | Out-Null
+
+            #Confirmed live: unlike Close-IDSession, this endpoint doesn't clear local session
+            #state on its own - do it here so a dead server-side session doesn't linger locally
+            $ISPSSSession.tenant_url = $null
+            $ISPSSSession.TenantId = $null
+            $ISPSSSession.WebSession = $null
+            $ISPSSSession.User = $null
+            $ISPSSSession.StartTime = $null
+            $ISPSSSession.SessionId = $null
 
         }
 

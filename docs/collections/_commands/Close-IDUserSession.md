@@ -17,7 +17,7 @@ Close-IDUserSession [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Signs out the current session. It's unconfirmed whether this is functionally distinct from Close-IDSession (which wraps a different endpoint, Security/Logout) or a near-duplicate of it.
+Signs out the current session (server-side) and clears the module's local session state. Confirmed live to be narrow-scope - it doesn't affect any other session the same user has open elsewhere. Functionally equivalent to Close-IDSession, which wraps a different endpoint (Security/Logout) but is also narrow-scope.
 
 ## EXAMPLES
 
@@ -69,7 +69,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### None
 ## OUTPUTS
 
-### System.Object
+### None
 ## NOTES
 
 ## RELATED LINKS

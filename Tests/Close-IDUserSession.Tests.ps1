@@ -69,9 +69,20 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         Context 'Output' {
 
-            It 'provides output' {
+            It 'provides no output' {
 
-                $response | Should -Not -BeNullOrEmpty
+                $response | Should -BeNullOrEmpty
+
+            }
+
+            It 'clears local session state' {
+
+                $ISPSSSession.tenant_url | Should -BeNullOrEmpty
+                $ISPSSSession.TenantId | Should -BeNullOrEmpty
+                $ISPSSSession.WebSession | Should -BeNullOrEmpty
+                $ISPSSSession.User | Should -BeNullOrEmpty
+                $ISPSSSession.StartTime | Should -BeNullOrEmpty
+                $ISPSSSession.SessionId | Should -BeNullOrEmpty
 
             }
 
