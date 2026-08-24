@@ -21409,7 +21409,7 @@ PS C:\&gt; Set-IDUserPassword -OldPassword $Old -NewPassword $New</dev:code>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Added</maml:name>
           <maml:description>
-            <maml:para>An array of new security questions to add, e.g. `@{Question='...'; Answer='...'}`.</maml:para>
+            <maml:para>An array of new security questions to add, e.g. `@{QuestionText='...'; Answer='...'; Type='User'}` (`Type` is `'User'` or `'Admin'`).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Array</command:parameterValue>
           <dev:type>
@@ -21469,7 +21469,7 @@ PS C:\&gt; Set-IDUserPassword -OldPassword $Old -NewPassword $New</dev:code>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Added</maml:name>
         <maml:description>
-          <maml:para>An array of new security questions to add, e.g. `@{Question='...'; Answer='...'}`.</maml:para>
+          <maml:para>An array of new security questions to add, e.g. `@{QuestionText='...'; Answer='...'; Type='User'}` (`Type` is `'User'` or `'Admin'`).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Array</command:parameterValue>
         <dev:type>
@@ -21567,7 +21567,7 @@ PS C:\&gt; Set-IDUserPassword -OldPassword $Old -NewPassword $New</dev:code>
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; $Added = @(@{ Question = 'What was your first pet'; Answer = 'Rex' })
+        <dev:code>PS C:\&gt; $Added = @(@{ QuestionText = 'What was your first pet'; Answer = 'Rex'; Type = 'User' })
 PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000' -Added $Added</dev:code>
         <dev:remarks>
           <maml:para>Adds a new security question for the specified user.</maml:para>

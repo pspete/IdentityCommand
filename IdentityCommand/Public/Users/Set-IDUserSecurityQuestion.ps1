@@ -1,10 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# UNTESTED: This command has not yet been verified against a live tenant - confirm it behaves as
-# expected before relying on it in production.
-# TODO: DEPRIORITIZED - the overall shape (Id/Added/Deleted/Replace) is accepted by the server, but
-# the exact field names expected inside each -Added entry are unconfirmed (both @{Question=...;
-# Answer=...} and @{question=...; answer=...} were rejected). -Deleted's shape is also unconfirmed.
-# Needs a DevTools capture of the admin portal's security-question setup UI.
 function Set-IDUserSecurityQuestion {
     [CmdletBinding(SupportsShouldProcess)]
     param(

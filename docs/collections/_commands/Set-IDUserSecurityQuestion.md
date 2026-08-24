@@ -24,7 +24,7 @@ Adds, removes, or replaces a user's security questions.
 
 ### Example 1
 ```powershell
-PS C:\> $Added = @(@{ Question = 'What was your first pet'; Answer = 'Rex' })
+PS C:\> $Added = @(@{ QuestionText = 'What was your first pet'; Answer = 'Rex'; Type = 'User' })
 PS C:\> Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000' -Added $Added
 ```
 
@@ -33,7 +33,7 @@ Adds a new security question for the specified user.
 ## PARAMETERS
 
 ### -Added
-An array of new security questions to add, e.g. `@{Question='...'; Answer='...'}`.
+An array of new security questions to add, e.g. `@{QuestionText='...'; Answer='...'; Type='User'}` (`Type` is `'User'` or `'Admin'`).
 
 ```yaml
 Type: Array
