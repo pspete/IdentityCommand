@@ -8,7 +8,7 @@ schema: 2.0.0
 # Get-IDUserSecurityQuestion
 
 ## SYNOPSIS
-Get the tenant's security question policy
+Get the current user's security questions
 
 ## SYNTAX
 
@@ -17,7 +17,7 @@ Get-IDUserSecurityQuestion [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Despite its "User" naming, this returns the tenant-wide security question **policy** (`AnswerMinLength`/`MaxQuestions`/`MinAdminQuestions`/`MinUserQuestions`/`Questions`) applied to the current session's tenant - not a specific user's answered questions. The underlying `UserMgmt/GetSecurityQuestions` endpoint takes no per-user scoping. This is distinct from `Get-IDTenantSecurityQuestion`, which returns the tenant's admin security questions.
+Returns the security question policy (`AnswerMinLength`/`MaxQuestions`/`MinAdminQuestions`/`MinUserQuestions`) together with the current session user's own configured security questions (`Questions`). There's no `-ID`/`-Username` parameter - scoping to "the current user" comes from the authenticated session itself, confirmed live: a question added to one account via `Set-IDUserSecurityQuestion` shows up in that same account's `Questions` when this is run. This is distinct from `Get-IDTenantSecurityQuestion`, which returns the tenant's admin security questions.
 
 ## EXAMPLES
 
@@ -26,7 +26,7 @@ Despite its "User" naming, this returns the tenant-wide security question **poli
 PS C:\> Get-IDUserSecurityQuestion
 ```
 
-Returns the tenant's security question policy.
+Returns the current user's security question policy and configured questions.
 
 ## PARAMETERS
 
