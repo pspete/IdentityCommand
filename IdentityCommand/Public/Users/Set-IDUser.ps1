@@ -1,7 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: -AccountExp is serialized via the default ConvertTo-Json DateTime handling, which may not
-# match the ISO 8601 format ("2019-08-24T14:15:22Z") shown in the recorded sample request - verify
-# and adjust (e.g. $AccountExp.ToString('o')) if the API rejects the default serialization.
 function Set-IDUser {
     [CmdletBinding(SupportsShouldProcess)]
     param(
