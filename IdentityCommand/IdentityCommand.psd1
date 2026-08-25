@@ -155,7 +155,6 @@
         'Send-IDUserIdentityVerification',
         'Import-IDUserCsv',
         'Import-IDPersonalApplicationCsv',
-        'New-IDUsernameReminder',
         'Remove-IDUser',
         'Get-IDUserRiskLevel',
         'Get-IDUserAttribute',
