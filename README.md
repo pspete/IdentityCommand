@@ -160,7 +160,6 @@ The current list is:
 
 | Command | What's unconfirmed |
 | --- | --- |
-| `Set-IDUserPhonePin` | Never live-tested; URL is from documented paths, body shape from a mislabeled sample |
 | `Get-IDWorkflowJob -Type` | `-Type` is mandatory server-side with an unknown enum |
 | `Send-IDWorkflowEvent` / `Stop-IDWorkflowJob` | Success path untested against a genuinely _pending_ approval job |
 | `New-IDUsernameReminder -Interactive` | Needs confirming across more than one challenge/mechanism level |

@@ -21041,7 +21041,7 @@ PS C:\&gt; Set-IDUserPassword -OldPassword $Old -NewPassword $New</dev:code>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Sets the phone PIN used for phone-call-based MFA for a specified user.</maml:para>
+      <maml:para>Sets the phone PIN used to authenticate via the Phone Call MFA mechanism for a specified user - equivalent to the self-service "Account &gt; Authentication Factors &gt; Phone PIN" setting in the user portal. This is unrelated to any lock PIN on a CyberArk mobile app installed on the user's device - setting it will not change or be reflected by that.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>

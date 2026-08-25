@@ -17,7 +17,7 @@ Set-IDUserPhonePin [-ID] <String> [-PhonePin] <String> [-WhatIf] [-Confirm] [<Co
 ```
 
 ## DESCRIPTION
-Sets the phone PIN used for phone-call-based MFA for a specified user.
+Sets the phone PIN used to authenticate via the Phone Call MFA mechanism for a specified user - equivalent to the self-service "Account > Authentication Factors > Phone PIN" setting in the user portal. This is unrelated to any lock PIN on a CyberArk mobile app installed on the user's device - setting it will not change or be reflected by that.
 
 ## EXAMPLES
 
