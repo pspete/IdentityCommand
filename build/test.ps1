@@ -15,7 +15,9 @@ $configuration = [PesterConfiguration]::Default
 # assing properties & discover via intellisense
 $configuration.Run.Path = '.\Tests'
 $configuration.Run.PassThru = $true
-$configuration.CodeCoverage.Enabled = $true
+#TEMP: disabled to isolate whether CodeCoverage instrumentation is the cause of the AppVeyor
+#60-minute timeout, independent of the PSScriptAnalyzer per-rule-per-file fix already applied
+$configuration.CodeCoverage.Enabled = $false
 $configuration.CodeCoverage.Path = $files
 $configuration.TestResult.Enabled = $true
 $configuration.TestResult.OutputFormat = 'NUnitXml'
@@ -31,7 +33,7 @@ $null = (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/
 
 Remove-Item -Path $(Resolve-Path .\TestsResults.xml) -Force
 
-if ($env:APPVEYOR_REPO_COMMIT_AUTHOR -eq 'Pete Maan') {
+if ($configuration.CodeCoverage.Enabled.Value -and ($env:APPVEYOR_REPO_COMMIT_AUTHOR -eq 'Pete Maan')) {
 
 	Write-Host 'Publishing Code Coverage'
 
