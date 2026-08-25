@@ -42,8 +42,20 @@ function Set-IDApplication {
 
             }
 
-            #Send Request
-            Invoke-IDRestMethod @Request
+            #Send Request - the response is just {State: 0}, not the updated application. Only
+            #State 0 is confirmed as success, so only fetch the updated application in that case -
+            #otherwise return the raw result rather than masking a non-zero State
+            $Result = Invoke-IDRestMethod @Request
+
+            if ($Result.State -eq 0) {
+
+                Get-IDApplication -ID $ID
+
+            } else {
+
+                $Result
+
+            }
 
         }
 

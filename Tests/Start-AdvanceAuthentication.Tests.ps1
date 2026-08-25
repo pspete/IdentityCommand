@@ -82,7 +82,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'sends body with expected TenantId' {
                 $LogonRequest | Start-AdvanceAuthentication -Mechanism $Mechanism -Answer 'SomeAnswer'
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $RequestBody = $Body | ConvertFrom-Json
+                    $RequestBody = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $RequestBody.TenantId -eq 'SomeTenant'
                 } -Times 1 -Exactly -Scope It
 
@@ -91,7 +91,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'sends body with expected SessionId' {
                 $LogonRequest | Start-AdvanceAuthentication -Mechanism $Mechanism -Answer 'SomeAnswer'
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $RequestBody = $Body | ConvertFrom-Json
+                    $RequestBody = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $RequestBody.SessionId -eq 'SomeSession'
                 } -Times 1 -Exactly -Scope It
 
@@ -100,7 +100,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'sends body with expected MechanismId' {
                 $LogonRequest | Start-AdvanceAuthentication -Mechanism $Mechanism -Answer 'SomeAnswer'
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $RequestBody = $Body | ConvertFrom-Json
+                    $RequestBody = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $RequestBody.MechanismId -eq 'SomeMechanismId'
                 } -Times 1 -Exactly -Scope It
 
@@ -123,11 +123,11 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 $LogonRequest | Start-AdvanceAuthentication -Mechanism $Mechanism -Answer 'SomeAnswer'
                 Assert-MockCalled Invoke-IDRestMethod -Times 2 -Scope It -Exactly
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $RequestBody = $Body | ConvertFrom-Json
+                    $RequestBody = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $RequestBody.Action -eq 'StartOOB'
                 } -Times 1 -Scope It -Exactly
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $RequestBody = $Body | ConvertFrom-Json
+                    $RequestBody = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $RequestBody.Action -eq 'Poll'
                 } -Times 1 -Scope It -Exactly
             }
@@ -141,11 +141,11 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 $LogonRequest | Start-AdvanceAuthentication -Mechanism $Mechanism -Answer 'SomeAnswer'
                 Assert-MockCalled Invoke-IDRestMethod -Times 2 -Scope It -Exactly
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $RequestBody = $Body | ConvertFrom-Json
+                    $RequestBody = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $RequestBody.Action -eq 'StartOOB'
                 } -Times 1 -Scope It -Exactly
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $RequestBody = $Body | ConvertFrom-Json
+                    $RequestBody = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $RequestBody.Action -eq 'Poll'
                 } -Times 1 -Scope It -Exactly
             }
@@ -175,11 +175,11 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 $LogonRequest | Start-AdvanceAuthentication -Mechanism $Mechanism -Answer 'SomeAnswer'
                 Assert-MockCalled Invoke-IDRestMethod -Times 5 -Scope It -Exactly
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $RequestBody = $Body | ConvertFrom-Json
+                    $RequestBody = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $RequestBody.Action -eq 'StartOOB'
                 } -Times 1 -Scope It -Exactly
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $RequestBody = $Body | ConvertFrom-Json
+                    $RequestBody = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $RequestBody.Action -eq 'Poll'
                 } -Times 4 -Scope It -Exactly
                 Assert-MockCalled Start-Sleep -ParameterFilter {
@@ -202,11 +202,11 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 }
                 Assert-MockCalled Invoke-IDRestMethod -Times 2 -Scope It -Exactly
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $RequestBody = $Body | ConvertFrom-Json
+                    $RequestBody = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $RequestBody.Action -eq 'StartOOB'
                 } -Times 1 -Scope It -Exactly
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $RequestBody = $Body | ConvertFrom-Json
+                    $RequestBody = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $RequestBody.Action -eq 'Answer' -and $RequestBody.Answer -eq 'SomePromptedAnswer'
                 } -Times 1 -Scope It -Exactly
             }
@@ -222,7 +222,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 $LogonRequest | Start-AdvanceAuthentication -Mechanism $Mechanism -Answer $Answer
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $RequestBody = $Body | ConvertFrom-Json
+                    $RequestBody = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $RequestBody.Answer -eq 'SomeAnswer'
                 } -Times 1 -Scope It
             }

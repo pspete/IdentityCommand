@@ -70,7 +70,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'sends request with expected body, defaulting CredentialProvider/skip flags' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $Parsed.credFileName -eq 'export.csv' -and
                     $Parsed.credentialProvider -eq 'Other' -and
                     $Parsed.credentialsData[0].name -eq 'exampleApp' -and
@@ -85,7 +85,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 Submit-PersonalApplicationCsvImport -CredentialsData $CredentialsData -CredFileName 'export.csv' -CredentialProvider 'LastPass' -SkipIfAppExists $true -SkipSharedFolders $true | Out-Null
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $Parsed.credentialProvider -eq 'LastPass' -and
                     $Parsed.skipIfAppExists -eq $true -and
                     $Parsed.skipSharedFolders -eq $true

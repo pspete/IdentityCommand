@@ -74,7 +74,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'sends request with expected body' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $Parsed.Name -eq 'someuser' -and $Parsed.Mail -eq 'someuser@example.com'
                 } -Times 1 -Exactly -Scope It
 
@@ -85,8 +85,8 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 New-IDUser -Name 'someuser' -Mail 'someuser@example.com' -Password $(ConvertTo-SecureString 'SomePassword' -AsPlainText -Force)
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    ($Body | ConvertFrom-Json).PSObject.Properties.Name -contains 'Password' -and
-                    ($Body | ConvertFrom-Json).Password -eq 'SomePassword'
+                    ([System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json).PSObject.Properties.Name -contains 'Password' -and
+                    ([System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json).Password -eq 'SomePassword'
                 } -Times 1 -Exactly -Scope It
 
             }

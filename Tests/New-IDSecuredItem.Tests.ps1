@@ -71,7 +71,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $BodyObject = $Body | ConvertFrom-Json
+                    $BodyObject = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $BodyObject.Name -eq 'SomeItem' -and
                     $BodyObject.SecuredItemType -eq 'Password' -and
                     $BodyObject.Username -eq 'someuser' -and
@@ -85,7 +85,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    ($Body | ConvertFrom-Json).PSObject.Properties.Name -notcontains 'Description'
+                    ([System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json).PSObject.Properties.Name -notcontains 'Description'
 
                 } -Times 1 -Exactly -Scope It
 
@@ -113,7 +113,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $BodyObject = $Body | ConvertFrom-Json
+                    $BodyObject = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $BodyObject.SecuredItemType -eq 'SecureNote' -and $BodyObject.Notes -eq 'Some note content'
 
                 } -Times 1 -Exactly -Scope It

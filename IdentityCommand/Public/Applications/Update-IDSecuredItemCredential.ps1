@@ -58,7 +58,9 @@ function Update-IDSecuredItemCredential {
 
                 'URI'    = "$($ISPSSSession.tenant_url)/UPRest/UpdateCredsForSecuredItem`?sItemkey=$($ItemKey | Get-EscapedString)"
                 'Method' = 'POST'
-                'Body'   = ($Body | ConvertTo-Json -Depth 6)
+                #Sent as raw UTF8 bytes rather than a String so ParameterBinding/module logging of
+                #this call records a non-revealing type name instead of the literal request content
+                'Body'   = [System.Text.Encoding]::UTF8.GetBytes($($Body | ConvertTo-Json -Depth 6))
 
             }
 

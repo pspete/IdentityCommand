@@ -69,7 +69,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $BodyObject = $Body | ConvertFrom-Json
+                    $BodyObject = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $BodyProperties = $BodyObject.PSObject.Properties.Name
                     ($BodyProperties -contains 'Username') -and
                     -not ($BodyProperties -contains 'CustomFields') -and
@@ -89,7 +89,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 Update-IDSecuredItemCredential -ItemKey 'someitemkey' -CustomFields @{ Key = 'zzzTest'; Value = 'testing' } | Out-Null
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     ($Parsed.PSObject.Properties.Name -contains 'CustomFields') -and
                     $Parsed.CustomFields[0].CustomFields_Key -eq 'zzzTest' -and
                     $Parsed.CustomFields[0].CustomFields_Value -eq 'testing' -and
@@ -103,7 +103,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 Update-IDSecuredItemCredential -ItemKey 'someitemkey' -CustomFields @{ Key = 'zzzTest'; Value = 'testing'; Hidden = $true } | Out-Null
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     ($Parsed.PSObject.Properties.Name -contains 'CustomFields') -and
                     $Parsed.CustomFields[0].CustomFields_IsHidden -eq $true
                 } -Times 1 -Exactly -Scope It
@@ -115,7 +115,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 Update-IDSecuredItemCredential -ItemKey 'someitemkey' -CustomFields @{ Key = 'first'; Value = '1' }, @{ Key = 'second'; Value = '2' } | Out-Null
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     ($Parsed.PSObject.Properties.Name -contains 'CustomFields') -and
                     $Parsed.CustomFields.Count -eq 2 -and
                     $Parsed.CustomFields[1].CustomFields_Key -eq 'second'

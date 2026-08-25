@@ -158,6 +158,104 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
 		}
 
+		Context 'Body Handling' {
+
+			BeforeEach {
+
+				$ISPSSSession = [ordered]@{
+					tenant_url         = $null
+					User               = $null
+					TenantId           = $null
+					SessionId          = $null
+					WebSession         = $null
+					StartTime          = $null
+					ElapsedTime        = $null
+					LastCommand        = $null
+					LastCommandTime    = $null
+					LastCommandResults = $null
+				}
+				New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
+
+				$Response = New-MockObject -Type Microsoft.PowerShell.Commands.WebResponseObject
+				$Response | Add-Member -MemberType NoteProperty -Name StatusCode -Value 200 -Force
+				$Response | Add-Member -MemberType NoteProperty -Name Headers -Value @{ 'Content-Type' = 'application/json; charset=utf-8' } -Force
+				$Response | Add-Member -MemberType NoteProperty -Name Content -Value (@{ 'success' = $true; 'Result' = @{} } | ConvertTo-Json) -Force
+
+				Mock Invoke-WebRequest -MockWith {
+
+					return $Response
+
+				}
+
+			}
+
+			It 'sends a String body to Invoke-WebRequest as UTF8 bytes, not the literal string' {
+
+				$WebSession = @{
+					'URI'        = 'https://CyberArk_URL'
+					'Method'     = 'GET'
+					'WebSession' = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+					'Body'       = '{"Password":"SomeSecret"}'
+				}
+
+				Invoke-IDRestMethod @WebSession
+
+				Assert-MockCalled Invoke-WebRequest -ParameterFilter {
+
+					$Body -is [Byte[]] -and $([System.Text.Encoding]::UTF8.GetString($Body)) -eq '{"Password":"SomeSecret"}'
+
+				} -Times 1 -Exactly -Scope It
+
+			}
+
+			It 'passes a Byte[] body through to Invoke-WebRequest unchanged' {
+
+				$Bytes = [System.Text.Encoding]::UTF8.GetBytes('{"Password":"SomeSecret"}')
+
+				$WebSession = @{
+					'URI'        = 'https://CyberArk_URL'
+					'Method'     = 'GET'
+					'WebSession' = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+					'Body'       = $Bytes
+				}
+
+				Invoke-IDRestMethod @WebSession
+
+				Assert-MockCalled Invoke-WebRequest -ParameterFilter {
+
+					$Body -is [Byte[]] -and $([System.Text.Encoding]::UTF8.GetString($Body)) -eq '{"Password":"SomeSecret"}'
+
+				} -Times 1 -Exactly -Scope It
+
+			}
+
+			It 'sanitises a Byte[] body in the debug preview, same as a String body' {
+
+				Mock Write-Debug -MockWith {}
+
+				$Bytes = [System.Text.Encoding]::UTF8.GetBytes('{"Password":"SomeSecret"}')
+
+				$WebSession = @{
+					'URI'        = 'https://CyberArk_URL'
+					'Method'     = 'GET'
+					'WebSession' = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+					'Body'       = $Bytes
+				}
+
+				$DebugPreference = 'Continue'
+				Invoke-IDRestMethod @WebSession
+				$DebugPreference = 'SilentlyContinue'
+
+				Assert-MockCalled Write-Debug -ParameterFilter {
+
+					$Message -match '\[Body\]' -and $Message -notmatch 'SomeSecret'
+
+				} -Times 1 -Exactly -Scope It
+
+			}
+
+		}
+
 		Context 'Error Handling' {
 
 			BeforeEach {

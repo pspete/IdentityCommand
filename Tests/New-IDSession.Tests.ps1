@@ -279,9 +279,9 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                     Assert-MockCalled -CommandName Invoke-IDRestMethod -Times 1 -Exactly -Scope It -ParameterFilter {
                         $Uri -eq 'https://somedomain.id.cyberark.cloud/Security/AdvanceAuthentication' -and
                         $Method -eq 'POST' -and
-                        ($Body | ConvertFrom-Json).MechanismId -eq 'OOBAUTHPIN' -and
-                        ($Body | ConvertFrom-Json).Action -eq 'Answer' -and
-                        ($Body | ConvertFrom-Json).Answer -eq 'TEST-PIN'
+                        ($([System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json)).MechanismId -eq 'OOBAUTHPIN' -and
+                        ($([System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json)).Action -eq 'Answer' -and
+                        ($([System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json)).Answer -eq 'TEST-PIN'
                     }
                 }
 
@@ -289,7 +289,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                     New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
                     Assert-MockCalled -CommandName Invoke-IDRestMethod -Times 1 -Exactly -Scope It -ParameterFilter {
                         $Uri -match 'AdvanceAuthentication$' -and
-                        ($Body | ConvertFrom-Json).SessionId -eq 'IDP-123'
+                        ($([System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json)).SessionId -eq 'IDP-123'
                     }
                 }
 

@@ -77,7 +77,10 @@ Function Start-AdvanceAuthentication {
                         #StartOOB begins the waiting period for MFA approval
 
                         $Body['Action'] = 'StartOOB'
-                        $LogonRequest['Body'] = $Body | ConvertTo-Json
+                        #Sent as raw UTF8 bytes rather than a String so ParameterBinding/module
+                        #logging of this call records a non-revealing type name instead of the
+                        #literal request content
+                        $LogonRequest['Body'] = [System.Text.Encoding]::UTF8.GetBytes($($Body | ConvertTo-Json))
 
                         try {
 
@@ -109,7 +112,9 @@ Function Start-AdvanceAuthentication {
 
                 }
 
-                $LogonRequest['Body'] = $Body | ConvertTo-Json
+                #Sent as raw UTF8 bytes rather than a String so ParameterBinding/module logging of
+                #this call records a non-revealing type name instead of the literal request content
+                $LogonRequest['Body'] = [System.Text.Encoding]::UTF8.GetBytes($($Body | ConvertTo-Json))
 
                 #Send Answer, or first poll
                 $IDSession = Invoke-IDRestMethod @LogonRequest

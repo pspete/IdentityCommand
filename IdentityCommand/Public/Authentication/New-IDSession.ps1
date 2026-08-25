@@ -107,12 +107,15 @@ $($IDSession.IdpRedirectShortUrl)
                         #Use the session tenant_url so that any PodFqdn redirect from Start-Authentication is honoured
                         $OobPinAuthRequest['Uri'] = "$($ISPSSSession.tenant_url)/Security/AdvanceAuthentication"
                         $OobPinAuthRequest['WebSession'] = $ISPSSSession.WebSession
-                        $OobPinAuthRequest['Body'] = @{
-                            SessionId   = $IDSession.IdpLoginSessionId
-                            MechanismId = 'OOBAUTHPIN'
-                            Action      = 'Answer'
-                            Answer      = Unprotect-Answer $Pin
-                        } | ConvertTo-Json
+                        #Sent as raw UTF8 bytes rather than a String so ParameterBinding/module
+                        #logging of this call records a non-revealing type name instead of the
+                        #literal request content
+                        $OobPinAuthRequest['Body'] = [System.Text.Encoding]::UTF8.GetBytes($(@{
+                                    SessionId   = $IDSession.IdpLoginSessionId
+                                    MechanismId = 'OOBAUTHPIN'
+                                    Action      = 'Answer'
+                                    Answer      = Unprotect-Answer $Pin
+                                } | ConvertTo-Json))
 
                         try {
 

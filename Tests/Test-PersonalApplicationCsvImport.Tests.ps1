@@ -70,7 +70,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'sends request with expected body' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $Parsed.credentialsData[0].name -eq 'exampleApp' -and $Parsed.credentialsData[0].username -eq 'exampleuser'
                 } -Times 1 -Exactly -Scope It
 

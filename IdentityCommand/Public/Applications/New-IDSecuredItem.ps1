@@ -41,7 +41,9 @@ function New-IDSecuredItem {
 
                 'URI'    = "$($ISPSSSession.tenant_url)/UPRest/AddSecuredItem"
                 'Method' = 'POST'
-                'Body'   = ($Body | ConvertTo-Json)
+                #Sent as raw UTF8 bytes rather than a String so ParameterBinding/module logging of
+                #this call records a non-revealing type name instead of the literal request content
+                'Body'   = [System.Text.Encoding]::UTF8.GetBytes($($Body | ConvertTo-Json))
 
             }
 

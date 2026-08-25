@@ -76,11 +76,11 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Mock Invoke-IDRestMethod -MockWith {
                     [pscustomobject]@{ Summary = 'OobPending' }
-                } -ParameterFilter { ($Body | ConvertFrom-Json).Action -eq 'StartOOB' }
+                } -ParameterFilter { ([System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json).Action -eq 'StartOOB' }
 
                 Mock Invoke-IDRestMethod -MockWith {
                     [pscustomobject]@{ Summary = 'LoginSuccess' }
-                } -ParameterFilter { ($Body | ConvertFrom-Json).Action -eq 'Poll' }
+                } -ParameterFilter { ([System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json).Action -eq 'Poll' }
 
                 Mock Start-Sleep -MockWith {}
 
@@ -111,7 +111,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'first sends Action StartOOB with the chosen mechanism, session and tenant' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $Parsed.UUID -eq 'someuserid' -and
                     $Parsed.MechanismId -eq 'someemailmechanismid' -and
                     $Parsed.SessionId -eq 'somesessionid' -and
@@ -124,7 +124,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'then polls until no longer pending' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    ($Body | ConvertFrom-Json).Action -eq 'Poll'
+                    ([System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json).Action -eq 'Poll'
                 } -Times 1 -Exactly -Scope It
 
             }
@@ -174,7 +174,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'sends Action Answer' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    ($Body | ConvertFrom-Json).Action -eq 'Answer'
+                    ([System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json).Action -eq 'Answer'
                 } -Times 1 -Exactly -Scope It
 
             }
@@ -226,12 +226,12 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'sends a single MechanismId, not an array of all mechanisms'' IDs' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $Parsed.MechanismId -eq 'someotpmechanismid'
                 } -Scope It
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $Parsed.MechanismId -is [Array]
                 } -Times 0 -Exactly -Scope It
 

@@ -70,7 +70,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'decodes and sends the Password' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $Parsed.Password -eq 'SomePassword123' -and $Parsed.Username -eq 'someuser'
                 } -Times 1 -Exactly -Scope It
 

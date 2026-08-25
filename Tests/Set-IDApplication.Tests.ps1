@@ -39,15 +39,25 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             }
             New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
 
-            Mock Invoke-IDRestMethod -MockWith {
-                [pscustomobject]@{'property' = 'value' }
+            #The update response is just {State: 0} - Set-IDApplication fetches and returns the
+            #updated application via Get-IDApplication instead
+            Mock Get-IDApplication -MockWith {
+                [pscustomobject]@{ ID = 'someid'; Name = 'SomeName' }
             }
-
-            $response = Set-IDApplication -ID 'someid' -Name 'SomeName'
 
         }
 
-        Context 'Input' {
+        Context 'State 0 (success)' {
+
+            BeforeEach {
+
+                Mock Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{'State' = 0 }
+                }
+
+                $response = Set-IDApplication -ID 'someid' -Name 'SomeName'
+
+            }
 
             It 'sends request' {
 
@@ -90,13 +100,46 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
-        }
+            It 'fetches the updated application via Get-IDApplication' {
 
-        Context 'Output' {
+                Assert-MockCalled Get-IDApplication -ParameterFilter {
+
+                    $ID -eq 'someid'
+
+                } -Times 1 -Exactly -Scope It
+
+            }
 
             It 'provides output' {
 
                 $response | Should -Not -BeNullOrEmpty
+                $response.ID | Should -Be 'someid'
+
+            }
+
+        }
+
+        Context 'Non-zero State' {
+
+            BeforeEach {
+
+                Mock Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{'State' = 1 }
+                }
+
+                $response = Set-IDApplication -ID 'someid' -Name 'SomeName'
+
+            }
+
+            It 'does not fetch the application' {
+
+                Assert-MockCalled Get-IDApplication -Times 0 -Exactly -Scope It
+
+            }
+
+            It 'returns the raw result instead' {
+
+                $response.State | Should -Be 1
 
             }
 

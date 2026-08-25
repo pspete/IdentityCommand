@@ -71,7 +71,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'sends request with decoded passwords' {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed = [System.Text.Encoding]::UTF8.GetString($Body) | ConvertFrom-Json
                     $Parsed.oldPassword -eq 'OldPassword123' -and $Parsed.newPassword -eq 'NewPassword123'
                 } -Times 1 -Exactly -Scope It
 
