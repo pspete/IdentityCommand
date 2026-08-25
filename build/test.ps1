@@ -15,9 +15,7 @@ $configuration = [PesterConfiguration]::Default
 # assing properties & discover via intellisense
 $configuration.Run.Path = '.\Tests'
 $configuration.Run.PassThru = $true
-#TEMP: disabled to isolate whether CodeCoverage instrumentation is the cause of the AppVeyor
-#60-minute timeout, independent of the PSScriptAnalyzer per-rule-per-file fix already applied
-$configuration.CodeCoverage.Enabled = $false
+$configuration.CodeCoverage.Enabled = $true
 $configuration.CodeCoverage.Path = $files
 $configuration.TestResult.Enabled = $true
 $configuration.TestResult.OutputFormat = 'NUnitXml'
