@@ -1,6 +1,6 @@
 # .ExternalHelp IdentityCommand-help.xml
 function Get-IDTenantCdsSuffix {
-    
+
     [CmdletBinding()]
     param( )
 

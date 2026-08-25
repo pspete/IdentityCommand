@@ -31,7 +31,7 @@ $null = (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/
 
 Remove-Item -Path $(Resolve-Path .\TestsResults.xml) -Force
 
-if ($env:APPVEYOR_REPO_COMMIT_AUTHOR -eq 'Pete Maan') {
+if ($configuration.CodeCoverage.Enabled.Value -and ($env:APPVEYOR_REPO_COMMIT_AUTHOR -eq 'Pete Maan')) {
 
 	Write-Host 'Publishing Code Coverage'
 

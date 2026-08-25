@@ -60,7 +60,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://SomeTenant.id.cyberark.cloud/Policy/SavePolicyBlock3'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/Policy/SavePolicyBlock3'
 
                 } -Times 1 -Exactly -Scope It
 
@@ -70,7 +70,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://SomeTenant.id.cyberark.cloud/Policy/SavePolicyBlock3' -and $Method -match 'POST'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/Policy/SavePolicyBlock3' -and $Method -match 'POST'
 
                 } -Times 1 -Exactly -Scope It
 
@@ -80,7 +80,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://SomeTenant.id.cyberark.cloud/Policy/SavePolicyBlock3' -and $Body -match '/Policy/TestPolicy'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/Policy/SavePolicyBlock3' -and $Body -match '/Policy/TestPolicy'
 
                 } -Times 1 -Exactly -Scope It
 

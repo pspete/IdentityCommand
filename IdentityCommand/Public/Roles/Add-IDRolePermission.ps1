@@ -1,13 +1,14 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Add-IDRolePermission {
 
     [CmdletBinding()]
 	param
 	(
-       
+
         [Parameter(Mandatory = $true,
         ValueFromPipelinebyPropertyName = $true)]
         [Alias('Uuid')]
-        $Name,
+        $ID,
 
         [Parameter(Mandatory = $true)]
         [string]$Path
@@ -21,7 +22,7 @@ function Add-IDRolePermission {
         if ($Path -notin $currentAvailablePermissions.Path) {
 
             Write-Warning "$Path is not a valid permission. Run Get-IDPermission to list all available permissions"
-            break 
+            break
 
         }
 
@@ -33,7 +34,7 @@ function Add-IDRolePermission {
         $body = @(
             @{
 
-            "Role"        = $Name
+            "Role"        = $ID
             "Path"        = $Path
 
             }
@@ -42,10 +43,10 @@ function Add-IDRolePermission {
         #Constructed parameters for the rest call
         $RestCall = @{
 
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/AssignSuperRights"
+        "URI"         = "$($ISPSSSession.tenant_url)/Roles/AssignSuperRights"
         "Headers"     = $($ISPSSSession.WebSession.Headers)
         "Method"      = "Post"
-        "Body"        = (ConvertTo-JSON -InputObject $body) 
+        "Body"        = (ConvertTo-JSON -InputObject $body)
         "ContentType" = "application/json"
 
         }

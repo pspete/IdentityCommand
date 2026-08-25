@@ -51,7 +51,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 }
             }
 
-            $response = Get-IDRoleMember -Name 'SomeRole'
+            $response = Get-IDRoleMember -ID 'SomeRole'
 
         }
 
@@ -67,7 +67,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://SomeTenant.id.cyberark.cloud/Roles/GetRoleMembers'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/Roles/GetRoleMembers'
 
                 } -Times 1 -Exactly -Scope It
 
@@ -100,6 +100,16 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'outputs expected result' {
 
                 $response | Select-Object -First 1 -ExpandProperty property | Should -Be 'value'
+
+            }
+
+            It 'accepts -Uuid as an alias for -ID' {
+
+                Get-IDRoleMember -Uuid 'SomeOtherRole' | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty Name) -eq 'SomeOtherRole'
+                } -Times 1 -Exactly -Scope It
 
             }
 

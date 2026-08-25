@@ -165,11 +165,26 @@
 		#Show sanitised request body if in debug mode
 		If ([System.Management.Automation.ActionPreference]::SilentlyContinue -ne $DebugPreference) {
 
-			If (($PSBoundParameters.ContainsKey('Body')) -and (($PSBoundParameters['Body']).GetType().Name -eq 'String')) {
+			If (($PSBoundParameters.ContainsKey('Body')) -and ($null -ne $PSBoundParameters['Body'])) {
 
-				Write-Debug "[Body] $(Hide-SecretValue -InputValue $Body)"
+				switch (($Body).GetType().Name) {
+
+					'String' { Write-Debug "[Body] $(Hide-SecretValue -InputValue $Body)" }
+
+					'Byte[]' { Write-Debug "[Body] $(Hide-SecretValue -InputValue $([System.Text.Encoding]::UTF8.GetString($Body)))" }
+
+				}
 
 			}
+
+		}
+
+		#Send a String body as raw UTF8 bytes so ParameterBinding/module logging of the
+		#Invoke-WebRequest call records a non-revealing type name (System.Byte[]) instead of the
+		#literal request content - a safety net for any caller that didn't already send bytes
+		if (($PSBoundParameters.ContainsKey('Body')) -and ($null -ne $PSBoundParameters['Body']) -and (($PSBoundParameters['Body']).GetType().Name -eq 'String')) {
+
+			$PSBoundParameters['Body'] = [System.Text.Encoding]::UTF8.GetBytes($PSBoundParameters['Body'])
 
 		}
 
@@ -235,7 +250,7 @@
 								$ErrorMessage = "$ErrorMessage. $ErrorDescription"
 							}
 							{ $null -ne $ErrorDetails.code } {
-								$ErrorID, $ErrorDetails.code -join ','
+								$ErrorID = $ErrorID, $ErrorDetails.code -join ','
 							}
 
 						}
@@ -251,7 +266,7 @@
 
 						[System.Management.Automation.ErrorRecord]::new(
 
-							$ErrorMessage,
+							[System.Exception]::new($ErrorMessage),
 							$ErrorID,
 							[System.Management.Automation.ErrorCategory]::NotSpecified,
 							$PSItem

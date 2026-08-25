@@ -43,7 +43,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 [pscustomobject]@{'property' = 'value' }
             }
 
-            $response = Set-IDRole -Name 'SomeRole' -AddUsers @('someuser')
+            $response = Set-IDRole -ID 'SomeRole' -AddUsers @('someuser')
 
         }
 
@@ -59,7 +59,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://SomeTenant.id.cyberark.cloud/Roles/UpdateRole/'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/Roles/UpdateRole/'
 
                 } -Times 1 -Exactly -Scope It
 
@@ -73,11 +73,9 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             It 'sends request with expected body' {
 
-                # NOTE: source sets body 'Name' from an undeclared $UUID variable (bug),
-                # so it always serializes as null -- don't assert on that field's value.
-                # Just verify the Users add/delete structure made it into the body.
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty Users | Select-Object -ExpandProperty Add) -eq 'someuser'
+                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed.Name -eq 'SomeRole' -and $Parsed.Users.Add -eq 'someuser'
                 } -Times 1 -Exactly -Scope It
 
             }
@@ -89,6 +87,20 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'provides output' {
 
                 $response | Should -Not -BeNullOrEmpty
+
+            }
+
+        }
+
+        Context 'Uuid alias' {
+
+            It 'accepts -Uuid as an alias for -ID' {
+
+                Set-IDRole -Uuid 'SomeOtherRole' -AddUsers @('someuser') | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty Name) -eq 'SomeOtherRole'
+                } -Times 1 -Exactly -Scope It
 
             }
 

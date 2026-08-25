@@ -1,9 +1,10 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Get-IDRoleWebApp {
 
     [CmdletBinding()]
 	param
 	(
-       
+
         [Parameter(Mandatory = $true,
         ValueFromPipelinebyPropertyName = $true)]
         [Alias('Uuid')]
@@ -18,10 +19,9 @@ function Get-IDRoleWebApp {
         #Constructed parameters for the rest call
         $RestCall = @{
 
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/SaasManage/GetRoleApps?role=$Name"
+        "URI"         = "$($ISPSSSession.tenant_url)/SaasManage/GetRoleApps?role=$Name"
         "Headers"     = $($ISPSSSession.WebSession.Headers)
         "Method"      = "Post"
-        "Body"        = $body
         "ContentType" = "application/json"
 
         }

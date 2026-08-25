@@ -37,10 +37,17 @@ Get-IDUser [-CurrentUser] [<CommonParameters>]
 Get-IDUser [-TechSupportUser] [<CommonParameters>]
 ```
 
+### GetUserSettings
+```
+Get-IDUser -ID <String> -SettingType <String> [<CommonParameters>]
+```
+
 ## DESCRIPTION
 By default, returns details of all existing users in the cloud directory.
 
 Specify \`id\` or \`username\` parameter to to fetch the details of a specific existing user in the cloud directory.
+
+Specify \`id\` together with \`SettingType\` to fetch a specific setting for a specific user (via a different underlying API to the other parameter sets).
 
 ## EXAMPLES
 
@@ -97,7 +104,7 @@ Accept wildcard characters: False
 ```
 
 ### -ID
-The id of the user to get details of
+The id of the user to get details of.
 
 ```yaml
 Type: String
@@ -108,6 +115,21 @@ Required: True
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -ID
+The id of the user to fetch a setting for, used together with -SettingType. Not accepted from the pipeline in this parameter set, to avoid ambiguous binding when an input object also has a SettingType property.
+
+```yaml
+Type: String
+Parameter Sets: GetUserSettings
+Aliases: Uuid
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -137,6 +159,21 @@ Aliases:
 Required: True
 Position: Named
 Default value: False
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -SettingType
+The type of setting to fetch. Used together with -ID.
+
+```yaml
+Type: String
+Parameter Sets: GetUserSettings
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```

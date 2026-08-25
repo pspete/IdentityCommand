@@ -61,7 +61,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 [pscustomobject]@{'property' = 'value' }
             }
 
-            $response = Add-IDRolePermission -Name 'SomeRole' -Path '/Path/To/Permission'
+            $response = Add-IDRolePermission -ID 'SomeRole' -Path '/Path/To/Permission'
 
         }
 
@@ -77,7 +77,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://SomeTenant.id.cyberark.cloud/Roles/AssignSuperRights'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/Roles/AssignSuperRights'
 
                 } -Times 1 -Exactly -Scope It
 
@@ -109,6 +109,21 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'provides output' {
 
                 $response | Should -Not -BeNullOrEmpty
+
+            }
+
+        }
+
+        Context 'Uuid alias' {
+
+            It 'accepts -Uuid as an alias for -ID' {
+
+                Add-IDRolePermission -Uuid 'SomeOtherRole' -Path '/Path/To/Permission' | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $URI -match 'AssignSuperRights' -and
+                    $($Body | ConvertFrom-Json | Select-Object -First 1 -ExpandProperty Role) -eq 'SomeOtherRole'
+                } -Times 1 -Exactly -Scope It
 
             }
 

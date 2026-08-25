@@ -13,7 +13,7 @@ Assign an administrative permission to a role
 ## SYNTAX
 
 ```
-Add-IDRolePermission [-Name] <Object> [-Path] <String> [<CommonParameters>]
+Add-IDRolePermission [-ID] <Object> [-Path] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -24,15 +24,15 @@ The path must match one of the values returned by \`Get-IDPermission\`; if it do
 
 ### Example 1
 ```
-PS C:\> Add-IDRolePermission -Name 'Role Admins' -Path '/Core/ManageUsers'
+PS C:\> Add-IDRolePermission -ID '881512ca-d441-4997-a55e-19ec5374f3b3' -Path '/Core/ManageUsers'
 ```
 
 Assign the specified administrative permission to the role
 
 ## PARAMETERS
 
-### -Name
-The name (or ID) of the role to assign the permission to.
+### -ID
+The ID/UUID/`_RowKey` of the role to assign the permission to - not its display name.
 
 ```yaml
 Type: Object

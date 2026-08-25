@@ -59,7 +59,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://SomeTenant.id.cyberark.cloud/Policy//GetPolicyBlock'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/Policy/GetPolicyBlock'
 
                 } -Times 1 -Exactly -Scope It
 
@@ -86,6 +86,30 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'provides output' {
 
                 $response | Should -Not -BeNullOrEmpty
+
+            }
+
+        }
+
+        Context 'ID alias' {
+
+            It 'accepts -ID as an alias for -Name' {
+
+                Get-IDAuthenticationPolicyBlock -ID 'SomeOtherPolicy'
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty Name) -eq 'SomeOtherPolicy'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'binds -ID from pipeline by property name (e.g. Get-IDAuthenticationPolicyLink output)' {
+
+                [pscustomobject]@{ 'ID' = '/Policy/SomePolicy' } | Get-IDAuthenticationPolicyBlock
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty Name) -eq '/Policy/SomePolicy'
+                } -Times 1 -Exactly -Scope It
 
             }
 

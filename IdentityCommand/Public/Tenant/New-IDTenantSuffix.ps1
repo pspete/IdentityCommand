@@ -4,14 +4,14 @@ function New-IDTenantSuffix {
     [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
-       
+
         # The new tenant Suffix
         [Parameter(Mandatory = $true)]
 		$alias,
 
         # Boolean if it is a Cloud directory alias
         [Parameter(Mandatory = $false)]
-		$cdsAlias = $true,
+		[bool]$cdsAlias = $true,
 
         # The suffix to be mapped to the new suffix
         [Parameter(Mandatory = $true)]
@@ -38,10 +38,10 @@ function New-IDTenantSuffix {
             $Body = @{
 
                 "alias"         = $alias
-                "cdsAlias"      = $cdsAlias
+                "cdsAlias"      = $cdsAlias.ToString().ToLower()
                 "domain"        = $domain
                 "jsutil-radio2" = $directory
-                "oldname"       = $oldname
+                "oldName"       = $oldname
 
             }
 

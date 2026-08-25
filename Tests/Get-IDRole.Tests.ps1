@@ -67,7 +67,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://SomeTenant.id.cyberark.cloud/redrock/query/'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/redrock/query/'
 
                 } -Times 1 -Exactly -Scope It
 
@@ -99,7 +99,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 Mock Invoke-IDRestMethod -MockWith {
                     [pscustomobject]@{ 'property' = 'value' }
                 }
-                $response = Get-IDRole -Name 'SomeRole'
+                $response = Get-IDRole -ID 'SomeRole'
             }
 
             It 'sends request' {
@@ -151,6 +151,18 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'outputs expected result' {
 
                 $response | Select-Object -ExpandProperty property | Should -Be 'value'
+
+            }
+
+            It 'accepts -Uuid as an alias for -ID' {
+
+                Get-IDRole -Uuid 'SomeOtherRole' | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    ([system.uri]::new($URI) | Select-Object -ExpandProperty query) -match 'Name=SomeOtherRole'
+
+                } -Times 1 -Exactly -Scope It
 
             }
 

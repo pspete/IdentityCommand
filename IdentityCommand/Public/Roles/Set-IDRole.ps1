@@ -1,13 +1,14 @@
-﻿function Set-IDRole {
+# .ExternalHelp IdentityCommand-help.xml
+function Set-IDRole {
 
     [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
-       
+
         [Parameter(Mandatory = $true,
         ValueFromPipelinebyPropertyName = $true)]
         [Alias('Uuid')]
-        $Name,
+        $ID,
 
         [Parameter(Mandatory = $false)]
         [array]$AddUsers = @(),
@@ -33,7 +34,7 @@
 
     PROCESS {
 
-        if ($PSCmdlet.ShouldProcess($Name, 'Update Role')) {
+        if ($PSCmdlet.ShouldProcess($ID, 'Update Role')) {
 
             # contructed list of users, roles or groups to add or delete
             $UsersUpdate = @{
@@ -60,7 +61,7 @@
             #Constructed body for the rest call
             $body = [ordered]@{
 
-                "Name"        = $UUID
+                "Name"        = $ID
                 "Users"       = $UsersUpdate
                 "Roles"       = $RolesUpdate
                 "Groups"      = $GroupsUpdate
@@ -70,7 +71,7 @@
             #Constructed parameters for the rest call
             $RestCall = @{
 
-            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/UpdateRole/"
+            "URI"         = "$($ISPSSSession.tenant_url)/Roles/UpdateRole/"
             "Headers"     = $($ISPSSSession.WebSession.Headers)
             "Method"      = "Post"
             "Body"        = ($body | ConvertTo-Json -Depth 6)

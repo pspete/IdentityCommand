@@ -4,12 +4,16 @@
 
 # IdentityCommand
 
-IdentityCommand [Work in Progress] is a PowerShell module that provides a set of easy-to-use commands, allowing you to interact with the API for an Idira (CyberArk) Identity tenant from within the PowerShell environment.
+IdentityCommand is a PowerShell module that wraps the REST API for a Palo Alto Idira (formerly CyberArk) Identity tenant, giving you easy-to-use commands for authentication (including MFA/SAML/OIDC flows) and administration - users, roles, applications, organizations, authentication policies, SCIM provisioning, and more - all from within PowerShell.
+
+The module has been in development for a few years, initially focused on authentication. Coverage is expanding significantly to reach near-complete coverage of the Identity Administration API, and IdentityCommand is also the foundation for a growing family of other `pspete` modules that administer the wider Idira SaaS platform - e.g. `IdentityCommand.DPA`, which builds on IdentityCommand's authentication to administer Idira DPA.
 
 - **Prior to a Version 1.0.0 release**:
   - Expect changes
   - Things may break
   - Issues / PRs are encouraged & appreciated
+  - Many commands are built from documented API shapes but not yet exercised against a live tenant - see [Help Us Test](#help-us-test) below, your feedback genuinely shapes what ships next.
+  - Most of the Identity Administration API is now covered, but real-world usage is still expected to shape further changes to command names, parameters/parameter names, and how commands are grouped - some may split into companion commands, others may combine. These patterns only emerge once commands are actually used, so don't consider anything final yet.
 
 ---
 
@@ -123,90 +127,43 @@ Return data also includes details such as session start time, elapsed time, last
 
 ## List Of Commands
 
-The commands currently available in the _IdentityCommand_ module are listed here:
+_IdentityCommand_ currently ships 170+ commands, grouped into the areas below. The full list moves fast enough that it's not reproduced command-by-command here - instead, once the module is imported:
 
-### Session
+```powershell
+# List every command in the module, grouped by area
+Get-Command -Module IdentityCommand | Group-Object { $_.Name.Split('-')[1] -replace '^ID' }
 
-| Function              | Description                                                                                                                |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `New-IDSession`        | Authenticates a user to a CyberArk Identity tenant.                                                                       |
-| `New-IDPlatformToken`  | Request authentication token using OAuth                                                                                  |
-| `Close-IDSession`      | Logout the current user                                                                                                   |
-| `Clear-IDUserSession`  | Sign Out a user from all CyberArk Identity sessions everywhere.                                                           |
-| `Get-IDSession`        | Get the IdentityCommand WebSession                                                                                        |
+# Get detailed help, including examples, for any command
+Get-Help Get-IDUser -Full
+```
 
-### Users
+Every command also has a corresponding reference page under [`docs/collections/_commands`](docs/collections/_commands), which is the same content `Get-Help` displays.
 
-| Function                                    | Description                                                    |
-| -------------------------------------------- | --------------------------------------------------------------- |
-| `Get-IDUser`                                 | Fetch details of cloud directory users                        |
-| `Get-IDUserRole`                             | List roles user is a member of.                                |
-| `Get-IDUserIdentifier`                       | Get user identifiers                                           |
-| `Get-IDUserOathOTPClientName`                | Get the tenant's OATH OTP client name                          |
-| `Get-IDUserPasswordComplexityRequirement`    | Get the tenant's password complexity requirements              |
-| `Suspend-IDUserMFA`                          | Suspend MFA for a User                                         |
-| `Test-IDUserCloudLock`                       | Check if a user is cloud locked                                |
-| `Lock-IDUser`                                 | Cloud lock a user                                              |
-| `Unlock-IDUser`                              | Cloud unlock a user                                            |
+| Area | Covers |
+| --- | --- |
+| **Session / Authentication** | Interactive & service-account sign-in (credential, SAML, MFA challenges), session lifecycle, platform tokens |
+| **Users** | User CRUD, roles, attributes, security questions, U2F devices, sessions, invites, identity verification, password/lock management |
+| **Roles** | Roles, membership (users/roles/groups), administrative permissions, dynamic role scripts |
+| **Applications** | Application catalog CRUD, permissions, tags, icons, personal apps & secured items, CSV import |
+| **Organizations** | Organization/tenant-partition administration, membership, administrators, permissions |
+| **Policies** | Authentication profiles & policies, MFA assurance levels, OTP/password complexity settings |
+| **SCIM** | SCIM-based provisioning for users, groups, containers, container permissions & privileged data |
+| **Tenant** | Tenant configuration, cnames, suffixes, security questions, message templates |
+| **Workflow** | Access-request workflow jobs and approval/denial events |
+| **Devices** | Device registration & management |
+| **Core** | Lower-level helpers - ad-hoc SQL queries, permission lookups, download URLs, password generation |
 
-### Tenant
+## Help Us Test
 
-| Function                        | Description                                          |
-| -------------------------------- | ----------------------------------------------------- |
-| `Get-IDTenant`                   | Get Identity tenant information                     |
-| `Get-IDTenantConfiguration`      | Get Identity tenant configuration                   |
-| `Get-IDTenantURL`                | Get tenant URL                                       |
-| `Get-IDTenantCname`              | Get Tenant Cnames                                    |
-| `New-IDTenantCname`              | Register a new tenant cname                          |
-| `Remove-IDTenantCname`           | Remove a tenant cname                                |
-| `Set-IDTenantPreferredCname`     | Set the preferred tenant cname                       |
-| `Get-IDTenantSuffix`             | Get tenant suffixes                                  |
-| `New-IDTenantSuffix`             | Create a new tenant suffix                           |
-| `Remove-IDTenantSuffix`          | Remove tenant suffixes                               |
-| `Get-IDTenantCdsSuffix`          | Get tenant Cloud Directory Service suffixes          |
-| `Get-IDConnector`                | Get Connector Status                                 |
-| `Get-IDDownloadUrl`              | Get download URLs                                    |
-| `Get-IDAnalyticsDataset`         | Get all datasets accessible to user                  |
-| `Invoke-IDSqlcmd`                | Query the database tables                            |
-| `Get-IDPermission`               | Get all available permissions                        |
+Prior to a 1.0.0 release, some commands are built from documented or captured API shapes but haven't yet been exercised against a live tenant, or only partially confirmed. If you're able to try one of these against your own tenant, [open an issue][new-issue] with what you found (works as-is, needs a fix, or the request shape is wrong) - it's genuinely the fastest way to move a command from "should work" to "confirmed".
 
-### Roles
+The current list is:
 
-| Function                     | Description                                       |
-| ------------------------------ | --------------------------------------------------- |
-| `Get-IDRole`                  | Get details of one or more roles                   |
-| `New-IDRole`                  | Create a new role                                  |
-| `Set-IDRole`                  | Update role membership                             |
-| `Remove-IDRole`               | Delete one or more roles                           |
-| `Get-IDRoleMember`            | Get members of a role                              |
-| `Add-IDRoleMember`            | Add users, roles, or groups to a role              |
-| `Remove-IDRoleMember`         | Remove users, roles, or groups from a role         |
-| `Get-IDRolePermission`        | Get administrative permissions assigned to a role  |
-| `Add-IDRolePermission`        | Assign an administrative permission to a role      |
-| `Remove-IDRolePermission`     | Remove an administrative permission from a role    |
-| `Get-IDRoleApplication`       | Get applications assigned to a role                |
-| `Get-IDRoleWebApp`            | Get web applications assigned to a role            |
-| `Get-IDDynamicRoleMember`     | Export the members of a dynamic role               |
-| `Set-IDDynamicRoleScript`     | Set the membership script for a dynamic role       |
-| `Test-IDDynamicRoleScript`    | Test a dynamic role membership script              |
-
-### Authentication Profiles & Policies
-
-| Function                                     | Description                                                          |
-| ---------------------------------------------- | ----------------------------------------------------------------------- |
-| `Get-IDAuthenticationProfile`                 | Get authentication profiles                                          |
-| `New-IDAuthenticationProfile`                 | Create a new authentication profile                                  |
-| `Set-IDAuthenticationProfile`                 | Update an existing authentication profile                             |
-| `Remove-IDAuthenticationProfile`              | Delete an authentication profile                                      |
-| `Get-IDAuthenticationAssuranceLevel`          | Get the MFA assurance level for a combination of authentication challenges |
-| `Get-IDAuthenticationPolicyModifier`          | Get available authentication policy modifiers                        |
-| `Get-IDAuthenticationPolicyLink`              | Get the current authentication policy links (plinks)                 |
-| `Get-IDAuthenticationPolicyBlock`             | Get an authentication policy block by name                           |
-| `Remove-IDAuthenticationPolicyBlock`          | Delete an authentication policy block                                 |
-| `Get-IDAuthenticationPolicyMetadata`          | Get authentication policy metadata                                   |
-| `Get-IDAuthenticationPolicyCloudMobileGP`     | Get the tenant's cloud/mobile/group policy device management configuration |
-| `New-IDAuthenticationPolicy`                  | Create a new authentication policy                                    |
-| `Set-IDAuthenticationPolicy`                  | Update an existing authentication policy                              |
+| Command | What's unconfirmed |
+| --- | --- |
+| `Get-`/`New-`/`Set-`/`Remove-IDSCIMContainer` | Built from the vendor's OpenAPI schema, but never exercised live - this tenant doesn't provision the SCIM `Container` resource type (check with `Get-IDSCIMResourceType`) |
+| `Get-`/`New-`/`Set-`/`Remove-IDSCIMContainerPermission` | Same - needs a tenant that provisions SCIM `ContainerPermission` |
+| `Get-`/`New-`/`Set-`/`Remove-IDSCIMPrivilegedData` | Same - needs a tenant that provisions SCIM `PrivilegedData` |
 
 ## Installation
 
@@ -238,7 +195,7 @@ Install-Module -Name IdentityCommand -Scope CurrentUser
 
 The module files can be manually copied to one of your PowerShell module directories.
 
-Use the following command to get the paths to your local PowerShell module folders:
+Use the following command to get the paths to your local PowerShell module folders:
 
 ```powershell
 
@@ -246,7 +203,7 @@ $env:PSModulePath.split(';')
 
 ```
 
-The module files must be placed in one of the listed directories, in a folder called `IdentityCommand`.
+The module files must be placed in one of the listed directories, in a folder called `IdentityCommand`.
 
 More: [about_PSModulePath](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath)
 

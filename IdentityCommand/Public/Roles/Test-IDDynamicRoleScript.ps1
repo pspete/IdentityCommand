@@ -1,9 +1,10 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Test-IDDynamicRoleScript {
 
     [CmdletBinding()]
 	param
 	(
-       
+
         [Parameter(Mandatory = $true)]
         $User,
 
@@ -16,18 +17,17 @@ function Test-IDDynamicRoleScript {
 
     PROCESS {
 
-        #Constructed body for the rest call
-        $body = "{
-
-        'User': '$($User)',
-        'Script': '$($Script)'
-    
-        }"
+        #Constructed body for the rest call - built via ConvertTo-Json (not raw string
+        #interpolation) so script content containing quotes/newlines is escaped correctly.
+        $body = ([ordered]@{
+            'User'   = $User
+            'Script' = $Script
+        } | ConvertTo-Json)
 
         #Constructed parameters for the rest call
         $RestCall = @{
 
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/TestDynamicRoleScript"
+        "URI"         = "$($ISPSSSession.tenant_url)/Roles/TestDynamicRoleScript"
         "Headers"     = $($ISPSSSession.WebSession.Headers)
         "Method"      = "Post"
         "Body"        = $body

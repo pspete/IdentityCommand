@@ -1,3 +1,4 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Get-IDAuthenticationPolicyModifier {
 
     [CmdletBinding()]
@@ -13,7 +14,7 @@ function Get-IDAuthenticationPolicyModifier {
             #Constructed parameters for the rest call
             $RestCall = @{
 
-            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Policy/GetAuthPolicyModifiers"
+            "URI"         = "$($ISPSSSession.tenant_url)/Policy/GetAuthPolicyModifiers"
             "Headers"     = $($ISPSSSession.WebSession.Headers)
             "Method"      = "Post"
             "ContentType" = "application/json"

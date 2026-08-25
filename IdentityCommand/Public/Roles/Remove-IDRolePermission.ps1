@@ -1,13 +1,14 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Remove-IDRolePermission {
 
     [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
-       
+
         [Parameter(Mandatory = $true,
         ValueFromPipelinebyPropertyName = $true)]
         [Alias('Uuid')]
-        $Name,
+        $ID,
 
         [Parameter(Mandatory = $true)]
         [string]$Path
@@ -21,7 +22,7 @@ function Remove-IDRolePermission {
         if ($Path -notin $currentAvailablePermissions.Path) {
 
             Write-Warning "$Path is not a valid permission. Run Get-IDPermission to list all available permissions"
-            break 
+            break
 
         }
 
@@ -29,13 +30,13 @@ function Remove-IDRolePermission {
 
     PROCESS {
 
-        if ($PSCmdlet.ShouldProcess($Name, "Remove Role Permission '$Path'")) {
+        if ($PSCmdlet.ShouldProcess($ID, "Remove Role Permission '$Path'")) {
 
             #Constructed body for the rest call
             $body = @(
                 @{
 
-                "Role"        = $Name
+                "Role"        = $ID
                 "Path"        = $Path
 
                 }
@@ -44,7 +45,7 @@ function Remove-IDRolePermission {
             #Constructed parameters for the rest call
             $RestCall = @{
 
-            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/UnAssignSuperRights"
+            "URI"         = "$($ISPSSSession.tenant_url)/Roles/UnAssignSuperRights"
             "Headers"     = $($ISPSSSession.WebSession.Headers)
             "Method"      = "Post"
             "Body"        = (ConvertTo-JSON -InputObject $body)

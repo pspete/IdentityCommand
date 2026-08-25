@@ -170,6 +170,41 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'ID alias' {
+
+            BeforeEach {
+                Mock Invoke-IDRestMethod -MockWith { [string]'TRUE' }
+                $ISPSSSession = [ordered]@{
+                    tenant_url         = 'https://somedomain.id.cyberark.cloud'
+                    User               = $null
+                    TenantId           = 'SomeTenant'
+                    SessionId          = 'SomeSession'
+                    WebSession         = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+                    StartTime          = $null
+                    ElapsedTime        = $null
+                    LastCommand        = $null
+                    LastCommandTime    = $null
+                    LastCommandResults = $null
+                    LastError          = $null
+                    LastErrorTime      = $null
+                }
+                New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
+            }
+
+            It 'accepts -ID as an alias for -user' {
+
+                Lock-IDUser -ID 5678 | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    ([system.uri]::new($URI) | Select-Object -ExpandProperty query) -match 'user=5678'
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+        }
+
     }
 
 }

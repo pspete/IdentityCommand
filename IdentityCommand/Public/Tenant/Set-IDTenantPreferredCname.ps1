@@ -3,7 +3,7 @@ function Set-IDTenantPreferredCname {
     [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
-       
+
         [Parameter(Mandatory = $true)]
 		$customCname
 

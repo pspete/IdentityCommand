@@ -1,3 +1,4 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Get-IDUserOathOTPClientName {
 
     [CmdletBinding()]
@@ -13,7 +14,7 @@ function Get-IDUserOathOTPClientName {
             #Constructed parameters for the rest call
             $RestCall = @{
 
-            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Policy/GetOathOtpClientName"
+            "URI"         = "$($ISPSSSession.tenant_url)/Policy/GetOathOtpClientName"
             "Headers"     = $($ISPSSSession.WebSession.Headers)
             "Method"      = "Post"
             "ContentType" = "application/json"

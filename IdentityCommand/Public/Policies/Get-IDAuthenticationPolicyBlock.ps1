@@ -1,5 +1,4 @@
-# Unsure what the name parameter is asking for
-
+# .ExternalHelp IdentityCommand-help.xml
 function Get-IDAuthenticationPolicyBlock {
 
     [CmdletBinding()]
@@ -7,8 +6,8 @@ function Get-IDAuthenticationPolicyBlock {
 	(
         [Parameter(Mandatory = $true,
         ValueFromPipelinebyPropertyName = $true)]
-        [Alias('PolicySet')]
-        $Name  
+        [Alias('PolicySet', 'ID')]
+        $Name
     )
 
     BEGIN { } #begin
@@ -24,7 +23,7 @@ function Get-IDAuthenticationPolicyBlock {
         #Constructed parameters for the rest call
         $RestCall = @{
 
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Policy//GetPolicyBlock"
+        "URI"         = "$($ISPSSSession.tenant_url)/Policy/GetPolicyBlock"
         "Headers"     = $($ISPSSSession.WebSession.Headers)
         "Method"      = "Post"
         "Body"        = ($Body | ConvertTo-Json)

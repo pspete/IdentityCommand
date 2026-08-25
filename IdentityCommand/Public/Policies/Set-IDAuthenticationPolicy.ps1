@@ -1,3 +1,4 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Set-IDAuthenticationPolicy {
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -46,7 +47,7 @@ function Set-IDAuthenticationPolicy {
             #Constructed parameters for the rest call
             $RestCall = @{
 
-                'URI'         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Policy/SavePolicyBlock3"
+                'URI'         = "$($ISPSSSession.tenant_url)/Policy/SavePolicyBlock3"
                 'Headers'     = $($ISPSSSession.WebSession.Headers)
                 'Method'      = 'Post'
                 'Body'        = $Body

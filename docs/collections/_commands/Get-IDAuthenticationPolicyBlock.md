@@ -32,14 +32,13 @@ Return the policy block matching the specified name.
 ## PARAMETERS
 
 ### -Name
-The name of the authentication policy block to retrieve.
-Also aliased as PolicySet.
-Accepts pipeline input by property name.
+The name of the authentication policy/policy set itself (e.g. as shown in the CyberArk Identity Admin Portal's Authentication -> Policies page) - not a role name.
+Matches the `ID` property on `Get-IDAuthenticationPolicyLink` output directly, hence the `-ID` alias, for direct pipeline binding from that command.
 
 ```yaml
 Type: Object
 Parameter Sets: (All)
-Aliases: PolicySet
+Aliases: PolicySet, ID
 
 Required: True
 Position: 0

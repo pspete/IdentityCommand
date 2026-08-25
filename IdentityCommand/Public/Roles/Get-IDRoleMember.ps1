@@ -1,13 +1,14 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Get-IDRoleMember {
 
     [CmdletBinding()]
 	param
 	(
-       
+
         [Parameter(Mandatory = $true,
         ValueFromPipelinebyPropertyName = $true)]
         [Alias('Uuid')]
-        $Name
+        $ID
 
     )
 
@@ -18,14 +19,14 @@ function Get-IDRoleMember {
         #Constructed body for the rest call
         $body = [ordered]@{
 
-            "Name"        = $Name
+            "Name"        = $ID
 
         }
 
         #Constructed parameters for the rest call
         $RestCall = @{
 
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/GetRoleMembers"
+        "URI"         = "$($ISPSSSession.tenant_url)/Roles/GetRoleMembers"
         "Headers"     = $($ISPSSSession.WebSession.Headers)
         "Method"      = "Post"
         "Body"        = ($body | ConvertTo-Json -Depth 6)

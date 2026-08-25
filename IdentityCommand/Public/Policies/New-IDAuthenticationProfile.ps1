@@ -1,3 +1,4 @@
+# .ExternalHelp IdentityCommand-help.xml
 function New-IDAuthenticationProfile {
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -13,7 +14,7 @@ function New-IDAuthenticationProfile {
 
         [Parameter(Mandatory = $false)]
         $AdditionalData = @{},
-        
+
         [Parameter(Mandatory = $false)]
         [ValidateSet("QR","PASSKEY")]
         $SingleChallengeMechanisms = "",
@@ -25,7 +26,7 @@ function New-IDAuthenticationProfile {
         $Name
     )
 
-    BEGIN {      
+    BEGIN {
 
         $SQ = ("SQ" -in $FirstFactorChallenges) -or ("SQ" -in $SecondFactorChallenges)
 
@@ -65,7 +66,7 @@ function New-IDAuthenticationProfile {
             #Constructed parameters for the rest call
             $RestCall = @{
 
-            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/AuthProfile/SaveProfile"
+            "URI"         = "$($ISPSSSession.tenant_url)/AuthProfile/SaveProfile"
             "Headers"     = $($ISPSSSession.WebSession.Headers)
             "Method"      = "Post"
             "Body"        = ConvertTo-JSON -InputObject $Body #

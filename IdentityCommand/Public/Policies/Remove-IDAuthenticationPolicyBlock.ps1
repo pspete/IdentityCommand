@@ -1,3 +1,4 @@
+# .ExternalHelp IdentityCommand-help.xml
 # Unsure what the name parameter is asking for
 
 function Remove-IDAuthenticationPolicyBlock {
@@ -8,7 +9,7 @@ function Remove-IDAuthenticationPolicyBlock {
         [Parameter(Mandatory = $true,
         ValueFromPipelinebyPropertyName = $true)]
         [Alias('PolicySet')]
-        $Name  
+        $Name
     )
 
     BEGIN { } #begin
@@ -32,7 +33,7 @@ function Remove-IDAuthenticationPolicyBlock {
             #Constructed parameters for the rest call
             $RestCall = @{
 
-            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Policy/DeletePolicyBlock"
+            "URI"         = "$($ISPSSSession.tenant_url)/Policy/DeletePolicyBlock"
             "Headers"     = $($ISPSSSession.WebSession.Headers)
             "Method"      = "Post"
             "Body"        = ($Body | ConvertTo-Json)

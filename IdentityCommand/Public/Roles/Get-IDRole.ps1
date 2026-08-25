@@ -1,43 +1,44 @@
-﻿function Get-IDRole {
+# .ExternalHelp IdentityCommand-help.xml
+function Get-IDRole {
 
     [CmdletBinding(DefaultParameterSetName = 'Redrock')]
-	param
-	(
-       
-        [Parameter(Mandatory = $false, 
-        ParameterSetName = 'Redrock')]
-		$Query = @{"Script" = "Select * from Role ORDER BY Name COLLATE NOCASE"},
+    param
+    (
 
-        [Parameter(Mandatory = $true, 
-        ParameterSetName = 'API',
-        ValueFromPipelinebyPropertyName = $true)]
-		[Alias('Uuid')]
-        $Name
+        [Parameter(Mandatory = $false,
+            ParameterSetName = 'Redrock')]
+        $Query = @{'Script' = 'Select * from Role ORDER BY Name COLLATE NOCASE' },
+
+        [Parameter(Mandatory = $true,
+            ParameterSetName = 'API',
+            ValueFromPipelinebyPropertyName = $true)]
+        [Alias('Uuid')]
+        $ID
 
     )
 
-    BEGIN {
+    begin {
 
-        if ($Name) {
+        if ($ID) {
 
             $API = $true
 
         }
     } #begin
 
-    PROCESS {
-        
+    process {
+
         # validates if the API switch is enabled or not
         if (!$API) {
 
             #Constructed parameters for the rest call
             $RestCall = @{
 
-                "URI"         = "https://$($ISPSSSession.tenantID).id.cyberark.cloud/redrock/query/"
-                "Headers"     = $($ISPSSSession.WebSession.Headers)
-                "Method"      = "Post"
-                "Body"        = ($Query | ConvertTo-Json)
-                "ContentType" = "application/json"
+                'URI'         = "$($ISPSSSession.tenant_url)/redrock/query/"
+                'Headers'     = $($ISPSSSession.WebSession.Headers)
+                'Method'      = 'Post'
+                'Body'        = ($Query | ConvertTo-Json)
+                'ContentType' = 'application/json'
 
             }
 
@@ -54,10 +55,10 @@
             #Constructed parameters for the rest call
             $RestCall = @{
 
-                "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Roles/GetRole?Name=$Name"
-                "Headers"     = $($ISPSSSession.WebSession.Headers)
-                "Method"      = "Post"
-                "ContentType" = "application/json"
+                'URI'         = "$($ISPSSSession.tenant_url)/Roles/GetRole?Name=$ID"
+                'Headers'     = $($ISPSSSession.WebSession.Headers)
+                'Method'      = 'Post'
+                'ContentType' = 'application/json'
 
             }
 
@@ -69,7 +70,7 @@
         }
     } #process
 
-    END {} #end
+    end {} #end
 
 }
 

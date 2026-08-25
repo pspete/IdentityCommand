@@ -13,7 +13,7 @@ Get members of a role
 ## SYNTAX
 
 ```
-Get-IDRoleMember [-Name] <Object> [<CommonParameters>]
+Get-IDRoleMember [-ID] <Object> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -23,15 +23,15 @@ Returns the users, roles, and groups that are members of the specified role.
 
 ### Example 1
 ```
-PS C:\> Get-IDRoleMember -Name 'Role Admins'
+PS C:\> Get-IDRoleMember -ID '881512ca-d441-4997-a55e-19ec5374f3b3'
 ```
 
 Return the members of the role
 
 ## PARAMETERS
 
-### -Name
-The name (or ID) of the role to get members of.
+### -ID
+The ID/UUID/`_RowKey` of the role to get members of - not its display name.
 
 ```yaml
 Type: Object

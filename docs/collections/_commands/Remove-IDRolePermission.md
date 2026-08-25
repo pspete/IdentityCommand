@@ -13,7 +13,7 @@ Remove an administrative permission from a role
 ## SYNTAX
 
 ```
-Remove-IDRolePermission [-Name] <Object> [-Path] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
+Remove-IDRolePermission [-ID] <Object> [-Path] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -24,15 +24,15 @@ The path must match one of the values returned by \`Get-IDPermission\`; if it do
 
 ### Example 1
 ```
-PS C:\> Remove-IDRolePermission -Name 'Role Admins' -Path '/Core/ManageUsers'
+PS C:\> Remove-IDRolePermission -ID '881512ca-d441-4997-a55e-19ec5374f3b3' -Path '/Core/ManageUsers'
 ```
 
 Remove the specified administrative permission from the role
 
 ## PARAMETERS
 
-### -Name
-The name (or ID) of the role to remove the permission from.
+### -ID
+The ID/UUID/`_RowKey` of the role to remove the permission from - not its display name.
 
 ```yaml
 Type: Object

@@ -13,7 +13,7 @@ Set the membership script for a dynamic role
 ## SYNTAX
 
 ```
-Set-IDDynamicRoleScript [-Name] <Object> [-Script] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
+Set-IDDynamicRoleScript [-ID] <Object> [-Script] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -24,15 +24,15 @@ Use \`Test-IDDynamicRoleScript\` to validate a script against a user before appl
 
 ### Example 1
 ```
-PS C:\> Set-IDDynamicRoleScript -Name 'Dynamic Role' -Script 'function isRoleMember(user) { return user.Email.endsWith("@somedomain.com"); }'
+PS C:\> Set-IDDynamicRoleScript -ID '<role-id>' -Script 'function isRoleMember(user) { return user.Email.endsWith("@somedomain.com"); }'
 ```
 
 Set the membership script for the dynamic role
 
 ## PARAMETERS
 
-### -Name
-The name (or ID) of the dynamic role to set the membership script for.
+### -ID
+The dynamic role's ID/UUID/`_RowKey` (not its display name) to set the membership script for. The role must have been created with `-RoleType Script` (see `New-IDRole`).
 
 ```yaml
 Type: Object

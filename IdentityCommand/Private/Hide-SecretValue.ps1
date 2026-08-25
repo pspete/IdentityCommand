@@ -63,6 +63,7 @@
 		[array]$Secrets = @(
 			'Answer',
 			'Password',
+			'OldPassword',
 			'NewCredentials',
 			'NewPassword',
 			'BindPassword',

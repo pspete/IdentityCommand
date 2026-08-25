@@ -1,3 +1,4 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Get-IDAuthenticationAssuranceLevel {
 
     [CmdletBinding()]
@@ -35,7 +36,7 @@ function Get-IDAuthenticationAssuranceLevel {
         #Constructed parameters for the rest call
         $RestCall = @{
 
-            'URI'         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/AuthProfile/GetProfileMFAScoring"
+            'URI'         = "$($ISPSSSession.tenant_url)/AuthProfile/GetProfileMFAScoring"
             'Headers'     = $($ISPSSSession.WebSession.Headers)
             'Method'      = 'Post'
             'Body'        = ($Body | ConvertTo-Json)

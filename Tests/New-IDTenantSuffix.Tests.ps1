@@ -81,9 +81,9 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                     $BodyObj = $Body | ConvertFrom-Json
                     $BodyObj.alias -eq 'somealias' -and
                     $BodyObj.domain -eq 'somedomain.com' -and
-                    $BodyObj.cdsAlias -eq $true -and
+                    $BodyObj.cdsAlias -ceq 'true' -and
                     $BodyObj.'jsutil-radio2' -eq 'AD&FDS' -and
-                    $BodyObj.oldname -eq ''
+                    $BodyObj.oldName -eq ''
                 } -Times 1 -Exactly -Scope It
 
             }
@@ -109,8 +109,8 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
                     $BodyObj = $Body | ConvertFrom-Json
                     $BodyObj.'jsutil-radio2' -eq 'CDS' -and
-                    $BodyObj.cdsAlias -eq $false -and
-                    $BodyObj.oldname -eq 'oldalias'
+                    $BodyObj.cdsAlias -ceq 'false' -and
+                    $BodyObj.oldName -eq 'oldalias'
                 } -Times 1 -Exactly -Scope It
 
             }

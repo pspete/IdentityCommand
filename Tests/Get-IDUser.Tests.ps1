@@ -377,6 +377,63 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'GetUserSettings' {
+
+            BeforeEach {
+                Mock Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{ 'property' = 'value' }
+                }
+                $response = Get-IDUser -ID 'someuserid' -SettingType 'sometype'
+            }
+
+            It 'sends request' {
+
+                Assert-MockCalled Invoke-IDRestMethod -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'sends request to expected endpoint' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/Core/GetUserSettings?ID=someuserid&SettingType=sometype'
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'uses expected method' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter { $Method -match 'POST' } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'sends request with no body' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter { $Body -eq $null } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'sends request to expected endpoint when object with UUID and SettingType is provided via pipe' {
+
+                [pscustomobject]@{'Uuid' = 'someuserid'; 'SettingType' = 'sometype' } | Get-IDUser
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/Core/GetUserSettings?ID=someuserid&SettingType=sometype'
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'provides output' {
+
+                $response | Should -Not -BeNullOrEmpty
+
+            }
+
+        }
+
     }
 
 }

@@ -1,9 +1,10 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Get-IDRolePermission {
 
     [CmdletBinding()]
 	param
 	(
-       
+
         [Parameter(Mandatory = $true,
         ValueFromPipelinebyPropertyName = $true)]
         [Alias('Uuid')]
@@ -22,7 +23,7 @@ function Get-IDRolePermission {
                 "Limit"      = "100000"
                 "SortBy"     = ""
                 "Caching"    = "-1"
-            } 
+            }
         }
 
     } #begin
@@ -32,7 +33,7 @@ function Get-IDRolePermission {
         #Constructed parameters for the rest call
         $RestCall = @{
 
-        "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/Core/GetAssignedAdministrativeRights?$Name"
+        "URI"         = "$($ISPSSSession.tenant_url)/Core/GetAssignedAdministrativeRights?$Name"
         "Headers"     = $($ISPSSSession.WebSession.Headers)
         "Method"      = "Post"
         "Body"        = ($body | ConvertTo-Json)

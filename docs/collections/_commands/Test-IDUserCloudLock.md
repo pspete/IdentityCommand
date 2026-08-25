@@ -36,7 +36,7 @@ The unique ID (Uuid) of the user to check cloud lock status
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: Uuid
+Aliases: Uuid, ID
 
 Required: True
 Position: 1

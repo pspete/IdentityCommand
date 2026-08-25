@@ -43,7 +43,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 [pscustomobject]@{'property' = 'value' }
             }
 
-            $response = Set-IDDynamicRoleScript -Name 'SomeRole' -Script 'Select 1'
+            $response = Set-IDDynamicRoleScript -ID 'SomeRole' -Script 'Select 1'
 
         }
 
@@ -59,7 +59,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
 
-                    $URI -eq 'https://SomeTenant.id.cyberark.cloud/Roles/SetDynamicRoleScript'
+                    $URI -eq 'https://somedomain.id.cyberark.cloud/Roles/SetDynamicRoleScript'
 
                 } -Times 1 -Exactly -Scope It
 
@@ -73,11 +73,20 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             It 'sends request with expected body' {
 
-                # NOTE: source builds body via raw string interpolation (not ConvertTo-Json),
-                # and there's no $User parameter, so 'User' always serializes empty -- don't
-                # assert on that field's value, just that Script made it into the body.
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-                    $Body -match "'Script': 'Select 1'"
+                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed.ID -eq 'SomeRole' -and $Parsed.Script -eq 'Select 1'
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'correctly escapes script content containing single quotes' {
+
+                Set-IDDynamicRoleScript -ID 'SomeRole' -Script "User.Properties.Properties['distinguishedName']" | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed.Script -eq "User.Properties.Properties['distinguishedName']"
                 } -Times 1 -Exactly -Scope It
 
             }
@@ -89,6 +98,20 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'provides output' {
 
                 $response | Should -Not -BeNullOrEmpty
+
+            }
+
+        }
+
+        Context 'Uuid alias' {
+
+            It 'accepts -Uuid as an alias for -ID' {
+
+                Set-IDDynamicRoleScript -Uuid 'SomeOtherRole' -Script 'Select 1' | Out-Null
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $($Body | ConvertFrom-Json | Select-Object -ExpandProperty ID) -eq 'SomeOtherRole'
+                } -Times 1 -Exactly -Scope It
 
             }
 

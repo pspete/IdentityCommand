@@ -3,7 +3,7 @@ function Remove-IDTenantCname {
     [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
-       
+
         [Parameter(Mandatory = $true)]
 		$customCname
 

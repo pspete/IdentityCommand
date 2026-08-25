@@ -133,6 +133,66 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'Limit defaulting' {
+
+            BeforeEach {
+                Mock Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{'Results' = @() }
+                }
+            }
+
+            It 'defaults PageSize and PageNumber from Limit when neither is supplied' {
+
+                Invoke-IDSqlcmd -Script 'Some SQL Query' -Limit 3
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    $sentArgs = $Body | ConvertFrom-Json | Select-Object -ExpandProperty args
+                    $sentArgs.PageSize -eq 3 -and $sentArgs.PageNumber -eq 1
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'does not override an explicitly supplied PageSize' {
+
+                Invoke-IDSqlcmd -Script 'Some SQL Query' -Limit 3 -PageSize 50
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    ($Body | ConvertFrom-Json | Select-Object -ExpandProperty args).PageSize -eq 50
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'does not override an explicitly supplied PageNumber' {
+
+                Invoke-IDSqlcmd -Script 'Some SQL Query' -Limit 3 -PageNumber 5
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    ($Body | ConvertFrom-Json | Select-Object -ExpandProperty args).PageNumber -eq 5
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'does not add PageSize or PageNumber when Limit is not supplied' {
+
+                Invoke-IDSqlcmd -Script 'Some SQL Query'
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+
+                    $sentArgs = $Body | ConvertFrom-Json | Select-Object -ExpandProperty args
+                    ($sentArgs.PSObject.Properties.Name -notcontains 'PageSize') -and ($sentArgs.PSObject.Properties.Name -notcontains 'PageNumber')
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+        }
+
     }
 
 }

@@ -1,13 +1,14 @@
+# .ExternalHelp IdentityCommand-help.xml
 function Remove-IDRoleMember {
 
     [CmdletBinding(SupportsShouldProcess)]
 	param
 	(
-       
+
         [Parameter(Mandatory = $true,
         ValueFromPipelinebyPropertyName = $true)]
         [Alias('Uuid')]
-        $Name,
+        $ID,
 
         [Parameter(Mandatory = $false)]
         [array]$Users = @(),
@@ -24,12 +25,12 @@ function Remove-IDRoleMember {
 
     PROCESS {
 
-        if ($PSCmdlet.ShouldProcess($Name, 'Remove Role Member')) {
+        if ($PSCmdlet.ShouldProcess($ID, 'Remove Role Member')) {
 
             #Constructed body for the rest call
             $body = [ordered]@{
 
-                "Name"        = $Name
+                "Name"        = $ID
                 "Users"       = $Users
                 "Roles"       = $Roles
                 "Groups"      = $Groups
@@ -39,7 +40,7 @@ function Remove-IDRoleMember {
             #Constructed parameters for the rest call
             $RestCall = @{
 
-            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/SaasManage/RemoveUsersAndGroupsFromRole"
+            "URI"         = "$($ISPSSSession.tenant_url)/SaasManage/RemoveUsersAndGroupsFromRole"
             "Headers"     = $($ISPSSSession.WebSession.Headers)
             "Method"      = "Post"
             "Body"        = ($body | ConvertTo-Json -Depth 6)

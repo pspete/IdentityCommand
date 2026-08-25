@@ -1,4 +1,5 @@
-﻿function Remove-IDRole {
+# .ExternalHelp IdentityCommand-help.xml
+function Remove-IDRole {
 
     [CmdletBinding(SupportsShouldProcess)]
 	param
@@ -27,7 +28,7 @@
             #Constructed parameters for the rest call
             $RestCall = @{
 
-            "URI"         = "https://$($ISPSSSession.TenantId).id.cyberark.cloud/SaasManage/DeleteRoles"
+            "URI"         = "$($ISPSSSession.tenant_url)/SaasManage/DeleteRoles"
             "Headers"     = $($ISPSSSession.WebSession.Headers)
             "Method"      = "Post"
             "Body"        = (ConvertTo-JSON -InputObject $body)
