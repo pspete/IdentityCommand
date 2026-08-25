@@ -73,7 +73,11 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             It 'requires -HoursBack' {
 
-                { Get-IDWorkflowJobReport } | Should -Throw
+                #Omitting -HoursBack entirely would make PowerShell prompt interactively for the
+                #missing mandatory value instead of throwing - harmless locally, but it hangs
+                #indefinitely on a CI host with a real attached console. Passing an explicit empty
+                #value still exercises ValidateNotNullOrEmpty without ever reaching that prompt.
+                { Get-IDWorkflowJobReport -HoursBack '' } | Should -Throw
 
             }
 
