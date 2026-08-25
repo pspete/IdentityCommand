@@ -6,7 +6,7 @@ function Get-IDUserPortalData {
         [String]$Username,
 
         [parameter(Mandatory = $false)]
-        [String]$Force
+        [Switch]$Force
     )
 
     BEGIN {}#begin
@@ -15,7 +15,7 @@ function Get-IDUserPortalData {
 
         $Query = @{}
 
-        if ($PSBoundParameters.ContainsKey('Force')) { $Query['force'] = $Force }
+        if ($Force.IsPresent) { $Query['force'] = $Force.IsPresent.ToString().ToLower() }
         if ($PSBoundParameters.ContainsKey('Username')) { $Query['username'] = $Username }
 
         $URI = "$($ISPSSSession.tenant_url)/UPRest/GetUPData"

@@ -13,7 +13,7 @@ Get all available user portal data
 ## SYNTAX
 
 ```
-Get-IDUserPortalData [[-Username] <String>] [[-Force] <String>]
+Get-IDUserPortalData [[-Username] <String>] [-Force]
  [<CommonParameters>]
 ```
 
@@ -35,12 +35,12 @@ Returns all available user portal data for the current user.
 Forces a refresh of the user portal data rather than returning a cached copy.
 
 ```yaml
-Type: String
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 1
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

@@ -72,7 +72,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
         Context 'With parameters' {
 
             BeforeEach {
-                $response = Get-IDUserPortalData -Username 'someuser' -Force 'true'
+                $response = Get-IDUserPortalData -Username 'someuser' -Force
             }
 
             It 'sends request to expected endpoint' {
