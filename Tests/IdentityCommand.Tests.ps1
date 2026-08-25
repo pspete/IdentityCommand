@@ -208,16 +208,22 @@ Describe 'Module' -Tag 'Consistency' {
 
 			Context $Script.Name -Tag "$($Script.BaseName)", "$($Script.Name)" {
 
+				#One Invoke-ScriptAnalyzer call per file (all rules at once) rather than one call
+				#per rule per file - the latter multiplies file-count x rule-count separate
+				#invocations (each with its own fixed engine-startup overhead), which is what
+				#pushed the AppVeyor Pester run past its 60 minute timeout once the module grew
+				#past ~200 files
+				$Violations = Invoke-ScriptAnalyzer -Path $Script.FullName -IncludeRule $Rules.RuleName
+
 				Foreach ($rule in $rules) {
 
 					It 'passes rule: <RuleName>' -Tag $rule -TestCases @{
-						'RuleName' = $rule.RuleName
-						'FileName' = $script.Name
-						'FilePath' = $script.FullName
+						'RuleName'   = $rule.RuleName
+						'Violations' = $Violations
 					} {
-						param($RuleName, $FileName, $FilePath)
+						param($RuleName, $Violations)
 
-						Invoke-ScriptAnalyzer -Path $FilePath -IncludeRule $RuleName | Should -BeNullOrEmpty
+						$Violations | Where-Object RuleName -EQ $RuleName | Should -BeNullOrEmpty
 
 					}
 
