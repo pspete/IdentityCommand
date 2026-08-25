@@ -39,8 +39,11 @@ function Send-IDUserIdentityVerification {
 
             }
 
-            #Same interactive picker used to select a mechanism during login
-            $Mechanism = $Mechanisms | Select-ChallengeMechanism
+            #Same interactive picker used to select a mechanism during login. Must be passed via
+            #-Mechanisms, not piped - piping an array auto-enumerates it onto the pipeline one
+            #element at a time, causing Select-ChallengeMechanism to run once per mechanism (each
+            #seeing a count of 1, so no prompt) instead of once with the full list.
+            $Mechanism = Select-ChallengeMechanism -Mechanisms $Mechanisms
 
             #Same answer collection used during login. No credential exists for the target user in
             #this admin-initiated flow, so the UP/SMS password-based answer will be empty - harmless,

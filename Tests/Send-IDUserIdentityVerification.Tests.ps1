@@ -181,6 +181,64 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'Multiple mechanisms enrolled' {
+
+            BeforeEach {
+
+                Mock Start-IdentityVerification -MockWith {
+                    [pscustomobject]@{
+                        ReturnData = [pscustomobject]@{
+                            SessionId  = 'somesessionid'
+                            Challenges = @(
+                                [pscustomobject]@{
+                                    Mechanisms = @(
+                                        [pscustomobject]@{ Name = 'OTP'; MechanismId = 'someotpmechanismid'; AnswerType = 'StartTextOob' },
+                                        [pscustomobject]@{ Name = 'EMAIL'; MechanismId = 'someemailmechanismid'; AnswerType = 'StartTextOob' },
+                                        [pscustomobject]@{ Name = 'OATH'; MechanismId = 'someoathmechanismid'; AnswerType = 'Text' }
+                                    )
+                                }
+                            )
+                        }
+                    }
+                }
+
+                Mock Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{ Summary = 'LoginSuccess' }
+                }
+
+                $script:response = Send-IDUserIdentityVerification -ID 'someuserid'
+
+            }
+
+            It 'calls Select-ChallengeMechanism exactly once with the full mechanism list' {
+
+                #Piping the array here instead of passing -Mechanisms would call this once per
+                #mechanism (each seeing a count of 1) rather than once with all three - this is
+                #what a live test against a user with 3 enrolled factors actually caught
+                Assert-MockCalled Select-ChallengeMechanism -ParameterFilter {
+
+                    $Mechanisms.Count -eq 3
+
+                } -Times 1 -Exactly -Scope It
+
+            }
+
+            It 'sends a single MechanismId, not an array of all mechanisms'' IDs' {
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed.MechanismId -eq 'someotpmechanismid'
+                } -Scope It
+
+                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
+                    $Parsed = $Body | ConvertFrom-Json
+                    $Parsed.MechanismId -is [Array]
+                } -Times 0 -Exactly -Scope It
+
+            }
+
+        }
+
         Context 'Input validation' {
 
             It 'throws when the user has no enrolled mechanisms' {
