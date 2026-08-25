@@ -1,6 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: DEPRIORITIZED - a personal bookmark app silently no-ops; a PAM-vaulted app hard-rejects
-# ("no longer available"). Needs a genuine CBE-captured app to test properly.
 function Update-IDCapturedUserApplication {
     [CmdletBinding(SupportsShouldProcess)]
     param(

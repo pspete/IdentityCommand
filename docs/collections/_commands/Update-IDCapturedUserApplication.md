@@ -21,6 +21,8 @@ Update-IDCapturedUserApplication [-AppKey] <String> [[-AppName] <String>] [[-App
 ## DESCRIPTION
 Updates the details of a captured (auto-discovered) user application.
 
+The response's `Result` is `null` - it doesn't confirm what changed. Verify with `Get-IDUserPortalData -Force` afterward.
+
 ## EXAMPLES
 
 ### Example 1

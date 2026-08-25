@@ -160,7 +160,6 @@ The current list is:
 
 | Command | What's unconfirmed |
 | --- | --- |
-| `Update-IDCapturedUserApplication` | Needs a genuine browser-extension-captured app, not yet available to test against |
 | `Set-IDUserPhonePin` | Never live-tested; URL is from documented paths, body shape from a mislabeled sample |
 | `Get-IDWorkflowJob -Type` | `-Type` is mandatory server-side with an unknown enum |
 | `Send-IDWorkflowEvent` / `Stop-IDWorkflowJob` | Success path untested against a genuinely _pending_ approval job |
