@@ -160,8 +160,9 @@ The current list is:
 
 | Command | What's unconfirmed |
 | --- | --- |
-| `Stop-IDWorkflowJob` | Needs a real Task ID (a distinct ID space from the `WorkFlowJob` IDs `Get-IDWorkflowJob` returns) - unclear what produces one |
-| `Set-IDOrganizationPermission` | `Right`'s real values are unknown; a guess was rejected server-side |
+| `Get-`/`New-`/`Set-`/`Remove-IDSCIMContainer` | Built from the vendor's OpenAPI schema, but never exercised live - this tenant doesn't provision the SCIM `Container` resource type (check with `Get-IDSCIMResourceType`) |
+| `Get-`/`New-`/`Set-`/`Remove-IDSCIMContainerPermission` | Same - needs a tenant that provisions SCIM `ContainerPermission` |
+| `Get-`/`New-`/`Set-`/`Remove-IDSCIMPrivilegedData` | Same - needs a tenant that provisions SCIM `PrivilegedData` |
 
 ## Installation
 
