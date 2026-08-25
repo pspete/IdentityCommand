@@ -86,6 +86,16 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'Input validation' {
+
+            It 'requires -Reason' {
+
+                { Stop-IDWorkflowJob -JobId 'somejobid' } | Should -Throw
+
+            }
+
+        }
+
     }
 
 }

@@ -45,30 +45,6 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
-        Context 'No HoursBack' {
-
-            BeforeEach {
-                $response = Get-IDWorkflowJobReport
-            }
-
-            It 'sends request to expected endpoint' {
-
-                Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
-
-                    $URI -eq 'https://somedomain.id.cyberark.cloud/Task/JobReport'
-
-                } -Times 1 -Exactly -Scope It
-
-            }
-
-            It 'provides output' {
-
-                $response | Should -Not -BeNullOrEmpty
-
-            }
-
-        }
-
         Context 'HoursBack' {
 
             BeforeEach {
@@ -88,6 +64,16 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'provides output' {
 
                 $response | Should -Not -BeNullOrEmpty
+
+            }
+
+        }
+
+        Context 'Input validation' {
+
+            It 'requires -HoursBack' {
+
+                { Get-IDWorkflowJobReport } | Should -Throw
 
             }
 

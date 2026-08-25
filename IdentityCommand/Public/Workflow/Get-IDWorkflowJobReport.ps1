@@ -2,7 +2,7 @@
 function Get-IDWorkflowJobReport {
     [CmdletBinding()]
     param(
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [String]$HoursBack
     )
@@ -11,13 +11,7 @@ function Get-IDWorkflowJobReport {
 
     PROCESS {
 
-        $URI = "$($ISPSSSession.tenant_url)/Task/JobReport"
-
-        if ($PSBoundParameters.ContainsKey('HoursBack')) {
-
-            $URI = "$URI`?hoursBack=$($HoursBack | Get-EscapedString)"
-
-        }
+        $URI = "$($ISPSSSession.tenant_url)/Task/JobReport`?hoursBack=$($HoursBack | Get-EscapedString)"
 
         $Request = @{
 

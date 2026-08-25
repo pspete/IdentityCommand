@@ -18,16 +18,16 @@ Send-IDWorkflowEvent [-JobId] <String> [-Event] <String> [[-Sync] <Boolean>] [[-
 ```
 
 ## DESCRIPTION
-Sends a named event to a running workflow job, optionally synchronously and with event arguments.
+Sends a named event to a running workflow job, optionally synchronously and with event arguments. For an access-request approval, `-Event 'approve'`/`'reject'` with `-Args` matching the request's own `RequestedOptions` (e.g. `AccessType`/`AssignmentType`/`StartTime`/`EndTime`) is confirmed against a real pending job.
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> Send-IDWorkflowEvent -JobId 'a1b2c3d4-0000-0000-0000-000000000000' -Event 'Approve'
+PS C:\> Send-IDWorkflowEvent -JobId 'a1b2c3d4-0000-0000-0000-000000000000' -Event 'approve' -Args @{ AccessType = 'App'; AssignmentType = 'window'; StartTime = '2026-08-25T18:33:00.000Z'; EndTime = '2026-08-26T18:33:00.000Z' }
 ```
 
-Sends the 'Approve' event to the specified job.
+Approves the specified access-request job, matching the request's own `RequestedOptions`.
 
 ## PARAMETERS
 

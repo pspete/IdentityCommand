@@ -160,8 +160,7 @@ The current list is:
 
 | Command | What's unconfirmed |
 | --- | --- |
-| `Get-IDWorkflowJob -Type` | `-Type` is mandatory server-side with an unknown enum |
-| `Send-IDWorkflowEvent` / `Stop-IDWorkflowJob` | Success path untested against a genuinely _pending_ approval job |
+| `Stop-IDWorkflowJob` | Needs a real Task ID (a distinct ID space from the `WorkFlowJob` IDs `Get-IDWorkflowJob` returns) - unclear what produces one |
 | `Set-IDOrganizationPermission` | `Right`'s real values are unknown; a guess was rejected server-side |
 
 ## Installation

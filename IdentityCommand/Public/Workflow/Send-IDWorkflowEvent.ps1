@@ -1,7 +1,4 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: Retest against a genuinely pending/in-progress job to confirm the full success path.
-# -Args expects a hashtable shaped like the event's expected argument payload - the recorded sample
-# only shows an empty object ({}), so the real shape is unconfirmed.
 function Send-IDWorkflowEvent {
     [CmdletBinding(SupportsShouldProcess)]
     param(

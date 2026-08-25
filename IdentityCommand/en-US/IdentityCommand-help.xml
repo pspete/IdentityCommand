@@ -5647,11 +5647,11 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       <command:verb>Get</command:verb>
       <command:noun>IDUserSecurityQuestion</command:noun>
       <maml:description>
-        <maml:para>Get the tenant's security question policy</maml:para>
+        <maml:para>Get the current user's security questions</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Despite its "User" naming, this returns the tenant-wide security question policy (`AnswerMinLength`/`MaxQuestions`/`MinAdminQuestions`/`MinUserQuestions`/`Questions`) applied to the current session's tenant - not a specific user's answered questions. The underlying `UserMgmt/GetSecurityQuestions` endpoint takes no per-user scoping. This is distinct from `Get-IDTenantSecurityQuestion`, which returns the tenant's admin security questions.</maml:para>
+      <maml:para>Returns the security question policy (`AnswerMinLength`/`MaxQuestions`/`MinAdminQuestions`/`MinUserQuestions`) together with the current session user's own configured security questions (`Questions`). There's no `-ID`/`-Username` parameter - scoping to "the current user" comes from the authenticated session itself, confirmed live: a question added to one account via `Set-IDUserSecurityQuestion` shows up in that same account's `Questions` when this is run. This is distinct from `Get-IDTenantSecurityQuestion`, which returns the tenant's admin security questions.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -5689,7 +5689,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
         <dev:code>PS C:\&gt; Get-IDUserSecurityQuestion</dev:code>
         <dev:remarks>
-          <maml:para>Returns the tenant's security question policy.</maml:para>
+          <maml:para>Returns the current user's security question policy and configured questions.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -5887,15 +5887,66 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Returns workflow jobs. By default returns all jobs visible to the caller; with -Mine, returns only jobs owned by the current user.</maml:para>
+      <maml:para>Returns workflow jobs. With `-JobId`, returns a single job by ID. Otherwise, by default returns all jobs tenant-wide (`/JobFlow/GetJobs`, `-Type` must be `all` there - the server rejects `approve`/`request` on this endpoint); with `-Mine`, returns only jobs visible to the current user - everything they've been involved in (`-Type 'all'`, the default), specifically what's awaiting their approval (`-Type 'approve'`), or their own still-pending requests (`-Type 'request'`).</maml:para>
     </maml:description>
     <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-IDWorkflowJob</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
+          <maml:name>JobId</maml:name>
+          <maml:description>
+            <maml:para>The unique ID of a single job to retrieve.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Type</maml:name>
+          <maml:description>
+            <maml:para>Which subset of jobs to return - `all`, `approve`, or `request`. Defaults to `all`. `approve`/`request` are only valid with `-Mine` - the tenant-wide endpoint only supports `all` and throws locally if given anything else.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>all</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>PageNumber</maml:name>
+          <maml:description>
+            <maml:para>The page of results to return. Defaults to `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>PageSize</maml:name>
+          <maml:description>
+            <maml:para>The number of results per page. Defaults to `100`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>100</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
       <command:syntaxItem>
         <maml:name>Get-IDWorkflowJob</maml:name>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Mine</maml:name>
           <maml:description>
-            <maml:para>Return only jobs owned by the current user, instead of all jobs.</maml:para>
+            <maml:para>Return only jobs visible to the current user, instead of all jobs tenant-wide.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -5906,22 +5957,58 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Type</maml:name>
           <maml:description>
-            <maml:para>Filters jobs to a specific job type.</maml:para>
+            <maml:para>Which subset of jobs to return - `all`, `approve`, or `request`. Defaults to `all`. `approve`/`request` are only valid with `-Mine` - the tenant-wide endpoint only supports `all` and throws locally if given anything else.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
+          <dev:defaultValue>all</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>PageNumber</maml:name>
+          <maml:description>
+            <maml:para>The page of results to return. Defaults to `1`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>1</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>PageSize</maml:name>
+          <maml:description>
+            <maml:para>The number of results per page. Defaults to `100`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>100</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="Uuid">
+        <maml:name>JobId</maml:name>
+        <maml:description>
+          <maml:para>The unique ID of a single job to retrieve.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Mine</maml:name>
         <maml:description>
-          <maml:para>Return only jobs owned by the current user, instead of all jobs.</maml:para>
+          <maml:para>Return only jobs visible to the current user, instead of all jobs tenant-wide.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -5933,14 +6020,38 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Type</maml:name>
         <maml:description>
-          <maml:para>Filters jobs to a specific job type.</maml:para>
+          <maml:para>Which subset of jobs to return - `all`, `approve`, or `request`. Defaults to `all`. `approve`/`request` are only valid with `-Mine` - the tenant-wide endpoint only supports `all` and throws locally if given anything else.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
+        <dev:defaultValue>all</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>PageNumber</maml:name>
+        <maml:description>
+          <maml:para>The page of results to return. Defaults to `1`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>1</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>PageSize</maml:name>
+        <maml:description>
+          <maml:para>The number of results per page. Defaults to `100`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>100</dev:defaultValue>
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
@@ -5973,14 +6084,21 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
         <dev:code>PS C:\&gt; Get-IDWorkflowJob</dev:code>
         <dev:remarks>
-          <maml:para>Returns all workflow jobs.</maml:para>
+          <maml:para>Returns all workflow jobs tenant-wide.</maml:para>
         </dev:remarks>
       </command:example>
       <command:example>
         <maml:title>-------------------------- Example 2 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Get-IDWorkflowJob -Mine</dev:code>
+        <dev:code>PS C:\&gt; Get-IDWorkflowJob -Mine -Type 'approve'</dev:code>
         <dev:remarks>
-          <maml:para>Returns the current user's workflow jobs.</maml:para>
+          <maml:para>Returns jobs awaiting the current user's approval.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 3 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; Get-IDWorkflowJob -JobId '619e74f9-bc7e-43a0-8f95-40c2292a347a'</dev:code>
+        <dev:remarks>
+          <maml:para>Returns the specified job.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -5996,15 +6114,15 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Returns a report of workflow jobs, optionally limited to a lookback window.</maml:para>
+      <maml:para>Returns a report of workflow jobs, limited to the lookback window specified by `-HoursBack` (required per the vendor's Task Management OpenAPI spec).</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-IDWorkflowJobReport</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>HoursBack</maml:name>
           <maml:description>
-            <maml:para>The number of hours to look back when building the report. If not supplied, the API's default lookback window is used.</maml:para>
+            <maml:para>How many hours before now to start the report.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -6016,10 +6134,10 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>HoursBack</maml:name>
         <maml:description>
-          <maml:para>The number of hours to look back when building the report. If not supplied, the API's default lookback window is used.</maml:para>
+          <maml:para>How many hours before now to start the report.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -14351,7 +14469,7 @@ PS C:\&gt; Send-IDUserInvite -Role 'SomeRole' -Entities $Entities -EmailInvite</
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Sends a named event to a running workflow job, optionally synchronously and with event arguments.</maml:para>
+      <maml:para>Sends a named event to a running workflow job, optionally synchronously and with event arguments. For an access-request approval, `-Event 'approve'`/`'reject'` with `-Args` matching the request's own `RequestedOptions` (e.g. `AccessType`/`AssignmentType`/`StartTime`/`EndTime`) is confirmed against a real pending job.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -14530,9 +14648,9 @@ PS C:\&gt; Send-IDUserInvite -Role 'SomeRole' -Entities $Entities -EmailInvite</
     <command:examples>
       <command:example>
         <maml:title>-------------------------- Example 1 --------------------------</maml:title>
-        <dev:code>PS C:\&gt; Send-IDWorkflowEvent -JobId 'a1b2c3d4-0000-0000-0000-000000000000' -Event 'Approve'</dev:code>
+        <dev:code>PS C:\&gt; Send-IDWorkflowEvent -JobId 'a1b2c3d4-0000-0000-0000-000000000000' -Event 'approve' -Args @{ AccessType = 'App'; AssignmentType = 'window'; StartTime = '2026-08-25T18:33:00.000Z'; EndTime = '2026-08-26T18:33:00.000Z' }</dev:code>
         <dev:remarks>
-          <maml:para>Sends the 'Approve' event to the specified job.</maml:para>
+          <maml:para>Approves the specified access-request job, matching the request's own `RequestedOptions`.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -21469,7 +21587,7 @@ PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000'
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Cancels a running workflow job.</maml:para>
+      <maml:para>Cancels a running job via the Task Management API's `/Task/CancelJob`. `-JobId`/`-Reason` match the vendor's OpenAPI spec exactly (both required), but this operates on a distinct "Task" ID space from `WorkFlowJob` (`JobFlow`) IDs - a `WorkFlowJob` ID from `Get-IDWorkflowJob`/`Start-IDWorkflowJob` is not confirmed to work here.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -21486,10 +21604,10 @@ PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000'
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Reason</maml:name>
           <maml:description>
-            <maml:para>An optional reason for cancelling the job.</maml:para>
+            <maml:para>The reason for cancelling the job.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -21547,10 +21665,10 @@ PS C:\&gt; Set-IDUserSecurityQuestion -ID 'a1b2c3d4-0000-0000-0000-000000000000'
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Reason</maml:name>
         <maml:description>
-          <maml:para>An optional reason for cancelling the job.</maml:para>
+          <maml:para>The reason for cancelling the job.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>

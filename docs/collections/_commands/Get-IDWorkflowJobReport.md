@@ -13,11 +13,11 @@ Get a workflow job report
 ## SYNTAX
 
 ```
-Get-IDWorkflowJobReport [[-HoursBack] <String>] [<CommonParameters>]
+Get-IDWorkflowJobReport [-HoursBack] <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Returns a report of workflow jobs, optionally limited to a lookback window.
+Returns a report of workflow jobs, limited to the lookback window specified by `-HoursBack` (required per the vendor's Task Management OpenAPI spec).
 
 ## EXAMPLES
 
@@ -31,15 +31,14 @@ Returns the job report for the last 24 hours.
 ## PARAMETERS
 
 ### -HoursBack
-The number of hours to look back when building the report. If not supplied, the API's default
-lookback window is used.
+How many hours before now to start the report.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: False
+Required: True
 Position: 0
 Default value: None
 Accept pipeline input: False

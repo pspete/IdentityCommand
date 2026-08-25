@@ -13,11 +13,11 @@ Cancel a workflow job
 ## SYNTAX
 
 ```
-Stop-IDWorkflowJob [-JobId] <String> [[-Reason] <String>] [-WhatIf] [-Confirm] [<CommonParameters>]
+Stop-IDWorkflowJob [-JobId] <String> [-Reason] <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Cancels a running workflow job.
+Cancels a running job via the Task Management API's `/Task/CancelJob`. `-JobId`/`-Reason` match the vendor's OpenAPI spec exactly (both required), but this operates on a distinct "Task" ID space from `WorkFlowJob` (`JobFlow`) IDs - a `WorkFlowJob` ID from `Get-IDWorkflowJob`/`Start-IDWorkflowJob` is not confirmed to work here.
 
 ## EXAMPLES
 
@@ -61,14 +61,14 @@ Accept wildcard characters: False
 ```
 
 ### -Reason
-An optional reason for cancelling the job.
+The reason for cancelling the job.
 
 ```yaml
 Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: False
+Required: True
 Position: 1
 Default value: None
 Accept pipeline input: False

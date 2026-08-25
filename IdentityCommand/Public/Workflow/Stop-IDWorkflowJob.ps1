@@ -1,5 +1,10 @@
 # .ExternalHelp IdentityCommand-help.xml
-# TODO: Retest against a genuinely pending/in-progress job to see the full success response shape.
+# TODO: Shape confirmed correct against the vendor's Task Management OpenAPI spec ({jobId, reason},
+# both required). calls against a genuinely pending job failed regardless - "unauthorized" as
+# the job's own initiator, "NotFound" as an admin - but the JobId used was a WorkFlowJob (JobFlow)
+# ID, not a Task ID; per the vendor spec, /Task/CancelJob operates on a distinct "Task" system, so
+# this may simply need a real Task ID rather than a WorkFlowJob ID to work. Unclear what produces a
+# Task ID, or whether cancelling a pending access-request approval is even a Task in this sense.
 function Stop-IDWorkflowJob {
     [CmdletBinding(SupportsShouldProcess)]
     param(
@@ -11,13 +16,14 @@ function Stop-IDWorkflowJob {
         [Alias('Uuid')]
         [String]$JobId,
 
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty()]
         [String]$Reason
     )
 
-    BEGIN {}#begin
+    begin {}#begin
 
-    PROCESS {
+    process {
 
         if ($PSCmdlet.ShouldProcess($JobId, 'Cancel Workflow Job')) {
 
@@ -41,6 +47,6 @@ function Stop-IDWorkflowJob {
 
     }#process
 
-    END {}#end
+    end {}#end
 
 }
