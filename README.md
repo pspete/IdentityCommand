@@ -13,6 +13,7 @@ The module has been in development for a few years, initially focused on authent
   - Things may break
   - Issues / PRs are encouraged & appreciated
   - Many commands are built from documented API shapes but not yet exercised against a live tenant - see [Help Us Test](#help-us-test) below, your feedback genuinely shapes what ships next.
+  - Most of the Identity Administration API is now covered, but real-world usage is still expected to shape further changes to command names, parameters/parameter names, and how commands are grouped - some may split into companion commands, others may combine. These patterns only emerge once commands are actually used, so don't consider anything final yet.
 
 ---
 
