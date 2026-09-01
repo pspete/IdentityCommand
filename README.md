@@ -6,7 +6,7 @@
 
 IdentityCommand is a PowerShell module that wraps the REST API for a Palo Alto Idira (formerly CyberArk) Identity tenant, giving you easy-to-use commands for authentication (including MFA/SAML/OIDC flows) and administration - users, roles, applications, organizations, authentication policies, SCIM provisioning, and more - all from within PowerShell.
 
-The module has been in development for a few years, initially focused on authentication. Coverage is expanding significantly to reach near-complete coverage of the Identity Administration API, and IdentityCommand is also the foundation for a growing family of other `pspete` modules that administer the wider Idira SaaS platform - e.g. `IdentityCommand.DPA`, which builds on IdentityCommand's authentication to administer Idira DPA.
+The module has been in development for a few years, initially focused on authentication. Coverage is expanding significantly to reach near-complete coverage of the Identity Administration API, and IdentityCommand is also the foundation for a growing family of other `pspete` modules that administer the wider Idira SaaS platform - e.g. `IdentityCommand.SIA`, which builds on IdentityCommand's authentication to administer Idira DPA.
 
 - **Prior to a Version 1.0.0 release**:
   - Expect changes
@@ -139,19 +139,19 @@ Get-Help Get-IDUser -Full
 
 Every command also has a corresponding reference page under [`docs/collections/_commands`](docs/collections/_commands), which is the same content `Get-Help` displays.
 
-| Area | Covers |
-| --- | --- |
-| **Session / Authentication** | Interactive & service-account sign-in (credential, SAML, MFA challenges), session lifecycle, platform tokens |
-| **Users** | User CRUD, roles, attributes, security questions, U2F devices, sessions, invites, identity verification, password/lock management |
-| **Roles** | Roles, membership (users/roles/groups), administrative permissions, dynamic role scripts |
-| **Applications** | Application catalog CRUD, permissions, tags, icons, personal apps & secured items, CSV import |
-| **Organizations** | Organization/tenant-partition administration, membership, administrators, permissions |
-| **Policies** | Authentication profiles & policies, MFA assurance levels, OTP/password complexity settings |
-| **SCIM** | SCIM-based provisioning for users, groups, containers, container permissions & privileged data |
-| **Tenant** | Tenant configuration, cnames, suffixes, security questions, message templates |
-| **Workflow** | Access-request workflow jobs and approval/denial events |
-| **Devices** | Device registration & management |
-| **Core** | Lower-level helpers - ad-hoc SQL queries, permission lookups, download URLs, password generation |
+| Area                         | Covers                                                                                                                            |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| **Session / Authentication** | Interactive & service-account sign-in (credential, SAML, MFA challenges), session lifecycle, platform tokens                      |
+| **Users**                    | User CRUD, roles, attributes, security questions, U2F devices, sessions, invites, identity verification, password/lock management |
+| **Roles**                    | Roles, membership (users/roles/groups), administrative permissions, dynamic role scripts                                          |
+| **Applications**             | Application catalog CRUD, permissions, tags, icons, personal apps & secured items, CSV import                                     |
+| **Organizations**            | Organization/tenant-partition administration, membership, administrators, permissions                                             |
+| **Policies**                 | Authentication profiles & policies, MFA assurance levels, OTP/password complexity settings                                        |
+| **SCIM**                     | SCIM-based provisioning for users, groups, containers, container permissions & privileged data                                    |
+| **Tenant**                   | Tenant configuration, cnames, suffixes, security questions, message templates                                                     |
+| **Workflow**                 | Access-request workflow jobs and approval/denial events                                                                           |
+| **Devices**                  | Device registration & management                                                                                                  |
+| **Core**                     | Lower-level helpers - ad-hoc SQL queries, permission lookups, download URLs, password generation                                  |
 
 ## Help Us Test
 
@@ -159,11 +159,11 @@ Prior to a 1.0.0 release, some commands are built from documented or captured AP
 
 The current list is:
 
-| Command | What's unconfirmed |
-| --- | --- |
-| `Get-`/`New-`/`Set-`/`Remove-IDSCIMContainer` | Built from the vendor's OpenAPI schema, but never exercised live - this tenant doesn't provision the SCIM `Container` resource type (check with `Get-IDSCIMResourceType`) |
-| `Get-`/`New-`/`Set-`/`Remove-IDSCIMContainerPermission` | Same - needs a tenant that provisions SCIM `ContainerPermission` |
-| `Get-`/`New-`/`Set-`/`Remove-IDSCIMPrivilegedData` | Same - needs a tenant that provisions SCIM `PrivilegedData` |
+| Command                                                 | What's unconfirmed                                                                                                                                                        |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Get-`/`New-`/`Set-`/`Remove-IDSCIMContainer`           | Built from the vendor's OpenAPI schema, but never exercised live - this tenant doesn't provision the SCIM `Container` resource type (check with `Get-IDSCIMResourceType`) |
+| `Get-`/`New-`/`Set-`/`Remove-IDSCIMContainerPermission` | Same - needs a tenant that provisions SCIM `ContainerPermission`                                                                                                          |
+| `Get-`/`New-`/`Set-`/`Remove-IDSCIMPrivilegedData`      | Same - needs a tenant that provisions SCIM `PrivilegedData`                                                                                                               |
 
 ## Installation
 
