@@ -4,7 +4,7 @@
 Write-Host "Testing: PSVersion $($PSVersionTable.PSVersion)" -ForegroundColor Yellow
 $ManifestPath = Join-Path "$pwd" $(Join-Path "$env:APPVEYOR_PROJECT_NAME" "$env:APPVEYOR_PROJECT_NAME.psd1")
 Import-Module Pester -RequiredVersion 5.7.1 -Force
-Import-Module $ManifestPath -Force
+Import-Module $ManifestPath -ArgumentList $true -Force
 #---------------------------------#
 # Run Pester Tests                #
 #---------------------------------#
@@ -17,32 +17,42 @@ $configuration.Run.Path = '.\Tests'
 $configuration.Run.PassThru = $true
 $configuration.CodeCoverage.Enabled = $true
 $configuration.CodeCoverage.Path = $files
+$configuration.CodeCoverage.OutputFormat = 'JaCoCo'
+$configuration.CodeCoverage.OutputPath = '.\coverage.xml'
 $configuration.TestResult.Enabled = $true
-$configuration.TestResult.OutputFormat = 'NUnitXml'
-$configuration.TestResult.OutputPath = '.\TestsResults.xml'
-$configuration.Output.Verbosity = 'None'
+$configuration.TestResult.OutputFormat = 'JUnitXml'
+$configuration.TestResult.OutputPath = '.\TestResults.xml'
+$configuration.Output.Verbosity = 'Minimal'
 
 $result = Invoke-Pester -Configuration $configuration
 
 $res = $result | ConvertTo-Pester4Result
 
-Write-Host 'Uploading Test Results'
-$null = (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)", $(Resolve-Path .\TestsResults.xml))
+Write-Host 'Uploading Test Results.'
+$null = (New-Object 'System.Net.WebClient').UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", $(Resolve-Path .\TestResults.xml))
 
-Remove-Item -Path $(Resolve-Path .\TestsResults.xml) -Force
+if (($env:APPVEYOR_REPO_COMMIT_AUTHOR -eq $env:git_user_name) -and -not [string]::IsNullOrWhiteSpace($env:CODECOV_TOKEN)) {
 
-if ($configuration.CodeCoverage.Enabled.Value -and ($env:APPVEYOR_REPO_COMMIT_AUTHOR -eq 'Pete Maan')) {
+	#CODECOV_TOKEN is a secure variable and is not exposed to pull request builds - skip the upload rather than
+	#invoking the CLI with an empty -t value (which shifts every following argument and fails the command).
 
 	Write-Host 'Publishing Code Coverage'
 
-	$ProgressPreference = 'SilentlyContinue'
-	$null = Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -OutFile codecov.exe
-	.\codecov.exe -t ${env:CODECOV_TOKEN} | Out-Null
+	try {
+		$ProgressPreference = 'SilentlyContinue'
+		$null = Invoke-WebRequest -Uri 'https://cli.codecov.io/latest/windows/codecov.exe' -OutFile codecov.exe
+		.\codecov.exe --disable-telem upload-process --disable-search --fail-on-error -t "$env:CODECOV_TOKEN" -n 'appveyor' -f coverage.xml
+		.\codecov.exe --disable-telem do-upload --disable-search --fail-on-error -t "$env:CODECOV_TOKEN" --report-type test_results -f TestResults.xml
+	} catch {
+		Write-Warning "Code coverage upload failed: $_"
+	}
 
-	Remove-Item -Path $(Resolve-Path .\coverage.xml) -Force
-	Remove-Item -Path $(Resolve-Path .\codecov.exe) -Force
+	Remove-Item -Path .\codecov.exe -Force -ErrorAction SilentlyContinue
 
 }
+
+Remove-Item -Path $(Resolve-Path .\coverage.xml) -Force
+Remove-Item -Path $(Resolve-Path .\TestResults.xml) -Force
 #---------------------------------#
 # Validate                        #
 #---------------------------------#
