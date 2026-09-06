@@ -97,22 +97,67 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
 			if ([Net.SecurityProtocolType].GetEnumNames() -contains 'Tls12') {
 
-				It 'enforces use of TLS 1.2' {
-					[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls11
-					Invoke-IDRestMethod @WebSession
-					[System.Net.ServicePointManager]::SecurityProtocol | Should -Be Tls12
+				It 'adds TLS 1.2 to an explicit legacy security protocol' {
+
+					If ($IsCoreCLR) { Set-ItResult -Inconclusive } Else {
+
+						$Original = [System.Net.ServicePointManager]::SecurityProtocol
+						try {
+							[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls11
+							Invoke-IDRestMethod @WebSession
+							([System.Net.ServicePointManager]::SecurityProtocol).HasFlag([Net.SecurityProtocolType]::Tls12) | Should -BeTrue
+						} finally {
+							[System.Net.ServicePointManager]::SecurityProtocol = $Original
+						}
+
+					}
+
+				}
+
+				It 'preserves the security protocols already permitted' {
+
+					If ($IsCoreCLR) { Set-ItResult -Inconclusive } Else {
+
+						$Original = [System.Net.ServicePointManager]::SecurityProtocol
+						try {
+							[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls11
+							Invoke-IDRestMethod @WebSession
+							([System.Net.ServicePointManager]::SecurityProtocol).HasFlag([Net.SecurityProtocolType]::Tls11) | Should -BeTrue
+						} finally {
+							[System.Net.ServicePointManager]::SecurityProtocol = $Original
+						}
+
+					}
+
+				}
+
+				It 'leaves a SystemDefault security protocol untouched' {
+
+					If ($IsCoreCLR) { Set-ItResult -Inconclusive } Else {
+
+						$Original = [System.Net.ServicePointManager]::SecurityProtocol
+						try {
+							[System.Net.ServicePointManager]::SecurityProtocol = 0
+							Invoke-IDRestMethod @WebSession
+							[int][System.Net.ServicePointManager]::SecurityProtocol | Should -Be 0
+						} finally {
+							[System.Net.ServicePointManager]::SecurityProtocol = $Original
+						}
+
+					}
+
 				}
 
 			}
 
-			It 'specifies -SslProtocol TLS12' {
+			It 'does not pin a TLS protocol' {
 
 				If ($IsCoreCLR) {
 
 					Mock Invoke-WebRequest -MockWith { }
 					Invoke-IDRestMethod @WebSession
 					Assert-MockCalled 'Invoke-WebRequest' -Times 1 -Scope It -Exactly -ParameterFilter {
-						$SslProtocol -eq 'TLS12'
+						-not $PSBoundParameters.ContainsKey('SslProtocol')
 					}
 				} else { Set-ItResult -Inconclusive }
 			}

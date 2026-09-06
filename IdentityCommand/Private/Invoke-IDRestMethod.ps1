@@ -140,21 +140,29 @@
 		}
 
 		#Bypass strict RFC header parsing in PS Core
-		#Use TLS 1.2
 		if ($IsCoreCLR) {
 
 			$PSBoundParameters.Add('SkipHeaderValidation', $true)
-			$PSBoundParameters.Add('SslProtocol', 'TLS12')
 
-		}
+			#No TLS protocol is pinned. WebSslProtocol is a flags enum, so -SslProtocol TLS12 permits
+			#TLS 1.2 and nothing else, excluding TLS 1.3. Left unset, the connection negotiates the
+			#strongest protocol both ends support.
 
-		#If Tls12 Security Protocol is available
-		if (([Net.SecurityProtocolType].GetEnumNames() -contains 'Tls12') -and
+		} else {
 
-			#And Tls12 is not already in use
-			(-not ([System.Net.ServicePointManager]::SecurityProtocol -match 'Tls12'))) {
+			#A SecurityProtocol of SystemDefault (0) lets Schannel negotiate the strongest protocol
+			#both ends support, which is the correct value on .NET Framework 4.7 and above, and is
+			#left untouched. Only a process pinned to explicit legacy protocols needs TLS 1.2 adding,
+			#and it is combined with the protocols already permitted rather than replacing them.
+			$SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol
 
-			[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+			if (([int]$SecurityProtocol -ne 0) -and
+				([Net.SecurityProtocolType].GetEnumNames() -contains 'Tls12') -and
+				(-not ($SecurityProtocol.HasFlag([Net.SecurityProtocolType]::Tls12)))) {
+
+				[Net.ServicePointManager]::SecurityProtocol = $SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
+
+			}
 
 		}
 
