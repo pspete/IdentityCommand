@@ -7,9 +7,16 @@ $RequiredModules = @(
 	@{ Name = 'PowerShellGet' }
 	@{ Name = 'Pester'; RequiredVersion = '5.7.1' }
 	@{ Name = 'PSScriptAnalyzer' }
-	@{ Name = 'coveralls' }
-	@{ Name = 'PSCodeCovIo' }
 )
+
+#---------------------------------#
+# Install NuGet                   #
+#---------------------------------#
+if (-not $IsCoreCLR) {
+	Write-Host "`tNuGet..."
+	$pkg = Install-PackageProvider -Name NuGet -Confirm:$false -Force -ErrorAction Stop
+	Write-Host "`t`tInstalled NuGet version '$($pkg.version)'"
+}
 
 #---------------------------------#
 # Install Required Modules        #
