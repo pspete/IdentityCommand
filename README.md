@@ -6,20 +6,36 @@
 
 IdentityCommand is a PowerShell module that wraps the REST API for a Palo Alto Idira (formerly CyberArk) Identity tenant, giving you easy-to-use commands for authentication (including MFA/SAML/OIDC flows) and administration - users, roles, applications, organizations, authentication policies, SCIM provisioning, and more - all from within PowerShell.
 
-The module has been in development for a few years, initially focused on authentication. Coverage is expanding significantly to reach near-complete coverage of the Identity Administration API, and IdentityCommand is also the foundation for a growing family of other `pspete` modules that administer the wider Idira SaaS platform - e.g. `IdentityCommand.SIA`, which builds on IdentityCommand's authentication to administer Idira DPA.
+The module has been in development for a few years, initially focused on authentication. Coverage is expanding significantly to reach near-complete coverage of the Identity Administration API, and IdentityCommand is also the foundation for a growing family of other `pspete` modules that administer the wider Idira SaaS platform - e.g. [`IdentityCommand.SIA`][sia-repo], which builds on IdentityCommand's authentication to administer Idira Secure Infrastructure Access, and [`IdentityCommand.SCA`][sca-repo] for Idira Secure Cloud Access administration.
+
+[sia-repo]: https://github.com/pspete/IdentityCommand.SIA
+[sca-repo]: https://github.com/pspete/IdentityCommand.SCA
 
 - **Prior to a Version 1.0.0 release**:
-  - Expect changes
-  - Things may break
+  - Expect changes, although we will do our best to keep these to a minimum
   - Issues / PRs are encouraged & appreciated
   - Many commands are built from documented API shapes but not yet exercised against a live tenant - see [Help Us Test](#help-us-test) below, your feedback genuinely shapes what ships next.
   - Most of the Identity Administration API is now covered, but real-world usage is still expected to shape further changes to command names, parameters/parameter names, and how commands are grouped - some may split into companion commands, others may combine. These patterns only emerge once commands are actually used, so don't consider anything final yet.
 
+| Main Branch              | Latest Build             | CodeFactor                 | Coverage                     | PowerShell Gallery        | License                      |
+| ------------------------ | ------------------------ | -------------------------- | ---------------------------- | ------------------------- | ---------------------------- |
+| [![appveyor][]][av-site] | [![tests][]][tests-site] | [![codefactor][]][cf-site] | [![codecov][]][codecov-link] | [![psgallery][]][ps-site] | [![license][]][license-link] |
+
+[appveyor]: https://ci.appveyor.com/api/projects/status/github/pspete/IdentityCommand?branch=main&svg=true
+[av-site]: https://ci.appveyor.com/project/pspete/IdentityCommand/branch/main
+[psgallery]: https://img.shields.io/powershellgallery/v/IdentityCommand.svg
+[ps-site]: https://www.powershellgallery.com/packages/IdentityCommand
+[tests]: https://img.shields.io/appveyor/tests/pspete/IdentityCommand.svg
+[tests-site]: https://ci.appveyor.com/project/pspete/IdentityCommand
+[downloads]: https://img.shields.io/powershellgallery/dt/IdentityCommand.svg?color=blue
+[cf-site]: https://www.codefactor.io/repository/github/pspete/IdentityCommand
+[codefactor]: https://www.codefactor.io/repository/github/pspete/IdentityCommand/badge
+[codecov]: https://codecov.io/gh/pspete/IdentityCommand/branch/main/graph/badge.svg
+[codecov-link]: https://codecov.io/gh/pspete/IdentityCommand
+[license]: https://img.shields.io/github/license/pspete/IdentityCommand.svg
+[license-link]: https://github.com/pspete/IdentityCommand/blob/main/LICENSE
+
 ---
-
-## Project Objective
-
-- To develop & publish consistently coded PowerShell functions for available Idira (CyberArk) Identity APIs.
 
 ## Use Cases
 
