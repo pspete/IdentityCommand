@@ -12,7 +12,7 @@
     RootModule        = 'IdentityCommand.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.5.147'
+    ModuleVersion     = '0.6.158'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
