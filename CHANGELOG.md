@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## [unreleased] - ####-##-##
+## [0.6] - 2026-09-07
 
 ### Added
 
-- N/A
+- Shared private helper functions for IdentityCommand.SCA & IdentityCommand.SIA
 
 ### Changed
 
