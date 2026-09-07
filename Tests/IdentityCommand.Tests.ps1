@@ -36,8 +36,6 @@ Describe 'Module' -Tag 'Consistency' {
 
 	$Scripts = Get-ChildItem $ModulePath -Include *.ps1 -Recurse
 
-	$Rules = Get-ScriptAnalyzerRule -Severity Warning, Error
-
 	Context $ManifestPath -Tag Manifest {
 
 		It 'has a valid manifest' -TestCases @{ManifestPath = $ManifestPath } {
@@ -208,24 +206,16 @@ Describe 'Module' -Tag 'Consistency' {
 
 			Context $Script.Name -Tag "$($Script.BaseName)", "$($Script.Name)" {
 
-				#One Invoke-ScriptAnalyzer call per file (all rules at once) rather than one call
-				#per rule per file - the latter multiplies file-count x rule-count separate
-				#invocations (each with its own fixed engine-startup overhead), which is what
-				#pushed the AppVeyor Pester run past its 60 minute timeout once the module grew
-				#past ~200 files
-				$Violations = Invoke-ScriptAnalyzer -Path $Script.FullName -IncludeRule $Rules.RuleName
+				It 'passes all Warning and Error rules' -TestCases @{
+					'FilePath' = $script.FullName
+				} {
+					param($FilePath)
 
-				Foreach ($rule in $rules) {
+					#One analyzer pass per file (all Warning/Error rules at once) rather than one pass per rule
+					$findings = Invoke-ScriptAnalyzer -Path $FilePath -Severity Warning, Error
 
-					It 'passes rule: <RuleName>' -Tag $rule -TestCases @{
-						'RuleName'   = $rule.RuleName
-						'Violations' = $Violations
-					} {
-						param($RuleName, $Violations)
-
-						$Violations | Where-Object RuleName -EQ $RuleName | Should -BeNullOrEmpty
-
-					}
+					($findings | ForEach-Object { "[$($_.RuleName)] line $($_.Line): $($_.Message)" }) -join [System.Environment]::NewLine |
+						Should -BeNullOrEmpty
 
 				}
 
