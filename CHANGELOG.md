@@ -18,6 +18,11 @@ All notable changes to this project will be documented in this file.
 - `Resolve-ServiceUrl` also strips a trailing slash from the resolved `ServiceUrl`. Services vary in
   whether they publish a `/api` suffix, a trailing slash, both or neither, so callers can now append
   their own `/<path>` unconditionally.
+- `Resolve-ServiceUrl` accepts `-BaseUrlOnly`, returning only the scheme and host of the service URL
+  and reporting any path separately as `ServicePath`. Needed by services which publish a path along
+  with the host, such as `alerong` (Remote Access). Includes a recovery for discovery responses which
+  omit the slash between host and path.
+- `Resolve-ServiceUrl` output carries a `ServicePath` property, empty unless `-BaseUrlOnly` was used.
 
 ## [0.6] - 2026-09-07
 
