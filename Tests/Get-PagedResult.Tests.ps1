@@ -91,6 +91,18 @@
                 } -Times 1 -Exactly -Scope It
             }
 
+            It 'stops when the server returns the same continuation token it was sent' {
+                Mock -CommandName Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{ items = @('two'); nextCursor = 'SomeCursor' }
+                }
+
+                $Initial = [pscustomobject]@{ items = @('one'); nextCursor = 'SomeCursor' }
+                Get-PagedResult -InitialResult $Initial -URI $Script:PageURI -Style Cursor -ResultProperty items |
+                    Should -Be @('one', 'two')
+
+                Should -Invoke -CommandName Invoke-IDRestMethod -Times 1 -Exactly -Scope It
+            }
+
             It 'stops when a page returns no items' {
                 Mock -CommandName Invoke-IDRestMethod -MockWith {
                     [pscustomobject]@{ items = @(); nextCursor = 'StillSomeCursor' }

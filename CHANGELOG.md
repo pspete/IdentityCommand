@@ -32,6 +32,12 @@ All notable changes to this project will be documented in this file.
   values sit in a nested object. The body is cloned per page with only the offset replaced, so
   filters and search terms carry across pages.
 
+### Fixed
+
+- `Get-PagedResult` Cursor style stops when the server returns the same continuation token it was
+  sent, instead of requesting that page indefinitely. Reachable against an endpoint which reports a
+  token unconditionally, or one which ignores the token parameter altogether.
+
 ## [0.6] - 2026-09-07
 
 ### Added

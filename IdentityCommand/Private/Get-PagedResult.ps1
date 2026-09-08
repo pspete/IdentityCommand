@@ -177,7 +177,17 @@
                     }
 
                     $null = $Items.AddRange(@($PageItems))
+
+                    $ThisCursor = $NextCursor
                     $NextCursor = $PageResult.$CursorResponseKey
+
+                    if ($NextCursor -eq $ThisCursor) {
+                        #The server handed back the cursor just sent, so following it would request
+                        #this same page for ever. Endpoints which report a cursor unconditionally
+                        #(SIA's VM infrastructure reports cloud_0|onprem_0 once exhausted) make this
+                        #reachable, as does an endpoint which ignores the cursor parameter entirely.
+                        break
+                    }
 
                 }
 
