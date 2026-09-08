@@ -23,6 +23,14 @@ All notable changes to this project will be documented in this file.
   with the host, such as `alerong` (Remote Access). Includes a recovery for discovery responses which
   omit the slash between host and path.
 - `Resolve-ServiceUrl` output carries a `ServicePath` property, empty unless `-BaseUrlOnly` was used.
+- `Get-PagedResult` Offset style recognises two further ways an endpoint reports the end of a set:
+  `-LastPageKey` for a boolean last page flag such as `isLastPage`, and `-OffsetResponseKey` for a
+  next offset echoed back on the response and omitted on the final page. `-OffsetResponseKey` accepts
+  a dotted path for a nested value, for example `paging.offset`.
+- `Get-PagedResult` Offset style can page a `POST` endpoint, for those which take their paging values
+  in the request body: `-Method POST` with `-BodyTemplate`, and `-BodyPagingProperty` when the paging
+  values sit in a nested object. The body is cloned per page with only the offset replaced, so
+  filters and search terms carry across pages.
 
 ## [0.6] - 2026-09-07
 
