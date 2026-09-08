@@ -8,13 +8,18 @@ function Resolve-ServiceUrl {
     CyberArk platform discovery (via Find-SharedServicesURL) once and returns the URLs a companion
     module's Connect- command needs:
 
-      - ServiceUrl  - the api URL of the requested service, with any trailing /api removed.
+      - ServiceUrl  - the api URL of the requested service, with any trailing /api and trailing
+                      slash removed, so a caller can append its own /<path> unconditionally.
       - IdentityUrl - the 'identity_user_portal' service api URL (the CyberArk Identity tenant URL
                       that New-IDSession / New-IDPlatformToken authenticate against).
 
     When a URL is supplied, Find-SharedServicesURL derives the shared services subdomain from the
     first label of the host name - correct for the standard https://<subdomain>.<service>.cyberark.cloud
     URL form.
+
+    Throws if the requested service is absent from the discovery response - a service which is not
+    enabled on the tenant, or a mistyped key, would otherwise yield a null ServiceUrl and leave the
+    calling Connect- command holding a session bound to no URL at all.
 
     .PARAMETER Service
     The platform discovery key of the service to resolve, for example 'sca' or 'jit'.
@@ -69,8 +74,16 @@ function Resolve-ServiceUrl {
         throw "CyberArk Identity URL (identity_user_portal) not found in platform discovery response for '$Reference'"
     }
 
+    #Strip a trailing /api, then any trailing slash: services vary in whether they publish either, and
+    #callers always append their own /<path>. cem and cds publish a bare host with a trailing slash.
+    $ServiceUrl = $Discovery.$Service.api -replace '/api/?$', '' -replace '/$', ''
+
+    if ([string]::IsNullOrEmpty($ServiceUrl)) {
+        throw "URL for the '$Service' service not found in platform discovery response for '$Reference'. The service may not be enabled on this tenant"
+    }
+
     [pscustomobject]@{
-        ServiceUrl  = $Discovery.$Service.api -replace '/api/?$', ''
+        ServiceUrl  = $ServiceUrl
         IdentityUrl = $IdentityUrl
     }
 

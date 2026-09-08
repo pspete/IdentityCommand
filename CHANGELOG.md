@@ -1,6 +1,23 @@
-# Change Log
+﻿# Change Log
 
 All notable changes to this project will be documented in this file.
+
+# Unreleased
+
+### Added
+
+- `Find-SharedServicesURL` recognises the platform discovery keys for further shared services:
+  `aigw`, `alerong`, `ars`, `cds`, `compass`, `dms`, `uap` and `userportal`.
+
+### Changed
+
+- `Resolve-ServiceUrl` now throws when the requested service is absent from the platform discovery
+  response, instead of returning a null `ServiceUrl`. A service which is not enabled on the tenant,
+  or a mistyped service key, previously left the calling `Connect-` command holding a session bound
+  to no URL at all.
+- `Resolve-ServiceUrl` also strips a trailing slash from the resolved `ServiceUrl`. Services vary in
+  whether they publish a `/api` suffix, a trailing slash, both or neither, so callers can now append
+  their own `/<path>` unconditionally.
 
 ## [0.6] - 2026-09-07
 

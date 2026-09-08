@@ -48,11 +48,17 @@ function Find-SharedServicesURL {
             ValueFromPipeline = $true
         )]
         [ValidateSet(
+            'aigw',
+            'alerong',
             'analytics',
+            'ars',
             'audit',
+            'cds',
             'cem',
             'cloud_onboarding',
+            'compass',
             'component_manager',
+            'dms',
             'flows',
             'idaptive_risk_analytics',
             'identity_administration',
@@ -63,7 +69,9 @@ function Find-SharedServicesURL {
             'sca',
             'secrets_hub',
             'secrets_manager',
-            'session_monitoring'
+            'session_monitoring',
+            'uap',
+            'userportal'
         )]
         [string]$service
     )
