@@ -8,6 +8,11 @@ All notable changes to this project will be documented in this file.
 
 - `Find-SharedServicesURL` recognises the platform discovery keys for further shared services:
   `aigw`, `alerong`, `ars`, `cds`, `compass`, `dms`, `uap` and `userportal`.
+- `ConvertTo-FilterClause`: formats a single `field operator value` filter clause, quoting and
+  escaping the value as the ISPSS filter dialects require. Services differ in operator vocabulary,
+  clause joining and parenthesisation, so companion modules assemble their own expressions from
+  these clauses. The clause is not url encoded - `Add-QueryString` encodes the query string as a
+  whole.
 
 ### Changed
 
