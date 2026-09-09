@@ -40,6 +40,11 @@ function ConvertTo-FilterClause {
     .PARAMETER QuoteCharacter
     The character to quote values with. Defaults to a double quote.
 
+    .PARAMETER ValueOnly
+    Specify to return the formatted value alone, without a field or operator. Dialects which render
+    a list of values - for an 'in' operator, say - format each of their values this way and delimit
+    them themselves.
+
     .EXAMPLE
     ConvertTo-FilterClause -Field name -Operator CONTAINS -Value my
 
@@ -60,33 +65,51 @@ function ConvertTo-FilterClause {
 
     Outputs: requestor is_null
 
+    .EXAMPLE
+    ConvertTo-FilterClause -Value 'some value' -ValueOnly
+
+    Outputs: "some value"
+
     .OUTPUTS
     String
     #>
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = 'Clause')]
     [OutputType([string])]
     param(
         [parameter(
             Mandatory = $true,
-            Position = 0
+            Position = 0,
+            ParameterSetName = 'Clause'
         )]
         [ValidateNotNullOrEmpty()]
         [string]$Field,
 
         [parameter(
             Mandatory = $true,
-            Position = 1
+            Position = 1,
+            ParameterSetName = 'Clause'
         )]
         [ValidateNotNullOrEmpty()]
         [string]$Operator,
 
         [parameter(
             Mandatory = $false,
-            Position = 2
+            Position = 2,
+            ParameterSetName = 'Clause'
+        )]
+        [parameter(
+            Mandatory = $true,
+            ParameterSetName = 'Value'
         )]
         [AllowNull()]
         [AllowEmptyString()]
         [object]$Value,
+
+        [parameter(
+            Mandatory = $true,
+            ParameterSetName = 'Value'
+        )]
+        [switch]$ValueOnly,
 
         [parameter(Mandatory = $false)]
         [switch]$QuoteValue,
@@ -137,6 +160,12 @@ function ConvertTo-FilterClause {
         #A quote character within a quoted value is escaped with a backslash
         $FormattedValue = $FormattedValue.Replace($QuoteCharacter, "\$QuoteCharacter")
         $FormattedValue = "$QuoteCharacter$FormattedValue$QuoteCharacter"
+
+    }
+
+    if ($ValueOnly) {
+
+        return $FormattedValue
 
     }
 

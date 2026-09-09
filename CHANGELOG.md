@@ -1,4 +1,4 @@
-﻿# Change Log
+# Change Log
 
 All notable changes to this project will be documented in this file.
 
@@ -13,6 +13,12 @@ All notable changes to this project will be documented in this file.
   clause joining and parenthesisation, so companion modules assemble their own expressions from
   these clauses. The clause is not url encoded - `Add-QueryString` encodes the query string as a
   whole.
+- `ConvertTo-SHFilterString`: assembles a Secrets Hub filter expression - clauses joined with `AND`,
+  no `OR` and no parentheses, per the documented query language. The `HAS` and `GE` operators which
+  appear in the secret stores spec, but not in the documented language, are rejected until verified.
+- `ConvertTo-ARFilterString`: assembles an Access Requests filter expression, parenthesising each
+  clause and combining them pairwise from the left as the service requires. Reproduces each filter
+  example in the service's API documentation.
 
 ### Changed
 

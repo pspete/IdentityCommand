@@ -164,6 +164,38 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'ValueOnly' {
+
+            It 'returns the value alone' {
+                ConvertTo-FilterClause -Value somevalue -ValueOnly | Should -Be 'somevalue'
+            }
+
+            It 'quotes a value which requires it' {
+                ConvertTo-FilterClause -Value 'some value' -ValueOnly | Should -Be '"some value"'
+            }
+
+            It 'quotes with the specified quote character' {
+                ConvertTo-FilterClause -Value 'some value' -ValueOnly -QuoteCharacter "'" |
+                    Should -Be "'some value'"
+            }
+
+            It 'formats a value type as it would within a clause' {
+                ConvertTo-FilterClause -Value $true -ValueOnly | Should -Be 'true'
+            }
+
+            It 'throws when a field is supplied with ValueOnly' {
+                { ConvertTo-FilterClause -Field name -Operator EQ -Value my -ValueOnly } | Should -Throw
+            }
+
+            It 'requires a value in the ValueOnly parameter set' {
+                (Get-Command ConvertTo-FilterClause).Parameters['Value'].Attributes |
+                    Where-Object { $_.ParameterSetName -eq 'Value' } |
+                    Select-Object -ExpandProperty Mandatory |
+                    Should -BeTrue
+            }
+
+        }
+
         Context 'Input Validation' {
 
             It 'throws when the value is a collection' {
