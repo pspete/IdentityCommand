@@ -16,9 +16,6 @@ All notable changes to this project will be documented in this file.
 - `ConvertTo-SHFilterString`: assembles a Secrets Hub filter expression - clauses joined with `AND`,
   no `OR` and no parentheses, per the documented query language. The `HAS` and `GE` operators which
   appear in the secret stores spec, but not in the documented language, are rejected until verified.
-- `ConvertTo-ARFilterString`: assembles an Access Requests filter expression, parenthesising each
-  clause and combining them pairwise from the left as the service requires. Reproduces each filter
-  example in the service's API documentation.
 
 ### Changed
 
