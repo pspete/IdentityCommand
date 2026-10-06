@@ -4,6 +4,8 @@
 #   repo         GitHub repository; modules other than `repository` in _config.yml
 #                have their docs/ folder copied into /<key>/ by _tools/sync_modules.rb
 #   commands     collection holding the module's command help, listed in the sidebar
+#   prefix       command noun prefix, omitted from command index headings
+#   pinned       commands listed first in the sidebar, e.g. those that start a session
 #   description  summary shown on the landing page
 #   image        logo shown on the landing page
 #   menu         sidebar menu (bulma-clean-theme menubar format)
@@ -12,6 +14,10 @@ IdentityCommand:
   label: IdentityCommand
   repo: pspete/IdentityCommand
   commands: commands
+  prefix: ID
+  pinned:
+    - New-IDSession
+    - New-IDPlatformToken
   description: >-
     Authentication (MFA, SAML, OIDC, service users) and administration of the Identity tenant:
     users, roles, applications, organizations, policies, SCIM and more.
@@ -33,6 +39,9 @@ SCA:
   label: IdentityCommand.SCA
   repo: pspete/IdentityCommand.SCA
   commands: SCA
+  prefix: SCA
+  pinned:
+    - Connect-SCATenant
   description: >-
     Secure Cloud Access: just-in-time access policies for cloud roles,
     discovery, eligibility, and on-demand access requests.
@@ -51,6 +60,9 @@ SIA:
   label: IdentityCommand.SIA
   repo: pspete/IdentityCommand.SIA
   commands: SIA
+  prefix: SIA
+  pinned:
+    - Connect-SIATenant
   description: >-
     Secure Infrastructure Access: connectors, access policies, strong accounts,
     target sets, and SSH / RDP / database connections.

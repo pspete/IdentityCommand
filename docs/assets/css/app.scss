@@ -15,6 +15,20 @@ $link: #c62f1a;
     margin-right: 0.5rem;
 }
 
+@media screen and (min-width: 769px) {
+    .column:has(> .module-menu) {
+        flex: none;
+        width: auto;
+        max-width: 33%;
+    }
+
+    .column:has(> .module-menu) + #main-content {
+        flex: 1;
+        width: auto;
+        min-width: 0;
+    }
+}
+
 .module-menu {
     position: sticky;
     top: 1rem;

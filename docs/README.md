@@ -51,7 +51,7 @@ Copy [_tools/docs-dispatch.yml](_tools/docs-dispatch.yml) to the sibling's `.git
 For module `IdentityCommand.XYZ`:
 
 1. `_data/navigation.yml` - add `name`, `link: /XYZ/`, `module: XYZ`.
-2. `_data/menus.yml` - add key `XYZ` with `label`, `repo`, `commands: XYZ`, `description`, `image` and `menu`.
+2. `_data/menus.yml` - add key `XYZ` with `label`, `repo`, `commands: XYZ`, `prefix: XYZ`, `pinned` (e.g. `Connect-XYZTenant`), `description`, `image` and `menu`.
 3. `_config.yml` - add collection `XYZ` (`output: true`, `permalink: /XYZ/commands/:title/`) and the two `defaults` entries (path `XYZ`, type `XYZ`) matching SCA/SIA.
 4. Add `docs/` and the dispatch workflow to the sibling repo.
 

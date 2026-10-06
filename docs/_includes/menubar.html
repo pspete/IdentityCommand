@@ -29,7 +29,7 @@
     {% endfor %}
 
     {% if module.commands and site[module.commands] %}
-        {% assign commands = site[module.commands] | sort: "title" %}
+        {% assign commands = site[module.commands] | sort: "menu_order" %}
         <p class="menu-label">Command Reference</p>
         <ul class="menu-list command-menu">
             {% for doc in commands %}

@@ -25,6 +25,9 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
 
+# Command index pages group by noun (default) or verb
+command_index_group: noun
+
 collections_dir: collections
 
 # One collection per module holding its command help.
