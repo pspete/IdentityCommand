@@ -1,0 +1,53 @@
+---
+---
+$primary: #1d1d1d;
+$link: #c62f1a;
+
+@import "main";
+
+.navbar .brand {
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+
+.navbar .brand-logo {
+    filter: invert(1);
+    margin-right: 0.5rem;
+}
+
+.module-menu {
+    position: sticky;
+    top: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+}
+
+.command-menu a,
+.command-list {
+    font-size: 0.85rem;
+}
+
+.command-menu a {
+    padding-block: 0.2em;
+}
+
+.command-list {
+    list-style: none;
+    margin-left: 0;
+}
+
+.command-help h2 {
+    border-bottom: 1px solid var(--bulma-border);
+    padding-bottom: 0.25em;
+}
+
+.module-cards .card {
+    height: 100%;
+}
+
+.module-cards .card-image img {
+    object-fit: contain;
+    aspect-ratio: 2 / 1;
+    padding: 1rem;
+    background: #fff;
+}

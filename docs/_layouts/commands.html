@@ -1,0 +1,23 @@
+---
+layout: default
+---
+{% assign docs = site[page.collection] | sort: "title" %}
+{% assign groups = docs | group_by_exp: "doc", "doc.title | split: '-' | first" %}
+<div class="content" data-pagefind-body>
+    <span hidden data-pagefind-filter="module">{{ page.menubar }}</span>
+    <h1>{{ page.title }}</h1>
+    {{ content }}
+    <p>{{ docs.size }} commands. The same help is available in PowerShell via <code>Get-Help &lt;command&gt; -Full</code>.</p>
+    <div class="columns is-multiline">
+        {% for group in groups %}
+            <div class="column is-half-tablet is-one-third-widescreen">
+                <h2 class="title is-5">{{ group.name }}</h2>
+                <ul class="command-list">
+                    {% for doc in group.items %}
+                        <li><a href="{{ doc.url | relative_url }}">{{ doc.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+</div>

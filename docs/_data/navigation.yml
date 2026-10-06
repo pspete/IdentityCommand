@@ -1,0 +1,11 @@
+# Top navbar. `module` matches a key in menus.yml and marks the item active
+# on every page of that module.
+- name: IdentityCommand
+  link: /
+  module: IdentityCommand
+- name: SCA
+  link: /SCA/
+  module: SCA
+- name: SIA
+  link: /SIA/
+  module: SIA

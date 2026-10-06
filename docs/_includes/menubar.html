@@ -1,0 +1,44 @@
+{% assign module = site.data.menus[page.menubar] %}
+{% assign current = page.url | relative_url %}
+
+<aside class="menu module-menu">
+    {% for menu in module.menu %}
+        <p class="menu-label">{{ menu.label }}</p>
+        <ul class="menu-list">
+            {% for item in menu.items %}
+                {% assign link = item.link | relative_url %}
+                <li>
+                    <a href="{{ link }}" class="{% if link == current %}is-active{% endif %}">
+                        {{- item.name -}}
+                    </a>
+                    {% if item.items %}
+                        <ul>
+                            {% for subitem in item.items %}
+                                {% assign sublink = subitem.link | relative_url %}
+                                <li>
+                                    <a href="{{ sublink }}" class="{% if sublink == current %}is-active{% endif %}">
+                                        {{- subitem.name -}}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+
+    {% if module.commands and site[module.commands] %}
+        {% assign commands = site[module.commands] | sort: "title" %}
+        <p class="menu-label">Command Reference</p>
+        <ul class="menu-list command-menu">
+            {% for doc in commands %}
+                <li>
+                    <a href="{{ doc.url | relative_url }}" class="{% if doc.url == page.url %}is-active{% endif %}">
+                        {{- doc.title -}}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</aside>
