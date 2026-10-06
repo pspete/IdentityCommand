@@ -24,10 +24,10 @@ New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -Credential (Get-
   {% assign module = site.data.menus[item.module] %}
   <div class="column is-one-third-desktop is-half-tablet">
     <a class="card is-block" href="{{ item.link | relative_url }}">
-      <div class="card-image"><img src="{{ module.image | relative_url }}" alt=""></div>
+      {% if module.image %}<div class="card-image"><img src="{{ module.image | relative_url }}" alt=""></div>{% endif %}
       <div class="card-content">
-        <p class="title is-5">{{ module.label }}</p>
-        <p class="has-text-grey-dark">{{ module.description }}</p>
+        <p class="title is-5">{{ module.label | replace: ".", ".<wbr>" }}</p>
+        <p class="module-description">{{ module.description }}</p>
       </div>
     </a>
   </div>

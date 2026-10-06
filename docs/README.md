@@ -24,6 +24,15 @@ bundle exec jekyll serve               # http://localhost:4000/IdentityCommand/
 
 `sync_modules.rb` options: `--source DIR` (folder holding sibling clones), `--suffix SUFFIX` (e.g. `-docs-site` for worktrees), `--branch BRANCH` (shallow clone from GitHub instead).
 
+To preview unpublished modules too, `--preview` copies every local `IdentityCommand.<Name>` clone with `docs/collections/_commands` that is not yet in `_data/menus.yml`, and writes `_config.preview.yml` (git-ignored) with their collections, defaults and menu entries:
+
+```shell
+ruby _tools/sync_modules.rb --preview
+bundle exec jekyll serve --config _config.yml,_config.preview.yml
+```
+
+Running the sync without `--preview` removes them again.
+
 Search needs the Pagefind index, which `jekyll serve` deletes on rebuild:
 
 ```shell

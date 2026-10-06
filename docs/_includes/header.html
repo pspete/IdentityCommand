@@ -27,14 +27,41 @@
         </div>
         <div class="navbar-menu" id="navMenu" :class="{ 'is-active': openNav }">
             <div class="navbar-start">
-                {% for item in site.data.navigation %}
+                {% assign nav = site.data.navigation %}
+                {% if nav.size <= site.navbar_inline_modules %}
+                    {% for item in nav %}
+                        <a
+                            href="{{ item.link | relative_url }}"
+                            class="navbar-item {% if item.module == page.menubar %}is-active{% endif %}"
+                        >
+                            {{- item.name -}}
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    {% assign home = nav | first %}
+                    {% assign current = nav | where: "module", page.menubar | first %}
                     <a
-                        href="{{ item.link | relative_url }}"
-                        class="navbar-item {% if item.module == page.menubar %}is-active{% endif %}"
+                        href="{{ home.link | relative_url }}"
+                        class="navbar-item {% if home.module == page.menubar %}is-active{% endif %}"
                     >
-                        {{- item.name -}}
+                        {{- home.name -}}
                     </a>
-                {% endfor %}
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link {% if current and current.module != home.module %}is-active{% endif %}">
+                            {%- if current and current.module != home.module %}{{ current.name }}{% else %}Modules{% endif -%}
+                        </a>
+                        <div class="navbar-dropdown">
+                            {% for item in nav offset: 1 %}
+                                <a
+                                    href="{{ item.link | relative_url }}"
+                                    class="navbar-item {% if item.module == page.menubar %}is-active{% endif %}"
+                                >
+                                    {{- item.name -}}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
             </div>
 
             <div class="navbar-end">

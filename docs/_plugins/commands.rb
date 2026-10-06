@@ -14,7 +14,16 @@ module IdentityCommandDocs
     end
   end
 
+  # Modules from _config.preview.yml (see _tools/sync_modules.rb --preview)
+  def self.add_preview_modules(site)
+    site.config.fetch("preview_modules", {}).each do |name, menu|
+      site.data["menus"][name] = menu
+      site.data["navigation"] << { "name" => name, "link" => menu["menu"][0]["items"][0]["link"], "module" => name }
+    end
+  end
+
   Jekyll::Hooks.register :site, :post_read do |site|
+    IdentityCommandDocs.add_preview_modules(site)
     IdentityCommandDocs.command_collections(site).each do |_, menu, collection|
       pinned = Array(menu["pinned"])
       collection.docs.each { |doc| doc.data["title"] = doc.basename_without_ext }

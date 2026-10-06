@@ -25,6 +25,9 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
 
+# Navbar lists up to this many modules inline, otherwise the siblings move into a dropdown
+navbar_inline_modules: 4
+
 # Command index pages group by noun (default) or verb
 command_index_group: noun
 
