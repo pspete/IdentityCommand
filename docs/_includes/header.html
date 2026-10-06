@@ -1,0 +1,89 @@
+{% assign module = site.data.menus[page.menubar] %}
+<nav
+    class="navbar is-primary {% if site.fixed_navbar %} is-fixed-{{ site.fixed_navbar }} {% endif %}"
+    x-data="{ openNav: false }"
+    aria-label="main navigation"
+>
+    <div class="container">
+        <div class="navbar-brand">
+            <a href="{{ '/' | relative_url }}" class="navbar-item brand">
+                <img src="{{ site.logo | relative_url }}" alt="" class="brand-logo">
+                <span>{{ site.title }}</span>
+            </a>
+            <a
+                role="button"
+                class="navbar-burger burger"
+                aria-label="menu"
+                aria-expanded="false"
+                data-target="navMenu"
+                :class="{ 'is-active': openNav }"
+                x-on:click="openNav = !openNav"
+            >
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div class="navbar-menu" id="navMenu" :class="{ 'is-active': openNav }">
+            <div class="navbar-start">
+                {% assign nav = site.data.navigation %}
+                {% if nav.size <= site.navbar_inline_modules %}
+                    {% for item in nav %}
+                        <a
+                            href="{{ item.link | relative_url }}"
+                            class="navbar-item {% if item.module == page.menubar %}is-active{% endif %}"
+                        >
+                            {{- item.name -}}
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    {% assign home = nav | first %}
+                    {% assign current = nav | where: "module", page.menubar | first %}
+                    <a
+                        href="{{ home.link | relative_url }}"
+                        class="navbar-item {% if home.module == page.menubar %}is-active{% endif %}"
+                    >
+                        {{- home.name -}}
+                    </a>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link {% if current and current.module != home.module %}is-active{% endif %}">
+                            {%- if current and current.module != home.module %}{{ current.name }}{% else %}Modules{% endif -%}
+                        </a>
+                        <div class="navbar-dropdown">
+                            {% for item in nav offset: 1 %}
+                                <a
+                                    href="{{ item.link | relative_url }}"
+                                    class="navbar-item {% if item.module == page.menubar %}is-active{% endif %}"
+                                >
+                                    {{- item.name -}}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="navbar-end">
+                <form class="navbar-item" action="{{ '/search/' | relative_url }}" method="get" role="search">
+                    <div class="control has-icons-left">
+                        <input class="input is-small" type="search" name="q" placeholder="Search docs" aria-label="Search docs">
+                        <span class="icon is-small is-left"><i class="fas fa-search"></i></span>
+                    </div>
+                </form>
+                {% if module.repo %}
+                    <a class="navbar-item" href="https://github.com/{{ module.repo }}" title="{{ module.repo }} on GitHub">
+                        <span class="icon"><i class="fab fa-github"></i></span>
+                        <span class="is-hidden-desktop">GitHub</span>
+                    </a>
+                {% endif %}
+                {% if site.gh_sponsor %}
+                    <a class="navbar-item" href="https://github.com/sponsors/{{ site.gh_sponsor }}">
+                        <span class="icon gh-sponsor"><i class="fas fa-heart"></i></span>
+                        <span>Sponsor</span>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

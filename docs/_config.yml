@@ -1,0 +1,95 @@
+title: IdentityCommand
+description: >-
+  PowerShell modules for the Palo Alto Idira (formerly CyberArk) Identity platform.
+author: Pete Maan
+lang: en-GB
+
+url: https://www.pspete.dev
+baseurl: /IdentityCommand
+repository: pspete/IdentityCommand
+
+theme: bulma-clean-theme
+theme_color: "#1d1d1d"
+favicon: /media/images/IdentityCommand-Logo.png
+logo: /media/images/IdentityCommand-Logo.png
+gh_sponsor: pspete
+hide_share_buttons: true
+
+permalink: pretty
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Navbar lists up to this many modules inline, otherwise the siblings move into a dropdown
+navbar_inline_modules: 4
+
+# Command index pages group by noun (default) or verb
+command_index_group: noun
+
+collections_dir: collections
+
+# One collection per module holding its command help.
+# IdentityCommand uses `commands`; each sibling module uses its short name.
+collections:
+  commands:
+    output: true
+    permalink: /commands/:title/
+  SCA:
+    output: true
+    permalink: /SCA/commands/:title/
+  SIA:
+    output: true
+    permalink: /SIA/commands/:title/
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: page
+      menubar: IdentityCommand
+      hero_height: is-small
+  - scope:
+      path: ""
+      type: commands
+    values:
+      render_with_liquid: false
+      layout: command
+  - scope:
+      path: SCA
+    values:
+      menubar: SCA
+  - scope:
+      path: ""
+      type: SCA
+    values:
+      render_with_liquid: false
+      layout: command
+      menubar: SCA
+  - scope:
+      path: SIA
+    values:
+      menubar: SIA
+  - scope:
+      path: ""
+      type: SIA
+    values:
+      render_with_liquid: false
+      layout: command
+      menubar: SIA
+
+exclude:
+  - _tools
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - .jekyll-cache
+
+sass:
+  quiet_deps: true
+  silence_deprecations: [import, if-function, global-builtin]

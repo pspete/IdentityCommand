@@ -1,0 +1,4 @@
+_site/
+.jekyll-cache/
+vendor/
+_config.preview.yml

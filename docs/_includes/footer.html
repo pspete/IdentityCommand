@@ -1,0 +1,16 @@
+<footer class="footer">
+    <div class="container">
+        <div class="content is-small has-text-centered">
+            <p>
+                {% for item in site.data.navigation %}
+                    <a href="{{ item.link | relative_url }}">{{ site.data.menus[item.module].label | default: item.name }}</a>{% unless forloop.last %} &middot; {% endunless %}
+                {% endfor %}
+            </p>
+            <p>
+                Community PowerShell modules by <a href="https://github.com/pspete">Pete Maan</a>, released under the MIT License.
+                Not developed or supported by Palo Alto Networks / CyberArk.
+            </p>
+            <p>Theme by <a href="https://www.csrhymes.com">C.S. Rhymes</a> &middot; Search by <a href="https://pagefind.app">Pagefind</a></p>
+        </div>
+    </div>
+</footer>

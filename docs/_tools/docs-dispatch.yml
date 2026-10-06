@@ -1,0 +1,29 @@
+# Copy to .github/workflows/docs-dispatch.yml in a sibling module repo.
+#
+# Rebuilds the unified docs site in pspete/IdentityCommand when this repo's
+# docs/ change. Requires repository secret DOCS_DISPATCH_TOKEN: a fine-grained
+# PAT with access to pspete/IdentityCommand only, permission Contents: read and write.
+name: Docs dispatch
+
+on:
+  push:
+    branches: [main, docs-site]
+    paths:
+      - docs/**
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send docs-updated to IdentityCommand
+        env:
+          GH_TOKEN: ${{ secrets.DOCS_DISPATCH_TOKEN }}
+        run: |
+          gh api repos/pspete/IdentityCommand/dispatches \
+            -f event_type=docs-updated \
+            -f "client_payload[repository]=${{ github.repository }}" \
+            -f "client_payload[branch]=${{ github.ref_name }}" \
+            -f "client_payload[sha]=${{ github.sha }}"
