@@ -18,7 +18,7 @@
 #   ruby _tools/sync_modules.rb                      # local clones in ../.. (sibling folders of this repo)
 #   ruby _tools/sync_modules.rb --source C:/GitHub   # local clones in another folder
 #   ruby _tools/sync_modules.rb --suffix -docs-site  # local clones named e.g. IdentityCommand.SCA-docs-site
-#   ruby _tools/sync_modules.rb --branch docs-site   # shallow clone each repo's branch from GitHub
+#   ruby _tools/sync_modules.rb --branch main        # shallow clone each repo's branch from GitHub
 #   ruby _tools/sync_modules.rb --preview            # also include unlisted local modules
 
 require "fileutils"

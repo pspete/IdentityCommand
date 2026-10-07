@@ -2,7 +2,7 @@ name: Docs
 
 on:
   push:
-    branches: [main, docs-site]
+    branches: [main]
     paths:
       - docs/**
       - .github/workflows/docs.yml
@@ -13,7 +13,7 @@ on:
       branch:
         description: Branch of the sibling module repos to take docs/ from
         required: false
-        default: docs-site
+        default: main
 
 permissions:
   contents: read
@@ -29,7 +29,7 @@ jobs:
       run:
         working-directory: docs
     env:
-      SIBLING_BRANCH: ${{ inputs.branch || vars.DOCS_SIBLING_BRANCH || 'docs-site' }}
+      SIBLING_BRANCH: ${{ inputs.branch || vars.DOCS_SIBLING_BRANCH || 'main' }}
     steps:
       - uses: actions/checkout@v5
 

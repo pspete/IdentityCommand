@@ -91,6 +91,18 @@
                 } -Times 1 -Exactly -Scope It
             }
 
+            It 'stops when the server returns the same continuation token it was sent' {
+                Mock -CommandName Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{ items = @('two'); nextCursor = 'SomeCursor' }
+                }
+
+                $Initial = [pscustomobject]@{ items = @('one'); nextCursor = 'SomeCursor' }
+                Get-PagedResult -InitialResult $Initial -URI $Script:PageURI -Style Cursor -ResultProperty items |
+                    Should -Be @('one', 'two')
+
+                Should -Invoke -CommandName Invoke-IDRestMethod -Times 1 -Exactly -Scope It
+            }
+
             It 'stops when a page returns no items' {
                 Mock -CommandName Invoke-IDRestMethod -MockWith {
                     [pscustomobject]@{ items = @(); nextCursor = 'StillSomeCursor' }
@@ -216,6 +228,142 @@
 
                 Should -Invoke -CommandName Invoke-IDRestMethod -ParameterFilter {
                     $URI -eq 'https://sometenant.service.cyberark.cloud/api/things?skip=1'
+                } -Times 1 -Exactly -Scope It
+            }
+
+        }
+
+        Context 'Offset style - last page flag' {
+
+            It 'pages until the response reports the last page' {
+                Mock -CommandName Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{ items = @('two'); isLastPage = $true }
+                }
+
+                $Initial = [pscustomobject]@{ items = @('one'); isLastPage = $false }
+                Get-PagedResult -InitialResult $Initial -URI $Script:PageURI -Style Offset -ResultProperty items -LastPageKey isLastPage |
+                    Should -Be @('one', 'two')
+
+                Should -Invoke -CommandName Invoke-IDRestMethod -Times 1 -Exactly -Scope It
+            }
+
+            It 'makes no further request when the first page is the last' {
+                Mock -CommandName Invoke-IDRestMethod -MockWith { }
+
+                $Initial = [pscustomobject]@{ items = @('one'); isLastPage = $true }
+                Get-PagedResult -InitialResult $Initial -URI $Script:PageURI -Style Offset -ResultProperty items -LastPageKey isLastPage |
+                    Should -Be @('one')
+
+                Should -Invoke -CommandName Invoke-IDRestMethod -Times 0 -Exactly -Scope It
+            }
+
+            It 'pages on a last page flag without any reported total' {
+                Mock -CommandName Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{ items = @('two'); isLastPage = $true }
+                }
+
+                $Initial = [pscustomobject]@{ items = @('one'); isLastPage = $false }
+                $null = Get-PagedResult -InitialResult $Initial -URI $Script:PageURI -Style Offset -ResultProperty items -LastPageKey isLastPage
+
+                Should -Invoke -CommandName Invoke-IDRestMethod -ParameterFilter {
+                    $URI -match 'offset=1'
+                } -Times 1 -Exactly -Scope It
+            }
+
+        }
+
+        Context 'Offset style - next offset echoed by the server' {
+
+            It 'requests the next page at the offset the server reports' {
+                Mock -CommandName Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{ items = @('two'); paging = [pscustomobject]@{} }
+                }
+
+                $Initial = [pscustomobject]@{ items = @('one'); paging = [pscustomobject]@{ offset = 500 } }
+                $null = Get-PagedResult -InitialResult $Initial -URI $Script:PageURI -Style Offset -ResultProperty items -OffsetResponseKey 'paging.offset'
+
+                Should -Invoke -CommandName Invoke-IDRestMethod -ParameterFilter {
+                    $URI -match 'offset=500'
+                } -Times 1 -Exactly -Scope It
+            }
+
+            It 'stops when the response omits the next offset' {
+                Mock -CommandName Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{ items = @('two'); paging = [pscustomobject]@{} }
+                }
+
+                $Initial = [pscustomobject]@{ items = @('one'); paging = [pscustomobject]@{ offset = 1 } }
+                Get-PagedResult -InitialResult $Initial -URI $Script:PageURI -Style Offset -ResultProperty items -OffsetResponseKey 'paging.offset' |
+                    Should -Be @('one', 'two')
+
+                Should -Invoke -CommandName Invoke-IDRestMethod -Times 1 -Exactly -Scope It
+            }
+
+        }
+
+        Context 'Offset style - paging a POST' {
+
+            It 'sends the offset in the request body' {
+                Mock -CommandName Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{ items = @('two'); totalCount = 2 }
+                }
+
+                $Initial = [pscustomobject]@{ items = @('one'); totalCount = 2 }
+                $null = Get-PagedResult -InitialResult $Initial -URI $Script:PageURI -Style Offset -ResultProperty items -Method POST -BodyTemplate @{ limit = 1 }
+
+                Should -Invoke -CommandName Invoke-IDRestMethod -ParameterFilter {
+                    ($Method -eq 'POST') -and
+                    ($URI -eq $Script:PageURI) -and
+                    (($Body | ConvertFrom-Json).offset -eq 1) -and
+                    (($Body | ConvertFrom-Json).limit -eq 1)
+                } -Times 1 -Exactly -Scope It
+            }
+
+            It 'carries the rest of the body across pages' {
+                Mock -CommandName Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{ items = @('two'); totalCount = 2 }
+                }
+
+                $Initial = [pscustomobject]@{ items = @('one'); totalCount = 2 }
+                $null = Get-PagedResult -InitialResult $Initial -URI $Script:PageURI -Style Offset -ResultProperty items -Method POST -BodyTemplate @{ filters = @{ cloudProviders = @('AZURE') } }
+
+                Should -Invoke -CommandName Invoke-IDRestMethod -ParameterFilter {
+                    ($Body | ConvertFrom-Json).filters.cloudProviders -contains 'AZURE'
+                } -Times 1 -Exactly -Scope It
+            }
+
+            It 'sets the offset inside a nested paging property when one is named' {
+                Mock -CommandName Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{ items = @('two'); paging = [pscustomobject]@{} }
+                }
+
+                $Initial = [pscustomobject]@{ items = @('one'); paging = [pscustomobject]@{ offset = 100 } }
+                $null = Get-PagedResult -InitialResult $Initial -URI $Script:PageURI -Style Offset -ResultProperty items -Method POST -BodyTemplate ([ordered]@{ paging = [ordered]@{ limit = 100 } }) -BodyPagingProperty paging -OffsetResponseKey 'paging.offset'
+
+                Should -Invoke -CommandName Invoke-IDRestMethod -ParameterFilter {
+                    $Parsed = $Body | ConvertFrom-Json
+                    ($Parsed.paging.offset -eq 100) -and ($Parsed.paging.limit -eq 100)
+                } -Times 1 -Exactly -Scope It
+            }
+
+            It 'throws when POST is requested without a body template' {
+                Mock -CommandName Invoke-IDRestMethod -MockWith { }
+
+                $Initial = [pscustomobject]@{ items = @('one'); totalCount = 2 }
+                { Get-PagedResult -InitialResult $Initial -URI $Script:PageURI -Style Offset -ResultProperty items -Method POST } |
+                    Should -Throw '*BodyTemplate is required*'
+            }
+
+            It 'does not send a body when paging a GET' {
+                Mock -CommandName Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{ items = @('two'); totalCount = 2 }
+                }
+
+                $Initial = [pscustomobject]@{ items = @('one'); totalCount = 2 }
+                $null = Get-PagedResult -InitialResult $Initial -URI $Script:PageURI -Style Offset -ResultProperty items
+
+                Should -Invoke -CommandName Invoke-IDRestMethod -ParameterFilter {
+                    ($Method -eq 'GET') -and ($null -eq $Body)
                 } -Times 1 -Exactly -Scope It
             }
 

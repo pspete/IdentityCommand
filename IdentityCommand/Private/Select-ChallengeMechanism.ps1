@@ -1,5 +1,3 @@
-using namespace System.Management.Automation.Host
-
 function Select-ChallengeMechanism {
     <#
     .SYNOPSIS
@@ -43,7 +41,7 @@ function Select-ChallengeMechanism {
 
             foreach ($Mechanism in $Mechanisms) {
 
-                [ChoiceDescription[]]$options += [ChoiceDescription]::new("&$($Mechanism.PromptSelectMech)", $($Mechanism.PromptMechChosen))
+                [System.Management.Automation.Host.ChoiceDescription[]]$options += [System.Management.Automation.Host.ChoiceDescription]::new("&$($Mechanism.PromptSelectMech)", $($Mechanism.PromptMechChosen))
 
             }
 

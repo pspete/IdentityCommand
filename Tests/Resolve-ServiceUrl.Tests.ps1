@@ -1,4 +1,4 @@
-Describe $($PSCommandPath -Replace '.Tests.ps1') {
+﻿Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
     BeforeAll {
         #Get Current Directory
@@ -27,6 +27,12 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             [pscustomobject]@{
                 sca                  = [pscustomobject]@{ api = 'https://sometenant.sca.cyberark.cloud/api' }
                 jit                  = [pscustomobject]@{ api = 'https://sometenant.dpa.cyberark.cloud/api' }
+                uap                  = [pscustomobject]@{ api = 'https://sometenant.uap.cyberark.cloud/api' }
+                userportal           = [pscustomobject]@{ api = 'https://sometenant.api.userportal.cyberark.cloud/api' }
+                compass              = [pscustomobject]@{ api = 'https://sometenant.compass.cyberark.cloud' }
+                cds                  = [pscustomobject]@{ api = 'https://eu-west-2.cds.cyberark.cloud/' }
+                cem                  = [pscustomobject]@{ api = 'https://eu-west-2.api.cps.cyberark.com/' }
+                alerong              = [pscustomobject]@{ api = 'https://api.alero.io/internal/ra/v1/11ed307a252bbd10987ef76ae4e0982d' }
                 identity_user_portal = [pscustomobject]@{ api = 'https://sometenant.id.cyberark.cloud/' }
             }
         }
@@ -78,6 +84,14 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'returns the url of the requested service' -ForEach @(
                 @{ Service = 'sca'; Expected = 'https://sometenant.sca.cyberark.cloud' }
                 @{ Service = 'jit'; Expected = 'https://sometenant.dpa.cyberark.cloud' }
+                @{ Service = 'uap'; Expected = 'https://sometenant.uap.cyberark.cloud' }
+                @{ Service = 'userportal'; Expected = 'https://sometenant.api.userportal.cyberark.cloud' }
+                #compass publishes no /api suffix, so the strip is a no-op
+                @{ Service = 'compass'; Expected = 'https://sometenant.compass.cyberark.cloud' }
+                #cds and cem are regional rather than tenant-scoped, and publish a bare host with a
+                #trailing slash - which is stripped so callers can append /<path> unconditionally
+                @{ Service = 'cds'; Expected = 'https://eu-west-2.cds.cyberark.cloud' }
+                @{ Service = 'cem'; Expected = 'https://eu-west-2.api.cps.cyberark.com' }
             ) {
                 (Resolve-ServiceUrl -Service $Service -Subdomain 'sometenant').ServiceUrl |
                     Should -Be $Expected
@@ -91,8 +105,58 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                     Should -Be 'https://sometenant.id.cyberark.cloud'
             }
 
-            It 'returns a null service url for a service absent from the discovery response' {
-                (Resolve-ServiceUrl -Service pcloud -Subdomain 'sometenant').ServiceUrl |
+            It 'throws for a service absent from the discovery response' {
+                { Resolve-ServiceUrl -Service pcloud -Subdomain 'sometenant' } |
+                    Should -Throw "*URL for the 'pcloud' service not found*sometenant*"
+            }
+
+            It 'throws for a service present in the response but carrying an empty api value' {
+                Mock -CommandName Find-SharedServicesURL -MockWith {
+                    [pscustomobject]@{
+                        cds                  = [pscustomobject]@{ api = '' }
+                        identity_user_portal = [pscustomobject]@{ api = 'https://sometenant.id.cyberark.cloud/' }
+                    }
+                }
+                { Resolve-ServiceUrl -Service cds -Subdomain 'sometenant' } |
+                    Should -Throw "*URL for the 'cds' service not found*"
+            }
+
+        }
+
+        Context 'BaseUrlOnly' {
+
+            It 'returns only the scheme and host of a service url which publishes a path' {
+                (Resolve-ServiceUrl -Service alerong -Subdomain 'sometenant' -BaseUrlOnly).ServiceUrl |
+                    Should -Be 'https://api.alero.io'
+            }
+
+            It 'reports the discarded path as ServicePath' {
+                (Resolve-ServiceUrl -Service alerong -Subdomain 'sometenant' -BaseUrlOnly).ServicePath |
+                    Should -Be '/internal/ra/v1/11ed307a252bbd10987ef76ae4e0982d'
+            }
+
+            It 'recovers the host when discovery omits the slash between host and path' {
+                Mock -CommandName Find-SharedServicesURL -MockWith {
+                    [pscustomobject]@{
+                        alerong              = [pscustomobject]@{ api = 'https://api.alero.iointernal/ra/v1/11ed307a252bbd10987ef76ae4e0982d' }
+                        identity_user_portal = [pscustomobject]@{ api = 'https://sometenant.id.cyberark.cloud/' }
+                    }
+                }
+                $result = Resolve-ServiceUrl -Service alerong -Subdomain 'sometenant' -BaseUrlOnly
+                $result.ServiceUrl | Should -Be 'https://api.alero.io'
+                $result.ServicePath | Should -Be '/internal/ra/v1/11ed307a252bbd10987ef76ae4e0982d'
+            }
+
+            It 'leaves a well formed host untouched' -ForEach @(
+                @{ Service = 'sca'; Expected = 'https://sometenant.sca.cyberark.cloud' }
+                @{ Service = 'cem'; Expected = 'https://eu-west-2.api.cps.cyberark.com' }
+            ) {
+                (Resolve-ServiceUrl -Service $Service -Subdomain 'sometenant' -BaseUrlOnly).ServiceUrl |
+                    Should -Be $Expected
+            }
+
+            It 'reports an empty ServicePath when not specified' {
+                (Resolve-ServiceUrl -Service sca -Subdomain 'sometenant').ServicePath |
                     Should -BeNullOrEmpty
             }
 
