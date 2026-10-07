@@ -458,7 +458,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds | Should -BeNullOrEmpty
                 Assert-MockCalled -CommandName Write-Host -Times 1 -Exactly -Scope It -ParameterFilter {
-                    $Message -eq 'Some Message'
+                    $Object -eq 'Some Message'
                 }
 
             }
