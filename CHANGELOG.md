@@ -42,6 +42,9 @@ All notable changes to this project will be documented in this file.
 - `Get-PagedResult` Cursor style stops when the server returns the same continuation token it was
   sent, instead of requesting that page indefinitely. Reachable against an endpoint which reports a
   token unconditionally, or one which ignores the token parameter altogether.
+- `Select-ChallengeMechanism` uses the full `System.Management.Automation.Host.ChoiceDescription`
+  type name instead of a `using namespace` statement, so it works when the module is combined into
+  a single file and when companion modules copy the private helpers.
 
 ## [0.6] - 2026-09-07
 
