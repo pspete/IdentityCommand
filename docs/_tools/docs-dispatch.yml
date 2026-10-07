@@ -7,7 +7,7 @@ name: Docs dispatch
 
 on:
   push:
-    branches: [main, docs-site]
+    branches: [main]
     paths:
       - docs/**
   workflow_dispatch:
