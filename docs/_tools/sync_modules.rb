@@ -4,6 +4,7 @@
 # `repository` in _config.yml. For a module keyed SCA with commands collection SCA:
 #
 #   <sibling>/docs/collections/_commands/*  ->  docs/collections/_SCA/
+#   <sibling>/docs/collections/_posts/*     ->  docs/collections/_posts/SCA/
 #   <sibling>/docs/* (everything else)      ->  docs/SCA/
 #
 # Copied folders are replaced on every run and git-ignored.
@@ -66,13 +67,18 @@ def copy_docs(name, collection, docs)
   replace_dir(commands_dest)
   FileUtils.cp(Dir.glob(File.join(docs, "collections", "_commands", "*.md")), commands_dest)
 
+  posts_dest = File.join(SITE_ROOT, "collections", "_posts", name)
+  replace_dir(posts_dest)
+  FileUtils.cp(Dir.glob(File.join(docs, "collections", "_posts", "*.md")), posts_dest)
+
   # A UTF-8 BOM hides front matter from Jekyll
-  Dir.glob(File.join("{#{pages_dest},#{commands_dest}}", "**", "*.md")).each do |md|
+  Dir.glob(File.join("{#{pages_dest},#{commands_dest},#{posts_dest}}", "**", "*.md")).each do |md|
     text = File.binread(md)
     File.binwrite(md, text.byteslice(3..)) if text.start_with?("\xEF\xBB\xBF".b)
   end
 
-  puts "#{name}: #{Dir.glob(File.join(commands_dest, '*.md')).size} commands from #{docs}"
+  puts "#{name}: #{Dir.glob(File.join(commands_dest, '*.md')).size} commands, " \
+       "#{Dir.glob(File.join(posts_dest, '*.md')).size} release notes from #{docs}"
 end
 
 # Longest noun prefix shared by every command that ends on a word boundary, e.g. SCA
@@ -108,7 +114,8 @@ end
 
 if File.exist?(PREVIEW_CONFIG)
   YAML.safe_load_file(PREVIEW_CONFIG).fetch("preview_modules", {}).each_key do |name|
-    FileUtils.rm_rf([File.join(SITE_ROOT, name), File.join(SITE_ROOT, "collections", "_#{name}")])
+    FileUtils.rm_rf([File.join(SITE_ROOT, name), File.join(SITE_ROOT, "collections", "_#{name}"),
+                     File.join(SITE_ROOT, "collections", "_posts", name)])
   end
   FileUtils.rm_f(PREVIEW_CONFIG)
 end

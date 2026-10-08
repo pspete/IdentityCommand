@@ -69,3 +69,13 @@ $link: #c62f1a;
 .module-description {
     color: var(--bulma-text-weak);
 }
+
+.release-list {
+    list-style: none;
+    margin-left: 0;
+}
+
+.release-list .module-description {
+    display: block;
+    font-size: 0.85rem;
+}
