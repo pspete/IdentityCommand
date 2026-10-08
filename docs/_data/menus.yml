@@ -76,3 +76,183 @@ SIA:
           link: /SIA/getting-started/
         - name: Commands
           link: /SIA/commands/
+
+AccessRequest:
+  label: IdentityCommand.AccessRequest
+  repo: pspete/IdentityCommand.AccessRequest
+  commands: AccessRequest
+  prefix: AR
+  pinned:
+    - Connect-ARTenant
+  description: >-
+    Access Requests: raise, approve and reject requests for access.
+  image: /AccessRequest/media/images/IdentityCommand.AccessRequest.png
+  menu:
+    - label: IdentityCommand.AccessRequest
+      items:
+        - name: Overview
+          link: /AccessRequest/
+        - name: Getting Started
+          link: /AccessRequest/getting-started/
+        - name: Commands
+          link: /AccessRequest/commands/
+
+CEM:
+  label: IdentityCommand.CEM
+  repo: pspete/IdentityCommand.CEM
+  commands: CEM
+  prefix: CEM
+  pinned:
+    - Connect-CEMTenant
+  description: >-
+    Cloud Visibility: delegate cloud workspaces through the Workspace Delegation API.
+  image: /CEM/media/images/IdentityCommand.CEM.png
+  menu:
+    - label: IdentityCommand.CEM
+      items:
+        - name: Overview
+          link: /CEM/
+        - name: Getting Started
+          link: /CEM/getting-started/
+        - name: Commands
+          link: /CEM/commands/
+
+RemoteAccess:
+  label: IdentityCommand.RemoteAccess
+  repo: pspete/IdentityCommand.RemoteAccess
+  commands: RemoteAccess
+  prefix: RA
+  pinned:
+    - Connect-RATenant
+  description: >-
+    Remote Access: vendors, users, Vendor Manager teams, groups, self-service requests, invitations, sites, applications and activities.
+  image: /RemoteAccess/media/images/IdentityCommand.RemoteAccess.png
+  menu:
+    - label: IdentityCommand.RemoteAccess
+      items:
+        - name: Overview
+          link: /RemoteAccess/
+        - name: Getting Started
+          link: /RemoteAccess/getting-started/
+        - name: Commands
+          link: /RemoteAccess/commands/
+
+RiskMgmt:
+  label: IdentityCommand.RiskMgmt
+  repo: pspete/IdentityCommand.RiskMgmt
+  commands: RiskMgmt
+  prefix: RM
+  pinned:
+    - Connect-RMTenant
+  description: >-
+    Risk Management: risks, findings, recommendations, remediations and risk posture.
+  image: /RiskMgmt/media/images/IdentityCommand.RiskMgmt.png
+  menu:
+    - label: IdentityCommand.RiskMgmt
+      items:
+        - name: Overview
+          link: /RiskMgmt/
+        - name: Getting Started
+          link: /RiskMgmt/getting-started/
+        - name: Commands
+          link: /RiskMgmt/commands/
+
+SecretsHub:
+  label: IdentityCommand.SecretsHub
+  repo: pspete/IdentityCommand.SecretsHub
+  commands: SecretsHub
+  prefix: SH
+  pinned:
+    - Connect-SHTenant
+  description: >-
+    Secrets Hub: secret stores, secrets, sync policies, scans, configuration and transformations.
+  image: /SecretsHub/media/images/IdentityCommand.SecretsHub.png
+  menu:
+    - label: IdentityCommand.SecretsHub
+      items:
+        - name: Overview
+          link: /SecretsHub/
+        - name: Getting Started
+          link: /SecretsHub/getting-started/
+        - name: Commands
+          link: /SecretsHub/commands/
+
+SecretsManager:
+  label: IdentityCommand.SecretsManager
+  repo: pspete/IdentityCommand.SecretsManager
+  commands: SecretsManager
+  prefix: SM
+  pinned:
+    - Connect-SMTenant
+  description: >-
+    Secrets Manager and Secure Workload Access: groups, workloads, issuers, authenticators, secrets, trust domains and signing keys.
+  image: /SecretsManager/media/images/IdentityCommand.SecretsManager.png
+  menu:
+    - label: IdentityCommand.SecretsManager
+      items:
+        - name: Overview
+          link: /SecretsManager/
+        - name: Getting Started
+          link: /SecretsManager/getting-started/
+        - name: Commands
+          link: /SecretsManager/commands/
+
+SecureAI:
+  label: IdentityCommand.SecureAI
+  repo: pspete/IdentityCommand.SecureAI
+  commands: SecureAI
+  prefix: SAI
+  pinned:
+    - Connect-SAITenant
+  description: >-
+    Secure AI: AI agents, MCP servers and their access policies.
+  image: /SecureAI/media/images/IdentityCommand.SecureAI.png
+  menu:
+    - label: IdentityCommand.SecureAI
+      items:
+        - name: Overview
+          link: /SecureAI/
+        - name: Getting Started
+          link: /SecureAI/getting-started/
+        - name: Commands
+          link: /SecureAI/commands/
+
+UAP:
+  label: IdentityCommand.UAP
+  repo: pspete/IdentityCommand.UAP
+  commands: UAP
+  prefix: UAP
+  pinned:
+    - Connect-UAPTenant
+  description: >-
+    Access Control Policies: build, change, validate and remove access policies.
+  image: /UAP/media/images/IdentityCommand.UAP.png
+  menu:
+    - label: IdentityCommand.UAP
+      items:
+        - name: Overview
+          link: /UAP/
+        - name: Getting Started
+          link: /UAP/getting-started/
+        - name: Commands
+          link: /UAP/commands/
+
+UserPortal:
+  label: IdentityCommand.UserPortal
+  repo: pspete/IdentityCommand.UserPortal
+  commands: UserPortal
+  prefix: UP
+  pinned:
+    - Connect-UPTenant
+  description: >-
+    Access: the user portal view of assets and their secrets.
+  image: /UserPortal/media/images/IdentityCommand.UserPortal.png
+  menu:
+    - label: IdentityCommand.UserPortal
+      items:
+        - name: Overview
+          link: /UserPortal/
+        - name: Getting Started
+          link: /UserPortal/getting-started/
+        - name: Commands
+          link: /UserPortal/commands/

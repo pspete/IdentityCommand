@@ -45,6 +45,33 @@ collections:
   SIA:
     output: true
     permalink: /SIA/commands/:title/
+  AccessRequest:
+    output: true
+    permalink: /AccessRequest/commands/:title/
+  CEM:
+    output: true
+    permalink: /CEM/commands/:title/
+  RemoteAccess:
+    output: true
+    permalink: /RemoteAccess/commands/:title/
+  RiskMgmt:
+    output: true
+    permalink: /RiskMgmt/commands/:title/
+  SecretsHub:
+    output: true
+    permalink: /SecretsHub/commands/:title/
+  SecretsManager:
+    output: true
+    permalink: /SecretsManager/commands/:title/
+  SecureAI:
+    output: true
+    permalink: /SecureAI/commands/:title/
+  UAP:
+    output: true
+    permalink: /UAP/commands/:title/
+  UserPortal:
+    output: true
+    permalink: /UserPortal/commands/:title/
 
 defaults:
   - scope:
@@ -81,6 +108,105 @@ defaults:
       render_with_liquid: false
       layout: command
       menubar: SIA
+  - scope:
+      path: AccessRequest
+    values:
+      menubar: AccessRequest
+  - scope:
+      path: ""
+      type: AccessRequest
+    values:
+      render_with_liquid: false
+      layout: command
+      menubar: AccessRequest
+  - scope:
+      path: CEM
+    values:
+      menubar: CEM
+  - scope:
+      path: ""
+      type: CEM
+    values:
+      render_with_liquid: false
+      layout: command
+      menubar: CEM
+  - scope:
+      path: RemoteAccess
+    values:
+      menubar: RemoteAccess
+  - scope:
+      path: ""
+      type: RemoteAccess
+    values:
+      render_with_liquid: false
+      layout: command
+      menubar: RemoteAccess
+  - scope:
+      path: RiskMgmt
+    values:
+      menubar: RiskMgmt
+  - scope:
+      path: ""
+      type: RiskMgmt
+    values:
+      render_with_liquid: false
+      layout: command
+      menubar: RiskMgmt
+  - scope:
+      path: SecretsHub
+    values:
+      menubar: SecretsHub
+  - scope:
+      path: ""
+      type: SecretsHub
+    values:
+      render_with_liquid: false
+      layout: command
+      menubar: SecretsHub
+  - scope:
+      path: SecretsManager
+    values:
+      menubar: SecretsManager
+  - scope:
+      path: ""
+      type: SecretsManager
+    values:
+      render_with_liquid: false
+      layout: command
+      menubar: SecretsManager
+  - scope:
+      path: SecureAI
+    values:
+      menubar: SecureAI
+  - scope:
+      path: ""
+      type: SecureAI
+    values:
+      render_with_liquid: false
+      layout: command
+      menubar: SecureAI
+  - scope:
+      path: UAP
+    values:
+      menubar: UAP
+  - scope:
+      path: ""
+      type: UAP
+    values:
+      render_with_liquid: false
+      layout: command
+      menubar: UAP
+  - scope:
+      path: UserPortal
+    values:
+      menubar: UserPortal
+  - scope:
+      path: ""
+      type: UserPortal
+    values:
+      render_with_liquid: false
+      layout: command
+      menubar: UserPortal
 
 exclude:
   - _tools
