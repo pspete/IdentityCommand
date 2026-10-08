@@ -9,6 +9,8 @@ Jekyll site (bulma-clean-theme) for IdentityCommand and its sibling `IdentityCom
 | `/<Module>/commands/` | Sibling command help, copied from the sibling repo's `docs/collections/_commands` |
 | `/releases/` | IdentityCommand release notes in `collections/_posts` |
 | `/<Module>/releases/` | Sibling release notes, copied from the sibling repo's `docs/collections/_posts` into `collections/_posts/<Module>/` |
+| `/<Module>/releases/<version>/` | Redirect to the release note with that `version` (full or major.minor) |
+| `/releases/all/` | Release notes for all modules |
 | `/search/` | Pagefind search, indexed after the Jekyll build |
 
 Sibling content is copied in by `_tools/sync_modules.rb`; copied folders are git-ignored.
