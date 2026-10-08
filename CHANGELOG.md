@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- N/A
+
+## [0.8.0] - 2026-10-08
+
 ### Added
 
 - Faster module load, in roughly a quarter of the previous time: the published module is now a single
