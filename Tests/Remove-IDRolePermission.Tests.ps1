@@ -97,7 +97,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
                     $URI -match 'UnAssignSuperRights' -and
-                    $($Body | ConvertFrom-Json | Select-Object -First 1 -ExpandProperty Role) -eq 'SomeRole'
+                    $(($Body | ConvertFrom-Json) | Select-Object -First 1 -ExpandProperty Role) -eq 'SomeRole'
                 } -Times 1 -Exactly -Scope It
 
             }
@@ -122,7 +122,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
                 Assert-MockCalled Invoke-IDRestMethod -ParameterFilter {
                     $URI -match 'UnAssignSuperRights' -and
-                    $($Body | ConvertFrom-Json | Select-Object -First 1 -ExpandProperty Role) -eq 'SomeOtherRole'
+                    $(($Body | ConvertFrom-Json) | Select-Object -First 1 -ExpandProperty Role) -eq 'SomeOtherRole'
                 } -Times 1 -Exactly -Scope It
 
             }

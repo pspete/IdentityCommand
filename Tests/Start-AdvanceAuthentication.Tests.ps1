@@ -261,7 +261,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 $LogonRequest | Start-AdvanceAuthentication -Mechanism $Mechanism -Answer 'SomeAnswer'
 
                 Assert-MockCalled Remove-Item -Times 1 -Scope It -Exactly -ParameterFilter {
-                    $Path -eq $(Join-Path $([Environment]::GetEnvironmentVariable('Temp')) 'SomeSession.html')
+                    $Path -eq $(Join-Path $([System.IO.Path]::GetTempPath()) 'SomeSession.html')
                 }
 
             }

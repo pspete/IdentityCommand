@@ -36,8 +36,6 @@
 	Hashtable/$PSBoundParameters object, with defined parameters removed.
 	#>
 	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseDeclaredVarsMoreThanAssignments', 'FilteredParameters', Justification = 'False Positive')]
-	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'ParametersToKeep', Justification = 'False Positive')]
-	[System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'ParametersToRemove', Justification = 'False Positive')]
 	[CmdletBinding(DefaultParameterSetName = 'Remove')]
 	[OutputType('System.Collections.Hashtable')]
 	param(

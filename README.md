@@ -6,10 +6,23 @@
 
 IdentityCommand is a PowerShell module that wraps the REST API for a Palo Alto Idira (formerly CyberArk) Identity tenant, giving you easy-to-use commands for authentication (including MFA/SAML/OIDC flows) and administration - users, roles, applications, organizations, authentication policies, SCIM provisioning, and more - all from within PowerShell.
 
-The module has been in development for a few years, initially focused on authentication. Coverage is expanding significantly to reach near-complete coverage of the Identity Administration API, and IdentityCommand is also the foundation for a growing family of other `pspete` modules that administer the wider Idira SaaS platform - e.g. [`IdentityCommand.SIA`][sia-repo], which builds on IdentityCommand's authentication to administer Idira Secure Infrastructure Access, and [`IdentityCommand.SCA`][sca-repo] for Idira Secure Cloud Access administration.
+The module has been in development for a few years, initially focused on authentication. Coverage is expanding significantly to reach near-complete coverage of the Identity Administration API, and IdentityCommand is also the foundation for a growing family of other `pspete` modules that administer the wider Idira SaaS platform. Each builds on IdentityCommand's authentication and shared plumbing:
 
-[sia-repo]: https://github.com/pspete/IdentityCommand.SIA
-[sca-repo]: https://github.com/pspete/IdentityCommand.SCA
+| Module | Administers |
+| --- | --- |
+| [`IdentityCommand.AccessRequest`](https://github.com/pspete/IdentityCommand.AccessRequest) | Access Requests |
+| [`IdentityCommand.CEM`](https://github.com/pspete/IdentityCommand.CEM) | Cloud Visibility workspace delegation |
+| [`IdentityCommand.RemoteAccess`](https://github.com/pspete/IdentityCommand.RemoteAccess) | Remote Access |
+| [`IdentityCommand.RiskMgmt`](https://github.com/pspete/IdentityCommand.RiskMgmt) | Risk Management |
+| [`IdentityCommand.SCA`](https://github.com/pspete/IdentityCommand.SCA) | Secure Cloud Access |
+| [`IdentityCommand.SecretsHub`](https://github.com/pspete/IdentityCommand.SecretsHub) | Secrets Hub |
+| [`IdentityCommand.SecretsManager`](https://github.com/pspete/IdentityCommand.SecretsManager) | Secrets Manager, SaaS and Secure Workload Access |
+| [`IdentityCommand.SecureAI`](https://github.com/pspete/IdentityCommand.SecureAI) | Secure AI |
+| [`IdentityCommand.SIA`](https://github.com/pspete/IdentityCommand.SIA) | Secure Infrastructure Access |
+| [`IdentityCommand.UAP`](https://github.com/pspete/IdentityCommand.UAP) | Access Control Policies |
+| [`IdentityCommand.UserPortal`](https://github.com/pspete/IdentityCommand.UserPortal) | The user portal (Access API) |
+
+Documentation, command reference and release notes: [www.pspete.dev/IdentityCommand](https://www.pspete.dev/IdentityCommand/).
 
 - **Prior to a Version 1.0.0 release**:
   - Expect changes, although we will do our best to keep these to a minimum
@@ -17,16 +30,14 @@ The module has been in development for a few years, initially focused on authent
   - Many commands are built from documented API shapes but not yet exercised against a live tenant - see [Help Us Test](#help-us-test) below, your feedback genuinely shapes what ships next.
   - Most of the Identity Administration API is now covered, but real-world usage is still expected to shape further changes to command names, parameters/parameter names, and how commands are grouped - some may split into companion commands, others may combine. These patterns only emerge once commands are actually used, so don't consider anything final yet.
 
-| Main Branch              | Latest Build             | CodeFactor                 | Coverage                     | PowerShell Gallery        | License                      |
-| ------------------------ | ------------------------ | -------------------------- | ---------------------------- | ------------------------- | ---------------------------- |
-| [![appveyor][]][av-site] | [![tests][]][tests-site] | [![codefactor][]][cf-site] | [![codecov][]][codecov-link] | [![psgallery][]][ps-site] | [![license][]][license-link] |
+| Main Branch              | CodeFactor                 | Coverage                     | PowerShell Gallery        | License                      |
+| ------------------------ | -------------------------- | ---------------------------- | ------------------------- | ---------------------------- |
+| [![build][]][build-site] | [![codefactor][]][cf-site] | [![codecov][]][codecov-link] | [![psgallery][]][ps-site] | [![license][]][license-link] |
 
-[appveyor]: https://ci.appveyor.com/api/projects/status/github/pspete/IdentityCommand?branch=main&svg=true
-[av-site]: https://ci.appveyor.com/project/pspete/IdentityCommand/branch/main
+[build]: https://github.com/pspete/IdentityCommand/actions/workflows/ci.yml/badge.svg?branch=main&event=push
+[build-site]: https://github.com/pspete/IdentityCommand/actions/workflows/ci.yml?query=branch%3Amain
 [psgallery]: https://img.shields.io/powershellgallery/v/IdentityCommand.svg
 [ps-site]: https://www.powershellgallery.com/packages/IdentityCommand
-[tests]: https://img.shields.io/appveyor/tests/pspete/IdentityCommand.svg
-[tests-site]: https://ci.appveyor.com/project/pspete/IdentityCommand
 [downloads]: https://img.shields.io/powershellgallery/dt/IdentityCommand.svg?color=blue
 [cf-site]: https://www.codefactor.io/repository/github/pspete/IdentityCommand
 [codefactor]: https://www.codefactor.io/repository/github/pspete/IdentityCommand/badge
@@ -153,7 +164,7 @@ Get-Command -Module IdentityCommand | Group-Object { $_.Name.Split('-')[1] -repl
 Get-Help Get-IDUser -Full
 ```
 
-Every command also has a corresponding reference page under [`docs/collections/_commands`](docs/collections/_commands), which is the same content `Get-Help` displays.
+Every command also has a reference page on the [documentation site](https://www.pspete.dev/IdentityCommand/) (source: [`docs/collections/_commands`](docs/collections/_commands)), with the same content `Get-Help` displays.
 
 | Area                         | Covers                                                                                                                            |
 | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |

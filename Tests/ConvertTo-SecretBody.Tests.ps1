@@ -38,7 +38,7 @@
         It 'restores an -EmptyArrayProperty to []' {
             $body = [ordered]@{ 'domains' = @() } | ConvertTo-SecretBody -EmptyArrayProperty domains
             $json = [System.Text.Encoding]::UTF8.GetString($body)
-            $json | Should -Match '"domains"\s*:\s*\[\]'
+            $json | Should -Match '"domains"\s*:\s*\[\s*\]'
         }
 
         It 'leaves other empty-string values untouched' {
