@@ -179,7 +179,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             It 'outputs expected number of results' {
 
-                $response.length | Should -Be 1
+                @($response).Count | Should -Be 1
 
             }
 
@@ -251,7 +251,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             It 'outputs expected number of results' {
 
-                $response.length | Should -Be 1
+                @($response).Count | Should -Be 1
 
             }
 
@@ -308,7 +308,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             It 'outputs expected number of results' {
 
-                $response.length | Should -Be 1
+                @($response).Count | Should -Be 1
 
             }
 
@@ -365,7 +365,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             It 'outputs expected number of results' {
 
-                $response.length | Should -Be 1
+                @($response).Count | Should -Be 1
 
             }
 

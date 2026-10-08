@@ -273,7 +273,7 @@
             LicenseUri   = 'https://github.com/pspete/IdentityCommand/blob/main/LICENSE.md'
 
             # A URL to the main website for this project.
-            ProjectUri   = 'https://github.com/pspete/IdentityCommand/'
+            ProjectUri   = 'https://www.pspete.dev/IdentityCommand/'
 
             # A URL to an icon representing this module.
             IconUri      = 'https://raw.githubusercontent.com/pspete/IdentityCommand/main/docs/media/images/IdentityCommand-Logo.png'

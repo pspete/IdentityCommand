@@ -93,7 +93,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             It 'parses the CSV into objects' {
 
-                $response.Count | Should -Be 1
+                @($response).Count | Should -Be 1
                 $response[0].name | Should -Be 'exampleApp'
                 $response[0].Status | Should -Be 'Success'
 
@@ -121,7 +121,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             It 'still parses the CSV into objects' {
 
-                $response.Count | Should -Be 1
+                @($response).Count | Should -Be 1
                 $response[0].name | Should -Be 'exampleApp'
 
             }
