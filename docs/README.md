@@ -58,7 +58,7 @@ A sibling repo's `docs/` holds:
 Pages need no layout or menubar front matter; defaults are applied by path.
 Links between pages use `{{ '/<Module>/page/' | relative_url }}`.
 
-Copy [_tools/docs-dispatch.yml](_tools/docs-dispatch.yml) to the sibling's `.github/workflows/` and add secret `DOCS_DISPATCH_TOKEN` (fine-grained PAT, `pspete/IdentityCommand` only, Contents: read and write) so docs changes rebuild the site.
+Copy [_tools/docs-dispatch.yml](_tools/docs-dispatch.yml) to the sibling's `.github/workflows/` and add secret `DOCS_DISPATCH_TOKEN` (fine-grained PAT, `pspete/IdentityCommand` only, Contents: read and write) so docs changes and published releases rebuild the site.
 
 ## Adding a module
 
@@ -74,6 +74,6 @@ Once the module has release notes, `_plugins/releases.rb` generates `/XYZ/releas
 
 ## Workflow
 
-Triggers: push to `main` touching `docs/`, `repository_dispatch` type `docs-updated`, manual run.
+Triggers: push to `main` touching `docs/`, `repository_dispatch` type `docs-updated` (sent by each sibling's `docs-dispatch.yml`), manual run (sent by this repo's `docs-dispatch.yml` when a release is published).
 Sibling branch: manual `branch` input, else repository variable `DOCS_SIBLING_BRANCH`, else `main`.
 Deploys only from `main`.
