@@ -1,0 +1,20 @@
+# Runs docs.yml on main when a release is published. The version commit that
+# adds the release notes carries [skip ci], so it does not start docs.yml itself.
+name: Docs dispatch
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  actions: write
+
+jobs:
+  dispatch:
+    if: ${{ !github.event.release.prerelease }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run docs workflow on main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run docs.yml -R "${{ github.repository }}" --ref main

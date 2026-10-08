@@ -38,7 +38,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             It 'does not throw' {
 
-                { $Object | Out-QRImage -Path 'C:\Temp' } | Should -Not -Throw
+                { $Object | Out-QRImage -Path ([System.IO.Path]::GetTempPath()) } | Should -Not -Throw
 
             }
 

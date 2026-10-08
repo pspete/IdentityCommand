@@ -260,7 +260,7 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
             It 'displays complexity hint' {
                 Get-MechanismAnswer -Mechanism $Mechanism -Credential $Creds
                 Assert-MockCalled -CommandName Write-Host -Times 1 -ParameterFilter {
-                    $Message -eq 'More Cowbell'
+                    $Object -eq 'More Cowbell'
                 } -Scope It -Exactly
             }
             It 'prompts for new password' {

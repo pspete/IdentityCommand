@@ -9,3 +9,30 @@
 - name: SIA
   link: /SIA/
   module: SIA
+- name: AccessRequest
+  link: /AccessRequest/
+  module: AccessRequest
+- name: CEM
+  link: /CEM/
+  module: CEM
+- name: RemoteAccess
+  link: /RemoteAccess/
+  module: RemoteAccess
+- name: RiskMgmt
+  link: /RiskMgmt/
+  module: RiskMgmt
+- name: SecretsHub
+  link: /SecretsHub/
+  module: SecretsHub
+- name: SecretsManager
+  link: /SecretsManager/
+  module: SecretsManager
+- name: SecureAI
+  link: /SecureAI/
+  module: SecureAI
+- name: UAP
+  link: /UAP/
+  module: UAP
+- name: UserPortal
+  link: /UserPortal/
+  module: UserPortal

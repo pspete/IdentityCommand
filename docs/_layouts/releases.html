@@ -1,0 +1,24 @@
+---
+layout: default
+---
+{% if page.all %}
+    {% assign releases = site.posts | where_exp: "post", "site.data.menus[post.menubar]" %}
+{% else %}
+    {% assign releases = site.posts | where: "menubar", page.menubar %}
+{% endif %}
+<div class="content" data-pagefind-body>
+    <span hidden data-pagefind-filter="module">{{ page.menubar }}</span>
+    <h1>{{ page.title }}</h1>
+    {{ content }}
+    {% unless page.all %}
+        <p><a href="{{ '/releases/all/' | relative_url }}">Release notes for all modules</a></p>
+    {% endunless %}
+    <ul class="release-list">
+        {% for post in releases %}
+            <li>
+                <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+                <span class="module-description">{{ post.subtitle }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

@@ -45,4 +45,4 @@ New-ExternalHelp -Path .\docs\collections\_commands\ -OutputPath .\IdentityComma
 [OTBS]: https://github.com/PoshCode/PowerShellPracticeAndStyle/issues/81
 [new-issue]: https://github.com/pspete/IdentityCommand/issues/new
 [dev-branch]: https://github.com/pspete/IdentityCommand/tree/dev
-[command-help]: https://github.com/pspete/IdentityCommand/tree/master/docs/collections/_commands
+[command-help]: https://github.com/pspete/IdentityCommand/tree/main/docs/collections/_commands
