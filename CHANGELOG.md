@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file.
   getting started and authentication guides, release notes, and command reference for IdentityCommand
   and its companion modules. The module manifest `ProjectUri` now points to it.
 
-## Changed
+### Changed
 
 - Build, test and release move from AppVeyor to GitHub Actions, using the shared
   [pspete.Build](https://github.com/pspete/pspete.Build) scripts. The built module is tested on
