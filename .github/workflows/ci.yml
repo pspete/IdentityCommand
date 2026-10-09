@@ -61,6 +61,16 @@ jobs:
     - uses: actions/checkout@v7
     - name: Get Build Scripts
       run: git clone --depth 1 --branch $env:BUILD_REF https://github.com/pspete/pspete.Build build
+    # CurrentUser modules are cached; install.ps1 and help.ps1 skip those found.
+    # The key rolls monthly so newer module versions are picked up.
+    - name: Cache Month
+      id: month
+      run: '"month=$(Get-Date -Format yyyy-MM)" >> $env:GITHUB_OUTPUT'
+    - name: Cache Modules
+      uses: actions/cache@v6
+      with:
+        path: ~/Documents/PowerShell/Modules
+        key: psmodules-test-${{ steps.month.outputs.month }}
     - name: Install Dependencies
       run: ./build/install.ps1
     # Help is generated locally with platyPS 0.14 and committed; PlatyPS 1.x output regresses it.
@@ -139,15 +149,19 @@ jobs:
         - name: PowerShell
           os: windows-latest
           shell: pwsh
+          modules: ~/Documents/PowerShell/Modules
         - name: WindowsPowerShell
           os: windows-latest
           shell: powershell
+          modules: ~/Documents/WindowsPowerShell/Modules
         - name: Linux
           os: ubuntu-latest
           shell: pwsh
+          modules: ~/.local/share/powershell/Modules
         #- name: Mac
         #  os: macos-latest
         #  shell: pwsh
+        #  modules: ~/.local/share/powershell/Modules
     defaults:
       run:
         shell: ${{ matrix.shell }}
@@ -162,18 +176,16 @@ jobs:
       with:
         name: module
         path: ${{ env.MODULE_NAME }}
-    # Windows PowerShell 5.1 has no PSResourceGet; install.ps1 skips its ~60s bootstrap when the module is found.
-    # The key rolls monthly so a newer PSResourceGet is picked up.
+    # CurrentUser modules are cached per leg; install.ps1 skips those found, including the PSResourceGet bootstrap on 5.1.
+    # The key rolls monthly so newer module versions are picked up.
     - name: Cache Month
       id: month
-      if: matrix.shell == 'powershell'
       run: '"month=$(Get-Date -Format yyyy-MM)" >> $env:GITHUB_OUTPUT'
-    - name: Cache PSResourceGet
-      if: matrix.shell == 'powershell'
+    - name: Cache Modules
       uses: actions/cache@v6
       with:
-        path: ~/Documents/WindowsPowerShell/Modules/Microsoft.PowerShell.PSResourceGet
-        key: psresourceget-winps-${{ steps.month.outputs.month }}
+        path: ${{ matrix.modules }}
+        key: psmodules-${{ matrix.name }}-${{ steps.month.outputs.month }}
     - name: Install Dependencies
       run: ./build/install.ps1
     - name: Test Built Module
