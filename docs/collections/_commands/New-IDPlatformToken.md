@@ -12,8 +12,15 @@ Request authentication token using OAuth
 
 ## SYNTAX
 
+### URL
 ```
 New-IDPlatformToken [-tenant_url] <String> [-Credential] <PSCredential> [-WhatIf] [-Confirm]
+ [<CommonParameters>]
+```
+
+### Subdomain
+```
+New-IDPlatformToken -tenant_subdomain <String> [-Credential] <PSCredential> [-WhatIf] [-Confirm]
  [<CommonParameters>]
 ```
 
@@ -29,6 +36,13 @@ PS C:\> New-IDPlatformToken -tenant_url https://sometenant.id.cyberark.cloud -Cr
 
 Initiates OAuth confidential client service user authentication to specified tenant
 
+### Example 2
+```
+PS C:\> New-IDPlatformToken -subdomain sometenant -Credential $Cred
+```
+
+Initiates OAuth confidential client service user authentication to the CyberArk Identity tenant of the `sometenant` shared services subdomain, found through platform discovery.
+
 ## PARAMETERS
 
 ### -tenant_url
@@ -36,7 +50,7 @@ The URL of the CyberArk Identity tenant to authenticate to.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: URL
 Aliases:
 
 Required: True
@@ -89,6 +103,22 @@ Required: False
 Position: Named
 Default value: False
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -tenant_subdomain
+The shared services subdomain of the tenant, the first part of its platform URL: `sometenant` for `https://sometenant.cyberark.cloud`.
+The CyberArk Identity tenant URL is found from it through platform discovery.
+
+```yaml
+Type: String
+Parameter Sets: Subdomain
+Aliases: subdomain
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 

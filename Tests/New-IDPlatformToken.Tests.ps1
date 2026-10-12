@@ -169,6 +169,73 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'Subdomain' {
+
+            BeforeEach {
+                $ISPSSSession = [ordered]@{
+                    tenant_url = $null
+                    Subdomain  = $null
+                    User       = $null
+                    WebSession = $null
+                    StartTime  = $null
+                }
+                New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
+                Mock Resolve-ServiceUrl -MockWith {
+                    [pscustomobject]@{
+                        ServiceUrl  = 'https://abc1234.id.cyberark.cloud'
+                        IdentityUrl = 'https://abc1234.id.cyberark.cloud'
+                        ServicePath = ''
+                    }
+                }
+                Mock Invoke-IDRestMethod -MockWith {
+                    $ISPSSSession.WebSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+                    [pscustomobject]@{
+                        token_type   = 'Bearer'
+                        access_token = 'SomeAccessToken'
+                    }
+                }
+
+                $Cred = New-Object System.Management.Automation.PSCredential ('SomeUser', $(ConvertTo-SecureString 'SomePassword' -AsPlainText -Force))
+            }
+
+            It 'finds the Identity URL of the subdomain from platform discovery' {
+                New-IDPlatformToken -tenant_subdomain sometenant -Credential $Cred
+                Assert-MockCalled -CommandName Resolve-ServiceUrl -Times 1 -Exactly -Scope It -ParameterFilter {
+                    $Service -eq 'identity_user_portal' -and $Subdomain -eq 'sometenant'
+                }
+            }
+
+            It 'sends request to the discovered Identity URL' {
+                New-IDPlatformToken -subdomain sometenant -Credential $Cred
+                Assert-MockCalled -CommandName Invoke-IDRestMethod -Times 1 -Exactly -Scope It -ParameterFilter {
+                    $URI -eq 'https://abc1234.id.cyberark.cloud/OAuth2/PlatformToken'
+                }
+            }
+
+            It 'sets Subdomain from the parameter when the token has no subdomain claim' {
+                New-IDPlatformToken -tenant_subdomain sometenant -Credential $Cred
+                $Script:ISPSSSession.Subdomain | Should -Be 'sometenant'
+            }
+
+            It 'sets Subdomain from the token subdomain claim when present' {
+                Mock Invoke-IDRestMethod -MockWith {
+                    $ISPSSSession.WebSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+                    [pscustomobject]@{
+                        token_type   = 'Bearer'
+                        access_token = 'eyJhbGciOiJub25lIn0.eyJzdWJkb21haW4iOiJzb21ldGVuYW50In0.c2ln'
+                    }
+                }
+                New-IDPlatformToken -tenant_subdomain SomeTenant -Credential $Cred
+                $Script:ISPSSSession.Subdomain | Should -BeExactly 'sometenant'
+            }
+
+            It 'does not use platform discovery when tenant_url is provided' {
+                New-IDPlatformToken -tenant_url https://sometenant.id.cyberark.cloud -Credential $Cred
+                Assert-MockCalled -CommandName Resolve-ServiceUrl -Times 0 -Exactly -Scope It
+            }
+
+        }
+
     }
 
 }

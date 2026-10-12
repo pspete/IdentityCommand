@@ -5,10 +5,21 @@ Function New-IDPlatformToken {
         #tenant_url
         [parameter(
             Mandatory = $true,
-            ValueFromPipelinebyPropertyName = $true
+            ValueFromPipelinebyPropertyName = $true,
+            ParameterSetName = 'URL'
         )]
         [ValidateNotNullOrEmpty()]
         [String]$tenant_url,
+
+        #tenant_subdomain
+        [parameter(
+            Mandatory = $true,
+            ValueFromPipelinebyPropertyName = $true,
+            ParameterSetName = 'Subdomain'
+        )]
+        [ValidateNotNullOrEmpty()]
+        [Alias('subdomain')]
+        [String]$tenant_subdomain,
 
         #User Creds
         [Parameter(
@@ -32,6 +43,11 @@ Function New-IDPlatformToken {
     }
 
     Process {
+
+        if ($PSBoundParameters.ContainsKey('tenant_subdomain')) {
+            #Find the Identity URL of the tenant subdomain from platform discovery
+            $tenant_url = (Resolve-ServiceUrl -Service identity_user_portal -Subdomain $tenant_subdomain).IdentityUrl
+        }
 
         #Ensure URL is in expected format
         #Remove trailing space if provided in Url
@@ -84,6 +100,7 @@ Function New-IDPlatformToken {
 
                 #Record the shared services subdomain, used by companion modules to discover service URLs
                 $ISPSSSession.Subdomain = try { (ConvertFrom-JwtPayload -Token $result.access_token).subdomain } catch { $null }
+                if (-not $ISPSSSession.Subdomain) { $ISPSSSession.Subdomain = $tenant_subdomain }
 
                 #Return the result
                 $result

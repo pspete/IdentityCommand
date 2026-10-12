@@ -104,6 +104,64 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'Subdomain' {
+
+            BeforeEach {
+                Mock Resolve-ServiceUrl -MockWith {
+                    [pscustomobject]@{
+                        ServiceUrl  = 'https://abc1234.id.cyberark.cloud'
+                        IdentityUrl = 'https://abc1234.id.cyberark.cloud'
+                        ServicePath = ''
+                    }
+                }
+                Mock Start-AdvanceAuthentication -MockWith {
+                    $ISPSSSession.WebSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+                    [pscustomobject]@{
+                        Summary = 'LoginSuccess'
+                    }
+                }
+            }
+
+            It 'finds the Identity URL of the subdomain from platform discovery' {
+                New-IDSession -tenant_subdomain sometenant -Credential $Creds
+                Assert-MockCalled -CommandName Resolve-ServiceUrl -Times 1 -Exactly -Scope It -ParameterFilter {
+                    $Service -eq 'identity_user_portal' -and $Subdomain -eq 'sometenant'
+                }
+            }
+
+            It 'sets tenant_url to the discovered Identity URL' {
+                New-IDSession -subdomain sometenant -Credential $Creds
+                $Script:ISPSSSession.tenant_url | Should -Be 'https://abc1234.id.cyberark.cloud'
+            }
+
+            It 'sets Subdomain from the parameter when the token has no subdomain claim' {
+                New-IDSession -tenant_subdomain sometenant -Credential $Creds
+                $Script:ISPSSSession.Subdomain | Should -Be 'sometenant'
+            }
+
+            It 'does not use platform discovery when tenant_url is provided' {
+                New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds
+                Assert-MockCalled -CommandName Resolve-ServiceUrl -Times 0 -Exactly -Scope It
+            }
+
+            It 'sends the SAML assertion to the discovered Identity URL' {
+                Mock Start-SamlAuthentication -MockWith {}
+                Mock Complete-SamlAuthentication -MockWith {}
+                New-IDSession -tenant_subdomain sometenant -SAMLResponse 'SomeAssertion'
+                Assert-MockCalled -CommandName Start-SamlAuthentication -Times 1 -Exactly -Scope It
+                $Script:ISPSSSession.tenant_url | Should -Be 'https://abc1234.id.cyberark.cloud'
+            }
+
+            It 'leaves no session when discovery fails' {
+                Mock Resolve-ServiceUrl -MockWith { throw 'SomeError' }
+                $Script:ISPSSSession.User = 'PreviousUser'
+                { New-IDSession -tenant_subdomain sometenant -Credential $Creds } | Should -Throw
+                $Script:ISPSSSession.User | Should -BeNullOrEmpty
+                Assert-MockCalled -CommandName Start-Authentication -Times 0 -Exactly -Scope It
+            }
+
+        }
+
         Context 'Start-Authentication' {
 
             It 'sends Start-Authentication request with expected credential' {

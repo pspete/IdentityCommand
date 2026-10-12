@@ -61,6 +61,12 @@ PS C:\> $Credential = Get-Credential
 PS C:\> New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -Credential $Credential
 ```
 
+Instead of the Identity URL, give the tenant's shared services subdomain - `sometenant` for `https://sometenant.cyberark.cloud` - and the Identity URL is found through platform discovery:
+
+```powershell
+PS C:\> New-IDSession -subdomain sometenant -Credential $Credential
+```
+
 This allows initial authentication to progress as well as selection and answer of any required MFA challenges.
 
 Once successfully authenticated, all _IdentityCommand_ module commands which require an authenticated session can be used from within the same PowerShell session.
@@ -73,6 +79,8 @@ Service User credentials can be used to request an authentication token for the 
 PS C:\> $Credential = Get-Credential
 PS C:\> New-IDPlatformToken -tenant_url https://sometenant.id.cyberark.cloud -Credential $Credential
 ```
+
+`New-IDPlatformToken` also accepts `-subdomain` in place of `-tenant_url`.
 
 This allows initial authentication using a separate dedicated Service user for API activities.
 

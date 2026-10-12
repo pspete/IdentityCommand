@@ -12,18 +12,30 @@ Authenticates a user to a CyberArk Identity tenant.
 
 ## SYNTAX
 
-### Credential
+### URLCredential
 ```
 New-IDSession [-tenant_url] <String> [-Credential] <PSCredential> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
-### SAML
+### URLSAML
 ```
 New-IDSession [-tenant_url] <String> -SAMLResponse <String> [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
+### SubdomainCredential
+```
+New-IDSession -tenant_subdomain <String> [-Credential] <PSCredential> [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### SubdomainSAML
+```
+New-IDSession -tenant_subdomain <String> -SAMLResponse <String> [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
 ## DESCRIPTION
 Use this command to authenticate to CyberArk Identity.
+
+Specify the tenant either by its CyberArk Identity URL, or by its shared services subdomain.
 
 Allows a user to provide authentication details, and satisfy any required MFA challenges.
 
@@ -52,6 +64,13 @@ PS C:\> New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -SAMLResp
 
 Authenticates to CyberArk Identity using SAML assertion from external IDP (obtained using PS-SAML-Interactive)
 
+### Example 3
+```
+PS C:\> New-IDSession -subdomain sometenant -Credential $Cred
+```
+
+Initiates authentication to the CyberArk Identity tenant of the `sometenant` shared services subdomain (`https://sometenant.cyberark.cloud`), found through platform discovery.
+
 ## PARAMETERS
 
 ### -Confirm
@@ -74,7 +93,7 @@ Credential object containing username and password required to authenticate to C
 
 ```yaml
 Type: PSCredential
-Parameter Sets: Credential
+Parameter Sets: URLCredential, SubdomainCredential
 Aliases:
 
 Required: True
@@ -105,7 +124,7 @@ The URL of the CyberArk Identity tenant to authenticate to.
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: URLSAML, URLCredential
 Aliases:
 
 Required: True
@@ -120,8 +139,24 @@ A SAML assertion obtained from an external IDP for the account with which to aut
 
 ```yaml
 Type: String
-Parameter Sets: SAML
+Parameter Sets: URLSAML, SubdomainSAML
 Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -tenant_subdomain
+The shared services subdomain of the tenant, the first part of its platform URL: `sometenant` for `https://sometenant.cyberark.cloud`.
+The CyberArk Identity tenant URL is found from it through platform discovery.
+
+```yaml
+Type: String
+Parameter Sets: SubdomainSAML, SubdomainCredential
+Aliases: subdomain
 
 Required: True
 Position: Named

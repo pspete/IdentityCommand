@@ -12,6 +12,8 @@ All notable changes to this project will be documented in this file.
   first use, finding their service url by platform discovery and using the `IdentityCommand` session, with no
   connection step after `New-IDSession` or `New-IDPlatformToken`.
 - `Get-IDSession` reports the tenant's shared services `Subdomain`, read from the sign-in token.
+- `New-IDSession` and `New-IDPlatformToken` accept the tenant's shared services subdomain (`-subdomain sometenant`)
+  in place of `-tenant_url`, finding the Identity URL by platform discovery.
 
 ### Changed
 
