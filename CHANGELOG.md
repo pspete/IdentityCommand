@@ -2,7 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased (major)
+## Unreleased
+
+- N/A
+
+## [1.0.0] - 2026-10-12
 
 1.0.0: from this release, IdentityCommand follows semantic versioning, so breaking changes come only in a major release.
 
