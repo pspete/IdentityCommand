@@ -8,7 +8,7 @@ function Resolve-ServiceUrl {
     CyberArk platform discovery (via Find-SharedServicesURL) once and returns the URLs a companion
     module's Connect- command needs:
 
-      - ServiceUrl  - the api URL of the requested service, with any trailing /api and trailing
+      - ServiceUrl  - the api (or -Endpoint) URL of the requested service, with any trailing /api and trailing
                       slash removed, so a caller can append its own /<path> unconditionally.
       - IdentityUrl - the 'identity_user_portal' service api URL (the CyberArk Identity tenant URL
                       that New-IDSession / New-IDPlatformToken authenticate against).
@@ -31,6 +31,10 @@ function Resolve-ServiceUrl {
     .PARAMETER Url
     A service URL to derive the shared services subdomain from.
 
+    .PARAMETER Endpoint
+    The property of the service's discovery entry to read the service URL from. Defaults to 'api'.
+    CEM serves its API from the 'bootstrap' URL (https://<subdomain>-cem.cyberark.cloud), not 'api'.
+
     .PARAMETER BaseUrlOnly
     Return only the scheme and host of the service URL, with any path reported separately as
     ServicePath. Needed by services which publish a path along with the host - 'alerong' (Remote
@@ -42,6 +46,9 @@ function Resolve-ServiceUrl {
 
     .EXAMPLE
     Resolve-ServiceUrl -Service jit -Url https://sometenant.dpa.cyberark.cloud
+
+    .EXAMPLE
+    Resolve-ServiceUrl -Service cem -Subdomain sometenant -Endpoint bootstrap
     #>
     [OutputType([pscustomobject])]
     [CmdletBinding(DefaultParameterSetName = 'Subdomain')]
@@ -57,6 +64,10 @@ function Resolve-ServiceUrl {
         [parameter(Mandatory = $true, ParameterSetName = 'URL')]
         [ValidateNotNullOrEmpty()]
         [string]$Url,
+
+        [parameter(Mandatory = $false)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Endpoint = 'api',
 
         [parameter(Mandatory = $false)]
         [switch]$BaseUrlOnly
@@ -84,7 +95,7 @@ function Resolve-ServiceUrl {
         throw "CyberArk Identity URL (identity_user_portal) not found in platform discovery response for '$Reference'"
     }
 
-    $ServiceApi = $Discovery.$Service.api
+    $ServiceApi = $Discovery.$Service.$Endpoint
     $ServicePath = ''
 
     if ($BaseUrlOnly -and (-not [string]::IsNullOrEmpty($ServiceApi))) {

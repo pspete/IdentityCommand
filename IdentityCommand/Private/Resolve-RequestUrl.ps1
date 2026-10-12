@@ -5,7 +5,7 @@ function Resolve-RequestUrl {
 
     .DESCRIPTION
     Used by the IdentityCommand.* companion modules, which copy this function into their own scope,
-    so $ISPSSSession and $Script:ServiceKey here are the companion module's own.
+    so $ISPSSSession and the $Script: variables here are the companion module's own.
 
     Before composing the URL, the companion module session is synchronised with the IdentityCommand
     session returned by Get-IDSession:
@@ -23,6 +23,17 @@ function Resolve-RequestUrl {
 
     A service URL set by the companion module's Connect- command is used as is.
 
+    A companion module can declare these module scope variables to change the behaviour:
+
+      - $ServiceKey: the platform discovery key of the service.
+      - $ServiceEndpoint: the property of the service's discovery entry to read the service URL
+        from, when not 'api' (CEM uses 'bootstrap').
+      - $SessionConnectedHook: a scriptblock run after the module session is copied from the
+        IdentityCommand session or its service URL is resolved, e.g. to exchange the session for a
+        service specific token. If it fails, it runs again on the next request.
+      - $IndependentSession: when $true, the module session is not synchronised with the
+        IdentityCommand session, and is used as is.
+
     .PARAMETER Path
     The path of the operation under the service URL, with or without a leading forward slash.
     Any path parameter values must already be escaped by the caller.
@@ -30,6 +41,10 @@ function Resolve-RequestUrl {
     .PARAMETER Service
     The platform discovery key of the service. Defaults to the $ServiceKey variable declared in the
     companion module scope.
+
+    .PARAMETER Endpoint
+    The property of the service's discovery entry to read the service URL from. Defaults to the
+    $ServiceEndpoint variable declared in the companion module scope, or 'api' if there is none.
 
     .EXAMPLE
     Resolve-RequestUrl -Path 'api/policies'
@@ -50,31 +65,40 @@ function Resolve-RequestUrl {
         [string]$Path,
 
         [parameter(Mandatory = $false)]
-        [string]$Service = $Script:ServiceKey
+        [string]$Service = $Script:ServiceKey,
+
+        [parameter(Mandatory = $false)]
+        [string]$Endpoint = $Script:ServiceEndpoint
     )
 
     process {
 
         $IDSession = Get-IDSession
+        $Connected = $false
 
-        if (($null -eq $IDSession.StartTime) -and ($null -ne $ISPSSSession.StartTime)) {
+        if ($Script:IndependentSession -ne $true) {
 
-            #The IdentityCommand session the module session was copied from has been closed
-            foreach ($key in 'tenant_url', 'TenantId', 'WebSession', 'User', 'StartTime', 'SessionId', 'Subdomain') {
-                $ISPSSSession[$key] = $null
+            if (($null -eq $IDSession.StartTime) -and ($null -ne $ISPSSSession.StartTime)) {
+
+                #The IdentityCommand session the module session was copied from has been closed
+                foreach ($key in 'tenant_url', 'TenantId', 'WebSession', 'User', 'StartTime', 'SessionId', 'Subdomain') {
+                    $ISPSSSession[$key] = $null
+                }
+
             }
 
-        }
+            if (($null -ne $IDSession.StartTime) -and ($IDSession.StartTime -ne $ISPSSSession.StartTime)) {
 
-        if (($null -ne $IDSession.StartTime) -and ($IDSession.StartTime -ne $ISPSSSession.StartTime)) {
+                $ServiceUrl = if ($IDSession.Subdomain -eq $ISPSSSession.Subdomain) { $ISPSSSession.tenant_url }
 
-            $ServiceUrl = if ($IDSession.Subdomain -eq $ISPSSSession.Subdomain) { $ISPSSSession.tenant_url }
+                foreach ($key in $IDSession.keys) {
+                    $ISPSSSession[$key] = $IDSession[$key]
+                }
 
-            foreach ($key in $IDSession.keys) {
-                $ISPSSSession[$key] = $IDSession[$key]
+                $ISPSSSession.tenant_url = $ServiceUrl
+                $Connected = $true
+
             }
-
-            $ISPSSSession.tenant_url = $ServiceUrl
 
         }
 
@@ -92,7 +116,23 @@ function Resolve-RequestUrl {
                 throw "Unable to resolve the '$Service' service URL: the IdentityCommand session token does not include the shared services subdomain"
             }
 
-            $ISPSSSession.tenant_url = (Resolve-ServiceUrl -Service $Service -Subdomain $ISPSSSession.Subdomain).ServiceUrl
+            if ([string]::IsNullOrEmpty($Endpoint)) { $Endpoint = 'api' }
+
+            $ISPSSSession.tenant_url = (Resolve-ServiceUrl -Service $Service -Subdomain $ISPSSSession.Subdomain -Endpoint $Endpoint).ServiceUrl
+
+            $Connected = $true
+
+        }
+
+        if ($Connected -and ($Script:IndependentSession -ne $true) -and ($null -ne $Script:SessionConnectedHook)) {
+
+            try {
+                & $Script:SessionConnectedHook
+            } catch {
+                #Run the hook again on the next request
+                $ISPSSSession.StartTime = $null
+                throw
+            }
 
         }
 

@@ -174,6 +174,97 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
         }
 
+        Context 'Module hooks' {
+
+            BeforeEach {
+                New-Variable -Name HookCount -Value 0 -Scope Script -Force
+            }
+
+            AfterEach {
+                Remove-Variable -Name ServiceEndpoint, SessionConnectedHook, IndependentSession, HookCount -Scope Script -ErrorAction SilentlyContinue
+            }
+
+            It 'resolves the api endpoint when the module declares none' {
+                $null = Resolve-RequestUrl -Path 'api'
+                Should -Invoke Resolve-ServiceUrl -ParameterFilter { $Endpoint -eq 'api' } -Times 1 -Exactly -Scope It
+            }
+
+            It 'resolves the endpoint declared by the module' {
+                New-Variable -Name ServiceEndpoint -Value 'bootstrap' -Scope Script -Force
+                $null = Resolve-RequestUrl -Path 'api'
+                Should -Invoke Resolve-ServiceUrl -ParameterFilter { $Endpoint -eq 'bootstrap' } -Times 1 -Exactly -Scope It
+            }
+
+            It 'runs the connected hook when the module connects' {
+                New-Variable -Name SessionConnectedHook -Value { $Script:HookCount++ } -Scope Script -Force
+                $null = Resolve-RequestUrl -Path 'api'
+                $Script:HookCount | Should -Be 1
+            }
+
+            It 'runs the connected hook after the service URL is resolved' {
+                New-Variable -Name SessionConnectedHook -Value { $Script:HookUrl = $ISPSSSession.tenant_url } -Scope Script -Force
+                $null = Resolve-RequestUrl -Path 'api'
+                $Script:HookUrl | Should -Be 'https://sometenant.sca.cyberark.cloud'
+            }
+
+            It 'does not run the connected hook for later requests' {
+                New-Variable -Name SessionConnectedHook -Value { $Script:HookCount++ } -Scope Script -Force
+                $null = Resolve-RequestUrl -Path 'api'
+                $null = Resolve-RequestUrl -Path 'api'
+                $Script:HookCount | Should -Be 1
+            }
+
+            It 'runs the connected hook again when the IdentityCommand session changes' {
+                New-Variable -Name SessionConnectedHook -Value { $Script:HookCount++ } -Scope Script -Force
+                $Script:ISPSSSession.tenant_url = 'https://sometenant.sca.cyberark.cloud'
+                $Script:ISPSSSession.Subdomain = 'sometenant'
+                $Script:ISPSSSession.StartTime = $SessionStart.AddHours(-1)
+                $null = Resolve-RequestUrl -Path 'api'
+                $Script:HookCount | Should -Be 1
+                Should -Invoke Resolve-ServiceUrl -Times 0 -Exactly -Scope It
+            }
+
+            It 'throws when the connected hook fails' {
+                New-Variable -Name SessionConnectedHook -Value { throw 'SomeHookError' } -Scope Script -Force
+                { Resolve-RequestUrl -Path 'api' } | Should -Throw 'SomeHookError'
+            }
+
+            It 'runs the connected hook again on the next request after it fails' {
+                New-Variable -Name SessionConnectedHook -Value { throw 'SomeHookError' } -Scope Script -Force
+                { Resolve-RequestUrl -Path 'api' } | Should -Throw
+                New-Variable -Name SessionConnectedHook -Value { $Script:HookCount++ } -Scope Script -Force
+                Resolve-RequestUrl -Path 'api' | Should -Be 'https://sometenant.sca.cyberark.cloud/api'
+                $Script:HookCount | Should -Be 1
+            }
+
+            It 'does not copy the IdentityCommand session into an independent session' {
+                New-Variable -Name IndependentSession -Value $true -Scope Script -Force
+                $Script:ISPSSSession.tenant_url = 'https://independent.example.com'
+                $Script:ISPSSSession.WebSession = 'IndependentWebSession'
+                $Script:ISPSSSession.StartTime = $SessionStart.AddHours(-1)
+                Resolve-RequestUrl -Path 'api' | Should -Be 'https://independent.example.com/api'
+                $Script:ISPSSSession.WebSession | Should -Be 'IndependentWebSession'
+                $Script:ISPSSSession.StartTime | Should -Be $SessionStart.AddHours(-1)
+            }
+
+            It 'does not clear an independent session when there is no IdentityCommand session' {
+                Mock Get-IDSession -MockWith { [ordered]@{ tenant_url = $null; StartTime = $null } }
+                New-Variable -Name IndependentSession -Value $true -Scope Script -Force
+                $Script:ISPSSSession.tenant_url = 'https://independent.example.com'
+                $Script:ISPSSSession.StartTime = $SessionStart
+                Resolve-RequestUrl -Path 'api' | Should -Be 'https://independent.example.com/api'
+            }
+
+            It 'does not run the connected hook for an independent session' {
+                New-Variable -Name IndependentSession -Value $true -Scope Script -Force
+                New-Variable -Name SessionConnectedHook -Value { $Script:HookCount++ } -Scope Script -Force
+                $Script:ISPSSSession.tenant_url = 'https://independent.example.com'
+                $null = Resolve-RequestUrl -Path 'api'
+                $Script:HookCount | Should -Be 0
+            }
+
+        }
+
     }
 
 }
