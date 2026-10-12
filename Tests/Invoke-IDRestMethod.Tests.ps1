@@ -395,6 +395,19 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
 			}
 
+			It 'reports the exception message when the response has no error details' {
+				Mock Invoke-WebRequest { throw 'No such host is known.' }
+				{ Invoke-IDRestMethod @WebSession } | Should -Throw -ExpectedMessage 'No such host is known.'
+			}
+
+			It 'reports the request error, not a missing session variable, when a SessionVariable request fails' {
+				Mock Invoke-WebRequest { throw 'No such host is known.' }
+				$Error.Clear()
+				{ Invoke-IDRestMethod -URI 'https://CyberArk_URL' -Method GET -SessionVariable 'NoSuchSession' } |
+					Should -Throw -ExpectedMessage 'No such host is known.'
+				@($Error | Where-Object { $PSItem.FullyQualifiedErrorId -like 'VariableNotFound*' }).Count | Should -Be 0
+			}
+
 		}
 
 	}

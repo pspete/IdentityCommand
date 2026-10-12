@@ -269,6 +269,11 @@
 
 					}
 
+					#No message in the response body, report the exception
+					if ([string]::IsNullOrEmpty($ErrorMessage)) {
+						$ErrorMessage = $ISPSSSession.LastError.Exception.Message
+					}
+
 					#throw the error
 					$PSCmdlet.ThrowTerminatingError(
 
@@ -295,8 +300,11 @@
 			#If Session Variable passed as argument
 			If ($PSCmdlet.ParameterSetName -eq 'SessionVariable') {
 
-				#Make the WebSession available in the module scope
-				$ISPSSSession.WebSession = $(Get-Variable $(Get-Variable sessionVariable).Value).Value
+				#Make the WebSession available in the module scope; a failed request creates no session variable
+				$NewWebSession = Get-Variable -Name $SessionVariable -ValueOnly -ErrorAction SilentlyContinue
+				if ($null -ne $NewWebSession) {
+					$ISPSSSession.WebSession = $NewWebSession
+				}
 
 			}
 
