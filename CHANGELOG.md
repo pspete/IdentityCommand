@@ -8,6 +8,12 @@ All notable changes to this project will be documented in this file.
 
 - CI caches the PowerShell modules it installs, so dependency installs skip the PowerShell Gallery on a cache hit.
 
+### Fixed
+
+- Requests sent with an `Accept` header now succeed: Secrets Manager, SecureAI and Secrets Hub commands previously failed with
+  `A parameter cannot be found that matches parameter name 'Accept'`. The header applies to that request only, and is not
+  left on the shared session.
+
 ## [0.8.0] - 2026-10-08
 
 ### Added
