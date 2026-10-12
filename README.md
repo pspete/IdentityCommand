@@ -24,11 +24,11 @@ The module has been in development for a few years, initially focused on authent
 
 Documentation, command reference and release notes: [www.pspete.dev/IdentityCommand](https://www.pspete.dev/IdentityCommand/).
 
-- **Prior to a Version 1.0.0 release**:
-  - Expect changes, although we will do our best to keep these to a minimum
+- **Versioning**:
+  - From 1.0.0, IdentityCommand follows semantic versioning: breaking changes come only in a major release
+  - The companion modules are pre-1.0.0: their command names, parameters and grouping may still change
+  - The SCIM `Container`, `ContainerPermission` and `PrivilegedData` commands are not yet exercised against a live tenant - see [Help Us Test](#help-us-test)
   - Issues / PRs are encouraged & appreciated
-  - Many commands are built from documented API shapes but not yet exercised against a live tenant - see [Help Us Test](#help-us-test) below, your feedback genuinely shapes what ships next.
-  - Most of the Identity Administration API is now covered, but real-world usage is still expected to shape further changes to command names, parameters/parameter names, and how commands are grouped - some may split into companion commands, others may combine. These patterns only emerge once commands are actually used, so don't consider anything final yet.
 
 | Main Branch              | CodeFactor                 | Coverage                     | PowerShell Gallery        | License                      |
 | ------------------------ | -------------------------- | ---------------------------- | ------------------------- | ---------------------------- |
@@ -61,6 +61,12 @@ PS C:\> $Credential = Get-Credential
 PS C:\> New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -Credential $Credential
 ```
 
+Instead of the Identity URL, give the tenant's shared services subdomain - `sometenant` for `https://sometenant.cyberark.cloud` - and the Identity URL is found through platform discovery:
+
+```powershell
+PS C:\> New-IDSession -subdomain sometenant -Credential $Credential
+```
+
 This allows initial authentication to progress as well as selection and answer of any required MFA challenges.
 
 Once successfully authenticated, all _IdentityCommand_ module commands which require an authenticated session can be used from within the same PowerShell session.
@@ -73,6 +79,8 @@ Service User credentials can be used to request an authentication token for the 
 PS C:\> $Credential = Get-Credential
 PS C:\> New-IDPlatformToken -tenant_url https://sometenant.id.cyberark.cloud -Credential $Credential
 ```
+
+`New-IDPlatformToken` also accepts `-subdomain` in place of `-tenant_url`.
 
 This allows initial authentication using a separate dedicated Service user for API activities.
 
@@ -182,7 +190,7 @@ Every command also has a reference page on the [documentation site](https://www.
 
 ## Help Us Test
 
-Prior to a 1.0.0 release, some commands are built from documented or captured API shapes but haven't yet been exercised against a live tenant, or only partially confirmed. If you're able to try one of these against your own tenant, [open an issue][new-issue] with what you found (works as-is, needs a fix, or the request shape is wrong) - it's genuinely the fastest way to move a command from "should work" to "confirmed".
+These commands are built from the vendor's OpenAPI schema, but haven't yet been exercised against a live tenant. If you're able to try one of these against your own tenant, [open an issue][new-issue] with what you found (works as-is, needs a fix, or the request shape is wrong) - it's genuinely the fastest way to move a command from "should work" to "confirmed".
 
 The current list is:
 

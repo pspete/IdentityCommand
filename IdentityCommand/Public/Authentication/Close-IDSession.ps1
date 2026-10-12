@@ -25,6 +25,7 @@ function Close-IDSession {
         $ISPSSSession.User = $null
         $ISPSSSession.StartTime = $null
         $ISPSSSession.SessionId = $null
+        $ISPSSSession.Subdomain = $null
 
     }#end
 
