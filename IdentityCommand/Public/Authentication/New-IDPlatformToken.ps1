@@ -22,6 +22,7 @@ Function New-IDPlatformToken {
     Begin {
         #Remove WebSession which may exist in module scope
         $ISPSSSession.WebSession = $null
+        $ISPSSSession.Subdomain = $null
 
         $LogonRequest = @{ }
         $LogonRequest['Method'] = 'POST'
@@ -78,6 +79,9 @@ Function New-IDPlatformToken {
                 $ISPSSSession.User = $Credential.Username
                 $ISPSSSession.StartTime = Get-Date
                 $ISPSSSession.WebSession.Headers.Add('Authorization', "$($result.token_type) $($result.access_token)")
+
+                #Record the shared services subdomain, used by companion modules to discover service URLs
+                $ISPSSSession.Subdomain = try { (ConvertFrom-JwtPayload -Token $result.access_token).subdomain } catch { $null }
 
                 #Return the result
                 $result

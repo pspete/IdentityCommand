@@ -36,6 +36,7 @@ Function New-IDSession {
 
         #Remove WebSession which may exist in module scope
         $ISPSSSession.WebSession = $null
+        $ISPSSSession.Subdomain = $null
 
         $LogonRequest = @{ }
         $LogonRequest['Method'] = 'POST'
@@ -244,6 +245,9 @@ $($IDSession.IdpRedirectShortUrl)
                     $ISPSSSession.User = $result.User
                     $ISPSSSession.StartTime = Get-Date
                     $ISPSSSession.WebSession.Headers.Add('Authorization', "Bearer $($result.Token)")
+
+                    #Record the shared services subdomain, used by companion modules to discover service URLs
+                    $ISPSSSession.Subdomain = try { (ConvertFrom-JwtPayload -Token $result.Token).subdomain } catch { $null }
 
                     #Return the result
                     $result

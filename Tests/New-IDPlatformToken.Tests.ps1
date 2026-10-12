@@ -135,6 +135,29 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
+            It 'sets Subdomain from the token subdomain claim' {
+
+                Mock Invoke-IDRestMethod -MockWith {
+                    $ISPSSSession.WebSession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+                    [pscustomobject]@{
+                        token_type   = 'Bearer'
+                        access_token = 'eyJhbGciOiJub25lIn0.eyJzdWJkb21haW4iOiJzb21ldGVuYW50In0.c2ln'
+                    }
+                }
+
+                New-IDPlatformToken -tenant_url https://sometenant.id.cyberark.cloud -Credential $Cred
+                $Script:ISPSSSession.Subdomain | Should -Be 'sometenant'
+
+            }
+
+            It 'sets Subdomain to null when the token is not a JWT' {
+
+                $Script:ISPSSSession.Subdomain = 'stale'
+                New-IDPlatformToken -tenant_url https://sometenant.id.cyberark.cloud -Credential $Cred
+                $Script:ISPSSSession.Subdomain | Should -BeNullOrEmpty
+
+            }
+
         }
 
     }
