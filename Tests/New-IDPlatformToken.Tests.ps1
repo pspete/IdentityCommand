@@ -158,6 +158,15 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
+            It 'leaves no session when sign-in fails' {
+                Mock Invoke-IDRestMethod -MockWith { throw 'SomeError' }
+                $Script:ISPSSSession.User = 'PreviousUser'
+                $Script:ISPSSSession.StartTime = Get-Date
+                { New-IDPlatformToken -tenant_url https://sometenant.id.cyberark.cloud -Credential $Cred } | Should -Throw
+                $Script:ISPSSSession.User | Should -BeNullOrEmpty
+                $Script:ISPSSSession.StartTime | Should -BeNullOrEmpty
+            }
+
         }
 
     }

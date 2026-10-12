@@ -34,9 +34,11 @@ Function New-IDSession {
 
     Begin {
 
-        #Remove WebSession which may exist in module scope
+        #End any existing session, so a failed sign-in leaves no session
         $ISPSSSession.WebSession = $null
         $ISPSSSession.Subdomain = $null
+        $ISPSSSession.User = $null
+        $ISPSSSession.StartTime = $null
 
         $LogonRequest = @{ }
         $LogonRequest['Method'] = 'POST'

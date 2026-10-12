@@ -93,6 +93,15 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
             }
 
+            It 'leaves no session when sign-in fails' {
+                Mock Start-Authentication -MockWith { throw 'SomeError' }
+                $Script:ISPSSSession.User = 'PreviousUser'
+                $Script:ISPSSSession.StartTime = Get-Date
+                { New-IDSession -tenant_url https://somedomain.id.cyberark.cloud -Credential $Creds } | Should -Throw
+                $Script:ISPSSSession.User | Should -BeNullOrEmpty
+                $Script:ISPSSSession.StartTime | Should -BeNullOrEmpty
+            }
+
         }
 
         Context 'Start-Authentication' {
