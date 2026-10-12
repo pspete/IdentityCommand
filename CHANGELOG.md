@@ -8,6 +8,11 @@ All notable changes to this project will be documented in this file.
 
 - CI caches the PowerShell modules it installs, so dependency installs skip the PowerShell Gallery on a cache hit.
 
+### Fixed
+
+- A failed request now reports its own error. Previously, a failed sign-in (for example, to a mistyped or unreachable tenant URL) first
+  reported `Cannot find a variable with the name 'IDSession'`, and an error response with no body reported an empty message.
+
 ## [0.8.0] - 2026-10-08
 
 ### Added
