@@ -21,7 +21,7 @@ function Resolve-RequestUrl {
     If the module session holds no service URL, it is resolved from platform discovery using the
     subdomain read from the IdentityCommand session token, and kept for later requests.
 
-    A service URL set by the companion module's Connect- command is used as is.
+    A service URL the companion module sets itself (e.g. Set-SMAccessToken) is used as is.
 
     A companion module can declare these module scope variables to change the behaviour:
 
