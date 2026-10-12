@@ -132,6 +132,28 @@
 
 		}
 
+		#Invoke-WebRequest has no Accept parameter, so Accept is sent as a request header.
+		#Invoke-WebRequest writes request headers back onto the WebSession; the session's own Accept
+		#header is recorded here and restored after the request.
+		if ($PSBoundParameters.ContainsKey('Accept')) {
+
+			$null = $PSBoundParameters.Remove('Accept')
+
+			$RequestHeaders = @{ }
+			if ($null -ne $Headers) {
+				foreach ($key in $Headers.Keys) { $RequestHeaders[$key] = $Headers[$key] }
+			}
+			$RequestHeaders['Accept'] = $Accept
+			$PSBoundParameters['Headers'] = $RequestHeaders
+
+			$AcceptSession = $PSBoundParameters['WebSession']
+			if ($null -ne $AcceptSession) {
+				$SessionHasAccept = $AcceptSession.Headers.ContainsKey('Accept')
+				if ($SessionHasAccept) { $SessionAccept = $AcceptSession.Headers['Accept'] }
+			}
+
+		}
+
 		#Unless otherwise specified, expected content type is json
 		if ( -not ($PSBoundParameters.ContainsKey('ContentType'))) {
 
@@ -291,6 +313,15 @@
 			}
 
 		} finally {
+
+			#Return the WebSession's Accept header to its state before the request
+			if ($null -ne $AcceptSession) {
+				if ($SessionHasAccept) {
+					$AcceptSession.Headers['Accept'] = $SessionAccept
+				} else {
+					$null = $AcceptSession.Headers.Remove('Accept')
+				}
+			}
 
 			#Add Command Data to $ISPSSSession module scope variable
 			$ISPSSSession.LastCommand = Get-ParentFunction | Select-Object -ExpandProperty CommandData
