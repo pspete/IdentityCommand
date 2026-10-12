@@ -129,8 +129,8 @@ function Resolve-RequestUrl {
             try {
                 & $Script:SessionConnectedHook
             } catch {
-                #Run the hook again on the next request
-                $ISPSSSession.StartTime = $null
+                #Resolve the service URL and run the hook again on the next request
+                $ISPSSSession.tenant_url = $null
                 throw
             }
 

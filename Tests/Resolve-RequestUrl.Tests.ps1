@@ -237,6 +237,14 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
                 $Script:HookCount | Should -Be 1
             }
 
+            It 'throws when the IdentityCommand session is closed after the connected hook fails' {
+                New-Variable -Name SessionConnectedHook -Value { throw 'SomeHookError' } -Scope Script -Force
+                { Resolve-RequestUrl -Path 'api' } | Should -Throw 'SomeHookError'
+                Mock Get-IDSession -MockWith { [ordered]@{ tenant_url = $null; StartTime = $null } }
+                { Resolve-RequestUrl -Path 'api' } | Should -Throw 'Authenticate with New-IDSession*'
+                $Script:ISPSSSession.WebSession | Should -BeNullOrEmpty
+            }
+
             It 'does not copy the IdentityCommand session into an independent session' {
                 New-Variable -Name IndependentSession -Value $true -Scope Script -Force
                 $Script:ISPSSSession.tenant_url = 'https://independent.example.com'
