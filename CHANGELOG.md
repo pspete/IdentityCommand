@@ -2,10 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
-## Unreleased
+## Unreleased (major)
+
+1.0.0: from this release, IdentityCommand follows semantic versioning, so breaking changes come only in a major release.
+
+### Added
+
+- Support for companion modules (`IdentityCommand.SCA`, `IdentityCommand.SIA` and the others) to connect on
+  first use, finding their service url by platform discovery and using the `IdentityCommand` session, with no
+  connection step after `New-IDSession` or `New-IDPlatformToken`.
+- `Get-IDSession` reports the tenant's shared services `Subdomain`, read from the sign-in token.
 
 ### Changed
 
+- `New-IDSession` and `New-IDPlatformToken` end any existing session when they start, so a failed sign-in
+  leaves no session. Previously, the earlier user and start time were kept, without a usable web session.
 - CI caches the PowerShell modules it installs, so dependency installs skip the PowerShell Gallery on a cache hit.
 
 ### Fixed
