@@ -132,6 +132,28 @@
 
 		}
 
+		#Invoke-WebRequest has no Accept parameter, so Accept is sent as a request header.
+		#Invoke-WebRequest writes request headers back onto the WebSession; the session's own Accept
+		#header is recorded here and restored after the request.
+		if ($PSBoundParameters.ContainsKey('Accept')) {
+
+			$null = $PSBoundParameters.Remove('Accept')
+
+			$RequestHeaders = @{ }
+			if ($null -ne $Headers) {
+				foreach ($key in $Headers.Keys) { $RequestHeaders[$key] = $Headers[$key] }
+			}
+			$RequestHeaders['Accept'] = $Accept
+			$PSBoundParameters['Headers'] = $RequestHeaders
+
+			$AcceptSession = $PSBoundParameters['WebSession']
+			if ($null -ne $AcceptSession) {
+				$SessionHasAccept = $AcceptSession.Headers.ContainsKey('Accept')
+				if ($SessionHasAccept) { $SessionAccept = $AcceptSession.Headers['Accept'] }
+			}
+
+		}
+
 		#Unless otherwise specified, expected content type is json
 		if ( -not ($PSBoundParameters.ContainsKey('ContentType'))) {
 
@@ -269,6 +291,11 @@
 
 					}
 
+					#No message in the response body, report the exception
+					if ([string]::IsNullOrEmpty($ErrorMessage)) {
+						$ErrorMessage = $ISPSSSession.LastError.Exception.Message
+					}
+
 					#throw the error
 					$PSCmdlet.ThrowTerminatingError(
 
@@ -287,6 +314,15 @@
 
 		} finally {
 
+			#Return the WebSession's Accept header to its state before the request
+			if ($null -ne $AcceptSession) {
+				if ($SessionHasAccept) {
+					$AcceptSession.Headers['Accept'] = $SessionAccept
+				} else {
+					$null = $AcceptSession.Headers.Remove('Accept')
+				}
+			}
+
 			#Add Command Data to $ISPSSSession module scope variable
 			$ISPSSSession.LastCommand = Get-ParentFunction | Select-Object -ExpandProperty CommandData
 			$ISPSSSession.LastCommandResults = $APIResponse
@@ -295,8 +331,11 @@
 			#If Session Variable passed as argument
 			If ($PSCmdlet.ParameterSetName -eq 'SessionVariable') {
 
-				#Make the WebSession available in the module scope
-				$ISPSSSession.WebSession = $(Get-Variable $(Get-Variable sessionVariable).Value).Value
+				#Make the WebSession available in the module scope; a failed request creates no session variable
+				$NewWebSession = Get-Variable -Name $SessionVariable -ValueOnly -ErrorAction SilentlyContinue
+				if ($null -ne $NewWebSession) {
+					$ISPSSSession.WebSession = $NewWebSession
+				}
 
 			}
 

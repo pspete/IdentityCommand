@@ -8591,6 +8591,55 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>New-IDPlatformToken</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
+          <maml:name>Credential</maml:name>
+          <maml:description>
+            <maml:para>Credential object containing username and password of a service user that is an OAuth confidential client to authenticate to CyberArk Identity.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+          <dev:type>
+            <maml:name>PSCredential</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+          <maml:name>Confirm</maml:name>
+          <maml:description>
+            <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+          <maml:name>WhatIf</maml:name>
+          <maml:description>
+            <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="subdomain">
+          <maml:name>tenant_subdomain</maml:name>
+          <maml:description>
+            <maml:para>The shared services subdomain of the tenant, the first part of its platform URL: `sometenant` for `https://sometenant.cyberark.cloud`. The CyberArk Identity tenant URL is found from it through platform discovery.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
     </command:syntax>
     <command:parameters>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
@@ -8641,6 +8690,18 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="subdomain">
+        <maml:name>tenant_subdomain</maml:name>
+        <maml:description>
+          <maml:para>The shared services subdomain of the tenant, the first part of its platform URL: `sometenant` for `https://sometenant.cyberark.cloud`. The CyberArk Identity tenant URL is found from it through platform discovery.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
     </command:parameters>
     <command:inputTypes />
     <command:returnValues />
@@ -8655,6 +8716,13 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
         <dev:code>PS C:\&gt; New-IDPlatformToken -tenant_url https://sometenant.id.cyberark.cloud -Credential $Cred</dev:code>
         <dev:remarks>
           <maml:para>Initiates OAuth confidential client service user authentication to specified tenant</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 2 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; New-IDPlatformToken -subdomain sometenant -Credential $Cred</dev:code>
+        <dev:remarks>
+          <maml:para>Initiates OAuth confidential client service user authentication to the CyberArk Identity tenant of the `sometenant` shared services subdomain, found through platform discovery.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>
@@ -9846,6 +9914,7 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
     </command:details>
     <maml:description>
       <maml:para>Use this command to authenticate to CyberArk Identity.</maml:para>
+      <maml:para>Specify the tenant either by its CyberArk Identity URL, or by its shared services subdomain.</maml:para>
       <maml:para>Allows a user to provide authentication details, and satisfy any required MFA challenges.</maml:para>
       <maml:para>Currently supports all Identity MFA authentication mechanisms except U2F &amp; DUO.</maml:para>
       <maml:para>When you specify a username associated with a SAML or OIDC-based federation, then you will be redirected to the external identity provider to authenticate. Alternatively, you can provide a SamlAssertion from a configured external IDP.</maml:para>
@@ -9903,6 +9972,55 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
       </command:syntaxItem>
       <command:syntaxItem>
         <maml:name>New-IDSession</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
+          <maml:name>Credential</maml:name>
+          <maml:description>
+            <maml:para>Credential object containing username and password required to authenticate to CyberArk Identity.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">PSCredential</command:parameterValue>
+          <dev:type>
+            <maml:name>PSCredential</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+          <maml:name>Confirm</maml:name>
+          <maml:description>
+            <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+          <maml:name>WhatIf</maml:name>
+          <maml:description>
+            <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="subdomain">
+          <maml:name>tenant_subdomain</maml:name>
+          <maml:description>
+            <maml:para>The shared services subdomain of the tenant, the first part of its platform URL: `sometenant` for `https://sometenant.cyberark.cloud`. The CyberArk Identity tenant URL is found from it through platform discovery.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>New-IDSession</maml:name>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
           <maml:name>tenant_url</maml:name>
           <maml:description>
@@ -9941,6 +10059,55 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
           <maml:name>SAMLResponse</maml:name>
           <maml:description>
             <maml:para>A SAML assertion obtained from an external IDP for the account with which to authenticate.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>New-IDSession</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="cf">
+          <maml:name>Confirm</maml:name>
+          <maml:description>
+            <maml:para>Prompts you for confirmation before running the cmdlet.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="wi">
+          <maml:name>WhatIf</maml:name>
+          <maml:description>
+            <maml:para>Shows what would happen if the cmdlet runs. The cmdlet is not run.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
+          <maml:name>SAMLResponse</maml:name>
+          <maml:description>
+            <maml:para>A SAML assertion obtained from an external IDP for the account with which to authenticate.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="subdomain">
+          <maml:name>tenant_subdomain</maml:name>
+          <maml:description>
+            <maml:para>The shared services subdomain of the tenant, the first part of its platform URL: `sometenant` for `https://sometenant.cyberark.cloud`. The CyberArk Identity tenant URL is found from it through platform discovery.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -10012,6 +10179,18 @@ LastCommandResults             {"success":true,"Result":{"SomeResult"}}</dev:cod
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="subdomain">
+        <maml:name>tenant_subdomain</maml:name>
+        <maml:description>
+          <maml:para>The shared services subdomain of the tenant, the first part of its platform URL: `sometenant` for `https://sometenant.cyberark.cloud`. The CyberArk Identity tenant URL is found from it through platform discovery.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -10061,6 +10240,13 @@ PS C:\&gt; New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -Crede
 PS C:\&gt; New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -SAMLResponse $SAMLResponse</dev:code>
         <dev:remarks>
           <maml:para>Authenticates to CyberArk Identity using SAML assertion from external IDP (obtained using PS-SAML-Interactive)</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>-------------------------- Example 3 --------------------------</maml:title>
+        <dev:code>PS C:\&gt; New-IDSession -subdomain sometenant -Credential $Cred</dev:code>
+        <dev:remarks>
+          <maml:para>Initiates authentication to the CyberArk Identity tenant of the `sometenant` shared services subdomain (`https://sometenant.cyberark.cloud`), found through platform discovery.</maml:para>
         </dev:remarks>
       </command:example>
     </command:examples>

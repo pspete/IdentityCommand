@@ -65,6 +65,7 @@ $ISPSSSession = [ordered]@{
     User               = $null
     TenantId           = $null
     SessionId          = $null
+    Subdomain          = $null
     WebSession         = $null
     StartTime          = $null
     ElapsedTime        = $null

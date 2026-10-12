@@ -31,7 +31,10 @@
                 userportal           = [pscustomobject]@{ api = 'https://sometenant.api.userportal.cyberark.cloud/api' }
                 compass              = [pscustomobject]@{ api = 'https://sometenant.compass.cyberark.cloud' }
                 cds                  = [pscustomobject]@{ api = 'https://eu-west-2.cds.cyberark.cloud/' }
-                cem                  = [pscustomobject]@{ api = 'https://eu-west-2.api.cps.cyberark.com/' }
+                cem                  = [pscustomobject]@{
+                    api       = 'https://eu-west-2.api.cps.cyberark.com/'
+                    bootstrap = 'https://sometenant-cem.cyberark.cloud'
+                }
                 alerong              = [pscustomobject]@{ api = 'https://api.alero.io/internal/ra/v1/11ed307a252bbd10987ef76ae4e0982d' }
                 identity_user_portal = [pscustomobject]@{ api = 'https://sometenant.id.cyberark.cloud/' }
             }
@@ -103,6 +106,16 @@
             ) {
                 (Resolve-ServiceUrl -Service $Service -Subdomain 'sometenant').IdentityUrl |
                     Should -Be 'https://sometenant.id.cyberark.cloud'
+            }
+
+            It 'returns the url of the requested endpoint' {
+                (Resolve-ServiceUrl -Service cem -Subdomain 'sometenant' -Endpoint bootstrap).ServiceUrl |
+                    Should -Be 'https://sometenant-cem.cyberark.cloud'
+            }
+
+            It 'throws for an endpoint absent from the service entry' {
+                { Resolve-ServiceUrl -Service sca -Subdomain 'sometenant' -Endpoint bootstrap } |
+                    Should -Throw "*URL for the 'sca' service not found*"
             }
 
             It 'throws for a service absent from the discovery response' {

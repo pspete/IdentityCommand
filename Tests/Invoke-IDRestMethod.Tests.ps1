@@ -301,6 +301,62 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 
 		}
 
+		Context 'Accept Header' {
+
+			BeforeEach {
+
+				$ISPSSSession = [ordered]@{
+					tenant_url         = $null
+					WebSession         = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+					LastCommand        = $null
+					LastCommandTime    = $null
+					LastCommandResults = $null
+				}
+				New-Variable -Name ISPSSSession -Value $ISPSSSession -Scope Script -Force
+
+				#Invoke-WebRequest writes request headers back onto the WebSession
+				Mock Invoke-WebRequest -MockWith {
+					foreach ($key in $Headers.Keys) { $WebSession.Headers[$key] = $Headers[$key] }
+				}
+
+			}
+
+			It 'sends Accept as a request header' {
+				Invoke-IDRestMethod -URI 'https://CyberArk_URL' -Method GET -Accept 'application/x.test+json'
+				Assert-MockCalled Invoke-WebRequest -ParameterFilter {
+					$Headers['Accept'] -eq 'application/x.test+json' -and -not $PSBoundParameters.ContainsKey('Accept')
+				} -Times 1 -Exactly -Scope It
+			}
+
+			It 'keeps other request headers' {
+				Invoke-IDRestMethod -URI 'https://CyberArk_URL' -Method GET -Accept 'application/x.test+json' -Headers @{ 'X-Test' = 'OK' }
+				Assert-MockCalled Invoke-WebRequest -ParameterFilter {
+					$Headers['Accept'] -eq 'application/x.test+json' -and $Headers['X-Test'] -eq 'OK'
+				} -Times 1 -Exactly -Scope It
+			}
+
+			It 'does not leave the Accept header on the WebSession' {
+				Invoke-IDRestMethod -URI 'https://CyberArk_URL' -Method GET -Accept 'application/x.test+json'
+				$ISPSSSession.WebSession.Headers.ContainsKey('Accept') | Should -BeFalse
+			}
+
+			It 'restores an Accept header already on the WebSession' {
+				$ISPSSSession.WebSession.Headers['Accept'] = 'application/json'
+				Invoke-IDRestMethod -URI 'https://CyberArk_URL' -Method GET -Accept 'application/x.test+json'
+				$ISPSSSession.WebSession.Headers['Accept'] | Should -Be 'application/json'
+			}
+
+			It 'restores the WebSession when the request fails' {
+				Mock Invoke-WebRequest -MockWith {
+					foreach ($key in $Headers.Keys) { $WebSession.Headers[$key] = $Headers[$key] }
+					throw 'No such host is known.'
+				}
+				{ Invoke-IDRestMethod -URI 'https://CyberArk_URL' -Method GET -Accept 'application/x.test+json' } | Should -Throw
+				$ISPSSSession.WebSession.Headers.ContainsKey('Accept') | Should -BeFalse
+			}
+
+		}
+
 		Context 'Error Handling' {
 
 			BeforeEach {
@@ -393,6 +449,19 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 					{ Invoke-IDRestMethod @WebSession } | Should -Throw
 				} Else { Set-ItResult -Inconclusive }
 
+			}
+
+			It 'reports the exception message when the response has no error details' {
+				Mock Invoke-WebRequest { throw 'No such host is known.' }
+				{ Invoke-IDRestMethod @WebSession } | Should -Throw -ExpectedMessage 'No such host is known.'
+			}
+
+			It 'reports the request error, not a missing session variable, when a SessionVariable request fails' {
+				Mock Invoke-WebRequest { throw 'No such host is known.' }
+				$Error.Clear()
+				{ Invoke-IDRestMethod -URI 'https://CyberArk_URL' -Method GET -SessionVariable 'NoSuchSession' } |
+					Should -Throw -ExpectedMessage 'No such host is known.'
+				@($Error | Where-Object { $PSItem.FullyQualifiedErrorId -like 'VariableNotFound*' }).Count | Should -Be 0
 			}
 
 		}

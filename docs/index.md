@@ -34,12 +34,11 @@ New-IDSession -tenant_url https://sometenant.id.cyberark.cloud -Credential (Get-
 {% endfor %}
 </div>
 
-## Pre-1.0.0
+## Versioning & feedback
 
-- Expect changes, although we will do our best to keep these to a minimum.
+- From 1.0.0, IdentityCommand follows semantic versioning: breaking changes come only in a major release.
+- The companion modules are pre-1.0.0: their command names, parameters and grouping may still change.
 - Issues / PRs are encouraged & appreciated.
-- Many commands are built from documented API shapes but not yet exercised against a live tenant - your feedback genuinely shapes what ships next. If you can try one against your own tenant, [open an issue](https://github.com/pspete/IdentityCommand/issues/new) with what you found.
-- Real-world usage is still expected to shape command names, parameters, and how commands are grouped, so don't consider anything final yet.
 
 ## Coverage
 

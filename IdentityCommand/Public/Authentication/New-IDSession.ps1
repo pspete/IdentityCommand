@@ -7,16 +7,42 @@ Function New-IDSession {
         #tenant_url
         [parameter(
             Mandatory = $true,
-            ValueFromPipelinebyPropertyName = $true
+            ValueFromPipelinebyPropertyName = $true,
+            ParameterSetName = 'URLCredential'
+        )]
+        [parameter(
+            Mandatory = $true,
+            ValueFromPipelinebyPropertyName = $true,
+            ParameterSetName = 'URLSAML'
         )]
         [ValidateNotNullOrEmpty()]
         [String]$tenant_url,
+
+        #tenant_subdomain
+        [parameter(
+            Mandatory = $true,
+            ValueFromPipelinebyPropertyName = $true,
+            ParameterSetName = 'SubdomainCredential'
+        )]
+        [parameter(
+            Mandatory = $true,
+            ValueFromPipelinebyPropertyName = $true,
+            ParameterSetName = 'SubdomainSAML'
+        )]
+        [ValidateNotNullOrEmpty()]
+        [Alias('subdomain')]
+        [String]$tenant_subdomain,
 
         #User Creds
         [Parameter(
             Mandatory = $true,
             ValueFromPipelinebyPropertyName = $true,
-            ParameterSetName = 'Credential'
+            ParameterSetName = 'URLCredential'
+        )]
+        [Parameter(
+            Mandatory = $true,
+            ValueFromPipelinebyPropertyName = $true,
+            ParameterSetName = 'SubdomainCredential'
         )]
         [ValidateNotNullOrEmpty()]
         [PSCredential]$Credential,
@@ -26,7 +52,13 @@ Function New-IDSession {
             Mandatory = $true,
             ValueFromPipeline = $false,
             ValueFromPipelinebyPropertyName = $true,
-            ParameterSetName = 'SAML'
+            ParameterSetName = 'URLSAML'
+        )]
+        [Parameter(
+            Mandatory = $true,
+            ValueFromPipeline = $false,
+            ValueFromPipelinebyPropertyName = $true,
+            ParameterSetName = 'SubdomainSAML'
         )]
         [String]$SAMLResponse
 
@@ -34,8 +66,11 @@ Function New-IDSession {
 
     Begin {
 
-        #Remove WebSession which may exist in module scope
+        #End any existing session, so a failed sign-in leaves no session
         $ISPSSSession.WebSession = $null
+        $ISPSSSession.Subdomain = $null
+        $ISPSSSession.User = $null
+        $ISPSSSession.StartTime = $null
 
         $LogonRequest = @{ }
         $LogonRequest['Method'] = 'POST'
@@ -44,6 +79,11 @@ Function New-IDSession {
     }
 
     Process {
+
+        if ($PSBoundParameters.ContainsKey('tenant_subdomain')) {
+            #Find the Identity URL of the tenant subdomain from platform discovery
+            $tenant_url = (Resolve-ServiceUrl -Service identity_user_portal -Subdomain $tenant_subdomain).IdentityUrl
+        }
 
         #Ensure URL is in expected format
         #Remove trailing space if provided in Url
@@ -58,14 +98,14 @@ Function New-IDSession {
         #Must be passed in order to get the parameters needed for OOB IdP auth
         $LogonRequest['Headers'].Add('OobIdPAuth', $true)
 
-        switch ($PSCmdlet.ParameterSetName) {
+        switch -Wildcard ($PSCmdlet.ParameterSetName) {
 
-            'Credential' {
+            '*Credential' {
                 #*Start Authentication
                 $IDSession = $LogonRequest | Start-Authentication -Credential $Credential
                 break
             }
-            'SAML' {
+            '*SAML' {
                 #*Send SAML Assertion
                 $IDSession = $LogonRequest | Start-SamlAuthentication -SAMLResponse $SAMLResponse
                 break
@@ -81,9 +121,9 @@ Function New-IDSession {
         $ISPSSSession.SessionId = $IDSession.SessionId
         #? does SessionId need to be available in script scope?
 
-        switch ($PSCmdlet.ParameterSetName) {
+        switch -Wildcard ($PSCmdlet.ParameterSetName) {
 
-            'Credential' {
+            '*Credential' {
 
                 #IdpRedirectShortUrl is only included in the response if the OobIdPAuth header is set to true
                 if ($IDSession.IdpRedirectShortUrl) {
@@ -206,7 +246,7 @@ $($IDSession.IdpRedirectShortUrl)
                 break
             }
 
-            'SAML' {
+            '*SAML' {
                 #*Get Saml ID Token
                 $IDSession = $LogonRequest | Complete-SamlAuthentication
                 break
@@ -244,6 +284,10 @@ $($IDSession.IdpRedirectShortUrl)
                     $ISPSSSession.User = $result.User
                     $ISPSSSession.StartTime = Get-Date
                     $ISPSSSession.WebSession.Headers.Add('Authorization', "Bearer $($result.Token)")
+
+                    #Record the shared services subdomain, used by companion modules to discover service URLs
+                    $ISPSSSession.Subdomain = try { (ConvertFrom-JwtPayload -Token $result.Token).subdomain } catch { $null }
+                    if (-not $ISPSSSession.Subdomain) { $ISPSSSession.Subdomain = $tenant_subdomain }
 
                     #Return the result
                     $result
