@@ -12,6 +12,9 @@ All notable changes to this project will be documented in this file.
 
 - A failed request now reports its own error. Previously, a failed sign-in (for example, to a mistyped or unreachable tenant URL) first
   reported `Cannot find a variable with the name 'IDSession'`, and an error response with no body reported an empty message.
+- Requests sent with an `Accept` header now succeed: Secrets Manager, SecureAI and Secrets Hub commands previously failed with
+  `A parameter cannot be found that matches parameter name 'Accept'`. The header applies to that request only, and is not
+  left on the shared session.
 
 ## [0.8.0] - 2026-10-08
 
