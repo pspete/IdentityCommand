@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+- N/A
+
+## [1.0.1] - 2026-10-13
+
 ### Changed
 
 - A request refused with 401 because the session token has expired now reports `Session expired at <time>:
