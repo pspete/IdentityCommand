@@ -389,6 +389,223 @@
 
         }
 
+        Context 'Starting position supplied by the caller' {
+
+            BeforeAll {
+                #Values of a query key, in order, as the raw (still encoded) strings sent
+                $Script:GetQueryValue = {
+                    param($Target, $Key)
+                    $Query = ([uri]$Target).Query.TrimStart('?')
+                    @($Query -split '&' | Where-Object { $_ -like "$Key=*" } | ForEach-Object { $_.Substring($Key.Length + 1) })
+                }
+
+                #A page of the fake data set, starting at Offset, as a server would return it
+                $Script:GetPage = {
+                    param($Offset)
+                    $Last = [Math]::Min($Offset + $Script:PageLimit, $Script:SetSize) - 1
+                    $Slice = if ($Offset -le $Last) { @($Offset..$Last) } else { @() }
+                    [pscustomobject]@{
+                        items      = $Slice
+                        totalCount = $Script:SetSize
+                        isLastPage = ($Offset + $Script:PageLimit -ge $Script:SetSize)
+                    }
+                }
+            }
+
+            BeforeEach {
+                $Script:PageLimit = 10
+                $Script:SetSize = 25
+                $Script:Requests = [Collections.Generic.List[string]]::New()
+                $Script:Bodies = [Collections.Generic.List[object]]::New()
+
+                #Like the live servers, uses the last offset value when a key is repeated
+                Mock -CommandName Invoke-IDRestMethod -MockWith {
+                    $null = $Script:Requests.Add($URI)
+                    if ($Body) {
+                        $Parsed = $Body | ConvertFrom-Json
+                        $null = $Script:Bodies.Add($Parsed)
+                        $Offset = if ($Parsed.paging) { $Parsed.paging.offset } else { $Parsed.offset }
+                    } else {
+                        $Offset = @(& $Script:GetQueryValue $URI 'offset') | Select-Object -Last 1
+                    }
+                    & $Script:GetPage ([int]$Offset)
+                }
+            }
+
+            Context 'Offset style, GET' {
+
+                It 'pages from zero when the URI holds no offset' {
+                    $Initial = & $Script:GetPage 0
+                    $Result = Get-PagedResult -InitialResult $Initial -URI "$($Script:PageURI)?limit=10" -Style Offset -ResultProperty items
+
+                    $Result | Should -Be @(0..24)
+                    $Script:Requests | Should -Be @(
+                        "$($Script:PageURI)?limit=10&offset=10"
+                        "$($Script:PageURI)?limit=10&offset=20"
+                    )
+                }
+
+                It 'advances from the offset in the URI' {
+                    $Initial = & $Script:GetPage 5
+                    $Result = Get-PagedResult -InitialResult $Initial -URI "$($Script:PageURI)?limit=10&offset=5" -Style Offset -ResultProperty items
+
+                    $Result | Should -Be @(5..24)
+                    $Script:Requests | Should -Be @(
+                        "$($Script:PageURI)?limit=10&offset=15"
+                    )
+                }
+
+                It 'sends exactly one offset on each later request' {
+                    $Script:SetSize = 45
+                    $Initial = & $Script:GetPage 5
+                    $null = Get-PagedResult -InitialResult $Initial -URI "$($Script:PageURI)?offset=5&limit=10" -Style Offset -ResultProperty items
+
+                    $Script:Requests | Should -HaveCount 3
+                    foreach ($Request in $Script:Requests) {
+                        @(& $Script:GetQueryValue $Request 'offset') | Should -HaveCount 1
+                    }
+                    $Script:Requests | ForEach-Object { & $Script:GetQueryValue $_ 'offset' } | Should -Be @('15', '25', '35')
+                }
+
+                It 'drops a URI holding only the offset back to the bare path' {
+                    $Initial = & $Script:GetPage 5
+                    $null = Get-PagedResult -InitialResult $Initial -URI "$($Script:PageURI)?offset=5" -Style Offset -ResultProperty items
+
+                    $Script:Requests | Should -Be @("$($Script:PageURI)?offset=15")
+                }
+
+                It 'keeps the other query keys byte for byte' {
+                    $Initial = & $Script:GetPage 5
+                    $null = Get-PagedResult -InitialResult $Initial -URI "$($Script:PageURI)?severity=CRITICAL%2CHIGH&limit=10&offset=5&name=a%20b%2Bc" -Style Offset -ResultProperty items
+
+                    $Script:Requests | Should -Be @(
+                        "$($Script:PageURI)?severity=CRITICAL%2CHIGH&limit=10&name=a%20b%2Bc&offset=15"
+                    )
+                }
+
+                It 'collects the expected items with a last page flag and a starting offset' {
+                    #Mirrors Get-RMFinding -offset 5 -limit 10 against 115 findings
+                    $Script:SetSize = 115
+                    $Initial = & $Script:GetPage 5
+                    $Result = Get-PagedResult -InitialResult $Initial -URI "$($Script:PageURI)?offset=5&limit=10" -Style Offset -ResultProperty items -LastPageKey isLastPage
+
+                    $Result | Should -Be @(5..114)
+                    $Script:Requests | Should -HaveCount 10
+                    $Script:Requests | ForEach-Object { & $Script:GetQueryValue $_ 'offset' } | Should -Be @('15', '25', '35', '45', '55', '65', '75', '85', '95', '105')
+                }
+
+                It 'honours a non-default offset request key already in the URI' {
+                    Mock -CommandName Invoke-IDRestMethod -MockWith {
+                        $null = $Script:Requests.Add($URI)
+                        & $Script:GetPage ([int](@(& $Script:GetQueryValue $URI 'skip') | Select-Object -Last 1))
+                    }
+
+                    $Initial = & $Script:GetPage 5
+                    $Result = Get-PagedResult -InitialResult $Initial -URI "$($Script:PageURI)?skip=5&top=10" -Style Offset -ResultProperty items -OffsetRequestKey skip
+
+                    $Result | Should -Be @(5..24)
+                    $Script:Requests | Should -Be @("$($Script:PageURI)?top=10&skip=15")
+                }
+
+                It 'leaves the server reported next offset authoritative' {
+                    Mock -CommandName Invoke-IDRestMethod -MockWith {
+                        $null = $Script:Requests.Add($URI)
+                        [pscustomobject]@{ items = @('two'); paging = [pscustomobject]@{} }
+                    }
+
+                    $Initial = [pscustomobject]@{ items = @('one'); paging = [pscustomobject]@{ offset = 500 } }
+                    $null = Get-PagedResult -InitialResult $Initial -URI "$($Script:PageURI)?offset=5&limit=10" -Style Offset -ResultProperty items -OffsetResponseKey 'paging.offset'
+
+                    $Script:Requests | Should -Be @("$($Script:PageURI)?limit=10&offset=500")
+                }
+
+                It 'still stops when the server ignores the offset' {
+                    Mock -CommandName Invoke-IDRestMethod -MockWith {
+                        $null = $Script:Requests.Add($URI)
+                        & $Script:GetPage 5
+                    }
+
+                    $Initial = & $Script:GetPage 5
+                    $Result = Get-PagedResult -InitialResult $Initial -URI "$($Script:PageURI)?offset=5&limit=10" -Style Offset -ResultProperty items
+
+                    $Result | Should -Be @(5..14)
+                    $Script:Requests | Should -HaveCount 1
+                }
+
+            }
+
+            Context 'Offset style, POST' {
+
+                It 'pages from zero when the body holds no offset' {
+                    $Initial = & $Script:GetPage 0
+                    $Result = Get-PagedResult -InitialResult $Initial -URI $Script:PageURI -Style Offset -ResultProperty items -Method POST -BodyTemplate @{ limit = 10 }
+
+                    $Result | Should -Be @(0..24)
+                    $Script:Bodies | ForEach-Object { $_.offset } | Should -Be @(10, 20)
+                    $Script:Requests | Should -Be @($Script:PageURI, $Script:PageURI)
+                }
+
+                It 'advances from a top level offset in the body' {
+                    $Script:SetSize = 35
+                    $Initial = & $Script:GetPage 5
+                    $Result = Get-PagedResult -InitialResult $Initial -URI $Script:PageURI -Style Offset -ResultProperty items -Method POST -BodyTemplate @{ limit = 10; offset = 5; filter = 'x' }
+
+                    $Result | Should -Be @(5..34)
+                    $Script:Bodies | ForEach-Object { $_.offset } | Should -Be @(15, 25)
+                    $Script:Bodies | ForEach-Object { $_.filter } | Should -Be @('x', 'x')
+                }
+
+                It 'advances from an offset in the nested paging property' {
+                    $Script:SetSize = 35
+                    $Initial = & $Script:GetPage 5
+                    $Template = [ordered]@{ paging = [ordered]@{ limit = 10; offset = 5 } }
+                    $Result = Get-PagedResult -InitialResult $Initial -URI $Script:PageURI -Style Offset -ResultProperty items -Method POST -BodyTemplate $Template -BodyPagingProperty paging
+
+                    $Result | Should -Be @(5..34)
+                    $Script:Bodies | ForEach-Object { $_.paging.offset } | Should -Be @(15, 25)
+                    $Template.paging.offset | Should -Be 5
+                }
+
+            }
+
+            Context 'Cursor style' {
+
+                BeforeEach {
+                    #Cursor N returns item N and points at N+1, up to item 3
+                    Mock -CommandName Invoke-IDRestMethod -MockWith {
+                        $null = $Script:Requests.Add($URI)
+                        $Cursor = [int](@(& $Script:GetQueryValue $URI 'cursor') | Select-Object -Last 1)
+                        [pscustomobject]@{ items = @($Cursor); nextCursor = $(if ($Cursor -lt 3) { $Cursor + 1 }) }
+                    }
+                }
+
+                It 'sends the next cursor when the URI holds none' {
+                    $Initial = [pscustomobject]@{ items = @(0); nextCursor = 1 }
+                    $Result = Get-PagedResult -InitialResult $Initial -URI "$($Script:PageURI)?limit=1" -Style Cursor -ResultProperty items
+
+                    $Result | Should -Be @(0, 1, 2, 3)
+                    $Script:Requests | Should -Be @(
+                        "$($Script:PageURI)?limit=1&cursor=1"
+                        "$($Script:PageURI)?limit=1&cursor=2"
+                        "$($Script:PageURI)?limit=1&cursor=3"
+                    )
+                }
+
+                It 'replaces a starting cursor in the URI, keeping the other keys byte for byte' {
+                    $Initial = [pscustomobject]@{ items = @(1); nextCursor = 2 }
+                    $Result = Get-PagedResult -InitialResult $Initial -URI "$($Script:PageURI)?cursor=1&q=a%2Cb%20c&limit=1" -Style Cursor -ResultProperty items
+
+                    $Result | Should -Be @(1, 2, 3)
+                    $Script:Requests | Should -Be @(
+                        "$($Script:PageURI)?q=a%2Cb%20c&limit=1&cursor=2"
+                        "$($Script:PageURI)?q=a%2Cb%20c&limit=1&cursor=3"
+                    )
+                }
+
+            }
+
+        }
+
     }
 
 }

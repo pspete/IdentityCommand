@@ -4,7 +4,18 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
-- N/A
+### Changed
+
+- A request refused with 401 because the session token has expired now reports `Session expired at <time>:
+  authenticate again with New-IDSession or New-IDPlatformToken`. Previously, it reported `Unauthorized. Unauthorized.`.
+  Companion modules get the same message.
+
+### Fixed
+
+- Companion module commands which page their results now page correctly from a starting offset or cursor.
+  Each later request carries one offset or cursor, in place of the starting one, and pages on from the
+  starting offset. Previously, the starting value was sent again with each later request, and paging
+  restarted from zero, so items were skipped or returned twice.
 
 ## [1.0.0] - 2026-10-12
 
