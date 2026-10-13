@@ -464,6 +464,50 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 				@($Error | Where-Object { $PSItem.FullyQualifiedErrorId -like 'VariableNotFound*' }).Count | Should -Be 0
 			}
 
+			Context 'Unauthorized' {
+
+				BeforeEach {
+
+					function New-TestJwt {
+						param([long]$Exp)
+						$Payload = [System.Convert]::ToBase64String(
+							[System.Text.Encoding]::UTF8.GetBytes((@{ exp = $Exp } | ConvertTo-Json -Compress))
+						).TrimEnd('=').Replace('+', '-').Replace('/', '_')
+						"eyJhbGciOiJub25lIn0.$Payload.c2ln"
+					}
+
+					$unauthorized = [System.Exception]::new('Response status code does not indicate success: 401 (Unauthorized).')
+					$unauthorized | Add-Member -MemberType NoteProperty -Name Response -Value ([pscustomobject]@{ StatusCode = 401 })
+					$unauthorizedRecord = [System.Management.Automation.ErrorRecord]::new(
+						$unauthorized, 'WebCmdletWebResponseException', [System.Management.Automation.ErrorCategory]::InvalidOperation, $null
+					)
+					$unauthorizedRecord.ErrorDetails = (@{ error = 'Unauthorized'; error_description = 'Unauthorized' } | ConvertTo-Json)
+
+					Mock Invoke-WebRequest { Throw $unauthorizedRecord }
+
+				}
+
+				It 'reports session expiry when the token has expired' {
+					$Exp = [DateTimeOffset]::UtcNow.AddSeconds(-900).ToUnixTimeSeconds()
+					$WebSession.WebSession.Headers['Authorization'] = "Bearer $(New-TestJwt -Exp $Exp)"
+					$Expected = "Session expired at $([DateTimeOffset]::FromUnixTimeSeconds($Exp).LocalDateTime.ToString()): authenticate again with New-IDSession or New-IDPlatformToken"
+
+					{ Invoke-IDRestMethod @WebSession } | Should -Throw -ExpectedMessage ([System.Management.Automation.WildcardPattern]::Escape($Expected))
+				}
+
+				It 'reports the response error when the token is still valid' {
+					$Exp = [DateTimeOffset]::UtcNow.AddSeconds(900).ToUnixTimeSeconds()
+					$WebSession.WebSession.Headers['Authorization'] = "Bearer $(New-TestJwt -Exp $Exp)"
+
+					{ Invoke-IDRestMethod @WebSession } | Should -Throw -ExpectedMessage 'Unauthorized. Unauthorized'
+				}
+
+				It 'reports the response error when the session has no token' {
+					{ Invoke-IDRestMethod @WebSession } | Should -Throw -ExpectedMessage 'Unauthorized. Unauthorized'
+				}
+
+			}
+
 		}
 
 	}

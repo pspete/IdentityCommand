@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
-- N/A
+### Changed
+
+- A request refused with 401 because the session token has expired now reports `Session expired at <time>:
+  authenticate again with New-IDSession or New-IDPlatformToken`. Previously, it reported `Unauthorized. Unauthorized.`.
+  Companion modules get the same message.
 
 ## [1.0.0] - 2026-10-12
 

@@ -248,6 +248,7 @@
 				$ISPSSSession.LastErrorTime = Get-Date
 
 				$ErrorID = $PSItem | Select-Object -ExpandProperty FullyQualifiedErrorId
+				$StatusCode = [int]$PSItem.Exception.Response.StatusCode
 
 				try {
 
@@ -294,6 +295,20 @@
 					#No message in the response body, report the exception
 					if ([string]::IsNullOrEmpty($ErrorMessage)) {
 						$ErrorMessage = $ISPSSSession.LastError.Exception.Message
+					}
+
+					#A 401 sent with an expired token reports the expiry; the token carries no refresh token
+					if ($StatusCode -eq 401) {
+
+						$Expiry = try {
+							$Exp = (ConvertFrom-JwtPayload -Token $PSBoundParameters['WebSession'].Headers['Authorization']).exp
+							if ($null -ne $Exp) { [DateTimeOffset]::FromUnixTimeSeconds([long]$Exp) }
+						} catch { $null }
+
+						if (($null -ne $Expiry) -and ($Expiry -le [DateTimeOffset]::UtcNow)) {
+							$ErrorMessage = "Session expired at $($Expiry.LocalDateTime.ToString()): authenticate again with New-IDSession or New-IDPlatformToken"
+						}
+
 					}
 
 					#throw the error
