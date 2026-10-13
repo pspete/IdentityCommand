@@ -10,6 +10,13 @@ All notable changes to this project will be documented in this file.
   authenticate again with New-IDSession or New-IDPlatformToken`. Previously, it reported `Unauthorized. Unauthorized.`.
   Companion modules get the same message.
 
+### Fixed
+
+- Companion module commands which page their results now page correctly from a starting offset or cursor.
+  Each later request carries one offset or cursor, in place of the starting one, and pages on from the
+  starting offset. Previously, the starting value was sent again with each later request, and paging
+  restarted from zero, so items were skipped or returned twice.
+
 ## [1.0.0] - 2026-10-12
 
 1.0.0: from this release, IdentityCommand follows semantic versioning, so breaking changes come only in a major release.

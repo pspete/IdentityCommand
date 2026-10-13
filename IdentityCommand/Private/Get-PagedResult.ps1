@@ -26,8 +26,10 @@
     The already-fetched first page of results.
 
     .PARAMETER URI
-    The URI used for the initial request (without any paging query parameter appended).
-    Subsequent pages are requested against this URI.
+    The URI used for the initial request. Subsequent pages are requested against this URI, with any
+    paging query parameter it already holds (OffsetRequestKey or CursorRequestKey) replaced by the
+    next page's value. Every other query parameter is resent exactly as given. In Offset style with
+    Method GET, an offset already in the URI is the position paging starts from.
 
     .PARAMETER Style
     'Cursor' to follow a continuation token, 'Offset' to page via an incrementing offset
@@ -67,7 +69,8 @@
 
     .PARAMETER BodyTemplate
     Offset style only, required with Method POST. The body sent with the initial request. It is
-    cloned per page with the offset replaced, so filters and search terms carry across pages.
+    cloned per page with the offset replaced, so filters and search terms carry across pages. An
+    offset already in the body is the position paging starts from.
 
     .PARAMETER BodyPagingProperty
     Offset style only. Name of a nested object in the body which holds the paging values, for
@@ -152,6 +155,20 @@
             if ($ResultProperty) { $PageResult.$ResultProperty } else { $PageResult }
         }
 
+        #Splits the query string into its pairs, each kept exactly as sent so the encoding of every
+        #other key survives, and separates out any value already held for the paging key.
+        $PagingKey = if ($Style -eq 'Cursor') { $CursorRequestKey } else { $OffsetRequestKey }
+        $UriParts = $URI -split '\?', 2
+        $QueryPairs = if ($UriParts.Count -gt 1) { @($UriParts[1] -split '&' | Where-Object { $_ }) } else { @() }
+        $IsPagingPair = {
+            param($Pair)
+            [Uri]::UnescapeDataString(($Pair -split '=', 2)[0]) -eq $PagingKey
+        }
+        $StartValue = $QueryPairs | Where-Object { & $IsPagingPair $_ } | Select-Object -Last 1 |
+            ForEach-Object { [Uri]::UnescapeDataString("$(($_ -split '=', 2)[1])") }
+        $KeptPairs = @($QueryPairs | Where-Object { -not (& $IsPagingPair $_) })
+        $BaseURI = if ($KeptPairs.Count -gt 0) { "$($UriParts[0])?$($KeptPairs -join '&')" } else { $UriParts[0] }
+
         $Items = [Collections.Generic.List[Object]]::New()
 
         $InitialItems = & $GetItems $InitialResult
@@ -167,7 +184,7 @@
 
                 while (-not [String]::IsNullOrEmpty($NextCursor)) {
 
-                    $PageURI = Add-QueryString -URI $URI -Parameter @{ $CursorRequestKey = $NextCursor }
+                    $PageURI = Add-QueryString -URI $BaseURI -Parameter @{ $CursorRequestKey = $NextCursor }
 
                     $PageResult = Invoke-IDRestMethod -Uri $PageURI -Method GET
                     $PageItems = & $GetItems $PageResult
@@ -201,6 +218,15 @@
 
                 $Total = if ($PSBoundParameters.ContainsKey('TotalCount')) { $TotalCount } else { $InitialResult.$TotalResponseKey }
 
+                #The position the initial request started from: the offset in the body when paging a POST,
+                #otherwise the offset in the URI, or zero when neither holds one.
+                if ($Method -eq 'POST') {
+                    $BodyPaging = if ($BodyPagingProperty) { $BodyTemplate[$BodyPagingProperty] } else { $BodyTemplate }
+                    $StartValue = if ($null -ne $BodyPaging) { $BodyPaging[$OffsetRequestKey] }
+                }
+                $StartOffset = 0
+                $null = [int]::TryParse("$StartValue", [ref]$StartOffset)
+
                 #Resolves a dotted property path, so a next-offset reported as a nested value
                 #(CDS reports paging.offset) can be read the same way as a top level one.
                 $GetPathValue = {
@@ -223,7 +249,7 @@
                     } elseif ($OffsetResponseKey) {
                         -not [string]::IsNullOrEmpty((& $GetPathValue $PageResult $OffsetResponseKey))
                     } else {
-                        ($null -ne $Total) -and ($Items.Count -lt $Total)
+                        ($null -ne $Total) -and (($StartOffset + $Items.Count) -lt $Total)
                     }
                 }
 
@@ -237,11 +263,11 @@
                 while (& $HasMorePages $LastPage) {
 
                     #An echoed next offset is the server's own idea of where the next page starts;
-                    #otherwise pick up from however many items have been collected so far.
+                    #otherwise move on from the starting offset by however many items have been collected so far.
                     $NextOffset = if ($OffsetResponseKey) {
                         & $GetPathValue $LastPage $OffsetResponseKey
                     } else {
-                        $Items.Count
+                        $StartOffset + $Items.Count
                     }
 
                     $PageResult = if ($Method -eq 'POST') {
@@ -259,7 +285,7 @@
 
                     } else {
 
-                        $PageURI = Add-QueryString -URI $URI -Parameter @{ $OffsetRequestKey = $NextOffset }
+                        $PageURI = Add-QueryString -URI $BaseURI -Parameter @{ $OffsetRequestKey = $NextOffset }
                         Invoke-IDRestMethod -Uri $PageURI -Method GET
 
                     }
@@ -269,7 +295,7 @@
 
                     if (($null -eq $PageItems) -or (@($PageItems).Count -eq 0)) {
                         #Defends against a reported total the server never actually delivers
-                                                break
+                        break
                     }
 
                     $CurrentPageFirstItem = @($PageItems)[0] | ConvertTo-Json -Compress -Depth 5
