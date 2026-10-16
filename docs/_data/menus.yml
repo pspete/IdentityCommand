@@ -109,6 +109,24 @@ CEM:
         - name: Commands
           link: /CEM/commands/
 
+DiscoveryMgmt:
+  label: IdentityCommand.DiscoveryMgmt
+  repo: pspete/IdentityCommand.DiscoveryMgmt
+  commands: DiscoveryMgmt
+  prefix: DM
+  description: >-
+    Privilege Cloud Discovery: scan definitions, scan resources, scans and their logs.
+  image: /DiscoveryMgmt/media/images/IdentityCommand.DiscoveryMgmt.png
+  menu:
+    - label: IdentityCommand.DiscoveryMgmt
+      items:
+        - name: Overview
+          link: /DiscoveryMgmt/
+        - name: Getting Started
+          link: /DiscoveryMgmt/getting-started/
+        - name: Commands
+          link: /DiscoveryMgmt/commands/
+
 RemoteAccess:
   label: IdentityCommand.RemoteAccess
   repo: pspete/IdentityCommand.RemoteAccess

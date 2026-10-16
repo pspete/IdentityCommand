@@ -15,6 +15,9 @@
 - name: CEM
   link: /CEM/
   module: CEM
+- name: DiscoveryMgmt
+  link: /DiscoveryMgmt/
+  module: DiscoveryMgmt
 - name: RemoteAccess
   link: /RemoteAccess/
   module: RemoteAccess
