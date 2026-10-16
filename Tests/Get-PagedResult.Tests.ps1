@@ -369,6 +369,59 @@
 
         }
 
+        Context 'Accept header' {
+
+            It 'sends the Accept header with each cursor page request' {
+                Mock -CommandName Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{ items = @('two'); nextCursor = $null }
+                }
+
+                $Initial = [pscustomobject]@{ items = @('one'); nextCursor = 'SomeCursor' }
+                $null = Get-PagedResult -InitialResult $Initial -URI $Script:PageURI -Style Cursor -ResultProperty items -Accept 'application/x.some+json'
+
+                Should -Invoke -CommandName Invoke-IDRestMethod -ParameterFilter {
+                    $Accept -eq 'application/x.some+json'
+                } -Times 1 -Exactly -Scope It
+            }
+
+            It 'sends the Accept header with each offset GET page request' {
+                Mock -CommandName Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{ items = @('two') }
+                }
+
+                $null = Get-PagedResult -InitialResult ([pscustomobject]@{ items = @('one') }) -URI $Script:PageURI -Style Offset -ResultProperty items -TotalCount 2 -Accept 'application/x.some+json'
+
+                Should -Invoke -CommandName Invoke-IDRestMethod -ParameterFilter {
+                    $Accept -eq 'application/x.some+json'
+                } -Times 1 -Exactly -Scope It
+            }
+
+            It 'sends the Accept header with each offset POST page request' {
+                Mock -CommandName Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{ items = @('two') }
+                }
+
+                $null = Get-PagedResult -InitialResult ([pscustomobject]@{ items = @('one') }) -URI $Script:PageURI -Style Offset -ResultProperty items -TotalCount 2 -Method POST -BodyTemplate @{ offset = 0 } -Accept 'application/x.some+json'
+
+                Should -Invoke -CommandName Invoke-IDRestMethod -ParameterFilter {
+                    $Method -eq 'POST' -and $Accept -eq 'application/x.some+json'
+                } -Times 1 -Exactly -Scope It
+            }
+
+            It 'sends no Accept header when none is given' {
+                Mock -CommandName Invoke-IDRestMethod -MockWith {
+                    [pscustomobject]@{ items = @('two') }
+                }
+
+                $null = Get-PagedResult -InitialResult ([pscustomobject]@{ items = @('one') }) -URI $Script:PageURI -Style Offset -ResultProperty items -TotalCount 2
+
+                Should -Invoke -CommandName Invoke-IDRestMethod -ParameterFilter {
+                    -not $PSBoundParameters.ContainsKey('Accept')
+                } -Times 1 -Exactly -Scope It
+            }
+
+        }
+
         Context 'Bare array responses' {
 
             It 'treats the response itself as the item collection when no ResultProperty is given' {

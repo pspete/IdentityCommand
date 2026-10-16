@@ -268,6 +268,11 @@
 
 							{ $null -ne $PSItem.error } {
 								$ErrorMessage = $ErrorDetails | Select-Object -ExpandProperty error
+								#Some services nest the error as an object: {"error":{"code":"...","message":"..."}}
+								if ($null -ne $ErrorMessage.message) {
+									if ($null -ne $ErrorMessage.code) { $ErrorID = $ErrorID, $ErrorMessage.code -join ',' }
+									$ErrorMessage = $ErrorMessage.message
+								}
 							}
 							{ $null -ne $ErrorDetails.error_description } {
 								$ErrorDescription = $ErrorDetails | Select-Object -ExpandProperty error_description
@@ -316,7 +321,7 @@
 
 						[System.Management.Automation.ErrorRecord]::new(
 
-							[System.Exception]::new($ErrorMessage),
+							[System.Exception]::new("$ErrorMessage"),
 							$ErrorID,
 							[System.Management.Automation.ErrorCategory]::NotSpecified,
 							$PSItem

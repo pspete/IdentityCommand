@@ -439,6 +439,26 @@ Describe $($PSCommandPath -Replace '.Tests.ps1') {
 				} Else { Set-ItResult -Inconclusive }
 			}
 
+			It 'reports the message of an error nested as an object' {
+				If ($IsCoreCLR) {
+					$errorDetails = '{"error":{"code":"bad_request","message":"Some Nested Error"}}'
+					$errorRecord = New-Object Management.Automation.ErrorRecord $exception, $errorID, $errorCategory, $targetObject
+					$errorRecord.ErrorDetails = $errorDetails
+					Mock Invoke-WebRequest { Throw $errorRecord }
+					{ Invoke-IDRestMethod @WebSession } | Should -Throw -ExpectedMessage 'Some Nested Error'
+				} Else { Set-ItResult -Inconclusive }
+			}
+
+			It 'adds the code of an error nested as an object to the error id' {
+				If ($IsCoreCLR) {
+					$errorDetails = '{"error":{"code":"bad_request","message":"Some Nested Error"}}'
+					$errorRecord = New-Object Management.Automation.ErrorRecord $exception, $errorID, $errorCategory, $targetObject
+					$errorRecord.ErrorDetails = $errorDetails
+					Mock Invoke-WebRequest { Throw $errorRecord }
+					{ Invoke-IDRestMethod @WebSession } | Should -Throw -ErrorId '*bad_request*'
+				} Else { Set-ItResult -Inconclusive }
+			}
+
 			It 'catches other errors' {
 				If ($IsCoreCLR) {
 					$errorDetails = $null

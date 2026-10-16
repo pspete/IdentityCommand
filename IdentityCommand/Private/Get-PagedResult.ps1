@@ -76,6 +76,10 @@
     Offset style only. Name of a nested object in the body which holds the paging values, for
     example 'paging'. Omit when the offset sits at the top level of the body.
 
+    .PARAMETER Accept
+    An Accept header value sent with every subsequent page request, for endpoints which require one
+    (eg Secrets Manager's application/x.secretsmgr.v2+json). Omit to send none.
+
     .PARAMETER TotalCount
     Offset style only. Use when the total record count is not present on the response
     itself and was instead obtained from a separate request (eg strong accounts'
@@ -144,10 +148,16 @@
         $BodyTemplate,
 
         [parameter(Mandatory = $false)]
-        [string]$BodyPagingProperty
+        [string]$BodyPagingProperty,
+
+        [parameter(Mandatory = $false)]
+        [string]$Accept
     )
 
     process {
+
+        $AcceptHeader = @{}
+        if ($PSBoundParameters.ContainsKey('Accept')) { $AcceptHeader['Accept'] = $Accept }
 
         #Local helper to pull the item array out of a page, whether it's wrapped in a property or a bare array
         $GetItems = {
@@ -186,7 +196,7 @@
 
                     $PageURI = Add-QueryString -URI $BaseURI -Parameter @{ $CursorRequestKey = $NextCursor }
 
-                    $PageResult = Invoke-IDRestMethod -Uri $PageURI -Method GET
+                    $PageResult = Invoke-IDRestMethod -Uri $PageURI -Method GET @AcceptHeader
                     $PageItems = & $GetItems $PageResult
 
                     if (($null -eq $PageItems) -or (@($PageItems).Count -eq 0)) {
@@ -281,12 +291,12 @@
                             $PageBody[$OffsetRequestKey] = $NextOffset
                         }
 
-                        Invoke-IDRestMethod -Uri $URI -Method POST -Body ($PageBody | ConvertTo-Json -Depth 8)
+                        Invoke-IDRestMethod -Uri $URI -Method POST -Body ($PageBody | ConvertTo-Json -Depth 8) @AcceptHeader
 
                     } else {
 
                         $PageURI = Add-QueryString -URI $BaseURI -Parameter @{ $OffsetRequestKey = $NextOffset }
-                        Invoke-IDRestMethod -Uri $PageURI -Method GET
+                        Invoke-IDRestMethod -Uri $PageURI -Method GET @AcceptHeader
 
                     }
 

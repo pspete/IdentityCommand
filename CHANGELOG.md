@@ -4,7 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
-- N/A
+### Fixed
+
+- A failed request whose response nests its error as an object (`{"error":{"code":"...","message":"..."}}`,
+  as Secrets Manager does) now reports the error message, with the code added to the error id. Previously,
+  it reported `Cannot find an overload for "new" and the argument count: "1"`, and the API's error was lost.
+- Companion module commands which page their results can now send an Accept header with each later page
+  request, for services which require one on every request (Secrets Manager). Previously, the first page
+  carried it, but later page requests were sent without it and refused.
 
 ## [1.0.1] - 2026-10-13
 
