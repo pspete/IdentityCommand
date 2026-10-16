@@ -12,6 +12,7 @@ The module has been in development for a few years, initially focused on authent
 | --- | --- |
 | [`IdentityCommand.AccessRequest`](https://github.com/pspete/IdentityCommand.AccessRequest) | Access Requests |
 | [`IdentityCommand.CEM`](https://github.com/pspete/IdentityCommand.CEM) | Cloud Visibility workspace delegation |
+| [`IdentityCommand.DiscoveryMgmt`](https://github.com/pspete/IdentityCommand.DiscoveryMgmt) | Privilege Cloud Discovery |
 | [`IdentityCommand.RemoteAccess`](https://github.com/pspete/IdentityCommand.RemoteAccess) | Remote Access |
 | [`IdentityCommand.RiskMgmt`](https://github.com/pspete/IdentityCommand.RiskMgmt) | Risk Management |
 | [`IdentityCommand.SCA`](https://github.com/pspete/IdentityCommand.SCA) | Secure Cloud Access |

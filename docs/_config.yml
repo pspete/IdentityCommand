@@ -51,6 +51,9 @@ collections:
   CEM:
     output: true
     permalink: /CEM/commands/:title/
+  DiscoveryMgmt:
+    output: true
+    permalink: /DiscoveryMgmt/commands/:title/
   RemoteAccess:
     output: true
     permalink: /RemoteAccess/commands/:title/
@@ -130,6 +133,17 @@ defaults:
       render_with_liquid: false
       layout: command
       menubar: CEM
+  - scope:
+      path: DiscoveryMgmt
+    values:
+      menubar: DiscoveryMgmt
+  - scope:
+      path: ""
+      type: DiscoveryMgmt
+    values:
+      render_with_liquid: false
+      layout: command
+      menubar: DiscoveryMgmt
   - scope:
       path: RemoteAccess
     values:
