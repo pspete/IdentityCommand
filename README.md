@@ -43,7 +43,7 @@ Documentation, command reference and release notes: [www.pspete.dev/IdentityComm
 [codefactor]: https://www.codefactor.io/repository/github/pspete/IdentityCommand/badge
 [codecov]: https://codecov.io/gh/pspete/IdentityCommand/branch/main/graph/badge.svg
 [codecov-link]: https://codecov.io/gh/pspete/IdentityCommand
-[license]: https://img.shields.io/github/license/pspete/IdentityCommand.svg
+[license]: https://img.shields.io/badge/license-MIT-green.svg
 [license-link]: https://github.com/pspete/IdentityCommand/blob/main/LICENSE
 
 ---
